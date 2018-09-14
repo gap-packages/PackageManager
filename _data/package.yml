@@ -1,75 +1,57 @@
-name: GitHubPagesForGAP
-version: 0.2
-date: 2017-02-04
+name: PackageManager
+version: 0.1
+date: 2018-09-14
 description: |
-    A GitHub Pages generator for GAP packages
+    Easily download and install GAP packages
 
 authors:
-    - name: Max Horn
-      url: http://www.quendi.de/math
-    - name: A. U. Thor
+    - name: Michael Torpey
+      url: http://www-groups.mcs.st-andrews.ac.uk/~mct25/
 
 maintainers:
-    - name: Max Horn
-      url: http://www.quendi.de/math
-    - name: Jan Itor
+    - name: Michael Torpey
+      url: http://www-groups.mcs.st-andrews.ac.uk/~mct25/
 
-GAP: ">=4.8.1"
+GAP: ">= 4.9"
 
 needed-pkgs:
     - name: "GAPDoc"
-      version: ">= 1.2"
+      version: ">= 1.6.1"
       url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
-    - name: "IO"
-      version: ">= 4.1"
-      url: "https://gap-packages.github.io/io"
 
-suggested-pkgs:
-    - name: "orb"
-      version: ">= 4.2"
-      url: "https://gap-packages.github.io/orb"
-
-www: https://gap-system.github.io/GitHubPagesForGAP/
+www: https://mtorpey.github.io/PackageManager/
 readme: README.md
-packageinfo: https://gap-system.github.io/GitHubPagesForGAP/PackageInfo.g
-github: https://github.com/gap-system/GitHubPagesForGAP
+packageinfo: https://mtorpey.github.io/PackageManager/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-system/GitHubPagesForGAP/releases/download/v0.2/GitHubPagesForGAP-0.2.tar.gz
-    - name: .tar.bz2
-      url: https://github.com/gap-system/GitHubPagesForGAP/releases/download/v0.2/GitHubPagesForGAP-0.2.tar.bz2
+      url: https://github.com/mtorpey/PackageManager/releases/download/v0.1/PackageManager-0.1.tar.gz
 
 abstract: |
-    This is a pseudo package that contains no actual  <span class="pkgname">GAP</span> code. Instead, it is a template for other  GAP packages that allows to quickly setup GitHub Pages.
 
-status: other
+status: dev
 doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
-keywords: |
-    GitHub Pages, GAP.
 citeas: |
     <p class='BibEntry'>
-    [<span class='BibKey'>HTI17</span>]   <b class='BibAuthor'>Horn, M., Thor, A. U. and Itor, J.</b>,
-     <i class='BibTitle'>GitHubPagesForGAP, A GitHub Pages generator for GAP packages,
-             Version 0.2</i>
-     (<span class='BibYear'>2017</span>)<br />
+    [<span class='BibKey'>Tor18</span>]   <b class='BibAuthor'>Torpey, M.</b>,
+     <i class='BibTitle'>PackageManager, Easily download and install GAP packages,
+             Version 0.1</i>
+     (<span class='BibYear'>2018</span>)<br />
     (<span class='BibNote'>GAP package</span>),
-    <span class='BibHowpublished'><a href="https://gap-system.github.io/GitHubPagesForGAP/">https://gap-system.github.io/GitHubPagesForGAP/</a></span>.
+    <span class='BibHowpublished'><a href="https://mtorpey.github.io/PackageManager/">https://mtorpey.github.io/PackageManager/</a></span>.
     </p>
     
 
 bibtex: |
-    @misc{ GitHubPagesForGAP0.2,
-      author =           {Horn, M. and Thor, A. U. and Itor, J.},
-      title =            {{GitHubPagesForGAP}, A GitHub Pages generator for GAP packages, {V}ersion 0.2},
-      month =            {Feb},
-      year =             {2017},
+    @misc{ PackageManager0.1,
+      author =           {Torpey, M.},
+      title =            {{PackageManager}, Easily download and install GAP packages, {V}ersion 0.1},
+      month =            {Sep},
+      year =             {2018},
       note =             {GAP package},
-      howpublished =     {\href                              {https://gap-system.github.io/GitHubPagesForGAP/}
-                          {\texttt{https://gap-system.github.io/}\discretionary
-                          {}{}{}\texttt{GitHubPagesForGAP/}}},
-      keywords =         {GitHub Pages; GAP},
-      printedkey =       {HTI17}
+      howpublished =     {\href      {https://mtorpey.github.io/PackageManager/}      {\texttt{https://mtorpey.github.io/}\discretionary
+                          {}{}{}\texttt{PackageManager/}}},
+      printedkey =       {Tor18}
     }
 
