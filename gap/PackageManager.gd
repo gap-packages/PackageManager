@@ -4,6 +4,18 @@
 # Declarations
 #
 
+DeclareGlobalFunction("GetPackageList");
+
 #! @Description
-#!   Insert documentation for you function here
-DeclareGlobalFunction( "PackageManager_Example" );
+#!   Attempts to download and install a package
+#! @Args pkg_name
+#! @Returns
+#!   true or false
+DeclareGlobalFunction("InstallPackageURL");
+
+#! @Description
+#!   Attempts to remove an installed package
+#! @Args pkg_name
+#! @Returns
+#!   true or false
+DeclareGlobalFunction("RemovePackage");

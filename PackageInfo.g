@@ -57,7 +57,7 @@ ArchiveFormats := ".tar.gz",
 ##
 Status := "dev",
 
-AbstractHTML   :=  "",
+AbstractHTML := "",
 
 PackageDoc := rec(
   BookName  := "PackageManager",
@@ -70,7 +70,8 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">= 4.9",
-  NeededOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ] ],
+  NeededOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ],
+                           [ "curlInterface", ">= 2.0.0" ]],
   SuggestedOtherPackages := [ ],
   ExternalConditions := [ ],
 ),
