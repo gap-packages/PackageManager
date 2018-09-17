@@ -4,7 +4,8 @@
 # Declarations
 #
 
-DeclareGlobalFunction("GetPackageList");
+DeclareGlobalFunction("GetPackageURLs");
+DeclareGlobalFunction("InstallPackageName");
 
 #! @Description
 #!   Attempts to download and install a package

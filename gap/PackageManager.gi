@@ -3,9 +3,9 @@
 #
 # Implementations
 #
-InstallGlobalFunction(GetPackageList,
+InstallGlobalFunction(GetPackageURLs,
 function()
-  local url, get, packages, line, items;
+  local url, get, urls, line, items;
   url := Concatenation("https://raw.githubusercontent.com/gap-system/",
                        "gap-distribution/master/DistributionUpdate/",
                        "PackageUpdate/currentPackageInfoURLList");
@@ -13,7 +13,7 @@ function()
   if not get.success then
     ErrorNoReturn("PackageManager: GetPackageList: could not contact server");
   fi;
-  packages := [];
+  urls := rec();
   for line in SplitString(get.result, "\n") do
     items := SplitString(line, "", WHITESPACE);
     if Length(items) = 0 or items[1][1] = '#' then
@@ -21,19 +21,36 @@ function()
     elif Length(items) <> 2 then
       ErrorNoReturn("PackageManager: GetPackageList: bad line:\n", line);
     fi;
-    Add(packages, rec(name := items[1], url := items[2]));
+    urls.(items[1]) := items[2];
   od;
-  return packages;
+  return urls;
+end);
+
+InstallGlobalFunction(InstallPackageName,
+function(pkg_name)
+  local urls, get, stream;
+  urls := GetPackageURLs();
+  if not IsBound(urls.(pkg_name)) then
+    Info(InfoPackageManager, 1, "Package ", pkg_name, " not found in directory");
+    return false;
+  fi;
+  get := DownloadURL(urls.(pkg_name));
+  if not get.success then
+    Info(InfoPackageManager, 1, "Unable to download from ", urls.(pkg_name));
+  fi;
+  stream := InputTextString(get.result);
+  Read(stream);
+  return GAPInfo.PackageInfoCurrent;
+  # TODO: actually install the package
 end);
 
 InstallGlobalFunction(InstallPackageURL,
-function(pkg_name)
-  local url, get, user_pkg_dir, filename;
-  if not IsString(pkg_name) then
+function(url)
+  local get, user_pkg_dir, filename;
+  if not IsString(url) then
     ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
                   "<pkg_name> should be a string,");
   fi;
-  url := pkg_name;
   get := DownloadURL(url);
   if get.success <> true then
     return false;
