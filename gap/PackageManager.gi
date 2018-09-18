@@ -28,20 +28,27 @@ end);
 
 InstallGlobalFunction(InstallPackageName,
 function(pkg_name)
-  local urls, get, stream, info, formats;
+  local urls, get, stream, info, formats, url;
   pkg_name := LowercaseString(pkg_name);
   urls := GetPackageURLs();
+  Info(InfoPackageManager, 3, "Package directory retrieved");
   if not IsBound(urls.(pkg_name)) then
     Info(InfoPackageManager, 1, "Package ", pkg_name, " not found in directory");
     return false;
   fi;
   get := DownloadURL(urls.(pkg_name));
+  Info(InfoPackageManager, 3, "PackageInfo.g for ", pkg_name, " retrieved");
   if not get.success then
     Info(InfoPackageManager, 1, "Unable to download from ", urls.(pkg_name));
   fi;
   stream := InputTextString(get.result);
   Read(stream);
   info := GAPInfo.PackageInfoCurrent;
+  if not ValidatePackageInfo(info) then
+    Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
+    return false;
+  fi;
+  Info(InfoPackageManager, 3, "PackageInfo.g validated successfully");
   formats := SplitString(info.ArchiveFormats, "", ", \n\r\t");
   if not ".tar.gz" in formats then
     # TODO: support other formats
@@ -49,7 +56,9 @@ function(pkg_name)
     Info(InfoPackageManager, 1, "Only ", formats, " available");
     return false;
   fi;
-  return InstallPackageURL(Concatenation(info.ArchiveURL, ".tar.gz"));
+  url := Concatenation(info.ArchiveURL, ".tar.gz");
+  Info(InfoPackageManager, 3, "Got archive URL ", url);
+  return InstallPackageURL(url);
 end);
 
 InstallGlobalFunction(InstallPackageURL,
