@@ -40,3 +40,5 @@ DeclareGlobalFunction("InstallPackageURL");
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("RemovePackage");
+
+DeclareGlobalFunction("PKGMAN_Exec");

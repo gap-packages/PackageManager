@@ -54,7 +54,7 @@ end);
 
 InstallGlobalFunction(InstallPackageURL,
 function(url)
-  local get, user_pkg_dir, filename;
+  local get, user_pkg_dir, filename, exec;
   if not IsString(url) then
     ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
                   "<pkg_name> should be a string,");
@@ -73,9 +73,14 @@ function(url)
   filename := Filename(DirectoryTemporary(), url[Length(url)]);
   FileString(filename, get.result);
   Info(InfoPackageManager, 3, "Wrote archive to ", filename);
-  Exec("tar xf", filename, "-C", user_pkg_dir);
-  Info(InfoPackageManager, 2, "Package extracted to ", user_pkg_dir);
-  return true;
+  exec := PKGMAN_Exec("tar", "xf", filename, "-C", user_pkg_dir);
+  if exec.code = 0 then
+    Info(InfoPackageManager, 2, "Package extracted to ", user_pkg_dir);
+    return true;
+  else
+    Info(InfoPackageManager, 1, "Extraction unsuccessful");
+    return false;
+  fi;
 end);
 
 InstallGlobalFunction(RemovePackage,
@@ -110,4 +115,34 @@ function(pkg_name)
     return false;
   fi;
   return RemoveDirectoryRecursively(dir);
+end);
+
+InstallGlobalFunction(PKGMAN_Exec,
+function(cmd, args...)
+  local fullcmd, dir, instream, out, outstream, code;
+
+  # Simply concatenate the arguments
+  if not IsString(cmd) then
+    ErrorNoReturn("<cmd> should be a string");
+  fi;
+  fullcmd := Filename(DirectoriesSystemPrograms(), cmd);
+  if fullcmd = fail then
+    Info(InfoPackageManager, 1, "Command ", cmd, " not found");
+    return fail;
+  fi;
+
+  # Choose working directory
+  dir := DirectoryCurrent();
+
+  # Streams
+  instream := InputTextNone();
+  out := "";;
+  outstream := OutputTextString(out, true);
+
+  # Execute the command
+  code := Process(dir, fullcmd, instream, outstream, args);
+  CloseStream(outstream);
+
+  # Return all the information we captured
+  return rec(code := code, output := out);
 end);
