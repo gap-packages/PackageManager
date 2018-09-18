@@ -136,7 +136,7 @@ function(name)
     ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
                   "<name> should be a string,");
   fi;
-  user_pkg_dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
+  user_pkg_dir := PKGMAN_PackageDir();
   info := PackageInfo(name);
   info := Filtered(info,
                    x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
