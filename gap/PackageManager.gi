@@ -54,7 +54,7 @@ end);
 
 InstallGlobalFunction(InstallPackageURL,
 function(url)
-  local get, user_pkg_dir, filename, exec;
+  local get, user_pkg_dir, filename, exec, topdir, dir, info;
   if not IsString(url) then
     ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
                   "<pkg_name> should be a string,");
@@ -72,15 +72,36 @@ function(url)
   url := SplitString(url, "/");
   filename := Filename(DirectoryTemporary(), url[Length(url)]);
   FileString(filename, get.result);
-  Info(InfoPackageManager, 3, "Wrote archive to ", filename);
+  Info(InfoPackageManager, 3, "Saved archive to ", filename);
+  exec := PKGMAN_Exec("tar", "--exclude=*/*", "-tf", filename);
+  if exec.code <> 0 then
+    Info(InfoPackageManager, 1, "Could not inspect tarball contents");
+    return false;
+  fi;
+  topdir := SplitString(exec.output, "", WHITESPACE);
+  if Length(topdir) <> 1 then
+    Info(InfoPackageManager, 1,
+         "Archive should contain 1 directory (not ", Length(topdir), ")");
+    return false;
+  fi;
+  topdir := topdir[1];
   exec := PKGMAN_Exec("tar", "xf", filename, "-C", user_pkg_dir);
-  if exec.code = 0 then
-    Info(InfoPackageManager, 2, "Package extracted to ", user_pkg_dir);
-    return true;
-  else
+  if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Extraction unsuccessful");
     return false;
   fi;
+  dir := Filename(Directory(user_pkg_dir), topdir);
+  Info(InfoPackageManager, 2, "Package extracted to ", dir);
+  info := Filename(Directory(dir), "PackageInfo.g");
+  if not IsReadableFile(info) then
+    Info(InfoPackageManager, 1, "Could not find PackageInfo.g file");
+    return false;
+  elif not ValidatePackageInfo(info) then
+    Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
+    return false;
+  fi;
+  Info(InfoPackageManager, 3, "PackageInfo.g validated successfully");
+  return true;
 end);
 
 InstallGlobalFunction(RemovePackage,
