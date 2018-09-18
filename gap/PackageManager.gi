@@ -21,7 +21,7 @@ function()
     elif Length(items) <> 2 then
       ErrorNoReturn("PackageManager: GetPackageList: bad line:\n", line);
     fi;
-    urls.(items[1]) := items[2];
+    urls.(LowercaseString(items[1])) := items[2];
   od;
   return urls;
 end);
@@ -29,6 +29,7 @@ end);
 InstallGlobalFunction(InstallPackageName,
 function(pkg_name)
   local urls, get, stream, info, formats;
+  pkg_name := LowercaseString(pkg_name);
   urls := GetPackageURLs();
   if not IsBound(urls.(pkg_name)) then
     Info(InfoPackageManager, 1, "Package ", pkg_name, " not found in directory");
@@ -84,13 +85,18 @@ function(pkg_name)
     ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
                   "<pkg_name> should be a string,");
   fi;
+  user_pkg_dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
   info := PackageInfo(pkg_name);
+  info := Filtered(info,
+                   x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
   if Length(info) = 0 then
-    Info(InfoPackageManager, 1, "Package ", pkg_name, " not installed");
+    Info(InfoPackageManager, 1,
+         "Package ", pkg_name, " not installed in ", user_pkg_dir);
     return false;
   elif Length(info) >= 2 then
     Info(InfoPackageManager, 1,
-         "String \"", pkg_name, "\" matches multiple packages");
+         "String \"", pkg_name, "\" matches multiple packages,");
+    Info(InfoPackageManager, 3, "at ", List(info, x -> x.InstallationPath));
     return false;
   fi;
   dir := info[1].InstallationPath;
@@ -98,7 +104,6 @@ function(pkg_name)
     Info(InfoPackageManager, 1, "Directory ", dir, " already removed");
     return false;
   fi;
-  user_pkg_dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
   if not IsMatchingSublist(dir, user_pkg_dir) then
     Info(InfoPackageManager, 1, "Package \"", pkg_name,
          "\" installed at ", dir, ", not in ", user_pkg_dir);
