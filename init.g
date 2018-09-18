@@ -4,6 +4,4 @@
 # Reading the declaration part of the package.
 #
 
-DeclareInfoClass("InfoPackageManager");
-
-ReadPackage( "PackageManager", "gap/PackageManager.gd");
+ReadPackage("PackageManager", "gap/PackageManager.gd");

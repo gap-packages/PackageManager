@@ -28,7 +28,7 @@ end);
 
 InstallGlobalFunction(InstallPackageName,
 function(pkg_name)
-  local urls, get, stream;
+  local urls, get, stream, info, formats;
   urls := GetPackageURLs();
   if not IsBound(urls.(pkg_name)) then
     Info(InfoPackageManager, 1, "Package ", pkg_name, " not found in directory");
@@ -40,8 +40,15 @@ function(pkg_name)
   fi;
   stream := InputTextString(get.result);
   Read(stream);
-  return GAPInfo.PackageInfoCurrent;
-  # TODO: actually install the package
+  info := GAPInfo.PackageInfoCurrent;
+  formats := SplitString(info.ArchiveFormats, "", ", \n\r\t");
+  if not ".tar.gz" in formats then
+    # TODO: support other formats
+    Info(InfoPackageManager, 1, "No .tar.gz available, so could not install");
+    Info(InfoPackageManager, 1, "Only ", formats, " available");
+    return false;
+  fi;
+  return InstallPackageURL(Concatenation(info.ArchiveURL, ".tar.gz"));
 end);
 
 InstallGlobalFunction(InstallPackageURL,
@@ -55,14 +62,18 @@ function(url)
   if get.success <> true then
     return false;
   fi;
+  Info(InfoPackageManager, 3, "Successfully downloaded from ", url);
   user_pkg_dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
   if not IsDirectoryPath(user_pkg_dir) then
     CreateDir(user_pkg_dir);
+    Info(InfoPackageManager, 3, "Created ", user_pkg_dir, " directory");
   fi;
   url := SplitString(url, "/");
   filename := Filename(DirectoryTemporary(), url[Length(url)]);
   FileString(filename, get.result);
+  Info(InfoPackageManager, 3, "Wrote archive to ", filename);
   Exec("tar xf", filename, "-C", user_pkg_dir);
+  Info(InfoPackageManager, 2, "Package extracted to ", user_pkg_dir);
   return true;
 end);
 

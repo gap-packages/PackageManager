@@ -3,4 +3,7 @@
 #
 # Reading the implementation part of the package.
 #
-ReadPackage( "PackageManager", "gap/PackageManager.gi");
+
+SetInfoLevel(InfoPackageManager, 1);
+
+ReadPackage("PackageManager", "gap/PackageManager.gi");
