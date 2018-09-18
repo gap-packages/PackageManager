@@ -21,29 +21,30 @@ SetInfoLevel(InfoPackageManager, 1);
 DeclareGlobalFunction("GetPackageURLs");
 
 #! @Description
-#!   Attempts to download and install a package with a given name
-#! @Args pkg_name
+#!   Attempts to download and install a package given only its name.
+#! @Args name
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromName");
 
 #! @Description
 #!   Attempts to download and install a package by downloading its PackageInfo.g
-#!   from the specified URL
+#!   from the specified URL.
 #! @Args url
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromInfo");
 
 #! @Description
-#!   Attempts to download and install a package from its URL
+#!   Attempts to download and install a package from an archive located at the
+#!   given URL.
 #! @Args url
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromArchive");
 
 #! @Description
-#!   Attempts to remove an installed package
+#!   Attempts to remove an installed package using its name.
 #! @Args pkg_name
 #! @Returns
 #!   true or false
