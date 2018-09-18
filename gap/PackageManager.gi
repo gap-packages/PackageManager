@@ -79,7 +79,7 @@ function(url)
     return false;
   fi;
   Info(InfoPackageManager, 3, "Successfully downloaded from ", url);
-  user_pkg_dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
+  user_pkg_dir := PKGMAN_PackageDir();
   if not IsDirectoryPath(user_pkg_dir) then
     CreateDir(user_pkg_dir);
     Info(InfoPackageManager, 3, "Created ", user_pkg_dir, " directory");
@@ -188,4 +188,9 @@ function(cmd, args...)
 
   # Return all the information we captured
   return rec(code := code, output := out);
+end);
+
+InstallGlobalFunction(PKGMAN_PackageDir,
+function()
+  return UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
 end);

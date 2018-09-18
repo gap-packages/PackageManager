@@ -52,3 +52,4 @@ DeclareGlobalFunction("RemovePackage");
 
 DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_Exec");
+DeclareGlobalFunction("PKGMAN_PackageDir");
