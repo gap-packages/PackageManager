@@ -69,7 +69,7 @@ end);
 
 InstallGlobalFunction(InstallPackageFromArchive,
 function(url)
-  local get, user_pkg_dir, filename, exec, topdir, dir, info;
+  local get, user_pkg_dir, filename, exec, files, topdir, dir, info;
   if not IsString(url) then
     ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
                   "<pkg_name> should be a string,");
@@ -88,12 +88,13 @@ function(url)
   filename := Filename(DirectoryTemporary(), url[Length(url)]);
   FileString(filename, get.result);
   Info(InfoPackageManager, 3, "Saved archive to ", filename);
-  exec := PKGMAN_Exec("tar", "--exclude=*/*", "-tf", filename);
+  exec := PKGMAN_Exec("tar", "-tf", filename);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Could not inspect tarball contents");
     return false;
   fi;
-  topdir := SplitString(exec.output, "", WHITESPACE);
+  files := SplitString(exec.output, "", WHITESPACE);
+  topdir := Set(files, f -> SplitString(f, "/")[1]);
   if Length(topdir) <> 1 then
     Info(InfoPackageManager, 1,
          "Archive should contain 1 directory (not ", Length(topdir), ")");
