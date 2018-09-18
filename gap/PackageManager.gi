@@ -111,6 +111,24 @@ function(url)
   return PKGMAN_CheckPackage(dir);
 end);
 
+InstallGlobalFunction(InstallPackageFromGit,
+function(url)
+  local name, dir, exec;
+  name := PKGMAN_NameOfGitRepo(url);
+  if name = fail then
+    Info(InfoPackageManager, 1, "Could not find repository name (bad URL?)");
+    return false;
+  fi;
+  dir := Filename(Directory(PKGMAN_PackageDir()), name);
+  exec := PKGMAN_Exec("git", "clone", url, dir);
+  if exec.code <> 0 then
+    Info(InfoPackageManager, 1, "Extraction unsuccessful");
+    return false;
+  fi;
+  Info(InfoPackageManager, 2, "Package cloned to ", dir);
+  return PKGMAN_CheckPackage(dir);   # TODO: compile doc
+end);
+
 InstallGlobalFunction(RemovePackage,
 function(name)
   local info, dir, user_pkg_dir;
@@ -188,6 +206,17 @@ function(cmd, args...)
 
   # Return all the information we captured
   return rec(code := code, output := out);
+end);
+
+InstallGlobalFunction(PKGMAN_NameOfGitRepo,
+function(url)
+  local parts, n;
+  parts := SplitString(url, "/:.", WHITESPACE);
+  n := Length(parts);
+  if parts[n] <> "git" then
+    return fail;
+  fi;
+  return parts[n-1];
 end);
 
 InstallGlobalFunction(PKGMAN_PackageDir,

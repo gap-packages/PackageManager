@@ -44,6 +44,14 @@ DeclareGlobalFunction("InstallPackageFromInfo");
 DeclareGlobalFunction("InstallPackageFromArchive");
 
 #! @Description
+#!   Attempts to download and install a package from a git repository located at
+#!   the given URL.
+#! @Args url
+#! @Returns
+#!   true or false
+DeclareGlobalFunction("InstallPackageFromGit");
+
+#! @Description
 #!   Attempts to remove an installed package using its name.
 #! @Args pkg_name
 #! @Returns
@@ -52,4 +60,5 @@ DeclareGlobalFunction("RemovePackage");
 
 DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_Exec");
+DeclareGlobalFunction("PKGMAN_NameOfGitRepo");
 DeclareGlobalFunction("PKGMAN_PackageDir");
