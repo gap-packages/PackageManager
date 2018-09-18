@@ -26,21 +26,27 @@ function()
   return urls;
 end);
 
-InstallGlobalFunction(InstallPackageName,
-function(pkg_name)
-  local urls, get, stream, info, formats, url;
-  pkg_name := LowercaseString(pkg_name);
+InstallGlobalFunction(InstallPackageFromName,
+function(name)
+  local urls;
+  name := LowercaseString(name);
   urls := GetPackageURLs();
   Info(InfoPackageManager, 3, "Package directory retrieved");
-  if not IsBound(urls.(pkg_name)) then
-    Info(InfoPackageManager, 1, "Package ", pkg_name, " not found in directory");
+  if not IsBound(urls.(name)) then
+    Info(InfoPackageManager, 1, "Package ", name, " not found in directory");
     return false;
   fi;
-  get := DownloadURL(urls.(pkg_name));
-  Info(InfoPackageManager, 3, "PackageInfo.g for ", pkg_name, " retrieved");
+  return InstallPackageFromInfo(urls.(name));
+end);
+
+InstallGlobalFunction(InstallPackageFromInfo,
+function(url)
+  local get, stream, info, formats;
+  get := DownloadURL(url);
   if not get.success then
-    Info(InfoPackageManager, 1, "Unable to download from ", urls.(pkg_name));
+    Info(InfoPackageManager, 1, "Unable to download from ", url);
   fi;
+  Info(InfoPackageManager, 3, "PackageInfo.g retrieved from ", url);
   stream := InputTextString(get.result);
   Read(stream);
   info := GAPInfo.PackageInfoCurrent;
@@ -58,10 +64,10 @@ function(pkg_name)
   fi;
   url := Concatenation(info.ArchiveURL, ".tar.gz");
   Info(InfoPackageManager, 3, "Got archive URL ", url);
-  return InstallPackageURL(url);
+  return InstallPackageFromArchive(url);
 end);
 
-InstallGlobalFunction(InstallPackageURL,
+InstallGlobalFunction(InstallPackageFromArchive,
 function(url)
   local get, user_pkg_dir, filename, exec, topdir, dir, info;
   if not IsString(url) then
@@ -114,23 +120,23 @@ function(url)
 end);
 
 InstallGlobalFunction(RemovePackage,
-function(pkg_name)
+function(name)
   local info, dir, user_pkg_dir;
-  if not IsString(pkg_name) then
+  if not IsString(name) then
     ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
-                  "<pkg_name> should be a string,");
+                  "<name> should be a string,");
   fi;
   user_pkg_dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
-  info := PackageInfo(pkg_name);
+  info := PackageInfo(name);
   info := Filtered(info,
                    x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
   if Length(info) = 0 then
     Info(InfoPackageManager, 1,
-         "Package ", pkg_name, " not installed in ", user_pkg_dir);
+         "Package ", name, " not installed in ", user_pkg_dir);
     return false;
   elif Length(info) >= 2 then
     Info(InfoPackageManager, 1,
-         "String \"", pkg_name, "\" matches multiple packages,");
+         "String \"", name, "\" matches multiple packages,");
     Info(InfoPackageManager, 3, "at ", List(info, x -> x.InstallationPath));
     return false;
   fi;
@@ -140,7 +146,7 @@ function(pkg_name)
     return false;
   fi;
   if not IsMatchingSublist(dir, user_pkg_dir) then
-    Info(InfoPackageManager, 1, "Package \"", pkg_name,
+    Info(InfoPackageManager, 1, "Package \"", name,
          "\" installed at ", dir, ", not in ", user_pkg_dir);
     return false;
   fi;
