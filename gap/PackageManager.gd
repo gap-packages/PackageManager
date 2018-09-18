@@ -50,4 +50,5 @@ DeclareGlobalFunction("InstallPackageFromArchive");
 #!   true or false
 DeclareGlobalFunction("RemovePackage");
 
+DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_Exec");

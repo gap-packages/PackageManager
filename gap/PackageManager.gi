@@ -69,7 +69,7 @@ end);
 
 InstallGlobalFunction(InstallPackageFromArchive,
 function(url)
-  local get, user_pkg_dir, filename, exec, files, topdir, dir, info;
+  local get, user_pkg_dir, filename, exec, files, topdir, dir;
   if not IsString(url) then
     ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
                   "<pkg_name> should be a string,");
@@ -108,16 +108,7 @@ function(url)
   fi;
   dir := Filename(Directory(user_pkg_dir), topdir);
   Info(InfoPackageManager, 2, "Package extracted to ", dir);
-  info := Filename(Directory(dir), "PackageInfo.g");
-  if not IsReadableFile(info) then
-    Info(InfoPackageManager, 1, "Could not find PackageInfo.g file");
-    return false;
-  elif not ValidatePackageInfo(info) then
-    Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
-    return false;
-  fi;
-  Info(InfoPackageManager, 3, "PackageInfo.g validated successfully");
-  return true;
+  return PKGMAN_CheckPackage(dir);
 end);
 
 InstallGlobalFunction(RemovePackage,
@@ -152,6 +143,21 @@ function(name)
     return false;
   fi;
   return RemoveDirectoryRecursively(dir);
+end);
+
+InstallGlobalFunction(PKGMAN_CheckPackage,
+function(dir)
+  local info;
+  info := Filename(Directory(dir), "PackageInfo.g");
+  if not IsReadableFile(info) then
+    Info(InfoPackageManager, 1, "Could not find PackageInfo.g file");
+    return false;
+  elif not ValidatePackageInfo(info) then
+    Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
+    return false;
+  fi;
+  Info(InfoPackageManager, 3, "PackageInfo.g validated successfully");
+  return true;
 end);
 
 InstallGlobalFunction(PKGMAN_Exec,
