@@ -12,6 +12,13 @@ gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "json"));
 true
 
+# Install a package from a PackageInfo.g URL
+gap> InstallPackage("https://gap-packages.github.io/cohomolo/PackageInfo.g");
+true
+gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+>           f -> StartsWith(f, "cohomolo"));
+true
+
 # RemovePackage failure
 gap> RemovePackage("xyz");
 #I  Package "xyz" not installed in user package directory
