@@ -25,6 +25,10 @@ end);
 
 InstallGlobalFunction(InstallPackage,
 function(string)
+  if not IsString(string) then
+    ErrorNoReturn("PackageManager: InstallPackage: ",
+                  "<string> must be a string");
+  fi;
   NormalizeWhitespace(string);
   if EndsWith(string, ".tar.gz") then
     return InstallPackageFromArchive(string);
@@ -82,12 +86,9 @@ end);
 InstallGlobalFunction(InstallPackageFromArchive,
 function(url)
   local get, user_pkg_dir, filename, exec, files, topdir, dir;
-  if not IsString(url) then
-    ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
-                  "<pkg_name> should be a string,");
-  fi;
   get := DownloadURL(url);
   if get.success <> true then
+    Info(InfoPackageManager, 1, "Could not download from ", url);
     return false;
   fi;
   Info(InfoPackageManager, 3, "Successfully downloaded from ", url);

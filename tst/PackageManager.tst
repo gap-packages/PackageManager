@@ -42,6 +42,10 @@ Error, PackageManager: GetPackageList: bad line:
 <?xml version="1.0" encoding="utf-8"?>
 gap> PKGMAN_PackageInfoURLList := default_url;;
 
+# InstallPackage input failure
+gap> InstallPackage(3);
+Error, PackageManager: InstallPackage: <string> must be a string
+
 # InstallPackageFromName failure
 gap> InstallPackage("sillypackage");
 #I  Package "sillypackage" not found in package list
@@ -76,4 +80,15 @@ false
 gap> InstallPackage("nilmat");
 #I  No .tar.gz available, so could not install
 #I  Only [ ".zip" ] available
+false
+
+# InstallPackageFromArchive failure
+gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
+#I  Could not download from www.gap.rubbish/somepackage.tar.gz
+false
+gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/bad-tarball.tar.gz");
+#I  Could not inspect tarball contents
+false
+gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/twodirs.tar.gz");
+#I  Archive should contain 1 directory (not 2)
 false
