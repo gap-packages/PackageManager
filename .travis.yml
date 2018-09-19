@@ -5,26 +5,30 @@ env:
     - COVDIR=coverage
     - GAP_PKGS_TO_BUILD="json io profiling curlInterface"
 
+branches:
+  except:
+    - gh-pages
+
 addons:
   apt_packages:
     - libgmp-dev
     - libreadline-dev
-    - libgmp-dev:i386
-    - libreadline-dev:i386
-    - gcc-multilib
-    - g++-multilib
 
 matrix:
   include:
-    - env: CFLAGS="-O2" CC=clang CXX=clang++ 
-      compiler: clang
+    - env: GAPBRANCH="stable-4.10"
     - env: CFLAGS="-O2"
       compiler: gcc
+    - env: CFLAGS="-O2" CC=clang CXX=clang++
+      compiler: clang
     - env: ABI=32
-
-branches:
-  only:
-    - master
+      addons:
+        apt_packages:
+          - libcurl4-openssl-dev:i386
+          - libgmp-dev:i386
+          - libreadline-dev:i386
+          - gcc-multilib
+          - g++-multilib
 
 before_script:
   - export GAPROOT="$HOME/gap"
