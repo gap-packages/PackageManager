@@ -4,6 +4,21 @@
 # Declarations
 #
 
+#! @Description
+#!   Attempts to download and install a package.  The argument <A>string</A>
+#!   should be a string containing one of the following:
+#!     * the name of a package;
+#!     * the URL of a package archive, ending in <C>.tar.gz</C>;
+#!     * the URL of a git repository, ending in <C>.git</C>;
+#!     * the URL of a valid <C>PackageInfo.g</C> file.
+#!   The package will then be downloaded and installed in the user's pkg folder
+#!   at <C>~/.gap/pkg</C>, if possible.  If this installation is successful,
+#!   <K>true</K> is returned; otherwise, <K>false</K> is returned.  To see more
+#!   information about this process while it is ongoing, see
+#!   <C>InfoPackageManager</C>.
+#! @Args string
+#! @Returns
+#!   true or false
 DeclareGlobalFunction("InstallPackage");
 
 #! @Description
