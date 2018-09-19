@@ -5,11 +5,8 @@
 #
 InstallGlobalFunction(GetPackageURLs,
 function()
-  local url, get, urls, line, items;
-  url := Concatenation("https://raw.githubusercontent.com/gap-system/",
-                       "gap-distribution/master/DistributionUpdate/",
-                       "PackageUpdate/currentPackageInfoURLList");
-  get := DownloadURL(url);
+  local get, urls, line, items;
+  get := DownloadURL(PKGMAN_PackageInfoURLList);
   if not get.success then
     ErrorNoReturn("PackageManager: GetPackageList: could not contact server");
   fi;
@@ -93,10 +90,6 @@ function(url)
   fi;
   Info(InfoPackageManager, 3, "Successfully downloaded from ", url);
   user_pkg_dir := PKGMAN_PackageDir();
-  if not IsDirectoryPath(user_pkg_dir) then
-    CreateDir(user_pkg_dir);
-    Info(InfoPackageManager, 3, "Created ", user_pkg_dir, " directory");
-  fi;
   url := SplitString(url, "/");
   filename := Filename(DirectoryTemporary(), url[Length(url)]);
   FileString(filename, get.result);
@@ -139,7 +132,8 @@ function(url)
     return false;
   fi;
   Info(InfoPackageManager, 2, "Package cloned to ", dir);
-  return PKGMAN_CheckPackage(dir);   # TODO: compile doc
+  return true;
+  # TODO: compile doc and return PKGMAN_CheckPackage(dir);
 end);
 
 InstallGlobalFunction(RemovePackage,
@@ -155,7 +149,8 @@ function(name)
                    x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
   if Length(info) = 0 then
     Info(InfoPackageManager, 1,
-         "Package ", name, " not installed in ", user_pkg_dir);
+         "Package \"", name, "\" not installed in user package directory");
+    Info(InfoPackageManager, 2, "(currently set to ", PKGMAN_PackageDir(), ")");
     return false;
   elif Length(info) >= 2 then
     Info(InfoPackageManager, 1,
@@ -165,12 +160,14 @@ function(name)
   fi;
   dir := info[1].InstallationPath;
   if not IsDirectoryPath(dir) then
-    Info(InfoPackageManager, 1, "Directory ", dir, " already removed");
+    Info(InfoPackageManager, 1, "Package already removed");
     return false;
   fi;
   if not IsMatchingSublist(dir, user_pkg_dir) then
-    Info(InfoPackageManager, 1, "Package \"", name,
-         "\" installed at ", dir, ", not in ", user_pkg_dir);
+    Info(InfoPackageManager, 1,
+         "Package \"", name, "\" not installed in user package directory");
+    Info(InfoPackageManager, 2,
+         "(installed at ", dir, ", not in ", user_pkg_dir, ")");
     return false;
   fi;
   return RemoveDirectoryRecursively(dir);
@@ -234,5 +231,15 @@ end);
 
 InstallGlobalFunction(PKGMAN_PackageDir,
 function()
-  return UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
+  local dir;
+  if PKGMAN_CustomPackageDir <> "" then
+    dir := PKGMAN_CustomPackageDir;
+  else
+    dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
+  fi;
+  if not IsDirectoryPath(dir) then
+    CreateDir(dir);
+    Info(InfoPackageManager, 3, "Created ", dir, " directory");
+  fi;
+  return dir;
 end);

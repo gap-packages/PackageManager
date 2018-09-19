@@ -75,7 +75,15 @@ DeclareGlobalFunction("InstallPackageFromGit");
 #!   true or false
 DeclareGlobalFunction("RemovePackage");
 
+# Hidden functions
 DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_NameOfGitRepo");
 DeclareGlobalFunction("PKGMAN_PackageDir");
+
+# Hidden variables
+PKGMAN_CustomPackageDir := "";
+PKGMAN_PackageInfoURLList :=
+  Concatenation("https://raw.githubusercontent.com/gap-system/",
+                "gap-distribution/master/DistributionUpdate/",
+                "PackageUpdate/currentPackageInfoURLList");
