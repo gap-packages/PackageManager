@@ -133,3 +133,17 @@ ps:// or ftp://
 #E  component `AvailabilityTest' must be bound to a function
 #I  Invalid PackageInfo.g file
 false
+
+# PKGMAN_Exec failure
+gap> PKGMAN_Exec(3);
+Error, <cmd> should be a string
+gap> PKGMAN_Exec("xyzabc");
+#I  Command xyzabc not found
+fail
+
+# PKGMAN_CustomPackageDir
+gap> olddir := PKGMAN_CustomPackageDir;;
+gap> PKGMAN_CustomPackageDir := "";;
+gap> EndsWith(PKGMAN_PackageDir(), "/.gap/pkg");
+true
+gap> PKGMAN_CustomPackageDir := olddir;;
