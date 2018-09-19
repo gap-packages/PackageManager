@@ -102,3 +102,34 @@ false
 gap> InstallPackage(".git");
 #I  Could not find repository name (bad URL?)
 false
+
+# Check a bad package directory (Remove #E messages after they leave GAP)
+gap> baddir := Filename(Directory(PKGMAN_PackageDir()), "badpkg");;
+gap> CreateDir(baddir);;
+gap> PKGMAN_CheckPackage(baddir);
+#I  Could not find PackageInfo.g file
+false
+gap> FileString(Filename(Directory(baddir), "PackageInfo.g"),
+>               "SetPackageInfo(rec());");;
+gap> PKGMAN_CheckPackage(baddir);
+#E  component `PackageName' must be bound to a nonempty string
+#E  component `Subtitle' must be bound to a string
+#E  component `Version' must be bound to a nonempty string that does not start\
+ with `='
+#E  component `Date' must be bound to a string of the form `dd/mm/yyyy'
+#E  component `ArchiveURL' must be bound to a string started with http://, htt\
+ps:// or ftp://
+#E  component `ArchiveFormats' must be bound to a string
+#E  component `Status' must be bound to one of "accepted", "deposited", "dev",\
+ "other"
+#E  component `README_URL' must be bound to a string started with http://, htt\
+ps:// or ftp://
+#E  component `PackageInfoURL' must be bound to a string started with http://,\
+ https:// or ftp://
+#E  component `AbstractHTML' must be bound to a string
+#E  component `PackageWWWHome' must be bound to a string started with http://,\
+ https:// or ftp://
+#E  component `PackageDoc' must be bound to a record or a list of records
+#E  component `AvailabilityTest' must be bound to a function
+#I  Invalid PackageInfo.g file
+false
