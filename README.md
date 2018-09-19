@@ -1,5 +1,8 @@
-The GAP 4 package `PackageManager'
+The GAP 4 package "PackageManager"
 ==================================
+
+[![Build Status](https://travis-ci.org/gap-packages/PackageManager.svg?branch=master)](https://travis-ci.org/gap-packages/PackageManager)
+[![Code Coverage](https://codecov.io/github/gap-packages/PackageManager/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/PackageManager)
 
 A basic collection of simple functions for installing and removing GAP packages,
 with the eventual aim of becoming a full pip-style package manager for the GAP

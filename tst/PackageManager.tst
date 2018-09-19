@@ -6,7 +6,7 @@ gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 true
 
 # Install a package from a git repository
-gap> InstallPackage("git@github.com:gap-packages/json.git");
+gap> InstallPackage("https://github.com/gap-packages/json.git");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "json"));
