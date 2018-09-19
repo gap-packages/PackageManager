@@ -6,7 +6,7 @@
 #
 LoadPackage("PackageManager");
 
-# Info level to default
+# Info levels
 SetInfoLevel(InfoPackageManager, 1);
 
 # Use a temporary directory for packages

@@ -43,7 +43,8 @@ function(name)
   urls := GetPackageURLs();
   Info(InfoPackageManager, 3, "Package directory retrieved");
   if not IsBound(urls.(name)) then
-    Info(InfoPackageManager, 1, "Package ", name, " not found in directory");
+    Info(InfoPackageManager, 1,
+         "Package \"", name, "\" not found in package list");
     return false;
   fi;
   return InstallPackageFromInfo(urls.(name));
@@ -55,6 +56,7 @@ function(url)
   get := DownloadURL(url);
   if not get.success then
     Info(InfoPackageManager, 1, "Unable to download from ", url);
+    return false;
   fi;
   Info(InfoPackageManager, 3, "PackageInfo.g retrieved from ", url);
   stream := InputTextString(get.result);
