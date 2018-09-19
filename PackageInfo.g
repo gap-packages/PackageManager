@@ -71,7 +71,7 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">= 4.9",
   NeededOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ],
-                           [ "curlInterface", ">= 2.0.0" ]],
+                           [ "curlInterface", ">= 2.1.0" ]],
   SuggestedOtherPackages := [ ],
   ExternalConditions := [ ],
 ),
