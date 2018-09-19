@@ -4,6 +4,8 @@
 # Declarations
 #
 
+DeclareGlobalFunction("InstallPackage");
+
 #! @Description
 #!   Info class for the PackageManager package.  Set this to the following
 #!   levels for different levels of information:

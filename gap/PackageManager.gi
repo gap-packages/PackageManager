@@ -26,6 +26,19 @@ function()
   return urls;
 end);
 
+InstallGlobalFunction(InstallPackage,
+function(string)
+  NormalizeWhitespace(string);
+  if EndsWith(string, ".tar.gz") then
+    return InstallPackageFromArchive(string);
+  elif EndsWith(string, ".git") then
+    return InstallPackageFromGit(string);
+  elif EndsWith(string, "PackageInfo.g") then
+    return InstallPackageFromInfo(string);
+  fi;
+  return InstallPackageFromName(string);
+end);
+
 InstallGlobalFunction(InstallPackageFromName,
 function(name)
   local urls;
