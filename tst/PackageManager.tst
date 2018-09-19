@@ -73,3 +73,7 @@ ps:// or ftp://
 #E  component `AvailabilityTest' must be bound to a function
 #I  Invalid PackageInfo.g file
 false
+gap> InstallPackage("nilmat");
+#I  No .tar.gz available, so could not install
+#I  Only [ ".zip" ] available
+false
