@@ -3,7 +3,7 @@ env:
   global:
     - GAPROOT=gaproot
     - COVDIR=coverage
-    - GAP_PKGS_TO_BUILD="json io profiling"
+    - GAP_PKGS_TO_BUILD="json io profiling curlInterface"
 
 addons:
   apt_packages:
