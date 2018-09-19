@@ -4,9 +4,15 @@
 # This file runs package tests. It is also referenced in the package
 # metadata in PackageInfo.g.
 #
-LoadPackage( "PackageManager" );
+LoadPackage("PackageManager");
 
-TestDirectory(DirectoriesPackageLibrary( "PackageManager", "tst" ),
-  rec(exitGAP := true));
+# Info level to default
+SetInfoLevel(InfoPackageManager, 1);
+
+# Use a temporary directory for packages
+PKGMAN_CustomPackageDir := Filename(DirectoryTemporary(), "pkg");
+
+TestDirectory(DirectoriesPackageLibrary("PackageManager", "tst"),
+              rec(exitGAP := true));
 
 FORCE_QUIT_GAP(1); # if we ever get here, there was an error
