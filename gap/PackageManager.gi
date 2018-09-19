@@ -143,8 +143,8 @@ InstallGlobalFunction(RemovePackage,
 function(name)
   local info, dir, user_pkg_dir;
   if not IsString(name) then
-    ErrorNoReturn("PackageManager: InstallPackage: usage,\n",
-                  "<name> should be a string,");
+    ErrorNoReturn("PackageManager: RemovePackage: ",
+                  "<name> must be a string");
   fi;
   user_pkg_dir := PKGMAN_PackageDir();
   info := PackageInfo(name);
@@ -224,9 +224,9 @@ end);
 InstallGlobalFunction(PKGMAN_NameOfGitRepo,
 function(url)
   local parts, n;
-  parts := SplitString(url, "/:.", WHITESPACE);
+  parts := SplitString(url, "", "/:. \n\t\r");
   n := Length(parts);
-  if parts[n] <> "git" then
+  if parts[n] <> "git" or n = 1 then
     return fail;
   fi;
   return parts[n-1];

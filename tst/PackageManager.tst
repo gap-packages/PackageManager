@@ -27,6 +27,8 @@ gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 true
 
 # RemovePackage failure
+gap> RemovePackage(3);
+Error, PackageManager: RemovePackage: <name> must be a string
 gap> RemovePackage("xyz");
 #I  Package "xyz" not installed in user package directory
 false
@@ -91,4 +93,12 @@ gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/bad-tarball.
 false
 gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/twodirs.tar.gz");
 #I  Archive should contain 1 directory (not 2)
+false
+
+# InstallPackageFromGit failure
+gap> InstallPackage("www.gap.rubbish/somepackage.git");
+#I  Extraction unsuccessful
+false
+gap> InstallPackage(".git");
+#I  Could not find repository name (bad URL?)
 false
