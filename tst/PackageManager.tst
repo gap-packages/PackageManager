@@ -1,24 +1,27 @@
 # Install and remove a package by name
-gap> InstallPackage("atlasrep");
+gap> InstallPackage("matgrp");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "atlasrep"));
+>           f -> StartsWith(f, "matgrp"));
 true
-gap> RemovePackage("atlasrep");
+gap> RemovePackage("matgrp");
 true
+gap> RemovePackage("matgrp");
+#I  Package "matgrp" not installed in user package directory
+false
 
 # Install a package from a git repository
-gap> InstallPackage("https://github.com/gap-packages/json.git");
+gap> InstallPackage("https://github.com/gap-packages/Example.git");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "json"));
+>           f -> StartsWith(f, "Example"));
 true
 
 # Install a package from a PackageInfo.g URL (includes redirect)
-gap> InstallPackage("https://gap-packages.github.io/cohomolo/PackageInfo.g");
+gap> InstallPackage("https://gap-packages.github.io/autpgrp/PackageInfo.g");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "cohomolo"));
+>           f -> StartsWith(f, "autpgrp"));
 true
 
 # Install a package from a .tar.gz archive
@@ -34,6 +37,20 @@ Error, PackageManager: RemovePackage: <name> must be a string
 gap> RemovePackage("xyz");
 #I  Package "xyz" not installed in user package directory
 false
+gap> RemovePackage("PackageManager");
+#I  Package "PackageManager" not installed in user package directory
+false
+
+# Installing multiple versions
+gap> InstallPackage("https://github.com/gap-packages/uuid/releases/download/v0.5/uuid-0.5.tar.gz");
+true
+gap> InstallPackage("https://github.com/gap-packages/uuid/releases/download/v0.4/uuid-0.4.tar.gz");
+true
+gap> RemovePackage("uuid");
+#I  Multiple versions of package uuid installed
+false
+gap> LoadPackage("uuid", false);
+true
 
 # GetPackageURLs failure
 gap> default_url := PKGMAN_PackageInfoURLList;;
@@ -96,6 +113,28 @@ false
 gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/twodirs.tar.gz");
 #I  Archive should contain 1 directory (not 2)
 false
+gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/badpackage.tar.gz");
+#E  component `PackageName' must be bound to a nonempty string
+#E  component `Subtitle' must be bound to a string
+#E  component `Version' must be bound to a nonempty string that does not start\
+ with `='
+#E  component `Date' must be bound to a string of the form `dd/mm/yyyy'
+#E  component `ArchiveURL' must be bound to a string started with http://, htt\
+ps:// or ftp://
+#E  component `ArchiveFormats' must be bound to a string
+#E  component `Status' must be bound to one of "accepted", "deposited", "dev",\
+ "other"
+#E  component `README_URL' must be bound to a string started with http://, htt\
+ps:// or ftp://
+#E  component `PackageInfoURL' must be bound to a string started with http://,\
+ https:// or ftp://
+#E  component `AbstractHTML' must be bound to a string
+#E  component `PackageWWWHome' must be bound to a string started with http://,\
+ https:// or ftp://
+#E  component `PackageDoc' must be bound to a record or a list of records
+#E  component `AvailabilityTest' must be bound to a function
+#I  Invalid PackageInfo.g file
+false
 
 # InstallPackageFromGit failure
 gap> InstallPackage("www.gap.rubbish/somepackage.git");
@@ -135,6 +174,7 @@ ps:// or ftp://
 #E  component `AvailabilityTest' must be bound to a function
 #I  Invalid PackageInfo.g file
 false
+gap> RemoveDirectoryRecursively(baddir);;
 
 # PKGMAN_Exec failure
 gap> PKGMAN_Exec(3);
@@ -149,3 +189,9 @@ gap> PKGMAN_CustomPackageDir := "";;
 gap> EndsWith(PKGMAN_PackageDir(), "/.gap/pkg");
 true
 gap> PKGMAN_CustomPackageDir := olddir;;
+gap> PKGMAN_SetCustomPackageDir("/home"); # not ending in pkg
+fail
+
+# FINAL TEST
+# (keep this at the end of the file)
+gap> PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg/"));

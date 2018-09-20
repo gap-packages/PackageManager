@@ -118,6 +118,10 @@ function(url)
   dir := Filename(Directory(user_pkg_dir), topdir);
   Info(InfoPackageManager, 2, "Package extracted to ", dir);
   if PKGMAN_CheckPackage(dir) = false then
+    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
+      RemoveDirectoryRecursively(dir);
+      Info(InfoPackageManager, 2, "Removed directory ", dir);
+    fi;
     return false;
   fi;
   PKGMAN_RefreshPackageInfo();
@@ -146,39 +150,34 @@ end);
 
 InstallGlobalFunction(RemovePackage,
 function(name)
-  local user_pkg_dir, info, dir, result;
+  local user_pkg_dir, allinfo, info, dir, result;
   if not IsString(name) then
     ErrorNoReturn("PackageManager: RemovePackage: ",
                   "<name> must be a string");
   fi;
   user_pkg_dir := PKGMAN_PackageDir();
-  info := PackageInfo(name);
-  info := Filtered(info,
+  allinfo := PackageInfo(name);
+  info := Filtered(allinfo,
                    x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
   if Length(info) = 0 then
     Info(InfoPackageManager, 1,
          "Package \"", name, "\" not installed in user package directory");
     Info(InfoPackageManager, 2, "(currently set to ", PKGMAN_PackageDir(), ")");
+    if not IsEmpty(allinfo) then
+      Info(InfoPackageManager, 2, "installed at ",
+           List(allinfo, i -> i.InstallationPath), ", not in ", user_pkg_dir);
+    fi;
     return false;
   elif Length(info) >= 2 then
     Info(InfoPackageManager, 1,
-         "String \"", name, "\" matches multiple packages,");
+         "Multiple versions of package ", name, " installed");
     Info(InfoPackageManager, 3, "at ", List(info, x -> x.InstallationPath));
     return false;
   fi;
   dir := ShallowCopy(info[1].InstallationPath);
-  if not IsDirectoryPath(dir) then
-    Info(InfoPackageManager, 1, "Package already removed");
-    return false;
+  if StartsWith(dir, user_pkg_dir) and dir <> user_pkg_dir then
+    result := RemoveDirectoryRecursively(dir);
   fi;
-  if not IsMatchingSublist(dir, user_pkg_dir) then
-    Info(InfoPackageManager, 1,
-         "Package \"", name, "\" not installed in user package directory");
-    Info(InfoPackageManager, 2,
-         "(installed at ", dir, ", not in ", user_pkg_dir, ")");
-    return false;
-  fi;
-  result := RemoveDirectoryRecursively(dir);
   PKGMAN_RefreshPackageInfo();
   return result;
 end);
@@ -274,12 +273,6 @@ function(rootpaths)
     GAPInfo.RootPaths := Immutable(Concatenation(rootpaths, GAPInfo.RootPaths));
     # Clear the cache.
     GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());
-    # Deal with an obsolete variable.
-    if IsBoundGlobal("GAP_ROOT_PATHS") then
-      MakeReadWriteGlobal("GAP_ROOT_PATHS");
-      UnbindGlobal("GAP_ROOT_PATHS");
-      BindGlobal("GAP_ROOT_PATHS", GAPInfo.RootPaths);
-    fi;
     # Reread the package information.
     if IsBound(GAPInfo.PackagesInfoInitialized) and
        GAPInfo.PackagesInfoInitialized = true then
