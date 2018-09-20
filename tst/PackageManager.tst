@@ -136,6 +136,18 @@ ps:// or ftp://
 #I  Invalid PackageInfo.g file
 false
 
+# Fail to extract due to permissions
+gap> dir := Filename(Directory(PKGMAN_PackageDir()), "badpackage");;
+gap> CreateDir(dir);
+true
+gap> PKGMAN_Exec("chmod", "000", dir);
+rec( code := 0, output := "" )
+gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/badpackage.tar.gz");
+#I  Extraction unsuccessful
+false
+gap> PKGMAN_Exec("chmod", "777", dir);
+rec( code := 0, output := "" )
+
 # InstallPackageFromGit failure
 gap> InstallPackage("www.gap.rubbish/somepackage.git");
 #I  Extraction unsuccessful
