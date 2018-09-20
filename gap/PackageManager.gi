@@ -6,12 +6,14 @@
 InstallGlobalFunction(GetPackageURLs,
 function()
   local get, urls, line, items;
+  # Get PackageInfo URLs from configurable list
   get := DownloadURL(PKGMAN_PackageInfoURLList);
   if not get.success then
     ErrorNoReturn("PackageManager: GetPackageList: could not contact server");
   fi;
   urls := rec();
   for line in SplitString(get.result, "\n") do
+    # Format: <name> <URL>
     items := SplitString(line, "", WHITESPACE);
     if Length(items) = 0 or items[1][1] = '#' then
       continue;
@@ -57,6 +59,8 @@ end);
 InstallGlobalFunction(InstallPackageFromInfo,
 function(url)
   local get, stream, info, formats;
+
+  # Get the PackageInfo.g file
   get := DownloadURL(url);
   if not get.success then
     Info(InfoPackageManager, 1, "Unable to download from ", url);
@@ -66,6 +70,8 @@ function(url)
   stream := InputTextString(get.result);
   Read(stream);
   info := GAPInfo.PackageInfoCurrent;
+
+  # Read the information we want from it
   if not ValidatePackageInfo(info) then
     Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
     return false;
@@ -80,12 +86,16 @@ function(url)
   fi;
   url := Concatenation(info.ArchiveURL, ".tar.gz");
   Info(InfoPackageManager, 3, "Got archive URL ", url);
+
+  # Download the archive
   return InstallPackageFromArchive(url);
 end);
 
 InstallGlobalFunction(InstallPackageFromArchive,
 function(url)
   local get, user_pkg_dir, filename, exec, files, topdir, dir;
+
+  # Download archive
   get := DownloadURL(url);
   if get.success <> true then
     Info(InfoPackageManager, 1, "Could not download from ", url);
@@ -97,6 +107,8 @@ function(url)
   filename := Filename(DirectoryTemporary(), url[Length(url)]);
   FileString(filename, get.result);
   Info(InfoPackageManager, 3, "Saved archive to ", filename);
+
+  # Check contents
   exec := PKGMAN_Exec(".", "tar", "-tf", filename);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Could not inspect tarball contents");
@@ -110,6 +122,8 @@ function(url)
     return false;
   fi;
   topdir := topdir[1];
+
+  # Extract package
   exec := PKGMAN_Exec(".", "tar", "xf", filename, "-C", user_pkg_dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Extraction unsuccessful");
@@ -117,6 +131,8 @@ function(url)
   fi;
   dir := Filename(Directory(user_pkg_dir), topdir);
   Info(InfoPackageManager, 2, "Package extracted to ", dir);
+
+  # Check validity
   if PKGMAN_CheckPackage(dir) = false then
     if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
       RemoveDirectoryRecursively(dir);
@@ -125,6 +141,8 @@ function(url)
     return false;
   fi;
   PKGMAN_RefreshPackageInfo();
+
+  # Compile
   return PKGMAN_CompileDir(dir);
 end);
 
@@ -155,6 +173,8 @@ function(name)
     ErrorNoReturn("PackageManager: RemovePackage: ",
                   "<name> must be a string");
   fi;
+
+  # Locate the package
   user_pkg_dir := PKGMAN_PackageDir();
   allinfo := PackageInfo(name);
   info := Filtered(allinfo,
@@ -175,9 +195,13 @@ function(name)
     return false;
   fi;
   dir := ShallowCopy(info[1].InstallationPath);
+
+  # Remove directory carefully
   if StartsWith(dir, user_pkg_dir) and dir <> user_pkg_dir then
     result := RemoveDirectoryRecursively(dir);
   fi;
+
+  # Mark as unavailable
   PKGMAN_RefreshPackageInfo();
   return result;
 end);
@@ -200,6 +224,8 @@ end);
 InstallGlobalFunction(PKGMAN_CompileDir,
 function(dir)
   local sh, pkg_dir, scr, root, argument, exec;
+
+  # Check requirements, and prepare command
   sh := Filename( DirectoriesSystemPrograms(), "sh" );
   if sh = fail then
     Info(InfoPackageManager, 1, "No shell available called \"sh\"");
@@ -216,6 +242,8 @@ function(dir)
                             " --strict",
                             " --with-gaproot=", root,
                             " ", dir);
+
+  # Call the script
   exec := PKGMAN_Exec(pkg_dir, "sh", "-c", argument);
   if exec = fail or exec.code <> 0 then
     Info(InfoPackageManager, 1, "Compilation failed");
@@ -229,7 +257,12 @@ InstallGlobalFunction(PKGMAN_Exec,
 function(dir, cmd, args...)
   local fullcmd, instream, out, outstream, code;
 
-  # Simply concatenate the arguments
+  # Directory
+  if IsString(dir) then
+    dir := Directory(dir);
+  fi;
+
+  # Command
   if not IsString(cmd) then
     ErrorNoReturn("<cmd> should be a string");
   fi;
@@ -237,11 +270,6 @@ function(dir, cmd, args...)
   if fullcmd = fail then
     Info(InfoPackageManager, 1, "Command ", cmd, " not found");
     return fail;
-  fi;
-
-  # Directory
-  if IsString(dir) then
-    dir := Directory(dir);
   fi;
 
   # Streams
@@ -294,8 +322,8 @@ InstallGlobalFunction(PKGMAN_InsertPackageDirectories,
 function(rootpaths)
   #
   # This function is based on ExtendRootDirectories from the library, the only
-  # difference being that the paths are added *before* the existing root paths
-  # instead of after.
+  # real difference being that the paths are added *before* the existing root
+  # paths instead of after.
   #
   rootpaths := Filtered(rootpaths, path -> not path in GAPInfo.RootPaths);
   if not IsEmpty(rootpaths) then
@@ -315,6 +343,7 @@ end);
 InstallGlobalFunction(PKGMAN_SetCustomPackageDir,
 function(dir)
   local parent;
+  # Locate the parent directory
   if EndsWith(dir, "/pkg") then
     parent := dir{[1..Length(dir)-3]};
   elif EndsWith(dir, "/pkg/") then
@@ -322,8 +351,13 @@ function(dir)
   else
     return fail;
   fi;
+  # Set the variable
   PKGMAN_CustomPackageDir := dir;
+  # Create the directory if necessary
   PKGMAN_PackageDir();
+  # Register as a pkg directory (with top priority)
   PKGMAN_InsertPackageDirectories([parent]);
+  # Get any packages already present there
   PKGMAN_RefreshPackageInfo();
+  # No return value
 end);
