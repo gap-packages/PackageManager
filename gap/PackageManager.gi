@@ -157,7 +157,7 @@ function(url)
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
   exec := PKGMAN_Exec(".", "git", "clone", url, dir);
   if exec.code <> 0 then
-    Info(InfoPackageManager, 1, "Extraction unsuccessful");
+    Info(InfoPackageManager, 1, "Cloning unsuccessful");
     return false;
   fi;
   Info(InfoPackageManager, 2, "Package cloned to ", dir);
