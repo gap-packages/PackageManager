@@ -80,6 +80,9 @@ DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_NameOfGitRepo");
 DeclareGlobalFunction("PKGMAN_PackageDir");
+DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
+DeclareGlobalFunction("PKGMAN_InsertPackageDirectories");
+DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");
 
 # Hidden variables
 PKGMAN_CustomPackageDir := "";

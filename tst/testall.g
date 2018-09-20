@@ -10,7 +10,7 @@ LoadPackage("PackageManager");
 SetInfoLevel(InfoPackageManager, 1);
 
 # Use a temporary directory for packages
-PKGMAN_CustomPackageDir := Filename(DirectoryTemporary(), "pkg");
+PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg"));
 
 TestDirectory(DirectoriesPackageLibrary("PackageManager", "tst"),
               rec(exitGAP := true));

@@ -117,7 +117,11 @@ function(url)
   fi;
   dir := Filename(Directory(user_pkg_dir), topdir);
   Info(InfoPackageManager, 2, "Package extracted to ", dir);
-  return PKGMAN_CheckPackage(dir);
+  if PKGMAN_CheckPackage(dir) = false then
+    return false;
+  fi;
+  PKGMAN_RefreshPackageInfo();
+  return true;
 end);
 
 InstallGlobalFunction(InstallPackageFromGit,
@@ -135,13 +139,14 @@ function(url)
     return false;
   fi;
   Info(InfoPackageManager, 2, "Package cloned to ", dir);
+  PKGMAN_RefreshPackageInfo();
   return true;
   # TODO: compile doc and return PKGMAN_CheckPackage(dir);
 end);
 
 InstallGlobalFunction(RemovePackage,
 function(name)
-  local info, dir, user_pkg_dir;
+  local user_pkg_dir, info, dir, result;
   if not IsString(name) then
     ErrorNoReturn("PackageManager: RemovePackage: ",
                   "<name> must be a string");
@@ -161,7 +166,7 @@ function(name)
     Info(InfoPackageManager, 3, "at ", List(info, x -> x.InstallationPath));
     return false;
   fi;
-  dir := info[1].InstallationPath;
+  dir := ShallowCopy(info[1].InstallationPath);
   if not IsDirectoryPath(dir) then
     Info(InfoPackageManager, 1, "Package already removed");
     return false;
@@ -173,7 +178,9 @@ function(name)
          "(installed at ", dir, ", not in ", user_pkg_dir, ")");
     return false;
   fi;
-  return RemoveDirectoryRecursively(dir);
+  result := RemoveDirectoryRecursively(dir);
+  PKGMAN_RefreshPackageInfo();
+  return result;
 end);
 
 InstallGlobalFunction(PKGMAN_CheckPackage,
@@ -232,6 +239,13 @@ function(url)
   return parts[n-1];
 end);
 
+InstallGlobalFunction(PKGMAN_RefreshPackageInfo,
+function()
+  GAPInfo.PackagesInfoInitialized := false;
+  InitializePackagesInfoRecords();
+  Info(InfoPackageManager, 3, "Reloaded all package info records");
+end);
+
 InstallGlobalFunction(PKGMAN_PackageDir,
 function()
   local dir;
@@ -245,4 +259,48 @@ function()
     Info(InfoPackageManager, 3, "Created ", dir, " directory");
   fi;
   return dir;
+end);
+
+InstallGlobalFunction(PKGMAN_InsertPackageDirectories,
+function(rootpaths)
+  #
+  # This function is based on ExtendRootDirectories from the library, the only
+  # difference being that the paths are added *before* the existing root paths
+  # instead of after.
+  #
+  rootpaths := Filtered(rootpaths, path -> not path in GAPInfo.RootPaths);
+  if not IsEmpty(rootpaths) then
+    # Append the new root paths.
+    GAPInfo.RootPaths := Immutable(Concatenation(rootpaths, GAPInfo.RootPaths));
+    # Clear the cache.
+    GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());
+    # Deal with an obsolete variable.
+    if IsBoundGlobal("GAP_ROOT_PATHS") then
+      MakeReadWriteGlobal("GAP_ROOT_PATHS");
+      UnbindGlobal("GAP_ROOT_PATHS");
+      BindGlobal("GAP_ROOT_PATHS", GAPInfo.RootPaths);
+    fi;
+    # Reread the package information.
+    if IsBound(GAPInfo.PackagesInfoInitialized) and
+       GAPInfo.PackagesInfoInitialized = true then
+      GAPInfo.PackagesInfoInitialized:= false;
+      InitializePackagesInfoRecords();
+    fi;
+  fi;
+end);
+
+InstallGlobalFunction(PKGMAN_SetCustomPackageDir,
+function(dir)
+  local parent;
+  if EndsWith(dir, "/pkg") then
+    parent := dir{[1..Length(dir)-3]};
+  elif EndsWith(dir, "/pkg/") then
+    parent := dir{[1..Length(dir)-4]};
+  else
+    return fail;
+  fi;
+  PKGMAN_CustomPackageDir := dir;
+  PKGMAN_PackageDir();
+  PKGMAN_InsertPackageDirectories([parent]);
+  PKGMAN_RefreshPackageInfo();
 end);
