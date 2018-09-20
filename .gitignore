@@ -1,23 +1,5 @@
-/doc/chap*.html
-/doc/chap*.txt
-/doc/*.css
-/doc/*.js
-/doc/chooser.html
-/doc/*.aux
-/doc/*.bbl
-/doc/*.blg
-/doc/*.brf
-/doc/*.idx
-/doc/*.ilg
-/doc/*.ind
-/doc/*.lab
-/doc/*.log
-/doc/*.out
-/doc/*.pnr
-/doc/*.six
-/doc/*.tex
-/doc/*.toc
-/doc/manual.pdf
+/doc/*
+/log/fail.log
 
 .deps/
 .dirstamp
