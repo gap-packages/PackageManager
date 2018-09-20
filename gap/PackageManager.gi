@@ -290,8 +290,14 @@ function(url)
   local parts, n;
   parts := SplitString(url, "", "/:. \n\t\r");
   n := Length(parts);
-  if parts[n] <> "git" or n = 1 then
-    return fail;
+  if n <> 0 and parts[n] <> "git" then
+    return parts[n];
+  fi;
+  if parts[n] = "git" and n > 1 then
+    return parts[n-1];
+  fi;
+  return fail;
+end);
   fi;
   return parts[n-1];
 end);

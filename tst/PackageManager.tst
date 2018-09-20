@@ -17,6 +17,13 @@ gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "Example"));
 true
 
+# Install a package from a git repository not ending in .git
+gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo");
+true
+gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+>           f -> StartsWith(f, "RegisterPackageTNUMDemo"));
+true
+
 # Install a package from a PackageInfo.g URL (includes redirect)
 gap> InstallPackage("https://gap-packages.github.io/autpgrp/PackageInfo.g");
 true
