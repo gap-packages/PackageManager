@@ -77,6 +77,7 @@ DeclareGlobalFunction("RemovePackage");
 
 # Hidden functions
 DeclareGlobalFunction("PKGMAN_CheckPackage");
+DeclareGlobalFunction("PKGMAN_CompileDir");
 DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_NameOfGitRepo");
 DeclareGlobalFunction("PKGMAN_PackageDir");

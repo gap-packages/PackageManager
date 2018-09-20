@@ -197,6 +197,38 @@ function(dir)
   return true;
 end);
 
+InstallGlobalFunction(PKGMAN_CompileDir,
+function(dir)
+  local sh, scr, root, argument, exec;
+  sh := Filename( DirectoriesSystemPrograms(), "sh" );
+  if sh = fail then
+    Info(InfoPackageManager, 1, "No shell available called \"sh\"");
+    return false;
+  fi;
+  if ChangeDirectoryCurrent(dir) = fail then
+    Info(InfoPackageManager, 1, "Could not access directory ", dir);
+    return false;
+  fi;
+  ChangeDirectoryCurrent(Filename(DirectoryCurrent(), ".."));
+  scr := Filename(List(GAPInfo.RootPaths, Directory), "bin/BuildPackages.sh");
+  if scr = fail then
+    Info(InfoPackageManager, 1, "No bin/BuildPackages.sh script available");
+    return false;
+  fi;
+  root := scr{[1 .. Length(scr) - Length("/bin/BuildPackages.sh")]};
+  argument := Concatenation(root, "/bin/BuildPackages.sh",
+                            " --strict",
+                            " --with-gaproot=", root,
+                            " ", dir);
+  exec := PKGMAN_Exec("sh", "-c", argument);
+  if exec = fail or exec.code <> 0 then
+    Info(InfoPackageManager, 1, "Compilation failed");
+    return false;
+  fi;;
+  Info(InfoPackageManager, 3, "Compilation was successful");
+  return true;
+end);
+
 InstallGlobalFunction(PKGMAN_Exec,
 function(cmd, args...)
   local fullcmd, dir, instream, out, outstream, code;
