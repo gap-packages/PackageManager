@@ -157,7 +157,7 @@ rec( code := 0, output := "" )
 
 # InstallPackageFromGit failure
 gap> InstallPackage("www.gap.rubbish/somepackage.git");
-#I  Extraction unsuccessful
+#I  Cloning unsuccessful
 false
 gap> InstallPackage(".git");
 #I  Could not find repository name (bad URL?)
