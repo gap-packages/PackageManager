@@ -3,6 +3,9 @@
 #
 # Declarations
 #
+#! @Chapter Commands
+
+#! @Section Installing packages
 
 #! @Description
 #!   Attempts to download and install a package.  The argument <A>string</A>
@@ -69,6 +72,8 @@ DeclareGlobalFunction("InstallPackageFromArchive");
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromGit");
+
+#! @Section Removing packages
 
 #! @Description
 #!   Attempts to remove an installed package using its name.
