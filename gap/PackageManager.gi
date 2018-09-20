@@ -7,7 +7,7 @@ InstallGlobalFunction(GetPackageURLs,
 function()
   local get, urls, line, items;
   # Get PackageInfo URLs from configurable list
-  get := DownloadURL(PKGMAN_PackageInfoURLList);
+  get := PKGMAN_DownloadURL(PKGMAN_PackageInfoURLList);
   if not get.success then
     ErrorNoReturn("PackageManager: GetPackageList: could not contact server");
   fi;
@@ -61,7 +61,7 @@ function(url)
   local get, stream, info, formats;
 
   # Get the PackageInfo.g file
-  get := DownloadURL(url);
+  get := PKGMAN_DownloadURL(url);
   if not get.success then
     Info(InfoPackageManager, 1, "Unable to download from ", url);
     return false;
@@ -96,7 +96,7 @@ function(url)
   local get, user_pkg_dir, filename, exec, files, topdir, dir;
 
   # Download archive
-  get := DownloadURL(url);
+  get := PKGMAN_DownloadURL(url);
   if get.success <> true then
     Info(InfoPackageManager, 1, "Could not download from ", url);
     return false;
@@ -360,4 +360,43 @@ function(dir)
   # Get any packages already present there
   PKGMAN_RefreshPackageInfo();
   # No return value
+end);
+
+InstallGlobalFunction(PKGMAN_DownloadURL,
+function(url)
+  local sugg, version, res, out, fn;
+
+  # Use curlInterface if available
+  sugg := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;
+  version := First(sugg, item -> item[1] = "curlInterface")[2];
+  if IsPackageMarkedForLoading("curlInterface", version) then
+    Info(InfoPackageManager, 3, "Using curlInterface to download");
+    return DownloadURL(url);
+  fi;
+  Info(InfoPackageManager, 3, "curlInterface not available");
+
+  # Try wget
+  res := "";
+  out := OutputTextString(res, false);
+  fn := Filename(DirectoriesSystemPrograms(), "wget");
+  if not fn = fail and IsExecutableFile(fn) then
+    Info(InfoPackageManager, 3, "Using wget to download");
+    Process(Directory("."), fn, InputTextNone(), out,
+            ["--quiet", "-O", "-", url]);
+    CloseStream(out);
+    return rec(success := true, result := res);
+  fi;
+  Info(InfoPackageManager, 3, "wget not available");
+
+  # Try curl
+  fn := Filename(DirectoriesSystemPrograms(), "curl");
+  if not fn = fail and IsExecutableFile(fn) then
+    Info(InfoPackageManager, 3, "Using curl to download");
+    Process(Directory("."), fn, InputTextNone(), out,
+            ["--silent", "--output", "-", url]);
+    CloseStream(out);
+    return rec(success := true, result := res);
+  fi;
+
+  return rec(success := false, error := "no download method is available");
 end);
