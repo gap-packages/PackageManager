@@ -1,0 +1,21 @@
+@Chapter Introduction
+
+@Section What does the PackageManager package do?
+
+TODO
+
+@Section A quick example
+
+To install the latest deposited version of the digraphs packages, use this:
+
+<Listing><![CDATA[
+    gap> InstallPackage("digraphs");
+]]></Listing>
+
+To install 
+
+<Listing><![CDATA[
+    gap> InstallPackage("https://github.com/gap-packages/Semigroups.git");
+]]></Listing>
+
+@Chapter Commands
