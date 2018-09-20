@@ -140,12 +140,12 @@ false
 gap> dir := Filename(Directory(PKGMAN_PackageDir()), "badpackage");;
 gap> CreateDir(dir);
 true
-gap> PKGMAN_Exec("chmod", "000", dir);
+gap> PKGMAN_Exec(".", "chmod", "000", dir);
 rec( code := 0, output := "" )
 gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/badpackage.tar.gz");
 #I  Extraction unsuccessful
 false
-gap> PKGMAN_Exec("chmod", "777", dir);
+gap> PKGMAN_Exec(".", "chmod", "777", dir);
 rec( code := 0, output := "" )
 
 # InstallPackageFromGit failure
@@ -189,9 +189,9 @@ false
 gap> RemoveDirectoryRecursively(baddir);;
 
 # PKGMAN_Exec failure
-gap> PKGMAN_Exec(3);
+gap> PKGMAN_Exec(".", 3);
 Error, <cmd> should be a string
-gap> PKGMAN_Exec("xyzabc");
+gap> PKGMAN_Exec(".", "xyzabc");
 #I  Command xyzabc not found
 fail
 

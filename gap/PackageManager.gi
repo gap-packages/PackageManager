@@ -97,7 +97,7 @@ function(url)
   filename := Filename(DirectoryTemporary(), url[Length(url)]);
   FileString(filename, get.result);
   Info(InfoPackageManager, 3, "Saved archive to ", filename);
-  exec := PKGMAN_Exec("tar", "-tf", filename);
+  exec := PKGMAN_Exec(".", "tar", "-tf", filename);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Could not inspect tarball contents");
     return false;
@@ -110,7 +110,7 @@ function(url)
     return false;
   fi;
   topdir := topdir[1];
-  exec := PKGMAN_Exec("tar", "xf", filename, "-C", user_pkg_dir);
+  exec := PKGMAN_Exec(".", "tar", "xf", filename, "-C", user_pkg_dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Extraction unsuccessful");
     return false;
@@ -125,7 +125,7 @@ function(url)
     return false;
   fi;
   PKGMAN_RefreshPackageInfo();
-  return true;
+  return PKGMAN_CompileDir(dir);
 end);
 
 InstallGlobalFunction(InstallPackageFromGit,
@@ -137,14 +137,14 @@ function(url)
     return false;
   fi;
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
-  exec := PKGMAN_Exec("git", "clone", url, dir);
+  exec := PKGMAN_Exec(".", "git", "clone", url, dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Extraction unsuccessful");
     return false;
   fi;
   Info(InfoPackageManager, 2, "Package cloned to ", dir);
   PKGMAN_RefreshPackageInfo();
-  return true;
+  return PKGMAN_CompileDir(dir);
   # TODO: compile doc and return PKGMAN_CheckPackage(dir);
 end);
 
@@ -199,17 +199,13 @@ end);
 
 InstallGlobalFunction(PKGMAN_CompileDir,
 function(dir)
-  local sh, scr, root, argument, exec;
+  local sh, pkg_dir, scr, root, argument, exec;
   sh := Filename( DirectoriesSystemPrograms(), "sh" );
   if sh = fail then
     Info(InfoPackageManager, 1, "No shell available called \"sh\"");
     return false;
   fi;
-  if ChangeDirectoryCurrent(dir) = fail then
-    Info(InfoPackageManager, 1, "Could not access directory ", dir);
-    return false;
-  fi;
-  ChangeDirectoryCurrent(Filename(DirectoryCurrent(), ".."));
+  pkg_dir := Filename(Directory(dir), "..");
   scr := Filename(List(GAPInfo.RootPaths, Directory), "bin/BuildPackages.sh");
   if scr = fail then
     Info(InfoPackageManager, 1, "No bin/BuildPackages.sh script available");
@@ -220,7 +216,7 @@ function(dir)
                             " --strict",
                             " --with-gaproot=", root,
                             " ", dir);
-  exec := PKGMAN_Exec("sh", "-c", argument);
+  exec := PKGMAN_Exec(pkg_dir, "sh", "-c", argument);
   if exec = fail or exec.code <> 0 then
     Info(InfoPackageManager, 1, "Compilation failed");
     return false;
@@ -230,8 +226,8 @@ function(dir)
 end);
 
 InstallGlobalFunction(PKGMAN_Exec,
-function(cmd, args...)
-  local fullcmd, dir, instream, out, outstream, code;
+function(dir, cmd, args...)
+  local fullcmd, instream, out, outstream, code;
 
   # Simply concatenate the arguments
   if not IsString(cmd) then
@@ -243,8 +239,10 @@ function(cmd, args...)
     return fail;
   fi;
 
-  # Choose working directory
-  dir := DirectoryCurrent();
+  # Directory
+  if IsString(dir) then
+    dir := Directory(dir);
+  fi;
 
   # Streams
   instream := InputTextNone();
