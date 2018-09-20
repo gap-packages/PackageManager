@@ -16,7 +16,7 @@
 #!   <K>true</K> is returned; otherwise, <K>false</K> is returned.  To see more
 #!   information about this process while it is ongoing, see
 #!   <C>InfoPackageManager</C>.
-#! @Args string
+#! @Arguments string
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackage");
@@ -39,7 +39,7 @@ DeclareGlobalFunction("GetPackageURLs");
 
 #! @Description
 #!   Attempts to download and install a package given only its name.
-#! @Args name
+#! @Arguments name
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromName");
@@ -47,7 +47,7 @@ DeclareGlobalFunction("InstallPackageFromName");
 #! @Description
 #!   Attempts to download and install a package by downloading its PackageInfo.g
 #!   from the specified URL.
-#! @Args url
+#! @Arguments url
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromInfo");
@@ -55,7 +55,7 @@ DeclareGlobalFunction("InstallPackageFromInfo");
 #! @Description
 #!   Attempts to download and install a package from an archive located at the
 #!   given URL.
-#! @Args url
+#! @Arguments url
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromArchive");
@@ -63,14 +63,14 @@ DeclareGlobalFunction("InstallPackageFromArchive");
 #! @Description
 #!   Attempts to download and install a package from a git repository located at
 #!   the given URL.
-#! @Args url
+#! @Arguments url
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromGit");
 
 #! @Description
 #!   Attempts to remove an installed package using its name.
-#! @Args pkg_name
+#! @Arguments pkg_name
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("RemovePackage");
