@@ -204,6 +204,39 @@ gap> PKGMAN_CustomPackageDir := olddir;;
 gap> PKGMAN_SetCustomPackageDir("/home"); # not ending in pkg
 fail
 
+# PKGMAN_CompileDir error: no shell
+gap> InstallPackage("example");
+true
+gap> progs := GAPInfo.DirectoriesPrograms;;
+gap> GAPInfo.DirectoriesPrograms := [];;  # terrible vandalism
+gap> dir := PackageInfo("example")[1].InstallationPath;;
+gap> PKGMAN_CompileDir(dir);
+#I  No shell available called "sh"
+false
+gap> GAPInfo.DirectoriesPrograms := progs;;
+
+# PKGMAN_CompileDir error: no bin/BuildPackages.sh
+gap> InstallPackage("example");
+true
+gap> roots := GAPInfo.RootPaths;;
+gap> GAPInfo.RootPaths := [];;  # also terrible vandalism
+gap> dir := PackageInfo("example")[1].InstallationPath;;
+gap> PKGMAN_CompileDir(dir);
+#I  No bin/BuildPackages.sh script available
+false
+gap> GAPInfo.RootPaths := roots;;
+
+# PKGMAN_CompileDir error: missing source
+gap> InstallPackage("example");
+true
+gap> dir := PackageInfo("example")[1].InstallationPath;;
+gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
+true
+gap> PKGMAN_CompileDir(dir);
+#I  Compilation failed
+false
+gap> GAPInfo.RootPaths := roots;;
+
 # FINAL TEST
 # (keep this at the end of the file)
 gap> PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg/"));
