@@ -24,6 +24,13 @@ gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "RegisterPackageTNUMDemo"));
 true
 
+# Install a package from a Mercurial repository not ending in .hg
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
+true
+gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+>           f -> StartsWith(f, "forms"));
+true
+
 # Install a package from a PackageInfo.g URL (includes redirect)
 gap> InstallPackage("https://gap-packages.github.io/autpgrp/PackageInfo.g");
 true
@@ -160,6 +167,14 @@ gap> InstallPackage("www.gap.rubbish/somepackage.git");
 #I  Cloning unsuccessful
 false
 gap> InstallPackage(".git");
+#I  Could not find repository name (bad URL?)
+false
+
+# InstallPackageFromHg failure
+gap> InstallPackage("www.gap.rubbish/somepackage.hg");
+#I  Cloning unsuccessful
+false
+gap> InstallPackage(".hg");
 #I  Could not find repository name (bad URL?)
 false
 

@@ -76,6 +76,14 @@ DeclareGlobalFunction("InstallPackageFromGit");
 #! @Section Removing packages
 
 #! @Description
+#!   Attempts to download and install a package from a Mercurial repository located at
+#!   the given URL.
+#! @Arguments url
+#! @Returns
+#!   true or false
+DeclareGlobalFunction("InstallPackageFromHg");
+
+#! @Description
 #!   Attempts to remove an installed package using its name.
 #! @Arguments pkg_name
 #! @Returns
@@ -87,6 +95,7 @@ DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_CompileDir");
 DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_NameOfGitRepo");
+DeclareGlobalFunction("PKGMAN_NameOfHgRepo");
 DeclareGlobalFunction("PKGMAN_PackageDir");
 DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
 DeclareGlobalFunction("PKGMAN_InsertPackageDirectories");

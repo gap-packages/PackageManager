@@ -36,6 +36,8 @@ function(string)
     return InstallPackageFromArchive(string);
   elif EndsWith(string, ".git") then
     return InstallPackageFromGit(string);
+  elif EndsWith(string, ".hg") then
+    return InstallPackageFromHg(string);
   elif EndsWith(string, "PackageInfo.g") then
     return InstallPackageFromInfo(string);
   fi;
@@ -156,6 +158,26 @@ function(url)
   fi;
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
   exec := PKGMAN_Exec(".", "git", "clone", url, dir);
+  if exec.code <> 0 then
+    Info(InfoPackageManager, 1, "Cloning unsuccessful");
+    return false;
+  fi;
+  Info(InfoPackageManager, 2, "Package cloned to ", dir);
+  PKGMAN_RefreshPackageInfo();
+  return PKGMAN_CompileDir(dir);
+  # TODO: compile doc and return PKGMAN_CheckPackage(dir);
+end);
+
+InstallGlobalFunction(InstallPackageFromHg,
+function(url)
+  local name, dir, exec;
+  name := PKGMAN_NameOfHgRepo(url);
+  if name = fail then
+    Info(InfoPackageManager, 1, "Could not find repository name (bad URL?)");
+    return false;
+  fi;
+  dir := Filename(Directory(PKGMAN_PackageDir()), name);
+  exec := PKGMAN_Exec(".", "hg", "clone", url, dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Cloning unsuccessful");
     return false;
@@ -298,8 +320,19 @@ function(url)
   fi;
   return fail;
 end);
+
+InstallGlobalFunction(PKGMAN_NameOfHgRepo,
+function(url)
+  local parts, n;
+  parts := SplitString(url, "", "/:. \n\t\r");
+  n := Length(parts);
+  if n <> 0 and parts[n] <> "hg" then
+    return parts[n];
   fi;
-  return parts[n-1];
+  if parts[n] = "hg" and n > 1 then
+    return parts[n-1];
+  fi;
+  return fail;
 end);
 
 InstallGlobalFunction(PKGMAN_RefreshPackageInfo,
