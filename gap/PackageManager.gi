@@ -267,8 +267,8 @@ function(dir, cmd, args...)
     ErrorNoReturn("<cmd> should be a string");
   fi;
   fullcmd := Filename(DirectoriesSystemPrograms(), cmd);
-  if fullcmd = fail then
-    Info(InfoPackageManager, 1, "Command ", cmd, " not found");
+  if fullcmd = fail or not IsExecutableFile(fullcmd) then
+    Info(InfoPackageManager, 3, "Command ", cmd, " not found");
     return fail;
   fi;
 
@@ -364,39 +364,28 @@ end);
 
 InstallGlobalFunction(PKGMAN_DownloadURL,
 function(url)
-  local sugg, version, res, out, fn;
+  local sugg, version, tool, exec;
 
   # Use curlInterface if available
   sugg := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;
   version := First(sugg, item -> item[1] = "curlInterface")[2];
   if IsPackageMarkedForLoading("curlInterface", version) then
-    Info(InfoPackageManager, 3, "Using curlInterface to download");
     return DownloadURL(url);
   fi;
-  Info(InfoPackageManager, 3, "curlInterface not available");
 
-  # Try wget
-  res := "";
-  out := OutputTextString(res, false);
-  fn := Filename(DirectoriesSystemPrograms(), "wget");
-  if not fn = fail and IsExecutableFile(fn) then
-    Info(InfoPackageManager, 3, "Using wget to download");
-    Process(Directory("."), fn, InputTextNone(), out,
-            ["--quiet", "-O", "-", url]);
-    CloseStream(out);
-    return rec(success := true, result := res);
-  fi;
-  Info(InfoPackageManager, 3, "wget not available");
-
-  # Try curl
-  fn := Filename(DirectoriesSystemPrograms(), "curl");
-  if not fn = fail and IsExecutableFile(fn) then
-    Info(InfoPackageManager, 3, "Using curl to download");
-    Process(Directory("."), fn, InputTextNone(), out,
-            ["--silent", "--output", "-", url]);
-    CloseStream(out);
-    return rec(success := true, result := res);
-  fi;
+  # Try command line tools (wget/curl)
+  for tool in PKGMAN_DownloadCmds do
+    Info(InfoPackageManager, 3, "Using ", tool[1], " to download");
+    exec := CallFuncList(PKGMAN_Exec,
+                         Concatenation(["."], [tool[1]], tool[2], [url]));
+    if exec = fail then
+      Info(InfoPackageManager, 3, tool[1], " unavailable");
+    elif exec.code <> 0 then
+      Info(InfoPackageManager, 3, "Download failed with ", tool[1]);
+    else
+      return rec(success := true, result := exec.output);
+    fi;
+  od;
 
   return rec(success := false, error := "no download method is available");
 end);

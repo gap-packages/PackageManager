@@ -192,7 +192,6 @@ gap> RemoveDirectoryRecursively(baddir);;
 gap> PKGMAN_Exec(".", 3);
 Error, <cmd> should be a string
 gap> PKGMAN_Exec(".", "xyzabc");
-#I  Command xyzabc not found
 fail
 
 # PKGMAN_CustomPackageDir
@@ -236,6 +235,56 @@ gap> PKGMAN_CompileDir(dir);
 #I  Compilation failed
 false
 gap> GAPInfo.RootPaths := roots;;
+
+# Missing curlInterface: use wget instead
+gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
+gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
+gap> First(s, item -> item[1] = "curlInterface")[2];
+">= 100.0"
+gap> InstallPackage("qaos");
+true
+
+# wget failure
+gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
+gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
+gap> First(s, item -> item[1] = "curlInterface")[2];
+">= 100.0"
+gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
+#I  Could not download from www.gap.rubbish/somepackage.tar.gz
+false
+
+# Missing curlInterface: use curl instead
+gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
+gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
+gap> First(s, item -> item[1] = "curlInterface")[2];
+">= 100.0"
+gap> tmp := PKGMAN_DownloadCmds[1];;
+gap> PKGMAN_DownloadCmds[1] := PKGMAN_DownloadCmds[2];;
+gap> PKGMAN_DownloadCmds[2] := tmp;;
+gap> PKGMAN_DownloadCmds[1][1];
+"curl"
+gap> InstallPackage("grpconst");
+true
+
+# curl failure
+gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
+gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
+gap> First(s, item -> item[1] = "curlInterface")[2];
+">= 100.0"
+gap> PKGMAN_DownloadCmds[1][1];
+"curl"
+gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
+#I  Could not download from www.gap.rubbish/somepackage.tar.gz
+false
+
+# Missing first command
+gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
+gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
+gap> First(s, item -> item[1] = "curlInterface")[2];
+">= 100.0"
+gap> PKGMAN_DownloadCmds[1][1] := "abababaxyz";;
+gap> InstallPackage("grpconst");
+true
 
 # FINAL TEST
 # (keep this at the end of the file)

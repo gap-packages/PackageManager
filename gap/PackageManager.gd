@@ -99,3 +99,5 @@ PKGMAN_PackageInfoURLList :=
   Concatenation("https://raw.githubusercontent.com/gap-system/",
                 "gap-distribution/master/DistributionUpdate/",
                 "PackageUpdate/currentPackageInfoURLList");
+PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
+                         [ "curl", ["--silent", "-L", "--output", "-"] ] ];
