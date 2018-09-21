@@ -189,11 +189,26 @@ function(url)
 end);
 
 InstallGlobalFunction(RemovePackage,
-function(name)
+function(name, interactive...)
   local user_pkg_dir, allinfo, info, dir, result;
+
+  # Check input
   if not IsString(name) then
     ErrorNoReturn("PackageManager: RemovePackage: ",
                   "<name> must be a string");
+  elif Length(interactive) > 1 then
+    ErrorNoReturn("PackageManager: RemovePackage: ",
+                  "requires 1 or 2 arguments (not ",
+                  Length(interactive) + 1, ")");
+  elif Length(interactive) = 1 then
+    if interactive[1] = true or interactive[1] = false then
+      interactive := interactive[1];
+    else
+      ErrorNoReturn("PackageManager: RemovePackage: ",
+                    "<interactive> must be true or false");
+    fi;
+  else
+    interactive := true;
   fi;
 
   # Locate the package
@@ -219,13 +234,18 @@ function(name)
   dir := ShallowCopy(info[1].InstallationPath);
 
   # Remove directory carefully
-  if StartsWith(dir, user_pkg_dir) and dir <> user_pkg_dir then
-    result := RemoveDirectoryRecursively(dir);
+  if interactive = false or
+     PKGMAN_AskYesNoQuestion("Really delete directory ", dir, " ?"
+                             : default := false) then
+    if StartsWith(dir, user_pkg_dir) and dir <> user_pkg_dir then # paranoia
+      result := RemoveDirectoryRecursively(dir);
+    fi;
+    Info(InfoPackageManager, 3, "Directory ", dir, " deleted");
+    PKGMAN_RefreshPackageInfo();
+    return result;
   fi;
-
-  # Mark as unavailable
-  PKGMAN_RefreshPackageInfo();
-  return result;
+  Info(InfoPackageManager, 3, "Directory not deleted");
+  return false;
 end);
 
 InstallGlobalFunction(PKGMAN_CheckPackage,
@@ -408,7 +428,7 @@ function(url)
   # Use curlInterface if available
   sugg := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;
   version := First(sugg, item -> item[1] = "curlInterface")[2];
-  if IsPackageMarkedForLoading("curlInterface", version) then
+  if TestPackageAvailability("curlInterface", version) = true then
     return DownloadURL(url);
   fi;
 

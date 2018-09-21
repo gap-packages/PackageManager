@@ -5,3 +5,4 @@
 #
 
 ReadPackage("PackageManager", "gap/PackageManager.gi");
+ReadPackage("PackageManager", "gap/Interactive.gi");

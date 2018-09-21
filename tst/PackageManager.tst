@@ -4,7 +4,7 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "matgrp"));
 true
-gap> RemovePackage("matgrp");
+gap> RemovePackage("matgrp", false);
 true
 gap> RemovePackage("matgrp");
 #I  Package "matgrp" not installed in user package directory
@@ -54,6 +54,47 @@ false
 gap> RemovePackage("PackageManager");
 #I  Package "PackageManager" not installed in user package directory
 false
+gap> RemovePackage("PackageManager", true, false);
+Error, PackageManager: RemovePackage: requires 1 or 2 arguments (not 3)
+gap> RemovePackage("PackageManager", "please default to yes");
+Error, PackageManager: RemovePackage: <interactive> must be true or false
+
+# RemovePackage interactive (via hacking in/out streams)
+gap> InstallPackage("https://github.com/gap-packages/uuid/releases/download/v0.5/uuid-0.5.tar.gz");
+true
+gap> f_in := InputTextUser;;
+gap> f_out := OutputTextUser;;
+gap> MakeReadWriteGlobal("InputTextUser");
+gap> MakeReadWriteGlobal("OutputTextUser");
+gap> InputTextUser := {} -> InputTextString("n");;
+gap> print_output := "";;
+gap> OutputTextUser := {} -> OutputTextString(print_output, true);;
+gap> RemovePackage("uuid");
+false
+gap> print_output = StringFormatted("Really delete directory {} ? [y/N] n\n",
+>                                   Filename(Directory(PKGMAN_PackageDir()),
+>                                            "uuid-0.5"));
+true
+gap> InputTextUser := {} -> InputTextString("y");;
+gap> print_output := "";;
+gap> RemovePackage("uuid", true);
+true
+gap> print_output = StringFormatted("Really delete directory {} ? [y/N] y\n",
+>                                   Filename(Directory(PKGMAN_PackageDir()),
+>                                            "uuid-0.5"));
+true
+gap> InputTextUser := f_in;;
+gap> OutputTextUser := f_out;;
+gap> MakeReadOnlyGlobal("InputTextUser");
+gap> MakeReadOnlyGlobal("OutputTextUser");
+gap> Print(InputTextUser, "\n");
+function (  )
+    return InputTextFile( "*stdin*" );
+end
+gap> Print(OutputTextUser, "\n");
+function (  )
+    return OutputTextFile( "*stdout*", false );
+end
 
 # Installing multiple versions
 gap> InstallPackage("https://github.com/gap-packages/uuid/releases/download/v0.5/uuid-0.5.tar.gz");
