@@ -280,13 +280,12 @@ function(dir)
     return false;
   fi;
   root := scr{[1 .. Length(scr) - Length("/bin/BuildPackages.sh")]};
-  argument := Concatenation(root, "/bin/BuildPackages.sh",
-                            " --strict",
-                            " --with-gaproot=", root,
-                            " ", dir);
 
   # Call the script
-  exec := PKGMAN_Exec(pkg_dir, "sh", "-c", argument);
+  exec := PKGMAN_Exec(pkg_dir, Concatenation(root, "/bin/BuildPackages.sh"),
+                      "--strict",
+                      Concatenation("--with-gaproot=", root),
+                      dir);
   if exec = fail or exec.code <> 0 then
     Info(InfoPackageManager, 1, "Compilation failed");
     return false;
@@ -297,7 +296,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_Exec,
 function(dir, cmd, args...)
-  local fullcmd, instream, out, outstream, code;
+  local fullcmd, instream, out, outstream, sh, code;
 
   # Directory
   if IsString(dir) then
@@ -308,10 +307,16 @@ function(dir, cmd, args...)
   if not IsString(cmd) then
     ErrorNoReturn("<cmd> should be a string");
   fi;
-  fullcmd := Filename(DirectoriesSystemPrograms(), cmd);
-  if fullcmd = fail or not IsExecutableFile(fullcmd) then
-    Info(InfoPackageManager, 3, "Command ", cmd, " not found");
-    return fail;
+  if Position(cmd, '/') <> fail then
+    # cmd is a path
+    fullcmd := cmd;
+  else
+    # we must look up the path
+    fullcmd := Filename(DirectoriesSystemPrograms(), cmd);
+    if fullcmd = fail or not IsExecutableFile(fullcmd) then
+      Info(InfoPackageManager, 3, "Command ", cmd, " not found");
+      return fail;
+    fi;
   fi;
 
   # Streams
@@ -319,8 +324,11 @@ function(dir, cmd, args...)
   out := "";;
   outstream := OutputTextString(out, true);
 
-  # Execute the command
-  code := Process(dir, fullcmd, instream, outstream, args);
+  # Execute the command (capture both stdout and stderr)
+  sh := Filename(DirectoriesSystemPrograms(), "sh");
+  args := JoinStringsWithSeparator(args, " ");
+  fullcmd := Concatenation(fullcmd, " ", args, " 2>&1");
+  code := Process(dir, sh, instream, outstream, ["-c", fullcmd]);
   CloseStream(outstream);
 
   # Return all the information we captured
