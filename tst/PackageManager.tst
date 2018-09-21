@@ -62,38 +62,45 @@ Error, PackageManager: RemovePackage: <interactive> must be true or false
 # RemovePackage interactive (via hacking in/out streams)
 gap> InstallPackage("https://github.com/gap-packages/uuid/releases/download/v0.5/uuid-0.5.tar.gz");
 true
+gap> out := "";;
 gap> f_in := InputTextUser;;
-gap> f_out := OutputTextUser;;
+gap> oldPrint := Print;;
+gap> newPrint := function(args...)
+>   CallFuncList(PrintTo, Concatenation([OutputTextString(out, true)], args));
+> end;;
 gap> MakeReadWriteGlobal("InputTextUser");
-gap> MakeReadWriteGlobal("OutputTextUser");
+gap> MakeReadWriteGlobal("Print");
 gap> InputTextUser := {} -> InputTextString("n");;
-gap> print_output := "";;
-gap> OutputTextUser := {} -> OutputTextString(print_output, true);;
-gap> RemovePackage("uuid");
+gap> Print := newPrint;;
+gap> res := RemovePackage("uuid");;
+gap> Print := oldPrint;;
+gap> res;
 false
-gap> print_output = StringFormatted("Really delete directory {} ? [y/N] n\n",
->                                   Filename(Directory(PKGMAN_PackageDir()),
->                                            "uuid-0.5"));
+gap> out = StringFormatted("Really delete directory {} ? [y/N] n\n",
+>                          Filename(Directory(PKGMAN_PackageDir()),
+>                                   "uuid-0.5"));
 true
 gap> InputTextUser := {} -> InputTextString("y");;
-gap> print_output := "";;
-gap> RemovePackage("uuid", true);
+gap> out := "";;
+gap> Print := newPrint;;
+gap> res := RemovePackage("uuid", true);;
+gap> Print := oldPrint;;
+gap> res;
 true
-gap> print_output = StringFormatted("Really delete directory {} ? [y/N] y\n",
->                                   Filename(Directory(PKGMAN_PackageDir()),
->                                            "uuid-0.5"));
+gap> out = StringFormatted("Really delete directory {} ? [y/N] y\n",
+>                          Filename(Directory(PKGMAN_PackageDir()),
+>                                   "uuid-0.5"));
 true
 gap> InputTextUser := f_in;;
-gap> OutputTextUser := f_out;;
 gap> MakeReadOnlyGlobal("InputTextUser");
-gap> MakeReadOnlyGlobal("OutputTextUser");
+gap> MakeReadOnlyGlobal("Print");
 gap> Print(InputTextUser, "\n");
 function (  )
     return InputTextFile( "*stdin*" );
 end
-gap> Print(OutputTextUser, "\n");
-function (  )
-    return OutputTextFile( "*stdout*", false );
+gap> Print(Print, "\n");
+function ( args... )
+    <<kernel code from src/streams.c:Print>>
 end
 
 # Installing multiple versions
