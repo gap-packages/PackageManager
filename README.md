@@ -17,3 +17,8 @@ Example invocations:
     gap> InstallPackage("https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/mapclass-1.2.tar.gz");
 
     gap> RemovePackage("semigroups");
+
+By default, very little information is printed to the screen.  To see more
+verbose information, try using:
+
+    gap> SetInfoLevel(InfoPackageManager, 3);

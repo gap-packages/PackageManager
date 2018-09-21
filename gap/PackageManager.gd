@@ -13,6 +13,7 @@
 #!     * the name of a package;
 #!     * the URL of a package archive, ending in <C>.tar.gz</C>;
 #!     * the URL of a git repository, ending in <C>.git</C>;
+#!     * the URL of a mercurial repository, ending in <C>.hg</C>;
 #!     * the URL of a valid <C>PackageInfo.g</C> file.
 #!
 #!   The package will then be downloaded and installed in the user's pkg folder
@@ -20,6 +21,12 @@
 #!   <K>true</K> is returned; otherwise, <K>false</K> is returned.  To see more
 #!   information about this process while it is ongoing, see
 #!   <C>InfoPackageManager</C>.
+#!
+#! @BeginExample
+#! gap> InstallPackage("digraphs");
+#! true
+#! @EndExample
+#!
 #! @Arguments string
 #! @Returns
 #!   true or false
@@ -40,10 +47,9 @@ DeclareGlobalFunction("InstallPackage");
 DeclareInfoClass("InfoPackageManager");
 SetInfoLevel(InfoPackageManager, 1);
 
-DeclareGlobalFunction("GetPackageURLs");
-
 #! @Description
-#!   Attempts to download and install a package given only its name.
+#!   Attempts to download and install a package given only its name.  Returns
+#!   <K>true</K> if the installation was successful, and <K>false</K> otherwise.
 #! @Arguments name
 #! @Returns
 #!   true or false
@@ -51,7 +57,8 @@ DeclareGlobalFunction("InstallPackageFromName");
 
 #! @Description
 #!   Attempts to download and install a package by downloading its PackageInfo.g
-#!   from the specified URL.
+#!   from the specified URL.  Returns <K>true</K> if the installation was
+#!   successful, and <K>false</K> otherwise.
 #! @Arguments url
 #! @Returns
 #!   true or false
@@ -59,7 +66,8 @@ DeclareGlobalFunction("InstallPackageFromInfo");
 
 #! @Description
 #!   Attempts to download and install a package from an archive located at the
-#!   given URL.
+#!   given URL.  Returns <K>true</K> if the installation was successful, and
+#!   <K>false</K> otherwise.
 #! @Arguments url
 #! @Returns
 #!   true or false
@@ -67,28 +75,46 @@ DeclareGlobalFunction("InstallPackageFromArchive");
 
 #! @Description
 #!   Attempts to download and install a package from a git repository located at
-#!   the given URL.
+#!   the given URL.  Returns <K>true</K> if the installation was successful, and
+#!   <K>false</K> otherwise.
 #! @Arguments url
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromGit");
 
-#! @Section Removing packages
-
 #! @Description
-#!   Attempts to download and install a package from a Mercurial repository located at
-#!   the given URL.
+#!   Attempts to download and install a package from a Mercurial repository
+#!   located at the given URL.  Returns <K>true</K> if the installation was
+#!   successful, and <K>false</K> otherwise.
 #! @Arguments url
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromHg");
 
+#! @Section Removing packages
+
 #! @Description
-#!   Attempts to remove an installed package using its name.
-#! @Arguments pkg_name
+#!   Attempts to remove an installed package using its name.  The first argument
+#!   <A>name</A> should be a string specifying the name of a package installed
+#!   in the user GAP root.  The second argument <A>interactive</A> is optional,
+#!   and should be a boolean specifying whether to confirm interactively before
+#!   any directories are deleted (default value <K>true</K>).
+#!
+#!   Returns <K>true</K> if the removal was successful, and <K>false</K>
+#!   otherwise.
+#!
+#! @BeginExample
+#! gap> RemovePackage("digraphs");
+#! Really delete directory /home/user/.gap/pkg/digraphs-0.13.0 ? [y/N] y
+#! true
+#! @EndExample
+#!
+#! @Arguments name[, interactive]
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("RemovePackage");
+
+DeclareGlobalFunction("GetPackageURLs");
 
 # Hidden functions
 DeclareGlobalFunction("PKGMAN_CheckPackage");

@@ -2,20 +2,42 @@
 
 @Section What does the PackageManager package do?
 
-TODO
+This package provides the ability to install or remove a packages using a
+single command: <Ref Func="InstallPackage" /> or <Ref Func="RemovePackage" />.
+The user can specify a package to install using its name, or using a URL to an
+archive, a repository, or a <C>PackageInfo.g</C> file.  When installing,
+PackageManager also attempts to compile the package, and returns a value showing
+whether compilation was successful.
+
+@Section What does the PackageManager package not do?
+
+At present, PackageManager does not handle dependencies or version
+compatibility.  It also does not support the user specifying a particular
+version of a package, except by providing an explicit URL to the desired
+version.  All these features are planned for the future.  Any other feature
+requests can be posted on the issue tracker at
+https://github.com/mtorpey/PackageManager/issues.
 
 @Section A quick example
 
-To install the latest deposited version of the digraphs packages, use this:
+To install the latest deposited version of the Digraphs packages, use the
+following:
 
-<Listing><![CDATA[
-    gap> InstallPackage("digraphs");
-]]></Listing>
+@BeginExample
+InstallPackage("digraphs");
+@EndExample
 
-To install 
+To uninstall it later, use the following:
 
-<Listing><![CDATA[
-    gap> InstallPackage("https://github.com/gap-packages/Semigroups.git");
-]]></Listing>
+@BeginExample
+RemovePackage("digraphs");
+@EndExample
+
+PackageManager also supports version control repositories.  To install the
+latest version of the curlInterface package from GitHub, use the following:
+
+@BeginExample
+InstallPackage("https://github.com/gap-packages/curlInterface.git");
+@EndExample
 
 @Chapter Commands
