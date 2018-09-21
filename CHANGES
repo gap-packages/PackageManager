@@ -1,0 +1,4 @@
+This file describes changes in the PackageManager package.
+
+0.1.0 (2018-09-21)
+  - Initial release with InstallPackage, InstallPackageFrom*, and RemovePackage
