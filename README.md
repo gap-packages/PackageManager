@@ -16,4 +16,4 @@ Example invocations:
 
     gap> InstallPackage("https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/mapclass-1.2.tar.gz");
 
-Please take care when using the `RemovePackage` function.
+    gap> RemovePackage("semigroups");
