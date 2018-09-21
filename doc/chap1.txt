@@ -1,0 +1,46 @@
+  
+  [1X1 [33X[0;0YIntroduction[133X[101X
+  
+  
+  [1X1.1 [33X[0;0YWhat does the PackageManager package do?[133X[101X
+  
+  [33X[0;0YThis  package  provides  the ability to install or remove a packages using a
+  single  command:  [2XInstallPackage[102X  ([14X2.1-1[114X) or [2XRemovePackage[102X ([14X2.2-1[114X). The user
+  can  specify  a  package  to  install  using  its name, or using a URL to an
+  archive,   a   repository,   or   a  [10XPackageInfo.g[110X  file.  When  installing,
+  PackageManager  also  attempts  to  compile the package, and returns a value
+  showing whether compilation was successful.[133X
+  
+  
+  [1X1.2 [33X[0;0YWhat does the PackageManager package not do?[133X[101X
+  
+  [33X[0;0YAt   present,   PackageManager  does  not  handle  dependencies  or  version
+  compatibility.  It  also  does  not support the user specifying a particular
+  version  of  a  package,  except by providing an explicit URL to the desired
+  version.  All  these  features are planned for the future. Any other feature
+  requests     can     be     posted     on     the     issue    tracker    at
+  https://github.com/mtorpey/PackageManager/issues.[133X
+  
+  
+  [1X1.3 [33X[0;0YA quick example[133X[101X
+  
+  [33X[0;0YTo  install  the  latest deposited version of the Digraphs packages, use the
+  following:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XInstallPackage("digraphs");[127X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YTo uninstall it later, use the following:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XRemovePackage("digraphs");[127X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YPackageManager  also  supports  version control repositories. To install the
+  latest version of the curlInterface package from GitHub, use the following:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XInstallPackage("https://github.com/gap-packages/curlInterface.git");[127X[104X
+  [4X[32X[104X
+  

@@ -1,0 +1,120 @@
+  
+  [1X2 [33X[0;0YCommands[133X[101X
+  
+  
+  [1X2.1 [33X[0;0YInstalling packages[133X[101X
+  
+  [1X2.1-1 InstallPackage[101X
+  
+  [33X[1;0Y[29X[2XInstallPackage[102X( [3Xstring[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to download and install a package. The argument [3Xstring[103X should be a
+  string containing one of the following:[133X
+  
+  [30X    [33X[0;6Ythe name of a package;[133X
+  
+  [30X    [33X[0;6Ythe URL of a package archive, ending in [10X.tar.gz[110X;[133X
+  
+  [30X    [33X[0;6Ythe URL of a git repository, ending in [10X.git[110X;[133X
+  
+  [30X    [33X[0;6Ythe URL of a mercurial repository, ending in [10X.hg[110X;[133X
+  
+  [30X    [33X[0;6Ythe URL of a valid [10XPackageInfo.g[110X file.[133X
+  
+  [33X[0;0YThe  package  will then be downloaded and installed in the user's pkg folder
+  at  [10X~/.gap/pkg[110X,  if  possible.  If  this installation is successful, [9Xtrue[109X is
+  returned;  otherwise,  [9Xfalse[109X is returned. To see more information about this
+  process while it is ongoing, see [10XInfoPackageManager[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XInstallPackage("digraphs");[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X2.1-2 InfoPackageManager[101X
+  
+  [33X[1;0Y[29X[2XInfoPackageManager[102X[32X info class[133X
+  
+  [33X[0;0YInfo  class for the PackageManager package. Set this to the following levels
+  for different levels of information:[133X
+  
+  [30X    [33X[0;6Y0 - No messages[133X
+  
+  [30X    [33X[0;6Y1  -  Problems  only:  messages  describing  what  went wrong, with no
+        messages if an operation is successful[133X
+  
+  [30X    [33X[0;6Y2 - Problems and directories: also displays directories that were used
+        for package installation or removal[133X
+  
+  [30X    [33X[0;6Y3 - All: shows step-by-step progress of operations[133X
+  
+  [33X[0;0YSet  this  using,  for  example [10XSetInfoLevel(InfoPackageManager, 3)[110X. Default
+  value is 1.[133X
+  
+  [1X2.1-3 InstallPackageFromName[101X
+  
+  [33X[1;0Y[29X[2XInstallPackageFromName[102X( [3Xname[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts to download and install a package given only its name. Returns [9Xtrue[109X
+  if the installation was successful, and [9Xfalse[109X otherwise.[133X
+  
+  [1X2.1-4 InstallPackageFromInfo[101X
+  
+  [33X[1;0Y[29X[2XInstallPackageFromInfo[102X( [3Xurl[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to download and install a package by downloading its PackageInfo.g
+  from the specified URL. Returns [9Xtrue[109X if the installation was successful, and
+  [9Xfalse[109X otherwise.[133X
+  
+  [1X2.1-5 InstallPackageFromArchive[101X
+  
+  [33X[1;0Y[29X[2XInstallPackageFromArchive[102X( [3Xurl[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to  download  and install a package from an archive located at the
+  given  URL.  Returns  [9Xtrue[109X  if  the  installation  was successful, and [9Xfalse[109X
+  otherwise.[133X
+  
+  [1X2.1-6 InstallPackageFromGit[101X
+  
+  [33X[1;0Y[29X[2XInstallPackageFromGit[102X( [3Xurl[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to download and install a package from a git repository located at
+  the  given  URL.  Returns [9Xtrue[109X if the installation was successful, and [9Xfalse[109X
+  otherwise.[133X
+  
+  [1X2.1-7 InstallPackageFromHg[101X
+  
+  [33X[1;0Y[29X[2XInstallPackageFromHg[102X( [3Xurl[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to  download  and  install  a  package from a Mercurial repository
+  located  at  the given URL. Returns [9Xtrue[109X if the installation was successful,
+  and [9Xfalse[109X otherwise.[133X
+  
+  
+  [1X2.2 [33X[0;0YRemoving packages[133X[101X
+  
+  [1X2.2-1 RemovePackage[101X
+  
+  [33X[1;0Y[29X[2XRemovePackage[102X( [3Xname[103X[, [3Xinteractive[103X] ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to  remove an installed package using its name. The first argument
+  [3Xname[103X  should  be  a string specifying the name of a package installed in the
+  user  GAP root. The second argument [3Xinteractive[103X is optional, and should be a
+  boolean  specifying  whether to confirm interactively before any directories
+  are deleted (default value [9Xtrue[109X).[133X
+  
+  [33X[0;0YReturns [9Xtrue[109X if the removal was successful, and [9Xfalse[109X otherwise.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XRemovePackage("digraphs");[127X[104X
+    [4X[28XReally delete directory /home/user/.gap/pkg/digraphs-0.13.0 ? [y/N] y[128X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  

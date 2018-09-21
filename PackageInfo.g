@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "0.1",
-Date := "14/09/2018", # dd/mm/yyyy format
+Version := "0.1.0",
+Date := "21/09/2018", # dd/mm/yyyy format
 
 Persons := [
   rec(
@@ -57,7 +57,7 @@ ArchiveFormats := ".tar.gz",
 ##
 Status := "dev",
 
-AbstractHTML   :=  "",
+AbstractHTML := "",
 
 PackageDoc := rec(
   BookName  := "PackageManager",
@@ -71,7 +71,7 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">= 4.9",
   NeededOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ] ],
-  SuggestedOtherPackages := [ ],
+  SuggestedOtherPackages := [ [ "curlInterface", ">= 2.1.0" ] ],
   ExternalConditions := [ ],
 ),
 

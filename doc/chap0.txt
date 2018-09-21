@@ -1,1 +1,52 @@
-Placeholder
+  
+  
+                                [1X PackageManager [101X
+  
+  
+                   [1X Easily download and install [5XGAP[105X packages [101X
+  
+  
+                                     0.1.0
+  
+  
+                               21 September 2018
+  
+  
+                                 Michael Torpey
+  
+  
+  
+  Michael Torpey
+      Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
+      Homepage: [7Xhttp://www-groups.mcs.st-andrews.ac.uk/~mct25/[107X
+      Address:  [33X[0;14YSchool of Computer Science[133X
+                [33X[0;14YUniversity of St Andrews[133X
+                [33X[0;14YJack Cole Building, North Haugh[133X
+                [33X[0;14YSt Andrews, Fife, KY16 9SX[133X
+                [33X[0;14YUnited Kingdom[133X
+  
+  
+  
+  -------------------------------------------------------
+  
+  
+  [1XContents (PackageManager)[101X
+  
+  1 [33X[0;0YIntroduction[133X
+    1.1 [33X[0;0YWhat does the PackageManager package do?[133X
+    1.2 [33X[0;0YWhat does the PackageManager package not do?[133X
+    1.3 [33X[0;0YA quick example[133X
+  2 [33X[0;0YCommands[133X
+    2.1 [33X[0;0YInstalling packages[133X
+      2.1-1 InstallPackage
+      2.1-2 InfoPackageManager
+      2.1-3 InstallPackageFromName
+      2.1-4 InstallPackageFromInfo
+      2.1-5 InstallPackageFromArchive
+      2.1-6 InstallPackageFromGit
+      2.1-7 InstallPackageFromHg
+    2.2 [33X[0;0YRemoving packages[133X
+      2.2-1 RemovePackage
+  
+  
+  [32X
