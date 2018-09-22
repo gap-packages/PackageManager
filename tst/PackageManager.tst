@@ -76,9 +76,10 @@ gap> res := RemovePackage("uuid");;
 gap> Print := oldPrint;;
 gap> res;
 false
-gap> out = StringFormatted("Really delete directory {} ? [y/N] n\n",
->                          Filename(Directory(PKGMAN_PackageDir()),
->                                   "uuid-0.5"));
+gap> PositionSublist(out,
+>                    StringFormatted("Really delete directory {} ? [y/N] n\n",
+>                                    Filename(Directory(PKGMAN_PackageDir()),
+>                                             "uuid-0.5"))) <> fail;
 true
 gap> InputTextUser := {} -> InputTextString("y");;
 gap> out := "";;
@@ -87,9 +88,10 @@ gap> res := RemovePackage("uuid", true);;
 gap> Print := oldPrint;;
 gap> res;
 true
-gap> out = StringFormatted("Really delete directory {} ? [y/N] y\n",
->                          Filename(Directory(PKGMAN_PackageDir()),
->                                   "uuid-0.5"));
+gap> PositionSublist(out,
+>                    StringFormatted("Really delete directory {} ? [y/N] y\n",
+>                                    Filename(Directory(PKGMAN_PackageDir()),
+>                                             "uuid-0.5"))) <> fail;
 true
 gap> InputTextUser := f_in;;
 gap> MakeReadOnlyGlobal("InputTextUser");
