@@ -380,42 +380,41 @@ function()
   fi;
   if not IsDirectoryPath(dir) then
     CreateDir(dir);
+    PKGMAN_InsertPackageDirectory(dir);
     Info(InfoPackageManager, 3, "Created ", dir, " directory");
   fi;
   return dir;
 end);
 
-InstallGlobalFunction(PKGMAN_InsertPackageDirectories,
-function(rootpaths)
-  #
-  # This function is based on ExtendRootDirectories from the library, the only
-  # real difference being that the paths are added *before* the existing root
-  # paths instead of after.
-  #
-  rootpaths := Filtered(rootpaths, path -> not path in GAPInfo.RootPaths);
-  if not IsEmpty(rootpaths) then
-    # Append the new root paths.
-    GAPInfo.RootPaths := Immutable(Concatenation(rootpaths, GAPInfo.RootPaths));
-    # Clear the cache.
-    GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());
-    # Reread the package information.
-    if IsBound(GAPInfo.PackagesInfoInitialized) and
-       GAPInfo.PackagesInfoInitialized = true then
-      GAPInfo.PackagesInfoInitialized:= false;
-      InitializePackagesInfoRecords();
-    fi;
+InstallGlobalFunction(PKGMAN_InsertPackageDirectory,
+function(pkgpath)
+  local parent;
+  # Locate the parent directory
+  if EndsWith(pkgpath, "/pkg") then
+    parent := pkgpath{[1..Length(pkgpath)-3]};
+  elif EndsWith(pkgpath, "/pkg/") then
+    parent := pkgpath{[1..Length(pkgpath)-4]};
+  else
+    return fail;
   fi;
+  if not parent in GAPInfo.RootPaths then
+    # Append the new root paths.
+    GAPInfo.RootPaths := Immutable(Concatenation([parent], GAPInfo.RootPaths));
+  fi;
+  # Clear the cache.
+  GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());
+  # Reread the package information.
+  if IsBound(GAPInfo.PackagesInfoInitialized) and
+     GAPInfo.PackagesInfoInitialized = true then
+    GAPInfo.PackagesInfoInitialized:= false;
+    InitializePackagesInfoRecords();
+  fi;
+  return true;
 end);
 
 InstallGlobalFunction(PKGMAN_SetCustomPackageDir,
 function(dir)
-  local parent;
-  # Locate the parent directory
-  if EndsWith(dir, "/pkg") then
-    parent := dir{[1..Length(dir)-3]};
-  elif EndsWith(dir, "/pkg/") then
-    parent := dir{[1..Length(dir)-4]};
-  else
+  if not (EndsWith(dir, "/pkg") or EndsWith(dir, "/pkg/")) then
     return fail;
   fi;
   # Set the variable
@@ -423,7 +422,7 @@ function(dir)
   # Create the directory if necessary
   PKGMAN_PackageDir();
   # Register as a pkg directory (with top priority)
-  PKGMAN_InsertPackageDirectories([parent]);
+  PKGMAN_InsertPackageDirectory(dir);
   # Get any packages already present there
   PKGMAN_RefreshPackageInfo();
   # No return value

@@ -124,7 +124,7 @@ DeclareGlobalFunction("PKGMAN_NameOfGitRepo");
 DeclareGlobalFunction("PKGMAN_NameOfHgRepo");
 DeclareGlobalFunction("PKGMAN_PackageDir");
 DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
-DeclareGlobalFunction("PKGMAN_InsertPackageDirectories");
+DeclareGlobalFunction("PKGMAN_InsertPackageDirectory");
 DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");
 DeclareGlobalFunction("PKGMAN_DownloadURL");
 
