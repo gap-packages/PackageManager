@@ -376,7 +376,7 @@ function()
   if PKGMAN_CustomPackageDir <> "" then
     dir := PKGMAN_CustomPackageDir;
   else
-    dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
+    dir := Filename(Directory(GAPInfo.UserGapRoot), "pkg"); # TODO: cygwin?
   fi;
   if not IsDirectoryPath(dir) then
     CreateDir(dir);

@@ -269,7 +269,7 @@ fail
 # PKGMAN_CustomPackageDir
 gap> olddir := PKGMAN_CustomPackageDir;;
 gap> PKGMAN_CustomPackageDir := "";;
-gap> EndsWith(PKGMAN_PackageDir(), "/.gap/pkg");
+gap> PKGMAN_PackageDir() = Filename(Directory(GAPInfo.UserGapRoot), "pkg");
 true
 gap> PKGMAN_CustomPackageDir := olddir;;
 gap> PKGMAN_SetCustomPackageDir("/home"); # not ending in pkg
