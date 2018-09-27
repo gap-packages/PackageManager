@@ -46,7 +46,9 @@ DeclareGlobalFunction("InstallPackage");
 #!           messages if an operation is successful
 #!     * 2 - Problems and directories: also displays directories that were used
 #!           for package installation or removal
-#!     * 3 - All: shows step-by-step progress of operations
+#!     * 3 - Progress: also shows step-by-step progress of operations
+#!     * 4 - All: includes extra information such as whether curlInterface is
+#!           being used
 #!
 #!   Set this using, for example <C>SetInfoLevel(InfoPackageManager, 3)</C>.
 #!   Default value is 1.

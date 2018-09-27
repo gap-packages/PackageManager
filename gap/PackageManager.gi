@@ -477,18 +477,19 @@ function(url)
   sugg := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;
   version := First(sugg, item -> item[1] = "curlInterface")[2];
   if TestPackageAvailability("curlInterface", version) = true then
+    Info(InfoPackageManager, 4, "Using curlInterface to download");
     return DownloadURL(url);
   fi;
 
   # Try command line tools (wget/curl)
   for tool in PKGMAN_DownloadCmds do
-    Info(InfoPackageManager, 3, "Using ", tool[1], " to download");
+    Info(InfoPackageManager, 4, "Using ", tool[1], " to download");
     exec := CallFuncList(PKGMAN_Exec,
                          Concatenation(["."], [tool[1]], tool[2], [url]));
     if exec = fail then
-      Info(InfoPackageManager, 3, tool[1], " unavailable");
+      Info(InfoPackageManager, 4, tool[1], " unavailable");
     elif exec.code <> 0 then
-      Info(InfoPackageManager, 3, "Download failed with ", tool[1]);
+      Info(InfoPackageManager, 4, "Download failed with ", tool[1]);
     else
       return rec(success := true, result := exec.output);
     fi;
