@@ -274,6 +274,8 @@ true
 gap> PKGMAN_CustomPackageDir := olddir;;
 gap> PKGMAN_SetCustomPackageDir("/home"); # not ending in pkg
 fail
+gap> PKGMAN_InsertPackageDirectory("/home"); # not ending in pkg
+fail
 
 # PKGMAN_CompileDir error: no shell
 gap> InstallPackage("example");
