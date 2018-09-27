@@ -13,14 +13,15 @@ function()
   fi;
   urls := rec();
   for line in SplitString(get.result, "\n") do
-    # Format: <name> <URL>
+    # Format: <name> [MOVE] <URL>
     items := SplitString(line, "", WHITESPACE);
     if Length(items) = 0 or items[1][1] = '#' then
       continue;
-    elif Length(items) <> 2 then
+    elif Length(items) = 1 or Length(items) > 3
+         or (Length(items) = 3 and items[2] <> "MOVE") then
       ErrorNoReturn("PackageManager: GetPackageList: bad line:\n", line);
     fi;
-    urls.(LowercaseString(items[1])) := items[2];
+    urls.(LowercaseString(items[1])) := items[Length(items)];
   od;
   return urls;
 end);
