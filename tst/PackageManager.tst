@@ -140,7 +140,7 @@ false
 gap> InstallPackage("http://www.nothing.rubbish/PackageInfo.g");
 #I  Unable to download from http://www.nothing.rubbish/PackageInfo.g
 false
-gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/PackageInfo.g");
+gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/PackageInfo.g");
 #E  component `PackageName' must be bound to a nonempty string
 #E  component `Subtitle' must be bound to a string
 #E  component `Version' must be bound to a nonempty string that does not start\
@@ -171,13 +171,13 @@ false
 gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
 #I  Could not download from www.gap.rubbish/somepackage.tar.gz
 false
-gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/bad-tarball.tar.gz");
+gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/bad-tarball.tar.gz");
 #I  Could not inspect tarball contents
 false
-gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/twodirs.tar.gz");
+gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/twodirs.tar.gz");
 #I  Archive should contain 1 directory (not 2)
 false
-gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/badpackage.tar.gz");
+gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage.tar.gz");
 #E  component `PackageName' must be bound to a nonempty string
 #E  component `Subtitle' must be bound to a string
 #E  component `Version' must be bound to a nonempty string that does not start\
@@ -206,7 +206,7 @@ gap> CreateDir(dir);
 true
 gap> PKGMAN_Exec(".", "chmod", "000", dir);
 rec( code := 0, output := "" )
-gap> InstallPackage("https://mtorpey.github.io/PackageManager/dummy/badpackage.tar.gz");
+gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage.tar.gz");
 #I  Extraction unsuccessful
 false
 gap> PKGMAN_Exec(".", "chmod", "777", dir);

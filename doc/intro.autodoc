@@ -16,7 +16,7 @@ compatibility.  It also does not support the user specifying a particular
 version of a package, except by providing an explicit URL to the desired
 version.  All these features are planned for the future.  Any other feature
 requests can be posted on the issue tracker at
-https://github.com/mtorpey/PackageManager/issues.
+https://github.com/gap-packages/PackageManager/issues.
 
 @Section A quick example
 
