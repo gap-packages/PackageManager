@@ -48,7 +48,7 @@ end);
 
 InstallGlobalFunction(InstallPackageFromName,
 function(name)
-  local urls, newest, current;
+  local urls, allinfo, info, newest, current;
   name := LowercaseString(name);
   urls := GetPackageURLs();
   Info(InfoPackageManager, 3, "Package directory retrieved");
@@ -57,9 +57,14 @@ function(name)
          "Package \"", name, "\" not found in package list");
     return false;
   fi;
-  if TestPackageAvailability(name) <> fail then
+
+  # Check for already-installed versions
+  allinfo := PackageInfo(name);
+  info := Filtered(allinfo,
+                   x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));
+  if not IsEmpty(info) then
     newest  := PKGMAN_DownloadPackageInfo(urls.(name));
-    current := GAPInfo.PackagesInfo.(name)[1];
+    current := info[1];
     # Current is the PackageInfo.g for the version of the package that would
     # that is available.
     if CompareVersionNumbers(newest.Version, current.Version, "equal") then
@@ -68,19 +73,14 @@ function(name)
            "\" is already installed");
       return false;
     elif CompareVersionNumbers(newest.Version, current.Version) then
-      PushOptions(rec(default := false));
-      if not PKGMAN_AskYesNoQuestion("Package \"",
-                                     name,
-                                     "\" version \"",
-                                     current.Version,
-                                     "\" is installed, continue?") then
-        PopOptions();
+      if not PKGMAN_AskYesNoQuestion("Package \"", name,
+                                     "\" version ", current.Version,
+                                     " is installed, but ", newest.Version,
+                                     " is available. Install it?"
+                                         : default := false) then
         return false;
       fi;
-      if PKGMAN_AskYesNoQuestion("Remove currently installed version?") then
-        RemovePackage(name);
-      fi;
-      PopOptions();
+      # TODO: offer to remove existing package?
     fi;
   fi;
   return InstallPackageFromInfo(urls.(name));
