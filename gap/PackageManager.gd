@@ -18,8 +18,14 @@
 #!
 #!   The package will then be downloaded and installed in the user's pkg folder
 #!   at <C>~/.gap/pkg</C>, if possible.  If this installation is successful,
-#!   <K>true</K> is returned; otherwise, <K>false</K> is returned.  To see more
-#!   information about this process while it is ongoing, see
+#!   <K>true</K> is returned; otherwise, <K>false</K> is returned.
+#!
+#!   Certain decisions, such as installing newer versions of packages, will be
+#!   confirmed by the user via an interactive shell - to avoid this
+#!   interactivity and use sane defaults instead, the optional second argument
+#!   <A>interactive</A> can be set to <K>false</K>.
+#!
+#!   To see more information about this process while it is ongoing, see
 #!   <C>InfoPackageManager</C>.
 #!
 #! @BeginExample
@@ -27,7 +33,7 @@
 #! true
 #! @EndExample
 #!
-#! @Arguments string
+#! @Arguments string[, interactive]
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackage");
@@ -50,7 +56,12 @@ SetInfoLevel(InfoPackageManager, 1);
 #! @Description
 #!   Attempts to download and install a package given only its name.  Returns
 #!   <K>true</K> if the installation was successful, and <K>false</K> otherwise.
-#! @Arguments name
+#!
+#!   Certain decisions, such as installing newer versions of packages, will be
+#!   confirmed by the user via an interactive shell - to avoid this
+#!   interactivity and use sane defaults instead, the optional second argument
+#!   <A>interactive</A> can be set to <K>false</K>.
+#! @Arguments name[, string]
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromName");

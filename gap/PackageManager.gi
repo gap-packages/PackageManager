@@ -27,12 +27,27 @@ function()
 end);
 
 InstallGlobalFunction(InstallPackage,
-function(string)
+function(string, interactive...)
+  # Check input
   if not IsString(string) then
     ErrorNoReturn("PackageManager: InstallPackage: ",
                   "<string> must be a string");
+  elif Length(interactive) > 1 then
+    ErrorNoReturn("PackageManager: InstallPackage: ",
+                  "requires 1 or 2 arguments (not ",
+                  Length(interactive) + 1, ")");
+  elif Length(interactive) = 1 then
+    if interactive[1] = true or interactive[1] = false then
+      interactive := interactive[1];
+    else
+      ErrorNoReturn("PackageManager: InstallPackage: ",
+                    "<interactive> must be true or false");
+    fi;
+  else
+    interactive := true;
   fi;
 
+  # Call the appropriate function
   NormalizeWhitespace(string);
   if EndsWith(string, ".tar.gz") then
     return InstallPackageFromArchive(string);
@@ -43,12 +58,21 @@ function(string)
   elif EndsWith(string, "PackageInfo.g") then
     return InstallPackageFromInfo(string);
   fi;
-  return InstallPackageFromName(string);
+  return InstallPackageFromName(string, interactive);
 end);
 
 InstallGlobalFunction(InstallPackageFromName,
-function(name)
+function(name, interactive...)
   local urls, allinfo, info, newest, current;
+
+  # Handle interactivity
+  if Length(interactive) = 1 and interactive[1] = false then
+    interactive := false;
+  else
+    interactive := true;
+  fi;
+
+  # Get package URL from name
   name := LowercaseString(name);
   urls := GetPackageURLs();
   Info(InfoPackageManager, 3, "Package directory retrieved");
@@ -73,7 +97,8 @@ function(name)
            "\" is already installed");
       return false;
     elif CompareVersionNumbers(newest.Version, current.Version) then
-      if not PKGMAN_AskYesNoQuestion("Package \"", name,
+      if interactive and not
+             PKGMAN_AskYesNoQuestion("Package \"", name,
                                      "\" version ", current.Version,
                                      " is installed, but ", newest.Version,
                                      " is available. Install it?"
