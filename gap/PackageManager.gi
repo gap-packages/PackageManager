@@ -32,6 +32,7 @@ function(string)
     ErrorNoReturn("PackageManager: InstallPackage: ",
                   "<string> must be a string");
   fi;
+
   NormalizeWhitespace(string);
   if EndsWith(string, ".tar.gz") then
     return InstallPackageFromArchive(string);
@@ -47,7 +48,7 @@ end);
 
 InstallGlobalFunction(InstallPackageFromName,
 function(name)
-  local urls;
+  local urls, newest, current;
   name := LowercaseString(name);
   urls := GetPackageURLs();
   Info(InfoPackageManager, 3, "Package directory retrieved");
@@ -56,30 +57,42 @@ function(name)
          "Package \"", name, "\" not found in package list");
     return false;
   fi;
+  if TestPackageAvailability(name) <> fail then
+    newest  := PKGMAN_DownloadPackageInfo(urls.(name));
+    current := GAPInfo.PackagesInfo.(name)[1];
+    # Current is the PackageInfo.g for the version of the package that would
+    # that is available.
+    if CompareVersionNumbers(newest.Version, current.Version, "equal") then
+      Info(InfoPackageManager, 1,
+           "The newest version of package \"", name,
+           "\" is already installed");
+      return false;
+    elif CompareVersionNumbers(newest.Version, current.Version) then
+      PushOptions(rec(default := false));
+      if not PKGMAN_AskYesNoQuestion("Package \"",
+                                     name,
+                                     "\" version \"",
+                                     current.Version,
+                                     "\" is installed, continue?") then
+        PopOptions();
+        return false;
+      fi;
+      if PKGMAN_AskYesNoQuestion("Remove currently installed version?") then
+        RemovePackage(name);
+      fi;
+      PopOptions();
+    fi;
+  fi;
   return InstallPackageFromInfo(urls.(name));
 end);
 
 InstallGlobalFunction(InstallPackageFromInfo,
 function(url)
-  local get, stream, info, formats;
+  local info, formats;
 
-  # Get the PackageInfo.g file
-  get := PKGMAN_DownloadURL(url);
-  if not get.success then
-    Info(InfoPackageManager, 1, "Unable to download from ", url);
-    return false;
-  fi;
-  Info(InfoPackageManager, 3, "PackageInfo.g retrieved from ", url);
-  stream := InputTextString(get.result);
-  Read(stream);
-  info := GAPInfo.PackageInfoCurrent;
+  info := PKGMAN_DownloadPackageInfo(url);
 
   # Read the information we want from it
-  if not ValidatePackageInfo(info) then
-    Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
-    return false;
-  fi;
-  Info(InfoPackageManager, 3, "PackageInfo.g validated successfully");
   formats := SplitString(info.ArchiveFormats, "", ", \n\r\t");
   if not ".tar.gz" in formats then
     # TODO: support other formats
@@ -455,4 +468,27 @@ function(url)
   od;
 
   return rec(success := false, error := "no download method is available");
+end);
+
+InstallGlobalFunction(PKGMAN_DownloadPackageInfo,
+function(url)
+  local get, stream, info;
+
+  get := PKGMAN_DownloadURL(url);
+  if not get.success then
+    Info(InfoPackageManager, 1, "Unable to download from ", url);
+    return false;
+  fi;
+  Info(InfoPackageManager, 3, "PackageInfo.g retrieved from ", url);
+  stream := InputTextString(get.result);
+  Read(stream);
+  info := GAPInfo.PackageInfoCurrent;
+
+  # Read the information we want from it
+  if not ValidatePackageInfo(info) then
+    Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
+    return false;
+  fi;
+  Info(InfoPackageManager, 3, "PackageInfo.g validated successfully");
+  return ShallowCopy(info);
 end);
