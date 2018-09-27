@@ -88,9 +88,7 @@ function(name, interactive...)
                    x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));
   if not IsEmpty(info) then
     newest  := PKGMAN_DownloadPackageInfo(urls.(name));
-    current := info[1];
-    # Current is the PackageInfo.g for the version of the package that would
-    # that is available.
+    current := info[1];  # Highest-priority installation in user pkg directory
     if CompareVersionNumbers(newest.Version, current.Version, "equal") then
       Info(InfoPackageManager, 1,
            "The newest version of package \"", name,
@@ -115,7 +113,11 @@ InstallGlobalFunction(InstallPackageFromInfo,
 function(url)
   local info, formats;
 
+  # Get file from URL
   info := PKGMAN_DownloadPackageInfo(url);
+  if info = fail then
+    return false;
+  fi;
 
   # Read the information we want from it
   formats := SplitString(info.ArchiveFormats, "", ", \n\r\t");
@@ -502,7 +504,7 @@ function(url)
   get := PKGMAN_DownloadURL(url);
   if not get.success then
     Info(InfoPackageManager, 1, "Unable to download from ", url);
-    return false;
+    return fail;
   fi;
   Info(InfoPackageManager, 3, "PackageInfo.g retrieved from ", url);
   stream := InputTextString(get.result);
@@ -512,7 +514,7 @@ function(url)
   # Read the information we want from it
   if not ValidatePackageInfo(info) then
     Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
-    return false;
+    return fail;
   fi;
   Info(InfoPackageManager, 3, "PackageInfo.g validated successfully");
   return ShallowCopy(info);

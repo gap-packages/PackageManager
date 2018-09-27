@@ -1,6 +1,9 @@
 # Install and remove a package by name
 gap> InstallPackage("matgrp");
 true
+gap> InstallPackage("matgrp");
+#I  The newest version of package "matgrp" is already installed
+false
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "matgrp"));
 true
@@ -59,7 +62,7 @@ Error, PackageManager: RemovePackage: requires 1 or 2 arguments (not 3)
 gap> RemovePackage("PackageManager", "please default to yes");
 Error, PackageManager: RemovePackage: <interactive> must be true or false
 
-# RemovePackage interactive (via hacking in/out streams)
+# Interactive tests (via hacking in/out streams)
 gap> InstallPackage("https://github.com/gap-packages/uuid/releases/download/v0.5/uuid-0.5.tar.gz");
 true
 gap> out := "";;
@@ -80,6 +83,18 @@ gap> PositionSublist(out,
 >                    StringFormatted("Really delete directory {} ? [y/N] n\n",
 >                                    Filename(Directory(PKGMAN_PackageDir()),
 >                                             "uuid-0.5"))) <> fail;
+true
+gap> InputTextUser := {} -> InputTextString("x\n");;
+gap> out := "";;
+gap> Print := newPrint;;
+gap> res := InstallPackage("uuid", true);;
+gap> Print := oldPrint;;
+gap> res;
+false
+gap> exp := Concatenation("Package \"uuid\" version 0.5 is installed, but ",
+>                         PKGMAN_DownloadPackageInfo(GetPackageURLs().uuid).Version,
+>                         " is available. Install it? [y/N] \n");;
+gap> PositionSublist(out, exp) <> fail;
 true
 gap> InputTextUser := {} -> InputTextString("y");;
 gap> out := "";;
@@ -130,6 +145,10 @@ gap> PKGMAN_PackageInfoURLList := default_url;;
 # InstallPackage input failure
 gap> InstallPackage(3);
 Error, PackageManager: InstallPackage: <string> must be a string
+gap> InstallPackage("qaos", "yes");
+Error, PackageManager: InstallPackage: <interactive> must be true or false
+gap> InstallPackage("qaos", "yes", "actually no");
+Error, PackageManager: InstallPackage: requires 1 or 2 arguments (not 3)
 
 # InstallPackageFromName failure
 gap> InstallPackage("sillypackage");
@@ -279,7 +298,8 @@ fail
 
 # PKGMAN_CompileDir error: no shell
 gap> InstallPackage("example");
-true
+#I  The newest version of package "example" is already installed
+false
 gap> progs := GAPInfo.DirectoriesPrograms;;
 gap> GAPInfo.DirectoriesPrograms := [];;  # terrible vandalism
 gap> dir := PackageInfo("example")[1].InstallationPath;;
@@ -289,8 +309,9 @@ false
 gap> GAPInfo.DirectoriesPrograms := progs;;
 
 # PKGMAN_CompileDir error: no bin/BuildPackages.sh
-gap> InstallPackage("example");
-true
+gap> InstallPackage("example", false);
+#I  The newest version of package "example" is already installed
+false
 gap> roots := GAPInfo.RootPaths;;
 gap> GAPInfo.RootPaths := [];;  # also terrible vandalism
 gap> dir := PackageInfo("example")[1].InstallationPath;;
@@ -301,7 +322,8 @@ gap> GAPInfo.RootPaths := roots;;
 
 # PKGMAN_CompileDir error: missing source
 gap> InstallPackage("example");
-true
+#I  The newest version of package "example" is already installed
+false
 gap> dir := PackageInfo("example")[1].InstallationPath;;
 gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
 true
@@ -357,7 +379,7 @@ gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
 gap> First(s, item -> item[1] = "curlInterface")[2];
 ">= 100.0"
 gap> PKGMAN_DownloadCmds[1][1] := "abababaxyz";;
-gap> InstallPackage("grpconst");
+gap> InstallPackage("crypting");
 true
 
 # FINAL TEST
