@@ -235,7 +235,12 @@ gap> PKGMAN_CreateDirRecursively(Filename(Directory(dir), "subfolder"));
 #I  Failed to create required directory
 fail
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage.tar.gz");
-#I  Extraction unsuccessful
+#I  Target location not writable
+false
+gap> PKGMAN_Exec(".", "chmod", "222", dir);
+rec( code := 0, output := "" )
+gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage.tar.gz");
+#I  Target location not readable
 false
 gap> PKGMAN_Exec(".", "chmod", "777", dir);
 rec( code := 0, output := "" )
@@ -369,6 +374,14 @@ gap> PKGMAN_DownloadCmds[2] := tmp;;
 gap> PKGMAN_DownloadCmds[1][1];
 "curl"
 gap> InstallPackage("grpconst");
+true
+gap> RemovePackage("grpconst", false);
+true
+
+# Install to existing empty directory
+gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.4"));
+true
+gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.9.4/Toric-1.9.4.tar.gz");
 true
 
 # curl failure

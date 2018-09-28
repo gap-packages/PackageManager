@@ -137,6 +137,7 @@ DeclareGlobalFunction("PKGMAN_NameOfGitRepo");
 DeclareGlobalFunction("PKGMAN_NameOfHgRepo");
 DeclareGlobalFunction("PKGMAN_PackageDir");
 DeclareGlobalFunction("PKGMAN_CreateDirRecursively");
+DeclareGlobalFunction("PKGMAN_IsValidTargetDir");
 DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
 DeclareGlobalFunction("PKGMAN_InsertPackageDirectory");
 DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");

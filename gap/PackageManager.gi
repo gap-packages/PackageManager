@@ -166,13 +166,18 @@ function(url)
   fi;
   topdir := topdir[1];
 
+  # Check availability of target location
+  dir := Filename(Directory(user_pkg_dir), topdir);
+  if not PKGMAN_IsValidTargetDir(dir) then
+    return false;
+  fi;
+
   # Extract package
   exec := PKGMAN_Exec(".", "tar", "xf", filename, "-C", user_pkg_dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Extraction unsuccessful");
     return false;
   fi;
-  dir := Filename(Directory(user_pkg_dir), topdir);
   Info(InfoPackageManager, 2, "Package extracted to ", dir);
 
   # Check validity
@@ -198,10 +203,7 @@ function(url)
     return false;
   fi;
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
-  if IsDirectoryPath(dir) and Length(DirectoryContents(dir)) > 2 then
-    Info(InfoPackageManager, 1, "Package already installed at target location");
-    Info(InfoPackageManager, 2,
-         "Target directory", dir, "exists and is non-empty");
+  if not PKGMAN_IsValidTargetDir(dir) then
     return false;
   fi;
   exec := PKGMAN_Exec(".", "git", "clone", url, dir);
@@ -224,10 +226,7 @@ function(url)
     return false;
   fi;
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
-  if IsDirectoryPath(dir) and Length(DirectoryContents(dir)) > 2 then
-    Info(InfoPackageManager, 1, "Package already installed at target location");
-    Info(InfoPackageManager, 2,
-         "Target directory", dir, "exists and is non-empty");
+  if not PKGMAN_IsValidTargetDir(dir) then
     return false;
   fi;
   exec := PKGMAN_Exec(".", "hg", "clone", url, dir);
@@ -481,6 +480,28 @@ function(pkgpath)
      GAPInfo.PackagesInfoInitialized = true then
     GAPInfo.PackagesInfoInitialized:= false;
     InitializePackagesInfoRecords();
+  fi;
+  return true;
+end);
+
+InstallGlobalFunction(PKGMAN_IsValidTargetDir,
+function(dir)
+  if not IsDirectoryPath(dir) then
+    return true;  # Assume parent directory is PKGMAN_PackageDir()
+  fi;
+  if not IsWritableFile(dir) then
+    Info(InfoPackageManager, 1, "Target location not writable");
+    Info(InfoPackageManager, 2, "(check ", dir, ")");
+    return false;
+  elif not IsReadableFile(dir) then
+    Info(InfoPackageManager, 1, "Target location not readable");
+    Info(InfoPackageManager, 2, "(check ", dir, ")");
+    return false;
+  elif Length(DirectoryContents(dir)) > 2 then
+    Info(InfoPackageManager, 1, "Package already installed at target location");
+    Info(InfoPackageManager, 2,
+         "Target directory ", dir, " exists and is non-empty");
+    return false;
   fi;
   return true;
 end);
