@@ -26,6 +26,9 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "RegisterPackageTNUMDemo"));
 true
+gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo");
+#I  Package already installed at target location
+false
 
 # Install a package from a Mercurial repository not ending in .hg
 gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
@@ -33,6 +36,9 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "forms"));
 true
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
+#I  Package already installed at target location
+false
 
 # Install a package from a PackageInfo.g URL (includes redirect)
 gap> InstallPackage("https://gap-packages.github.io/autpgrp/PackageInfo.g");

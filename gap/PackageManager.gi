@@ -198,6 +198,12 @@ function(url)
     return false;
   fi;
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
+  if IsDirectoryPath(dir) and Length(DirectoryContents(dir)) > 2 then
+    Info(InfoPackageManager, 1, "Package already installed at target location");
+    Info(InfoPackageManager, 2,
+         "Target directory", dir, "exists and is non-empty");
+    return false;
+  fi;
   exec := PKGMAN_Exec(".", "git", "clone", url, dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Cloning unsuccessful");
@@ -218,6 +224,12 @@ function(url)
     return false;
   fi;
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
+  if IsDirectoryPath(dir) and Length(DirectoryContents(dir)) > 2 then
+    Info(InfoPackageManager, 1, "Package already installed at target location");
+    Info(InfoPackageManager, 2,
+         "Target directory", dir, "exists and is non-empty");
+    return false;
+  fi;
   exec := PKGMAN_Exec(".", "hg", "clone", url, dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Cloning unsuccessful");
