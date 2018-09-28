@@ -417,14 +417,34 @@ function()
   if PKGMAN_CustomPackageDir <> "" then
     dir := PKGMAN_CustomPackageDir;
   else
-    dir := Filename(Directory(GAPInfo.UserGapRoot), "pkg"); # TODO: cygwin?
+    dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
   fi;
   if not IsDirectoryPath(dir) then
-    CreateDir(dir);
+    PKGMAN_CreateDirRecursively(dir);
     PKGMAN_InsertPackageDirectory(dir);
-    Info(InfoPackageManager, 3, "Created ", dir, " directory");
   fi;
   return dir;
+end);
+
+InstallGlobalFunction(PKGMAN_CreateDirRecursively,
+function(dir)
+  local path, newdir, i, res;
+  path := SplitString(dir, "/");
+  newdir := "";
+  for i in [1..Length(path)] do
+    Append(newdir, path[i]);
+    Append(newdir, "/");
+    if not IsDirectoryPath(newdir) then
+      res := CreateDir(newdir);
+      if res <> true then
+        Info(InfoPackageManager, 1, "Failed to create required directory");
+        Info(InfoPackageManager, 2, "at ", newdir);
+        return fail;
+      fi;
+      Info(InfoPackageManager, 2, "Created directory ", newdir);
+    fi;
+  od;
+  return true;
 end);
 
 InstallGlobalFunction(PKGMAN_InsertPackageDirectory,
