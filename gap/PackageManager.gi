@@ -74,8 +74,8 @@ function(name, interactive...)
 
   # Get package URL from name
   name := LowercaseString(name);
+  Info(InfoPackageManager, 3, "Getting PackageInfo URLs...");
   urls := GetPackageURLs();
-  Info(InfoPackageManager, 3, "Package directory retrieved");
   if not IsBound(urls.(name)) then
     Info(InfoPackageManager, 1,
          "Package \"", name, "\" not found in package list");
@@ -128,7 +128,6 @@ function(url)
     return false;
   fi;
   url := Concatenation(info.ArchiveURL, ".tar.gz");
-  Info(InfoPackageManager, 3, "Got archive URL ", url);
 
   # Download the archive
   return InstallPackageFromArchive(url);
@@ -139,17 +138,17 @@ function(url)
   local get, user_pkg_dir, filename, exec, files, topdir, dir;
 
   # Download archive
+  Info(InfoPackageManager, 3, "Downloading archive from URL ", url, " ...");
   get := PKGMAN_DownloadURL(url);
   if get.success <> true then
     Info(InfoPackageManager, 1, "Could not download from ", url);
     return false;
   fi;
-  Info(InfoPackageManager, 3, "Successfully downloaded from ", url);
   user_pkg_dir := PKGMAN_PackageDir();
   url := SplitString(url, "/");
   filename := Filename(DirectoryTemporary(), url[Length(url)]);
   FileString(filename, get.result);
-  Info(InfoPackageManager, 3, "Saved archive to ", filename);
+  Info(InfoPackageManager, 2, "Saved archive to ", filename);
 
   # Check contents
   exec := PKGMAN_Exec(".", "tar", "-tf", filename);
@@ -173,12 +172,13 @@ function(url)
   fi;
 
   # Extract package
+  Info(InfoPackageManager, 2, "Extracting to ", dir, " ...");
   exec := PKGMAN_Exec(".", "tar", "xf", filename, "-C", user_pkg_dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Extraction unsuccessful");
     return false;
   fi;
-  Info(InfoPackageManager, 2, "Package extracted to ", dir);
+  Info(InfoPackageManager, 3, "Extracted successfully");
 
   # Check validity
   if PKGMAN_CheckPackage(dir) = false then
@@ -206,12 +206,13 @@ function(url)
   if not PKGMAN_IsValidTargetDir(dir) then
     return false;
   fi;
+  Info(InfoPackageManager, 2, "Cloning to ", dir, " ...");
   exec := PKGMAN_Exec(".", "git", "clone", url, dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Cloning unsuccessful");
     return false;
   fi;
-  Info(InfoPackageManager, 2, "Package cloned to ", dir);
+  Info(InfoPackageManager, 3, "Package cloned successfully");
   PKGMAN_RefreshPackageInfo();
   return PKGMAN_CompileDir(dir);
   # TODO: compile doc and return PKGMAN_CheckPackage(dir);
@@ -229,12 +230,13 @@ function(url)
   if not PKGMAN_IsValidTargetDir(dir) then
     return false;
   fi;
+  Info(InfoPackageManager, 2, "Cloning to ", dir, " ...");
   exec := PKGMAN_Exec(".", "hg", "clone", url, dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Cloning unsuccessful");
     return false;
   fi;
-  Info(InfoPackageManager, 2, "Package cloned to ", dir);
+  Info(InfoPackageManager, 3, "Package cloned successfully");
   PKGMAN_RefreshPackageInfo();
   return PKGMAN_CompileDir(dir);
   # TODO: compile doc and return PKGMAN_CheckPackage(dir);
@@ -320,11 +322,6 @@ function(dir)
   local sh, pkg_dir, scr, root, argument, exec;
 
   # Check requirements, and prepare command
-  sh := Filename( DirectoriesSystemPrograms(), "sh" );
-  if sh = fail then
-    Info(InfoPackageManager, 1, "No shell available called \"sh\"");
-    return false;
-  fi;
   pkg_dir := Filename(Directory(dir), "..");
   scr := Filename(List(GAPInfo.RootPaths, Directory), "bin/BuildPackages.sh");
   if scr = fail then
@@ -334,12 +331,14 @@ function(dir)
   root := scr{[1 .. Length(scr) - Length("/bin/BuildPackages.sh")]};
 
   # Call the script
+  Info(InfoPackageManager, 3, "Calling compilation script...");
   exec := PKGMAN_Exec(pkg_dir, Concatenation(root, "/bin/BuildPackages.sh"),
                       "--strict",
                       Concatenation("--with-gaproot=", root),
                       dir);
   if exec = fail or exec.code <> 0 then
-    Info(InfoPackageManager, 1, "Compilation failed");
+    Info(InfoPackageManager, 1,
+         "Compilation failed (package may still be usable)");
     return false;
   fi;;
   Info(InfoPackageManager, 3, "Compilation was successful");
@@ -349,6 +348,13 @@ end);
 InstallGlobalFunction(PKGMAN_Exec,
 function(dir, cmd, args...)
   local fullcmd, instream, out, outstream, sh, code;
+  
+  # Check shell
+  sh := Filename( DirectoriesSystemPrograms(), "sh" );
+  if sh = fail then
+    Info(InfoPackageManager, 1, "No shell available called \"sh\"");
+    return fail;
+  fi;
 
   # Directory
   if IsString(dir) then
@@ -530,13 +536,13 @@ function(url)
   sugg := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;
   version := First(sugg, item -> item[1] = "curlInterface")[2];
   if TestPackageAvailability("curlInterface", version) = true then
-    Info(InfoPackageManager, 4, "Using curlInterface to download");
+    Info(InfoPackageManager, 4, "Using curlInterface to download...");
     return DownloadURL(url);
   fi;
 
   # Try command line tools (wget/curl)
   for tool in PKGMAN_DownloadCmds do
-    Info(InfoPackageManager, 4, "Using ", tool[1], " to download");
+    Info(InfoPackageManager, 4, "Using ", tool[1], " to download...");
     exec := CallFuncList(PKGMAN_Exec,
                          Concatenation(["."], [tool[1]], tool[2], [url]));
     if exec = fail then
@@ -555,12 +561,12 @@ InstallGlobalFunction(PKGMAN_DownloadPackageInfo,
 function(url)
   local get, stream, info;
 
+  Info(InfoPackageManager, 3, "Retrieving PackageInfo.g from ", url, " ...");
   get := PKGMAN_DownloadURL(url);
   if not get.success then
     Info(InfoPackageManager, 1, "Unable to download from ", url);
     return fail;
   fi;
-  Info(InfoPackageManager, 3, "PackageInfo.g retrieved from ", url);
   stream := InputTextString(get.result);
   Read(stream);
   info := GAPInfo.PackageInfoCurrent;
