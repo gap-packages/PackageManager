@@ -50,10 +50,10 @@ DeclareGlobalFunction("InstallPackage");
 #!     * 4 - All: includes extra information such as whether curlInterface is
 #!           being used
 #!
-#!   Set this using, for example <C>SetInfoLevel(InfoPackageManager, 3)</C>.
-#!   Default value is 1.
+#!   Set this using, for example <C>SetInfoLevel(InfoPackageManager, 1)</C>.
+#!   Default value is 3.
 DeclareInfoClass("InfoPackageManager");
-SetInfoLevel(InfoPackageManager, 1);
+SetInfoLevel(InfoPackageManager, 3);
 
 #! @Description
 #!   Attempts to download and install a package given only its name.  Returns
