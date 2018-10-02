@@ -319,7 +319,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_CompileDir,
 function(dir)
-  local sh, pkg_dir, scr, root, argument, exec;
+  local pkg_dir, scr, root, exec;
 
   # Check requirements, and prepare command
   pkg_dir := Filename(Directory(dir), "..");
@@ -331,7 +331,7 @@ function(dir)
   root := scr{[1 .. Length(scr) - Length("/bin/BuildPackages.sh")]};
 
   # Call the script
-  Info(InfoPackageManager, 3, "Calling compilation script...");
+  Info(InfoPackageManager, 3, "Running compilation script...");
   exec := PKGMAN_Exec(pkg_dir, Concatenation(root, "/bin/BuildPackages.sh"),
                       "--strict",
                       Concatenation("--with-gaproot=", root),
@@ -347,7 +347,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_Exec,
 function(dir, cmd, args...)
-  local fullcmd, instream, out, outstream, sh, code;
+  local sh, fullcmd, instream, out, outstream, code, logfile;
   
   # Check shell
   sh := Filename( DirectoriesSystemPrograms(), "sh" );
@@ -388,6 +388,12 @@ function(dir, cmd, args...)
   fullcmd := Concatenation(fullcmd, " ", args, " 2>&1");
   code := Process(dir, sh, instream, outstream, ["-c", fullcmd]);
   CloseStream(outstream);
+
+  if code <> 0 then
+    logfile := Filename(DirectoryTemporary(), "exec-log.txt");
+    FileString(logfile, out);
+    Info(InfoPackageManager, 2, "Error detected - see log at ", logfile);
+  fi;
 
   # Return all the information we captured
   return rec(code := code, output := out);
