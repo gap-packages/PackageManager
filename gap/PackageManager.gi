@@ -116,7 +116,7 @@ function(info)
   # Check input
   if not (IsString(info) or IsRecord(info)) then
     ErrorNoReturn("PackageManager: InstallPackageFromInfo: ",
-                  "<info> should be a record or a URL");
+                  "<info> should be a rec or URL");
   fi;
 
   # Get file from URL
@@ -282,7 +282,9 @@ function(dir)
   for dep in deps do
     # Do we have it, or is it being installed?
     got := (TestPackageAvailability(dep[1], dep[2]) <> fail or
-            ForAny(Filtered(PKGMAN_MarkedForInstall, x -> x[1] = dep[1]),
+            ForAny(Filtered(PKGMAN_MarkedForInstall,
+                            x -> LowercaseString(x[1]) =
+                                 LowercaseString(dep[1])),
                    x -> CompareVersionNumbers(x[2], dep[2])));
     Info(InfoPackageManager, 3, "  ", dep[1], " ", dep[2], ": ", got);
     if not got then
@@ -291,11 +293,11 @@ function(dir)
   od;
   info_urls := GetPackageURLs();
   for dep in to_install do
-    if not IsBound(info_urls.(dep[1])) then
+    if not IsBound(info_urls.(LowercaseString(dep[1]))) then
       Info(InfoPackageManager, 1, "Required package ", dep[1], " unknown");
       return false;
     fi;
-    dep_info := PKGMAN_DownloadPackageInfo(info_urls.(dep[1]));
+    dep_info := PKGMAN_DownloadPackageInfo(info_urls.(LowercaseString(dep[1])));
     if not CompareVersionNumbers(dep_info.Version, dep[2]) then
       Info(InfoPackageManager, 1, "Package ", dep[1], " ", dep[2],
            " unavailable: only version ", dep_info.Version, " was found");

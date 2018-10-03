@@ -127,15 +127,13 @@ function ( args... )
 end
 
 # Installing multiple versions
-gap> InstallPackage("https://github.com/gap-packages/uuid/releases/download/v0.5/uuid-0.5.tar.gz");
+gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6/grpconst-2.6.tar.gz");
 true
-gap> InstallPackage("https://github.com/gap-packages/uuid/releases/download/v0.4/uuid-0.4.tar.gz");
+gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.5/grpconst-2.5.tar.gz");
 true
-gap> RemovePackage("uuid");
-#I  Multiple versions of package uuid installed
+gap> RemovePackage("grpconst");
+#I  Multiple versions of package grpconst installed
 false
-gap> LoadPackage("uuid", false);
-true
 
 # GetPackageURLs failure
 gap> default_url := PKGMAN_PackageInfoURLList;;
@@ -163,7 +161,7 @@ false
 
 # InstallPackageFromInfo input failure
 gap> InstallPackageFromInfo(42);
-Error, PackageManager: InstallPackageFromInfo: <info> should be a record or a URL
+Error, PackageManager: InstallPackageFromInfo: <info> should be a rec or URL
 
 # InstallPackageFromInfo failure (Remove #E messages after they leave GAP)
 gap> InstallPackage("http://www.nothing.rubbish/PackageInfo.g");
@@ -375,9 +373,9 @@ gap> PKGMAN_DownloadCmds[1] := PKGMAN_DownloadCmds[2];;
 gap> PKGMAN_DownloadCmds[2] := tmp;;
 gap> PKGMAN_DownloadCmds[1][1];
 "curl"
-gap> InstallPackage("grpconst");
+gap> InstallPackage("uuid");
 true
-gap> RemovePackage("grpconst", false);
+gap> RemovePackage("uuid", false);
 true
 gap> PKGMAN_CurlIntReqVer := ver;;
 
@@ -443,6 +441,20 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 >   GAPInfo.PackagesInfoInitialized:= false;
 >   InitializePackagesInfoRecords();
 > fi;
+
+# Dependency failure
+gap> InstallPackage("https://github.com/gap-packages/PackageManager/raw/gh-pages/dummy/uuid-too-new.tar.gz");
+#I  Package GAPDoc >= 999.0 unavailable: only version 1.6.1 was found
+#I  Dependencies not satisfied for uuid-0.6
+false
+gap> RemovePackage("uuid", false);
+true
+gap> InstallPackage("https://github.com/gap-packages/PackageManager/raw/gh-pages/dummy/uuid-badname.tar.gz");
+#I  Required package madeuppackage unknown
+#I  Dependencies not satisfied for uuid-0.6
+false
+gap> RemovePackage("uuid", false);
+true
 
 # FINAL TEST
 # (keep this at the end of the file)
