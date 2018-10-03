@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "0.1.0",
-Date := "21/09/2018", # dd/mm/yyyy format
+Version := "0.2.0",
+Date := "03/10/2018", # dd/mm/yyyy format
 
 Persons := [
   rec(
@@ -34,11 +34,11 @@ Persons := [
 
 SourceRepository := rec(
     Type := "git",
-    URL := Concatenation( "https://github.com/mtorpey/", ~.PackageName ),
+    URL := Concatenation( "https://github.com/gap-packages/", ~.PackageName ),
 ),
 IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
 #SupportEmail   := "TODO",
-PackageWWWHome  := "https://mtorpey.github.io/PackageManager/",
+PackageWWWHome  := "https://gap-packages.github.io/PackageManager/",
 PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
 README_URL      := Concatenation( ~.PackageWWWHome, "README.md" ),
 ArchiveURL      := Concatenation( ~.SourceRepository.URL,

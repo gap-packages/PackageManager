@@ -6,10 +6,10 @@
                    [1X Easily download and install [5XGAP[105X packages [101X
   
   
-                                     0.1.0
+                                     0.2.0
   
   
-                               21 September 2018
+                                 3 October 2018
   
   
                                  Michael Torpey

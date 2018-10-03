@@ -50,7 +50,7 @@
 
 <h5>2.1-1 InstallPackage</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackage</code>( <var class="Arg">string</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackage</code>( <var class="Arg">string</var>[, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
 <p>Attempts to download and install a package. The argument <var class="Arg">string</var> should be a string containing one of the following:</p>
@@ -73,7 +73,13 @@
 
 </li>
 </ul>
-<p>The package will then be downloaded and installed in the user's pkg folder at <code class="code">~/.gap/pkg</code>, if possible. If this installation is successful, <code class="keyw">true</code> is returned; otherwise, <code class="keyw">false</code> is returned. To see more information about this process while it is ongoing, see <code class="code">InfoPackageManager</code>.</p>
+<p>The package will then be downloaded and installed, along with any additional packages that are required in order for it to be loaded. If this installation is successful, <code class="keyw">true</code> is returned; otherwise, <code class="keyw">false</code> is returned.</p>
+
+<p>By default, packages will be installed in user's home directory at <code class="code">~/.gap/pkg</code>. Note that this location is not the default user pkg location on Mac OSX, but it will be created on any system if not already present. Note also that starting GAP with the <code class="code">-r</code> flag will cause all packages in this directory to be ignored.</p>
+
+<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <var class="Arg">interactive</var> can be set to <code class="keyw">false</code>.</p>
+
+<p>To see more information about this process while it is ongoing, see <code class="code">InfoPackageManager</code>.</p>
 
 
 <div class="example"><pre>
@@ -99,29 +105,34 @@ true
 <li><p>2 - Problems and directories: also displays directories that were used for package installation or removal</p>
 
 </li>
-<li><p>3 - All: shows step-by-step progress of operations</p>
+<li><p>3 - Progress: also shows step-by-step progress of operations</p>
+
+</li>
+<li><p>4 - All: includes extra information such as whether curlInterface is being used</p>
 
 </li>
 </ul>
-<p>Set this using, for example <code class="code">SetInfoLevel(InfoPackageManager, 3)</code>. Default value is 1.</p>
+<p>Set this using, for example <code class="code">SetInfoLevel(InfoPackageManager, 1)</code>. Default value is 3.</p>
 
 <p><a id="X7D61C07E7AAA7575" name="X7D61C07E7AAA7575"></a></p>
 
 <h5>2.1-3 InstallPackageFromName</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromName</code>( <var class="Arg">name</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromName</code>( <var class="Arg">name</var>[, <var class="Arg">string</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
 <p>Attempts to download and install a package given only its name. Returns <code class="keyw">true</code> if the installation was successful, and <code class="keyw">false</code> otherwise.</p>
+
+<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <var class="Arg">interactive</var> can be set to <code class="keyw">false</code>.</p>
 
 <p><a id="X843B648B855F9C82" name="X843B648B855F9C82"></a></p>
 
 <h5>2.1-4 InstallPackageFromInfo</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromInfo</code>( <var class="Arg">url</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromInfo</code>( <var class="Arg">info</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to download and install a package by downloading its PackageInfo.g from the specified URL. Returns <code class="keyw">true</code> if the installation was successful, and <code class="keyw">false</code> otherwise.</p>
+<p>Attempts to download and install a package from a valid PackageInfo.g file. The argument <var class="Arg">info</var> should be either a valid package info record, or a URL that points to a valid PackageInfo.g file. Returns <code class="keyw">true</code> if the installation was successful, and <code class="keyw">false</code> otherwise.</p>
 
 <p><a id="X7CF49C797835BD49" name="X7CF49C797835BD49"></a></p>
 

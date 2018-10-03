@@ -1,6 +1,6 @@
 name: PackageManager
-version: 0.1.0
-date: 2018-09-21
+version: 0.2.0
+date: 2018-10-03
 description: |
     Easily download and install GAP packages
 
@@ -22,15 +22,14 @@ needed-pkgs:
 suggested-pkgs:
     - name: "curlInterface"
       version: ">= 2.1.0"
-      url: "https://gap-packages.github.io/curlInterface/"
 
-www: https://mtorpey.github.io/PackageManager/
+www: https://gap-packages.github.io/PackageManager/
 readme: README.md
-packageinfo: https://mtorpey.github.io/PackageManager/PackageInfo.g
+packageinfo: https://gap-packages.github.io/PackageManager/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/mtorpey/PackageManager/releases/download/v0.1.0/PackageManager-0.1.0.tar.gz
+      url: https://github.com/gap-packages/PackageManager/releases/download/v0.2.0/PackageManager-0.2.0.tar.gz
 
 abstract: |
 
@@ -41,23 +40,23 @@ citeas: |
     <p class='BibEntry'>
     [<span class='BibKey'>Tor18</span>]   <b class='BibAuthor'>Torpey, M.</b>,
      <i class='BibTitle'>PackageManager, Easily download and install GAP packages,
-             Version 0.1.0</i>
+             Version 0.2.0</i>
      (<span class='BibYear'>2018</span>)<br />
     (<span class='BibNote'>GAP package</span>),
-    <span class='BibHowpublished'><a href="https://mtorpey.github.io/PackageManager/">https://mtorpey.github.io/PackageManager/</a></span>.
+    <span class='BibHowpublished'><a href="https://gap-packages.github.io/PackageManager/">https://gap-packages.github.io/PackageManager/</a></span>.
     </p>
     
 
 bibtex: |
-    @misc{ PackageManager0.1.0,
+    @misc{ PackageManager0.2.0,
       author =           {Torpey, M.},
       title =            {{PackageManager},  Easily  download  and  install  GAP
-                          packages, {V}ersion 0.1.0},
-      month =            {Sep},
+                          packages, {V}ersion 0.2.0},
+      month =            {Oct},
       year =             {2018},
       note =             {GAP package},
-      howpublished =     {\href      {https://mtorpey.github.io/PackageManager/}
-                          {\texttt{https://mtorpey.github.io/}\discretionary
+      howpublished =     {\href {https://gap-packages.github.io/PackageManager/}
+                          {\texttt{https://gap-packages.github.io/}\discretionary
                           {}{}{}\texttt{PackageManager/}}},
       printedkey =       {Tor18}
     }

@@ -19,7 +19,7 @@
   version  of  a  package,  except by providing an explicit URL to the desired
   version.  All  these  features are planned for the future. Any other feature
   requests     can     be     posted     on     the     issue    tracker    at
-  https://github.com/mtorpey/PackageManager/issues.[133X
+  https://github.com/gap-packages/PackageManager/issues.[133X
   
   
   [1X1.3 [33X[0;0YA quick example[133X[101X
