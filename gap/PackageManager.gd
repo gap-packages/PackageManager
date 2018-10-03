@@ -161,3 +161,9 @@ PKGMAN_PackageInfoURLList :=
                 "PackageUpdate/currentPackageInfoURLList");
 PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
                          [ "curl", ["--silent", "-L", "--output", "-"] ] ];
+PKGMAN_CurlIntReqVer :=
+  First(PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages,
+        item -> item[1] = "curlInterface")[2];
+PKGMAN_BuildPackagesScript := Filename(List(GAPInfo.RootPaths, Directory),
+                                       "bin/BuildPackages.sh");
+PKGMAN_MarkedForInstall := [];

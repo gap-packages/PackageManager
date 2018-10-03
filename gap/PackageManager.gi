@@ -280,9 +280,11 @@ function(dir)
   to_install := [];
   Info(InfoPackageManager, 3, "Checking dependencies...");
   for dep in deps do
-    got := (TestPackageAvailability(dep[1], dep[2]) <> fail);
-    Info(InfoPackageManager, 3,
-         "  ", dep[1], " ", dep[2], ": ", got);
+    # Do we have it, or is it being installed?
+    got := (TestPackageAvailability(dep[1], dep[2]) <> fail or
+            ForAny(Filtered(PKGMAN_MarkedForInstall, x -> x[1] = dep[1]),
+                   x -> CompareVersionNumbers(x[2], dep[2])));
+    Info(InfoPackageManager, 3, "  ", dep[1], " ", dep[2], ": ", got);
     if not got then
       Add(to_install, dep);
     fi;
@@ -300,6 +302,7 @@ function(dir)
       return false;
     fi;
     Info(InfoPackageManager, 3, "Installing dependency ", dep[1], "...");
+    Add(PKGMAN_MarkedForInstall, [dep[1], dep_info.Version]);
     if InstallPackageFromInfo(dep_info) <> true then
       return false;
     fi;
@@ -388,7 +391,7 @@ function(dir)
 
   # Check requirements, and prepare command
   pkg_dir := Filename(Directory(dir), "..");
-  scr := Filename(List(GAPInfo.RootPaths, Directory), "bin/BuildPackages.sh");
+  scr := PKGMAN_BuildPackagesScript;
   if scr = fail then
     Info(InfoPackageManager, 1, "No bin/BuildPackages.sh script available");
     return false;
@@ -601,12 +604,10 @@ end);
 
 InstallGlobalFunction(PKGMAN_DownloadURL,
 function(url)
-  local sugg, version, tool, exec;
+  local tool, exec;
 
   # Use curlInterface if available
-  sugg := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;
-  version := First(sugg, item -> item[1] = "curlInterface")[2];
-  if TestPackageAvailability("curlInterface", version) = true then
+  if TestPackageAvailability("curlInterface", PKGMAN_CurlIntReqVer) = true then
     Info(InfoPackageManager, 4, "Using curlInterface to download...");
     return DownloadURL(url);
   fi;

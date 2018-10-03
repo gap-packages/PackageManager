@@ -161,6 +161,10 @@ gap> InstallPackage("sillypackage");
 #I  Package "sillypackage" not found in package list
 false
 
+# InstallPackageFromInfo input failure
+gap> InstallPackageFromInfo(42);
+Error, PackageManager: InstallPackageFromInfo: <info> should be a record or a URL
+
 # InstallPackageFromInfo failure (Remove #E messages after they leave GAP)
 gap> InstallPackage("http://www.nothing.rubbish/PackageInfo.g");
 #I  Unable to download from http://www.nothing.rubbish/PackageInfo.g
@@ -327,13 +331,13 @@ gap> GAPInfo.DirectoriesPrograms := progs;;
 gap> InstallPackage("example", false);
 #I  The newest version of package "example" is already installed
 false
-gap> roots := GAPInfo.RootPaths;;
-gap> GAPInfo.RootPaths := [];;  # also terrible vandalism
+gap> build_scr := PKGMAN_BuildPackagesScript;;
+gap> PKGMAN_BuildPackagesScript := fail;;
 gap> dir := PackageInfo("example")[1].InstallationPath;;
 gap> PKGMAN_CompileDir(dir);
 #I  No bin/BuildPackages.sh script available
 false
-gap> GAPInfo.RootPaths := roots;;
+gap> PKGMAN_BuildPackagesScript := build_scr;;
 
 # PKGMAN_CompileDir error: missing source
 gap> InstallPackage("example");
@@ -345,30 +349,27 @@ true
 gap> PKGMAN_CompileDir(dir);
 #I  Compilation failed (package may still be usable)
 false
-gap> GAPInfo.RootPaths := roots;;
 
 # Missing curlInterface: use wget instead
-gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
-gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
-gap> First(s, item -> item[1] = "curlInterface")[2];
-">= 100.0"
+gap> ver := PKGMAN_CurlIntReqVer;;
+gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
 gap> InstallPackage("qaos");
 true
+gap> RemovePackage("qaos", false);
+true
+gap> PKGMAN_CurlIntReqVer := ver;;
 
 # wget failure
-gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
-gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
-gap> First(s, item -> item[1] = "curlInterface")[2];
-">= 100.0"
+gap> ver := PKGMAN_CurlIntReqVer;;
+gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
 gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
 #I  Could not download from www.gap.rubbish/somepackage.tar.gz
 false
+gap> PKGMAN_CurlIntReqVer := ver;;
 
 # Missing curlInterface: use curl instead
-gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
-gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
-gap> First(s, item -> item[1] = "curlInterface")[2];
-">= 100.0"
+gap> ver := PKGMAN_CurlIntReqVer;;
+gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
 gap> tmp := PKGMAN_DownloadCmds[1];;
 gap> PKGMAN_DownloadCmds[1] := PKGMAN_DownloadCmds[2];;
 gap> PKGMAN_DownloadCmds[2] := tmp;;
@@ -378,6 +379,7 @@ gap> InstallPackage("grpconst");
 true
 gap> RemovePackage("grpconst", false);
 true
+gap> PKGMAN_CurlIntReqVer := ver;;
 
 # Install to existing empty directory
 gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.4"));
@@ -386,24 +388,61 @@ gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.
 true
 
 # curl failure
-gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
-gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
-gap> First(s, item -> item[1] = "curlInterface")[2];
-">= 100.0"
+gap> ver := PKGMAN_CurlIntReqVer;;
+gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
 gap> PKGMAN_DownloadCmds[1][1];
 "curl"
 gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
 #I  Could not download from www.gap.rubbish/somepackage.tar.gz
 false
+gap> PKGMAN_CurlIntReqVer := ver;;
 
 # Missing first command
-gap> s := PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages;;
-gap> First(s, item -> item[1] = "curlInterface")[2] := ">= 100.0";;
-gap> First(s, item -> item[1] = "curlInterface")[2];
-">= 100.0"
+gap> ver := PKGMAN_CurlIntReqVer;;
+gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
 gap> PKGMAN_DownloadCmds[1][1] := "abababaxyz";;
 gap> InstallPackage("crypting");
 true
+gap> PKGMAN_CurlIntReqVer := ver;;
+
+# Installing dependencies
+gap> old_paths := GAPInfo.RootPaths;;
+gap> dir := PKGMAN_PackageDir();;
+gap> dir := dir{[1..Length(dir)-Length("pkg")]};;
+gap> GAPInfo.RootPaths := Immutable([dir]);;
+gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
+gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
+>   GAPInfo.PackagesInfoInitialized = true then
+>   GAPInfo.PackagesInfoInitialized:= false;
+>   InitializePackagesInfoRecords();
+> fi;
+gap> TestPackageAvailability("qaos");
+fail
+gap> TestPackageAvailability("semigroups");
+fail
+gap> TestPackageAvailability("digraphs");
+fail
+gap> TestPackageAvailability("orb");
+fail
+gap> TestPackageAvailability("genss");
+fail
+gap> InstallPackage("semigroups");
+true
+gap> TestPackageAvailability("semigroups") <> fail;
+true
+gap> TestPackageAvailability("digraphs") <> fail;
+true
+gap> TestPackageAvailability("orb") <> fail;
+true
+gap> TestPackageAvailability("genss") <> fail;
+true
+gap> GAPInfo.RootPaths := old_paths;;
+gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
+gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
+>   GAPInfo.PackagesInfoInitialized = true then
+>   GAPInfo.PackagesInfoInitialized:= false;
+>   InitializePackagesInfoRecords();
+> fi;
 
 # FINAL TEST
 # (keep this at the end of the file)
