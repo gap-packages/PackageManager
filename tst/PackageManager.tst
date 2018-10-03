@@ -418,24 +418,28 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 > fi;
 gap> PackageInfo("qaos");
 [  ]
-gap> PackageInfo("cryst");
+gap> PackageInfo("HomalgToCAS");
 [  ]
-gap> PackageInfo("polycyclic");
+gap> PackageInfo("MatricesForHomalg");
 [  ]
-gap> PackageInfo("alnuth");
+gap> PackageInfo("ToolsForHomalg");
 [  ]
-gap> PackageInfo("autpgrp");
+gap> PackageInfo("autodoc");
 [  ]
-gap> InstallPackage("cryst");
+gap> TestPackageAvailability("autodoc");
+fail
+gap> InstallPackage("HomalgToCAS");
 true
-gap> Length(PackageInfo("cryst"));
+gap> Length(PackageInfo("HomalgToCAS"));
 1
-gap> Length(PackageInfo("polycyclic"));
+gap> Length(PackageInfo("MatricesForHomalg"));
 1
-gap> Length(PackageInfo("alnuth"));
+gap> Length(PackageInfo("ToolsForHomalg"));
 1
-gap> Length(PackageInfo("autpgrp"));
+gap> Length(PackageInfo("autodoc"));
 1
+gap> TestPackageAvailability("autodoc") <> fail;
+true
 gap> GAPInfo.RootPaths := old_paths;;
 gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
