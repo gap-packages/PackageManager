@@ -424,10 +424,6 @@ gap> PackageInfo("MatricesForHomalg");
 [  ]
 gap> PackageInfo("ToolsForHomalg");
 [  ]
-gap> PackageInfo("autodoc");
-[  ]
-gap> TestPackageAvailability("autodoc");
-fail
 gap> InstallPackage("HomalgToCAS");
 true
 gap> Length(PackageInfo("HomalgToCAS"));
@@ -436,10 +432,6 @@ gap> Length(PackageInfo("MatricesForHomalg"));
 1
 gap> Length(PackageInfo("ToolsForHomalg"));
 1
-gap> Length(PackageInfo("autodoc"));
-1
-gap> TestPackageAvailability("autodoc") <> fail;
-true
 gap> GAPInfo.RootPaths := old_paths;;
 gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
