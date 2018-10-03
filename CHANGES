@@ -1,4 +1,12 @@
 This file describes changes in the PackageManager package.
 
+0.2.0 (2018-10-03)
+  - Automatically install required dependencies when installing a package
+  - Check whether a newer version of a given package is already installed
+  - Refuse to overwrite an existing package
+  - Log output of failed shell commands such as tar or compilation script
+  - Print more info to the screen (InfoPackageManager is now 3 by default)
+  - Various bug fixes and minor improvements
+
 0.1.0 (2018-09-21)
   - Initial release with InstallPackage, InstallPackageFrom*, and RemovePackage
