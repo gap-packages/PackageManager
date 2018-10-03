@@ -110,13 +110,21 @@ function(name, interactive...)
 end);
 
 InstallGlobalFunction(InstallPackageFromInfo,
-function(url)
-  local info, formats;
+function(info)
+  local formats, url;
+
+  # Check input
+  if not (IsString(info) or IsRecord(info)) then
+    ErrorNoReturn("PackageManager: InstallPackageFromInfo: ",
+                  "<info> should be a record or a URL");
+  fi;
 
   # Get file from URL
-  info := PKGMAN_DownloadPackageInfo(url);
-  if info = fail then
-    return false;
+  if IsString(info) then
+    info := PKGMAN_DownloadPackageInfo(info);
+    if info = fail then
+      return false;
+    fi;
   fi;
 
   # Read the information we want from it
