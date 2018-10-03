@@ -416,26 +416,26 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 >   GAPInfo.PackagesInfoInitialized:= false;
 >   InitializePackagesInfoRecords();
 > fi;
-gap> TestPackageAvailability("qaos");
-fail
-gap> TestPackageAvailability("cryst");
-fail
-gap> TestPackageAvailability("polycyclic");
-fail
-gap> TestPackageAvailability("alnuth");
-fail
-gap> TestPackageAvailability("autpgrp");
-fail
+gap> PackageInfo("qaos");
+[  ]
+gap> PackageInfo("cryst");
+[  ]
+gap> PackageInfo("polycyclic");
+[  ]
+gap> PackageInfo("alnuth");
+[  ]
+gap> PackageInfo("autpgrp");
+[  ]
 gap> InstallPackage("cryst");
 true
-gap> TestPackageAvailability("cryst") <> fail;
-true
-gap> TestPackageAvailability("polycyclic") <> fail;
-true
-gap> TestPackageAvailability("alnuth") <> fail;
-true
-gap> TestPackageAvailability("autpgrp") <> fail;
-true
+gap> Length(PackageInfo("cryst"));
+1
+gap> Length(PackageInfo("polycyclic"));
+1
+gap> Length(PackageInfo("alnuth"));
+1
+gap> Length(PackageInfo("autpgrp"));
+1
 gap> GAPInfo.RootPaths := old_paths;;
 gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
