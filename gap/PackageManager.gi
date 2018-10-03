@@ -198,6 +198,12 @@ function(url)
   fi;
   PKGMAN_RefreshPackageInfo();
 
+  # Install dependencies
+  if PKGMAN_InstallDependencies(dir) <> true then
+    Info(InfoPackageManager, 1, "Dependencies not satisfied for ", topdir);
+    return false;
+  fi;
+
   # Compile
   return PKGMAN_CompileDir(dir);
 end);
@@ -248,6 +254,43 @@ function(url)
   PKGMAN_RefreshPackageInfo();
   return PKGMAN_CompileDir(dir);
   # TODO: compile doc and return PKGMAN_CheckPackage(dir);
+end);
+
+InstallGlobalFunction(PKGMAN_InstallDependencies,
+function(dir)
+  local info, deps, to_install, dep, got, info_urls, dep_info;
+  info := Filename(Directory(dir), "PackageInfo.g");
+  Read(info);
+  info := ShallowCopy(GAPInfo.PackageInfoCurrent);
+  deps := info.Dependencies.NeededOtherPackages;
+  to_install := [];
+  Info(InfoPackageManager, 3, "Checking dependencies...");
+  for dep in deps do
+    got := (TestPackageAvailability(dep[1], dep[2]) <> fail);
+    Info(InfoPackageManager, 3,
+         "  ", dep[1], " ", dep[2], ": ", got);
+    if not got then
+      Add(to_install, dep);
+    fi;
+  od;
+  info_urls := GetPackageURLs();
+  for dep in to_install do
+    if not IsBound(info_urls.(dep[1])) then
+      Info(InfoPackageManager, 1, "Required package ", dep[1], " unknown");
+      return false;
+    fi;
+    dep_info := PKGMAN_DownloadPackageInfo(info_urls.(dep[1]));
+    if not CompareVersionNumbers(dep_info.Version, dep[2]) then
+      Info(InfoPackageManager, 1, "Package ", dep[1], " ", dep[2],
+           " unavailable: only version ", dep_info.Version, " was found");
+      return false;
+    fi;
+    Info(InfoPackageManager, 3, "Installing dependency ", dep[1], "...");
+    if InstallPackageFromInfo(dep_info) <> true then
+      return false;
+    fi;
+  od;
+  return true;
 end);
 
 InstallGlobalFunction(RemovePackage,
@@ -339,7 +382,7 @@ function(dir)
   root := scr{[1 .. Length(scr) - Length("/bin/BuildPackages.sh")]};
 
   # Call the script
-  Info(InfoPackageManager, 3, "Running compilation script...");
+  Info(InfoPackageManager, 3, "Running compilation script on ", dir, " ...");
   exec := PKGMAN_Exec(pkg_dir, Concatenation(root, "/bin/BuildPackages.sh"),
                       "--strict",
                       Concatenation("--with-gaproot=", root),
@@ -356,7 +399,7 @@ end);
 InstallGlobalFunction(PKGMAN_Exec,
 function(dir, cmd, args...)
   local sh, fullcmd, instream, out, outstream, code, logfile;
-  
+
   # Check shell
   sh := Filename( DirectoriesSystemPrograms(), "sh" );
   if sh = fail then

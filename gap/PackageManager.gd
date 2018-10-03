@@ -131,6 +131,7 @@ DeclareGlobalFunction("RemovePackage");
 DeclareGlobalFunction("GetPackageURLs");
 
 # Hidden functions
+DeclareGlobalFunction("PKGMAN_InstallDependencies");
 DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_CompileDir");
 DeclareGlobalFunction("PKGMAN_Exec");
