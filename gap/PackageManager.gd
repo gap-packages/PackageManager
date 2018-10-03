@@ -16,9 +16,16 @@
 #!     * the URL of a mercurial repository, ending in <C>.hg</C>;
 #!     * the URL of a valid <C>PackageInfo.g</C> file.
 #!
-#!   The package will then be downloaded and installed in the user's pkg folder
-#!   at <C>~/.gap/pkg</C>, if possible.  If this installation is successful,
-#!   <K>true</K> is returned; otherwise, <K>false</K> is returned.
+#!   The package will then be downloaded and installed, along with any
+#!   additional packages that are required in order for it to be loaded.  If
+#!   this installation is successful, <K>true</K> is returned; otherwise,
+#!   <K>false</K> is returned.
+#!
+#!   By default, packages will be installed in user's home directory at
+#!   <C>~/.gap/pkg</C>.  Note that this location is not the default user pkg
+#!   location on Mac OSX, but it will be created on any system if not already
+#!   present.  Note also that starting GAP with the <C>-r</C> flag will cause
+#!   all packages in this directory to be ignored.
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell - to avoid this

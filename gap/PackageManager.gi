@@ -228,6 +228,13 @@ function(url)
   fi;
   Info(InfoPackageManager, 3, "Package cloned successfully");
   PKGMAN_RefreshPackageInfo();
+
+  # Install dependencies
+  if PKGMAN_InstallDependencies(dir) <> true then
+    Info(InfoPackageManager, 1, "Dependencies not satisfied for ", dir);
+    return false;
+  fi;
+
   return PKGMAN_CompileDir(dir);
   # TODO: compile doc and return PKGMAN_CheckPackage(dir);
 end);
@@ -252,6 +259,13 @@ function(url)
   fi;
   Info(InfoPackageManager, 3, "Package cloned successfully");
   PKGMAN_RefreshPackageInfo();
+
+  # Install dependencies
+  if PKGMAN_InstallDependencies(dir) <> true then
+    Info(InfoPackageManager, 1, "Dependencies not satisfied for ", dir);
+    return false;
+  fi;
+
   return PKGMAN_CompileDir(dir);
   # TODO: compile doc and return PKGMAN_CheckPackage(dir);
 end);
