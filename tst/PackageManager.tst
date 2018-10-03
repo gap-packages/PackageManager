@@ -46,6 +46,8 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "autpgrp"));
 true
+gap> RemovePackage("autpgrp", false);
+true
 
 # Install a package from a .tar.gz archive
 gap> InstallPackage("https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/mapclass-1.2.tar.gz");
@@ -416,23 +418,23 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 > fi;
 gap> TestPackageAvailability("qaos");
 fail
-gap> TestPackageAvailability("semigroups");
+gap> TestPackageAvailability("cryst");
 fail
-gap> TestPackageAvailability("digraphs");
+gap> TestPackageAvailability("polycyclic");
 fail
-gap> TestPackageAvailability("orb");
+gap> TestPackageAvailability("alnuth");
 fail
-gap> TestPackageAvailability("genss");
+gap> TestPackageAvailability("autpgrp");
 fail
-gap> InstallPackage("semigroups");
+gap> InstallPackage("cryst");
 true
-gap> TestPackageAvailability("semigroups") <> fail;
+gap> TestPackageAvailability("cryst") <> fail;
 true
-gap> TestPackageAvailability("digraphs") <> fail;
+gap> TestPackageAvailability("polycyclic") <> fail;
 true
-gap> TestPackageAvailability("orb") <> fail;
+gap> TestPackageAvailability("alnuth") <> fail;
 true
-gap> TestPackageAvailability("genss") <> fail;
+gap> TestPackageAvailability("autpgrp") <> fail;
 true
 gap> GAPInfo.RootPaths := old_paths;;
 gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
