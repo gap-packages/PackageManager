@@ -378,7 +378,6 @@ function(name, interactive...)
      PKGMAN_AskYesNoQuestion("Really delete directory ", dir, " ?"
                              : default := false) then
     PKGMAN_RemoveDir(dir);
-    PKGMAN_RefreshPackageInfo();
     return true;
   fi;
   Info(InfoPackageManager, 3, "Directory not deleted");
@@ -650,6 +649,7 @@ function(dir)
   if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
     RemoveDirectoryRecursively(dir);
     Info(InfoPackageManager, 2, "Removed directory ", dir);
+    PKGMAN_RefreshPackageInfo();
   fi;
 end);
 
