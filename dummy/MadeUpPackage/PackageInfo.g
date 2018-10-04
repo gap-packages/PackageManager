@@ -10,7 +10,7 @@ SetPackageInfo( rec(
 
 PackageName := "MadeUpPackage",
 Subtitle := "Easily download and install GAP packages",
-Version := "0.2.0",
+Version := "999.0",
 Date := "03/10/2018", # dd/mm/yyyy format
 
 Persons := [
