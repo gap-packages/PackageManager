@@ -151,6 +151,7 @@ DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
 DeclareGlobalFunction("PKGMAN_InsertPackageDirectory");
 DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");
 DeclareGlobalFunction("PKGMAN_DownloadURL");
+DeclareGlobalFunction("PKGMAN_RemoveDir");
 DeclareGlobalFunction("PKGMAN_DownloadPackageInfo");
 
 # Hidden variables

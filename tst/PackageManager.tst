@@ -453,14 +453,10 @@ gap> InstallPackage("https://github.com/gap-packages/PackageManager/raw/gh-pages
 #I  Package GAPDoc >= 999.0 unavailable: only version 1.6.1 was found
 #I  Dependencies not satisfied for uuid-0.6
 false
-gap> RemovePackage("uuid", false);
-true
 gap> InstallPackage("https://github.com/gap-packages/PackageManager/raw/gh-pages/dummy/uuid-badname.tar.gz");
 #I  Required package madeuppackage unknown
 #I  Dependencies not satisfied for uuid-0.6
 false
-gap> RemovePackage("uuid", false);
-true
 gap> InstallPackageFromHg("https://mtorpey@bitbucket.org/mtorpey/uuid");
 #I  Required package MadeUpPackage unknown
 #I  Dependencies not satisfied for uuid

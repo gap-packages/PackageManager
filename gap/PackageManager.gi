@@ -190,10 +190,7 @@ function(url)
 
   # Check validity
   if PKGMAN_CheckPackage(dir) = false then
-    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
-      RemoveDirectoryRecursively(dir);
-      Info(InfoPackageManager, 2, "Removed directory ", dir);
-    fi;
+    PKGMAN_RemoveDir(dir);
     return false;
   fi;
   PKGMAN_RefreshPackageInfo();
@@ -201,6 +198,7 @@ function(url)
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", topdir);
+    PKGMAN_RemoveDir(dir);
     return false;
   fi;
 
@@ -233,20 +231,14 @@ function(url)
   info := Filename(Directory(dir), "PackageInfo.g");
   if not IsReadableFile(info) then
     Info(InfoPackageManager, 1, "Could not find PackageInfo.g");
-    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
-      RemoveDirectoryRecursively(dir);
-      Info(InfoPackageManager, 2, "Removed directory ", dir);
-    fi;
+    PKGMAN_RemoveDir(dir);
     return false;
   fi;
 
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", name);
-    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
-      RemoveDirectoryRecursively(dir);
-      Info(InfoPackageManager, 2, "Removed directory ", dir);
-    fi;
+    PKGMAN_RemoveDir(dir);
     return false;
   fi;
 
@@ -279,20 +271,14 @@ function(url)
   info := Filename(Directory(dir), "PackageInfo.g");
   if not IsReadableFile(info) then
     Info(InfoPackageManager, 1, "Could not find PackageInfo.g");
-    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
-      RemoveDirectoryRecursively(dir);
-      Info(InfoPackageManager, 2, "Removed directory ", dir);
-    fi;
+    PKGMAN_RemoveDir(dir);
     return false;
   fi;
 
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", name);
-    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
-      RemoveDirectoryRecursively(dir);
-      Info(InfoPackageManager, 2, "Removed directory ", dir);
-    fi;
+    PKGMAN_RemoveDir(dir);
     return false;
   fi;
 
@@ -344,7 +330,7 @@ end);
 
 InstallGlobalFunction(RemovePackage,
 function(name, interactive...)
-  local user_pkg_dir, allinfo, info, dir, result;
+  local user_pkg_dir, allinfo, info, dir;
 
   # Check input
   if not IsString(name) then
@@ -391,12 +377,9 @@ function(name, interactive...)
   if interactive = false or
      PKGMAN_AskYesNoQuestion("Really delete directory ", dir, " ?"
                              : default := false) then
-    if StartsWith(dir, user_pkg_dir) and dir <> user_pkg_dir then # paranoia
-      result := RemoveDirectoryRecursively(dir);
-    fi;
-    Info(InfoPackageManager, 3, "Directory ", dir, " deleted");
+    PKGMAN_RemoveDir(dir);
     PKGMAN_RefreshPackageInfo();
-    return result;
+    return true;
   fi;
   Info(InfoPackageManager, 3, "Directory not deleted");
   return false;
@@ -659,6 +642,15 @@ function(url)
   od;
 
   return rec(success := false, error := "no download method is available");
+end);
+
+InstallGlobalFunction(PKGMAN_RemoveDir,
+function(dir)
+  # this 'if' statement is a paranoid check - it should always be true
+  if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
+    RemoveDirectoryRecursively(dir);
+    Info(InfoPackageManager, 2, "Removed directory ", dir);
+  fi;
 end);
 
 InstallGlobalFunction(PKGMAN_DownloadPackageInfo,
