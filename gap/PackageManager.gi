@@ -210,7 +210,7 @@ end);
 
 InstallGlobalFunction(InstallPackageFromGit,
 function(url)
-  local name, dir, exec;
+  local name, dir, exec, info;
   name := PKGMAN_NameOfGitRepo(url);
   if name = fail then
     Info(InfoPackageManager, 1, "Could not find repository name (bad URL?)");
@@ -229,9 +229,24 @@ function(url)
   Info(InfoPackageManager, 3, "Package cloned successfully");
   PKGMAN_RefreshPackageInfo();
 
+  # Check for PackageInfo.g
+  info := Filename(Directory(dir), "PackageInfo.g");
+  if not IsReadableFile(info) then
+    Info(InfoPackageManager, 1, "Could not find PackageInfo.g");
+    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
+      RemoveDirectoryRecursively(dir);
+      Info(InfoPackageManager, 2, "Removed directory ", dir);
+    fi;
+    return false;
+  fi;
+
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
-    Info(InfoPackageManager, 1, "Dependencies not satisfied for ", dir);
+    Info(InfoPackageManager, 1, "Dependencies not satisfied for ", name);
+    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
+      RemoveDirectoryRecursively(dir);
+      Info(InfoPackageManager, 2, "Removed directory ", dir);
+    fi;
     return false;
   fi;
 
@@ -241,7 +256,7 @@ end);
 
 InstallGlobalFunction(InstallPackageFromHg,
 function(url)
-  local name, dir, exec;
+  local name, dir, exec, info;
   name := PKGMAN_NameOfHgRepo(url);
   if name = fail then
     Info(InfoPackageManager, 1, "Could not find repository name (bad URL?)");
@@ -260,9 +275,24 @@ function(url)
   Info(InfoPackageManager, 3, "Package cloned successfully");
   PKGMAN_RefreshPackageInfo();
 
+  # Check for PackageInfo.g
+  info := Filename(Directory(dir), "PackageInfo.g");
+  if not IsReadableFile(info) then
+    Info(InfoPackageManager, 1, "Could not find PackageInfo.g");
+    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
+      RemoveDirectoryRecursively(dir);
+      Info(InfoPackageManager, 2, "Removed directory ", dir);
+    fi;
+    return false;
+  fi;
+
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
-    Info(InfoPackageManager, 1, "Dependencies not satisfied for ", dir);
+    Info(InfoPackageManager, 1, "Dependencies not satisfied for ", name);
+    if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
+      RemoveDirectoryRecursively(dir);
+      Info(InfoPackageManager, 2, "Removed directory ", dir);
+    fi;
     return false;
   fi;
 

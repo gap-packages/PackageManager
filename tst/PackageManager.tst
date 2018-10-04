@@ -40,6 +40,14 @@ gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
 #I  Package already installed at target location
 false
 
+# Repositories that don't contain GAP packages
+gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git");
+#I  Could not find PackageInfo.g
+false
+gap> InstallPackageFromHg("https://bitbucket.org/mtorpey/lowindex");
+#I  Could not find PackageInfo.g
+false
+
 # Install a package from a PackageInfo.g URL (includes redirect)
 gap> InstallPackage("https://gap-packages.github.io/autpgrp/PackageInfo.g");
 true
@@ -453,6 +461,14 @@ gap> InstallPackage("https://github.com/gap-packages/PackageManager/raw/gh-pages
 false
 gap> RemovePackage("uuid", false);
 true
+gap> InstallPackageFromHg("https://mtorpey@bitbucket.org/mtorpey/uuid");
+#I  Required package MadeUpPackage unknown
+#I  Dependencies not satisfied for uuid
+false
+gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git");
+#I  Required package MadeUpPackage unknown
+#I  Dependencies not satisfied for uuid
+false
 
 # FINAL TEST
 # (keep this at the end of the file)
