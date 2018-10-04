@@ -18,7 +18,7 @@ Example invocations:
 
     gap> RemovePackage("semigroups");
 
-By default, very little information is printed to the screen.  To see more
-verbose information, try using:
+By default, verbose information about a command's progress is printed to the
+screen.  To see less of this information, try using:
 
-    gap> SetInfoLevel(InfoPackageManager, 3);
+    gap> SetInfoLevel(InfoPackageManager, 1);
