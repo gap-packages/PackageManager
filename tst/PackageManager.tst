@@ -466,6 +466,19 @@ gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git");
 #I  Dependencies not satisfied for uuid
 false
 
+# Fail to install a dependency (sabotaged PackageInfoURLList)
+gap> urllist := PKGMAN_PackageInfoURLList;;
+gap> PKGMAN_PackageInfoURLList :=
+> "https://gap-packages.github.io/PackageManager/dummy/badurls.txt";;
+gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git");
+#I  Could not inspect tarball contents
+#I  Dependencies not satisfied for uuid
+false
+gap> PKGMAN_PackageInfoURLList := urllist;;
+gap> RemovePackage("uuid");
+#I  Package "uuid" not installed in user package directory
+false
+
 # FINAL TEST
 # (keep this at the end of the file)
 gap> PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg/"));
