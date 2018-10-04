@@ -1,1 +1,1 @@
-MadeUpPackage http://www.madeupurl.thatdoesntexist/MadeUpPackage/PackageInfo.g
+MadeUpPackage https://gap-packages.github.io/PackageManager/dummy/MadeUpPackage/PackageInfo.g
