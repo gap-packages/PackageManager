@@ -449,11 +449,11 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 > fi;
 
 # Dependency failure
-gap> InstallPackage("https://github.com/gap-packages/PackageManager/raw/gh-pages/dummy/uuid-too-new.tar.gz");
+gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-too-new.tar.gz");
 #I  Package GAPDoc >= 999.0 unavailable: only version 1.6.1 was found
 #I  Dependencies not satisfied for uuid-0.6
 false
-gap> InstallPackage("https://github.com/gap-packages/PackageManager/raw/gh-pages/dummy/uuid-badname.tar.gz");
+gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-badname.tar.gz");
 #I  Required package madeuppackage unknown
 #I  Dependencies not satisfied for uuid-0.6
 false
