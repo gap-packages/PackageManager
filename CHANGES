@@ -1,5 +1,10 @@
 This file describes changes in the PackageManager package.
 
+0.2.1 (2018-10-04)
+  - Update documentation
+  - Handle dependencies better for cloned repositories
+  - Remove packages after failed installation
+
 0.2.0 (2018-10-03)
   - Automatically install required dependencies when installing a package
   - Check whether a newer version of a given package is already installed
