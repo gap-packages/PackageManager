@@ -131,10 +131,10 @@ gap> Print(InputTextUser, "\n");
 function (  )
     return InputTextFile( "*stdin*" );
 end
-gap> Print(Print, "\n");
-function ( args... )
-    <<kernel code>> from src/streams.c:Print
-end
+gap> Print = oldPrint;
+true
+gap> Print = newPrint;
+false
 
 # Installing multiple versions
 gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6/grpconst-2.6.tar.gz");
