@@ -58,10 +58,10 @@ gap> RemovePackage("autpgrp", false);
 true
 
 # Install a package from a .tar.gz archive
-gap> InstallPackage("https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/mapclass-1.2.tar.gz");
+gap> InstallPackage("https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/MapClass-1.4.3.tar.gz");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "mapclass"));
+>           f -> StartsWith(LowercaseString(f), "mapclass"));
 true
 
 # RemovePackage failure
