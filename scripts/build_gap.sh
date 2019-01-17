@@ -37,9 +37,6 @@ make bootstrap-pkg-full WGET="wget -N --no-check-certificate --tries=5 --waitret
 # directly call BuildPackages.sh from .travis.yml. For an example of the
 # former, take a look at the cvec package.
 cd pkg
-# TODO: TEMPORARY EDIT - REVERT ONCE curlInterface-2.1.0 IS DISTRIBUTED
-rm -r curlInterface*
-git clone https://github.com/gap-packages/curlInterface
 for pkg in ${GAP_PKGS_TO_BUILD-io profiling}; do
     ../bin/BuildPackages.sh --strict $pkg*
 done
