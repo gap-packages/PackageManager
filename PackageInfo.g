@@ -12,6 +12,7 @@ PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
 Version := "0.2.1",
 Date := "04/10/2018", # dd/mm/yyyy format
+License := "GPL-2.0-or-later",
 
 Persons := [
   rec(
