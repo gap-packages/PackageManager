@@ -2,7 +2,7 @@
 
 @Section What does the PackageManager package do?
 
-This package provides the ability to install or remove a packages using a single
+This package provides the ability to install or remove a package using a single
 command: <Ref Func="InstallPackage" /> or <Ref Func="RemovePackage" />.  The
 user can specify a package to install using its name, or using a URL to an
 archive, a repository, or a <C>PackageInfo.g</C> file.  When installing,
