@@ -70,7 +70,7 @@ SetInfoLevel(InfoPackageManager, 3);
 #!   confirmed by the user via an interactive shell - to avoid this
 #!   interactivity and use sane defaults instead, the optional second argument
 #!   <A>interactive</A> can be set to <K>false</K>.
-#! @Arguments name[, string]
+#! @Arguments name[, interactive]
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromName");
