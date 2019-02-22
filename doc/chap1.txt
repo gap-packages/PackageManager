@@ -4,7 +4,7 @@
   
   [1X1.1 [33X[0;0YWhat does the PackageManager package do?[133X[101X
   
-  [33X[0;0YThis  package  provides  the ability to install or remove a packages using a
+  [33X[0;0YThis  package  provides  the  ability to install or remove a package using a
   single  command:  [2XInstallPackage[102X  ([14X2.1-1[114X) or [2XRemovePackage[102X ([14X2.2-1[114X). The user
   can  specify  a  package  to  install  using  its name, or using a URL to an
   archive,   a   repository,   or   a  [10XPackageInfo.g[110X  file.  When  installing,
