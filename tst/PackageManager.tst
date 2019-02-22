@@ -416,7 +416,11 @@ gap> PKGMAN_CurlIntReqVer := ver;;
 # Installing dependencies
 gap> old_paths := GAPInfo.RootPaths;;
 gap> dir := PKGMAN_PackageDir();;
-gap> dir := dir{[1..Length(dir)-Length("pkg")]};;
+gap> dir := SplitString(dir, "/");;
+gap> Remove(dir) = "pkg";
+true
+gap> dir := JoinStringsWithSeparator(dir, "/");;
+gap> dir := Concatenation(dir, "/");;
 gap> GAPInfo.RootPaths := Immutable([dir]);;
 gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
