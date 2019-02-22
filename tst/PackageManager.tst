@@ -438,12 +438,10 @@ gap> PackageInfo("ToolsForHomalg");
 [  ]
 gap> InstallPackage("HomalgToCAS");
 true
-gap> Length(PackageInfo("HomalgToCAS"));
-1
-gap> Length(PackageInfo("MatricesForHomalg"));
-1
-gap> Length(PackageInfo("ToolsForHomalg"));
-1
+gap> ForAll(["HomalgToCAS", "MatricesForHomalg", "ToolsForHomalg"],
+>           name -> Length(PackageInfo(name)) = 1 or
+>                   IsPackageLoaded(LowercaseString(name)));
+true
 gap> GAPInfo.RootPaths := old_paths;;
 gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
