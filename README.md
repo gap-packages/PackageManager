@@ -6,7 +6,7 @@ The GAP 4 package "PackageManager"
 
 A basic collection of simple functions for installing and removing GAP packages,
 with the eventual aim of becoming a full pip-style package manager for the GAP
-language.
+system.
 
 Example invocations:
 
