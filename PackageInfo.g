@@ -58,7 +58,11 @@ ArchiveFormats := ".tar.gz",
 ##
 Status := "dev",
 
-AbstractHTML := "",
+AbstractHTML :=
+  "<span class=\"pkgname\">PackageManager</span> is a basic collection of \
+   simple functions for installing and removing \
+   <span class=\"pkgname\">GAP</span> packages, with the eventual aim of \
+   becoming a full pip-style package manager for the GAP system.",
 
 PackageDoc := rec(
   BookName  := "PackageManager",
