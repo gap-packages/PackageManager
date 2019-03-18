@@ -62,7 +62,8 @@ AbstractHTML :=
   "<span class=\"pkgname\">PackageManager</span> is a basic collection of \
    simple functions for installing and removing \
    <span class=\"pkgname\">GAP</span> packages, with the eventual aim of \
-   becoming a full pip-style package manager for the GAP system.",
+   becoming a full pip-style package manager for the \
+   <span class=\"pkgname\">GAP</span> system.",
 
 PackageDoc := rec(
   BookName  := "PackageManager",
