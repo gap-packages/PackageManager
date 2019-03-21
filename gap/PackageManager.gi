@@ -207,8 +207,17 @@ function(url)
 end);
 
 InstallGlobalFunction(InstallPackageFromGit,
-function(url)
+function(url, branch...)
   local name, dir, exec, info;
+  if Length(branch) = 0 then
+    branch := fail;
+  elif Length(branch) = 1 then
+    branch := branch[1];
+  else
+    ErrorNoReturn("PackageManager: InstallPackageFromGit: ",
+                  "requires 1 or 2 arguments (not ",
+                  Length(branch) + 1, ")");
+  fi;
   name := PKGMAN_NameOfGitRepo(url);
   if name = fail then
     Info(InfoPackageManager, 1, "Could not find repository name (bad URL?)");
@@ -219,7 +228,13 @@ function(url)
     return false;
   fi;
   Info(InfoPackageManager, 2, "Cloning to ", dir, " ...");
-  exec := PKGMAN_Exec(".", "git", "clone", url, dir);
+
+  if branch = fail then
+    exec := PKGMAN_Exec(".", "git", "clone", url, dir);
+  else
+    exec := PKGMAN_Exec(".", "git", "clone", url, dir, "-b", branch);
+  fi;
+
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Cloning unsuccessful");
     return false;

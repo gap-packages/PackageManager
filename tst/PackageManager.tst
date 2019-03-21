@@ -30,6 +30,15 @@ gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMD
 #I  Package already installed at target location
 false
 
+# Install a package from a git repository by branch
+gap> InstallPackageFromGit("https://github.com/gap-packages/qaos.git", "master");
+true
+gap> RemovePackage("qaos", false);
+true
+gap> InstallPackageFromGit("git@github.com:gap-packages/orb.git", "fiaenfq");
+#I  Cloning unsuccessful
+false
+
 # Install a package from a Mercurial repository not ending in .hg
 gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
 true
