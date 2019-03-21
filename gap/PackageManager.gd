@@ -11,7 +11,8 @@
 #!   Attempts to download and install a package.  The argument <A>string</A>
 #!   should be a string containing one of the following:
 #!     * the name of a package;
-#!     * the URL of a package archive, ending in <C>.tar.gz</C>;
+#!     * the URL of a package archive, ending in <C>.tar.gz</C>
+#!       or <C>.tar.bz2</C>;
 #!     * the URL of a git repository, ending in <C>.git</C>;
 #!     * the URL of a mercurial repository, ending in <C>.hg</C>;
 #!     * the URL of a valid <C>PackageInfo.g</C> file.
@@ -168,6 +169,7 @@ PKGMAN_PackageInfoURLList :=
   Concatenation("https://raw.githubusercontent.com/gap-system/",
                 "gap-distribution/master/DistributionUpdate/",
                 "PackageUpdate/currentPackageInfoURLList");
+PKGMAN_ArchiveFormats := [".tar.gz", ".tar.bz2"];
 PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
                          [ "curl", ["--silent", "-L", "--output", "-"] ] ];
 PKGMAN_CurlIntReqVer :=

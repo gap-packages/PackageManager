@@ -49,7 +49,7 @@ function(string, interactive...)
 
   # Call the appropriate function
   NormalizeWhitespace(string);
-  if EndsWith(string, ".tar.gz") then
+  if ForAny(PKGMAN_ArchiveFormats, ext -> EndsWith(string, ext)) then
     return InstallPackageFromArchive(string);
   elif EndsWith(string, ".git") then
     return InstallPackageFromGit(string);
@@ -111,7 +111,7 @@ end);
 
 InstallGlobalFunction(InstallPackageFromInfo,
 function(info)
-  local formats, url;
+  local formats, format, url;
 
   # Check input
   if not (IsString(info) or IsRecord(info)) then
@@ -129,13 +129,14 @@ function(info)
 
   # Read the information we want from it
   formats := SplitString(info.ArchiveFormats, "", ", \n\r\t");
-  if not ".tar.gz" in formats then
-    # TODO: support other formats
-    Info(InfoPackageManager, 1, "No .tar.gz available, so could not install");
+  format := First(PKGMAN_ArchiveFormats, f -> f in formats);
+  if format = fail then
+    Info(InfoPackageManager, 1,
+         "No supported archive formats available, so could not install");
     Info(InfoPackageManager, 1, "Only ", formats, " available");
     return false;
   fi;
-  url := Concatenation(info.ArchiveURL, ".tar.gz");
+  url := Concatenation(info.ArchiveURL, format);
 
   # Download the archive
   return InstallPackageFromArchive(url);
