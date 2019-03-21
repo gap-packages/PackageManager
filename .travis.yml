@@ -4,6 +4,8 @@ env:
   global:
     - GAPROOT=gaproot
     - COVDIR=coverage
+    - GAP_BOOTSTRAP=minimal
+    - GAP_PKGS_TO_CLONE="json io profiling curlInterface"
     - GAP_PKGS_TO_BUILD="json io profiling curlInterface"
 
 branches:
