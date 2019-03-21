@@ -250,7 +250,7 @@ ps:// or ftp://
 #I  Invalid PackageInfo.g file
 false
 gap> InstallPackage("nilmat");
-#I  No .tar.gz available, so could not install
+#I  No supported archive formats available, so could not install
 #I  Only [ ".zip" ] available
 false
 
