@@ -111,7 +111,11 @@ DeclareGlobalFunction("InstallPackageFromGit");
 #!   Attempts to download and install a package from a Mercurial repository
 #!   located at the given URL.  Returns <K>true</K> if the installation was
 #!   successful, and <K>false</K> otherwise.
-#! @Arguments url
+#!
+#!   If the optional string argument <A>branch</A> is specified, this function
+#!   will install the branch with this name.  Otherwise, the repository's
+#!   default branch will be used.
+#! @Arguments url[, branch]
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromHg");

@@ -48,6 +48,26 @@ true
 gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
 #I  Package already installed at target location
 false
+gap> RemovePackage("forms", false);
+true
+gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+>           f -> StartsWith(f, "forms"));
+false
+
+# Install a package from a Mercurial repository by branch
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "default");
+true
+gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+>           f -> StartsWith(f, "forms"));
+true
+gap> RemovePackage("forms", false);
+true
+gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+>           f -> StartsWith(f, "forms"));
+false
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "qfnoiq3eg");
+#I  Cloning unsuccessful
+false
 
 # Repositories that don't contain GAP packages
 gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git");
