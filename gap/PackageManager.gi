@@ -359,6 +359,17 @@ function(dir)
   return true;
 end);
 
+InstallGlobalFunction(InstallRequiredPackages,
+function()
+  local pkg;
+  for pkg in List(GAPInfo.Dependencies.NeededOtherPackages, l -> l[1]) do
+    if not InstallPackage(pkg) then
+      return false;
+    fi;
+  od;
+  return true;
+end);
+
 InstallGlobalFunction(RemovePackage,
 function(name, interactive...)
   local user_pkg_dir, allinfo, info, dir;

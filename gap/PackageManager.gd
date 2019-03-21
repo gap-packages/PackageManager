@@ -121,6 +121,22 @@ DeclareGlobalFunction("InstallPackageFromGit");
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromHg");
 
+#! @Description
+#!   Attempts to download and install the latest versions of all packages
+#!   required for GAP to run.  Currently these packages are GAPDoc, primgrp,
+#!   SmallGrp, and transgrp.  Returns <K>true</K> if the installation was
+#!   successful, and <K>false</K> otherwise.
+#!
+#!   Clearly, since these packages are required for GAP to run, they must be
+#!   loaded before this function can be executed.  However, this function
+#!   installs the packages in the <C>~/.gap/pkg</C> directory, so that they can
+#!   be managed by PackageManager in the future, and are available for other GAP
+#!   installations on the machine.
+#! @Arguments
+#! @Returns
+#!   true or false
+DeclareGlobalFunction("InstallRequiredPackages");
+
 #! @Section Removing packages
 
 #! @Description

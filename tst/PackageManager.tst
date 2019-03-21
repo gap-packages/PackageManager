@@ -13,6 +13,27 @@ gap> RemovePackage("matgrp");
 #I  Package "matgrp" not installed in user package directory
 false
 
+# Install GAP's required packages
+gap> InstallRequiredPackages();
+true
+gap> conts := DirectoryContents(PKGMAN_PackageDir());;
+gap> ForAny(conts, f -> StartsWith(f, "primgrp"));
+true
+gap> ForAny(conts, f -> StartsWith(f, "SmallGrp"));
+true
+gap> ForAny(conts, f -> StartsWith(f, "transgrp"));
+true
+gap> ForAny(conts, f -> StartsWith(f, "GAPDoc"));
+true
+gap> RemovePackage("primgrp", false);
+true
+gap> RemovePackage("SmallGrp", false);
+true
+gap> RemovePackage("transgrp", false);
+true
+gap> RemovePackage("GAPDoc", false);
+true
+
 # Install a package from a git repository
 gap> InstallPackage("https://github.com/gap-packages/Example.git");
 true
