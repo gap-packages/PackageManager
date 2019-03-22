@@ -61,6 +61,10 @@ gap> InstallPackageFromGit("git@github.com:gap-packages/orb.git", "fiaenfq");
 false
 
 # Install a package from a Mercurial repository not ending in .hg
+gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()),
+>              f -> StartsWith(f, "forms")) then
+>   RemovePackage("forms", false);
+> fi;
 gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
