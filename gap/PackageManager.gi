@@ -284,7 +284,7 @@ function(url, branch...)
     return false;
   fi;
   Info(InfoPackageManager, 2, "Cloning to ", dir, " ...");
-  
+
   if branch = fail then
     exec := PKGMAN_Exec(".", "hg", "clone", url, dir);
   else
@@ -319,13 +319,14 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallDependencies,
 function(dir)
-  local info, deps, to_install, dep, got, info_urls, dep_info;
+  local info, deps, to_install, dep, got, info_urls, infos_to_install, dep_info;
   info := Filename(Directory(dir), "PackageInfo.g");
   Read(info);
   info := ShallowCopy(GAPInfo.PackageInfoCurrent);
   deps := info.Dependencies.NeededOtherPackages;
   to_install := [];
-  Info(InfoPackageManager, 3, "Checking dependencies...");
+  Info(InfoPackageManager, 3,
+       "Checking dependencies for ", info.PackageName, "...");
   for dep in deps do
     # Do we have it, or is it being installed?
     got := (TestPackageAvailability(dep[1], dep[2]) <> fail or
@@ -339,6 +340,7 @@ function(dir)
     fi;
   od;
   info_urls := GetPackageURLs();
+  infos_to_install := [];
   for dep in to_install do
     if not IsBound(info_urls.(LowercaseString(dep[1]))) then
       Info(InfoPackageManager, 1, "Required package ", dep[1], " unknown");
@@ -350,8 +352,13 @@ function(dir)
            " unavailable: only version ", dep_info.Version, " was found");
       return false;
     fi;
-    Info(InfoPackageManager, 3, "Installing dependency ", dep[1], "...");
+    Add(infos_to_install, dep_info);
     Add(PKGMAN_MarkedForInstall, [dep[1], dep_info.Version]);
+  od;
+  for dep_info in infos_to_install do
+    Info(InfoPackageManager, 3, "Installing dependency ",
+         dep_info.PackageName, " ", dep_info.Version, " ...");
+    # TODO: make this less recursive and more like APT
     if InstallPackageFromInfo(dep_info) <> true then
       return false;
     fi;
