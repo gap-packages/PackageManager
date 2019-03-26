@@ -14,7 +14,7 @@
   
   [30X    [33X[0;6Ythe name of a package;[133X
   
-  [30X    [33X[0;6Ythe URL of a package archive, ending in [10X.tar.gz[110X;[133X
+  [30X    [33X[0;6Ythe URL of a package archive, ending in [10X.tar.gz[110X or [10X.tar.bz2[110X;[133X
   
   [30X    [33X[0;6Ythe URL of a git repository, ending in [10X.git[110X;[133X
   
@@ -102,21 +102,45 @@
   
   [1X2.1-6 InstallPackageFromGit[101X
   
-  [33X[1;0Y[29X[2XInstallPackageFromGit[102X( [3Xurl[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XInstallPackageFromGit[102X( [3Xurl[103X[, [3Xbranch[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
   
   [33X[0;0YAttempts  to download and install a package from a git repository located at
   the  given  URL.  Returns [9Xtrue[109X if the installation was successful, and [9Xfalse[109X
   otherwise.[133X
   
+  [33X[0;0YIf  the  optional  string  argument  [3Xbranch[103X is specified, this function will
+  install  the  branch  with  this  name.  Otherwise, the repository's default
+  branch will be used.[133X
+  
   [1X2.1-7 InstallPackageFromHg[101X
   
-  [33X[1;0Y[29X[2XInstallPackageFromHg[102X( [3Xurl[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XInstallPackageFromHg[102X( [3Xurl[103X[, [3Xbranch[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
   
   [33X[0;0YAttempts  to  download  and  install  a  package from a Mercurial repository
   located  at  the given URL. Returns [9Xtrue[109X if the installation was successful,
   and [9Xfalse[109X otherwise.[133X
+  
+  [33X[0;0YIf  the  optional  string  argument  [3Xbranch[103X is specified, this function will
+  install  the  branch  with  this  name.  Otherwise, the repository's default
+  branch will be used.[133X
+  
+  [1X2.1-8 InstallRequiredPackages[101X
+  
+  [33X[1;0Y[29X[2XInstallRequiredPackages[102X(  ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to  download  and  install  the  latest  versions  of all packages
+  required  for  GAP  to  run.  Currently  these packages are GAPDoc, primgrp,
+  SmallGrp, and transgrp. Returns [9Xtrue[109X if the installation was successful, and
+  [9Xfalse[109X otherwise.[133X
+  
+  [33X[0;0YClearly,  since  these  packages  are  required for GAP to run, they must be
+  loaded before this function can be executed. However, this function installs
+  the  packages  in  the  [10X~/.gap/pkg[110X directory, so that they can be managed by
+  PackageManager  in the future, and are available for other GAP installations
+  on the machine.[133X
   
   
   [1X2.2 [33X[0;0YRemoving packages[133X[101X

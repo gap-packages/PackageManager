@@ -6,10 +6,10 @@
                    [1X Easily download and install [5XGAP[105X packages [101X
   
   
-                                     0.2.3
+                                      0.3
   
   
-                                22 February 2019
+                                 26 March 2019
   
   
                                  Michael Torpey
@@ -45,6 +45,7 @@
       2.1-5 InstallPackageFromArchive
       2.1-6 InstallPackageFromGit
       2.1-7 InstallPackageFromHg
+      2.1-8 InstallRequiredPackages
     2.2 [33X[0;0YRemoving packages[133X
       2.2-1 RemovePackage
   

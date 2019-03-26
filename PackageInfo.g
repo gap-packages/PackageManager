@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "0.2.3",
-Date := "22/02/2019", # dd/mm/yyyy format
+Version := "0.3",
+Date := "26/03/2019", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -58,7 +58,12 @@ ArchiveFormats := ".tar.gz",
 ##
 Status := "dev",
 
-AbstractHTML := "",
+AbstractHTML :=
+  "<span class=\"pkgname\">PackageManager</span> is a basic collection of \
+   simple functions for installing and removing \
+   <span class=\"pkgname\">GAP</span> packages, with the eventual aim of \
+   becoming a full pip-style package manager for the \
+   <span class=\"pkgname\">GAP</span> system.",
 
 PackageDoc := rec(
   BookName  := "PackageManager",

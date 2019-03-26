@@ -6,9 +6,11 @@ The GAP 4 package "PackageManager"
 
 A basic collection of simple functions for installing and removing GAP packages,
 with the eventual aim of becoming a full pip-style package manager for the GAP
-language.
+system.
 
 Example invocations:
+
+    gap> LoadPackage("PackageManager");
 
     gap> InstallPackage("digraphs");
 
@@ -22,3 +24,9 @@ By default, verbose information about a command's progress is printed to the
 screen.  To see less of this information, try using:
 
     gap> SetInfoLevel(InfoPackageManager, 1);
+
+For more information on the features of PackageManager, see the documentation at
+https://gap-packages.github.io/PackageManager/doc/chap1.html
+or enter GAP and call, for example,
+
+    gap> ?InstallPackage
