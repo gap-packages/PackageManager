@@ -215,7 +215,7 @@ function(url, branch...)
   elif Length(branch) = 1 then
     branch := branch[1];
   else
-    ErrorNoReturn("PackageManager: InstallPackageFromGit: ",
+    ErrorNoReturn("PackageManager: InstallPackageFromGit:\n",
                   "requires 1 or 2 arguments (not ",
                   Length(branch) + 1, ")");
   fi;
