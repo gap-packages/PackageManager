@@ -1,5 +1,11 @@
 This file describes changes in the PackageManager package.
 
+0.3 (2019-03-26)
+  - Introduce InstallRequiredPackages to install the packages required by GAP
+  - Allow a branch name to be declared in InstallPackageFromGit/Hg
+  - Support .tar.bz2 archives
+  - Add an abstract
+
 0.2.3 (2019-02-22)
   - Adjust tests to allow for more loaded packages
 
