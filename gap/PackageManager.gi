@@ -562,7 +562,7 @@ InstallGlobalFunction(PKGMAN_RefreshPackageInfo,
 function()
   GAPInfo.PackagesInfoInitialized := false;
   InitializePackagesInfoRecords();
-  Info(InfoPackageManager, 3, "Reloaded all package info records");
+  Info(InfoPackageManager, 4, "Reloaded all package info records");
 end);
 
 InstallGlobalFunction(PKGMAN_PackageDir,
