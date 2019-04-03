@@ -34,6 +34,16 @@ true
 gap> RemovePackage("GAPDoc", false);
 true
 
+# Fail to install a GAP required package
+gap> backup := GAPInfo.Dependencies.NeededOtherPackages;;
+gap> needed := ShallowCopy(backup);;
+gap> Add(needed, ["packagethatgaptotallyneeds", ">= 2.0"], 1);
+gap> GAPInfo.Dependencies := rec(NeededOtherPackages := needed);;
+gap> InstallRequiredPackages();
+#I  Package "packagethatgaptotallyneeds" not found in package list
+false
+gap> GAPInfo.Dependencies := rec(NeededOtherPackages := backup);;
+
 # Install a package from a git repository
 gap> InstallPackage("https://github.com/gap-packages/Example.git");
 true
@@ -52,13 +62,16 @@ gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMD
 false
 
 # Install a package from a git repository by branch
-gap> InstallPackageFromGit("https://github.com/gap-packages/qaos.git", "master");
+gap> InstallPackageFromGit("https://github.com/gap-packages/MathInTheMiddle.git", "master");
 true
-gap> RemovePackage("qaos", false);
+gap> RemovePackage("MathInTheMiddle", false);
 true
-gap> InstallPackageFromGit("git@github.com:gap-packages/orb.git", "fiaenfq");
+gap> InstallPackageFromGit("https://github.com/gap-packages/orb.git", "fiaenfq");
 #I  Cloning unsuccessful
 false
+gap> InstallPackageFromGit("https://github.com/gap-packages/orb.git", "master", true);
+Error, PackageManager: InstallPackageFromGit:
+requires 1 or 2 arguments (not 3)
 
 # Install a package from a Mercurial repository not ending in .hg
 gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()),
@@ -93,6 +106,8 @@ false
 gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "qfnoiq3eg");
 #I  Cloning unsuccessful
 false
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "default", true);
+Error, PackageManager: InstallPackageFromHg: requires 1 or 2 arguments (not 3)
 
 # Repositories that don't contain GAP packages
 gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git");
@@ -213,9 +228,9 @@ gap> PKGMAN_PackageInfoURLList := default_url;;
 # InstallPackage input failure
 gap> InstallPackage(3);
 Error, PackageManager: InstallPackage: <string> must be a string
-gap> InstallPackage("qaos", "yes");
+gap> InstallPackage("semigroups", "yes");
 Error, PackageManager: InstallPackage: <interactive> must be true or false
-gap> InstallPackage("qaos", "yes", "actually no");
+gap> InstallPackage("semigroups", "yes", "actually no");
 Error, PackageManager: InstallPackage: requires 1 or 2 arguments (not 3)
 
 # InstallPackageFromName failure
@@ -415,9 +430,9 @@ false
 # Missing curlInterface: use wget instead
 gap> ver := PKGMAN_CurlIntReqVer;;
 gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
-gap> InstallPackage("qaos");
+gap> InstallPackage("4ti2Interface");
 true
-gap> RemovePackage("qaos", false);
+gap> RemovePackage("4ti2Interface", false);
 true
 gap> PKGMAN_CurlIntReqVer := ver;;
 
@@ -482,17 +497,13 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 >   GAPInfo.PackagesInfoInitialized:= false;
 >   InitializePackagesInfoRecords();
 > fi;
-gap> PackageInfo("qaos");
-[  ]
 gap> PackageInfo("HomalgToCAS");
 [  ]
 gap> PackageInfo("MatricesForHomalg");
 [  ]
-gap> PackageInfo("ToolsForHomalg");
-[  ]
 gap> InstallPackage("HomalgToCAS");
 true
-gap> ForAll(["HomalgToCAS", "MatricesForHomalg", "ToolsForHomalg"],
+gap> ForAll(["HomalgToCAS", "MatricesForHomalg", "GAPDoc", "IO"],
 >           name -> Length(PackageInfo(name)) = 1 or
 >                   IsPackageLoaded(LowercaseString(name)));
 true
