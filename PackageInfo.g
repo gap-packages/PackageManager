@@ -11,7 +11,7 @@ SetPackageInfo( rec(
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
 Version := "0.3",
-Date := "26/03/2019", # dd/mm/yyyy format
+Date := "26/03/2019",  # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -90,5 +90,3 @@ TestFile := "tst/testall.g",
 #Keywords := [ "TODO" ],
 
 ));
-
-

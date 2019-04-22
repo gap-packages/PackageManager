@@ -386,9 +386,9 @@ gap> PKGMAN_CustomPackageDir := "";;
 gap> EndsWith(PKGMAN_PackageDir(), "/.gap/pkg");
 true
 gap> PKGMAN_CustomPackageDir := olddir;;
-gap> PKGMAN_SetCustomPackageDir("/home"); # not ending in pkg
+gap> PKGMAN_SetCustomPackageDir("/home");  # not ending in pkg
 fail
-gap> PKGMAN_InsertPackageDirectory("/home"); # not ending in pkg
+gap> PKGMAN_InsertPackageDirectory("/home");  # not ending in pkg
 fail
 
 # PKGMAN_CompileDir error: no shell
@@ -491,10 +491,10 @@ true
 gap> dir := JoinStringsWithSeparator(dir, "/");;
 gap> dir := Concatenation(dir, "/");;
 gap> GAPInfo.RootPaths := Immutable([dir]);;
-gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
+gap> GAPInfo.DirectoriesLibrary := AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 >   GAPInfo.PackagesInfoInitialized = true then
->   GAPInfo.PackagesInfoInitialized:= false;
+>   GAPInfo.PackagesInfoInitialized := false;
 >   InitializePackagesInfoRecords();
 > fi;
 gap> PackageInfo("HomalgToCAS");
@@ -508,10 +508,10 @@ gap> ForAll(["HomalgToCAS", "MatricesForHomalg", "GAPDoc", "IO"],
 >                   IsPackageLoaded(LowercaseString(name)));
 true
 gap> GAPInfo.RootPaths := old_paths;;
-gap> GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());;
+gap> GAPInfo.DirectoriesLibrary := AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 >   GAPInfo.PackagesInfoInitialized = true then
->   GAPInfo.PackagesInfoInitialized:= false;
+>   GAPInfo.PackagesInfoInitialized := false;
 >   InitializePackagesInfoRecords();
 > fi;
 

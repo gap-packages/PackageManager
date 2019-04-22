@@ -15,4 +15,4 @@ PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg"));
 TestDirectory(DirectoriesPackageLibrary("PackageManager", "tst"),
               rec(exitGAP := true));
 
-FORCE_QUIT_GAP(1); # if we ever get here, there was an error
+FORCE_QUIT_GAP(1);  # If we ever get here, there was an error

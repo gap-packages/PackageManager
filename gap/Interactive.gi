@@ -5,26 +5,27 @@ end);
 
 InstallGlobalFunction(PKGMAN_AskYesNoQuestion,
 function(question...)
-  local stream, out, default, ans;
+  local stream, default, ans;
 
   question := Concatenation(question);
   stream := InputTextUser();
 
   Print(question);
-  default := ValueOption( "default" );
+  default := ValueOption("default");
   if default = true then
-    Print(" [Y/n] "); PKGMAN_FlushOutput();
+    Print(" [Y/n] ");
   elif default = false then
-    Print(" [y/N] "); PKGMAN_FlushOutput();
+    Print(" [y/N] ");
   else
     default := fail;
-    Print(" [y/n] "); PKGMAN_FlushOutput();
+    Print(" [y/n] ");
   fi;
+  PKGMAN_FlushOutput();
 
   while true do
     ans := CharInt(ReadByte(stream));
     if ans in "yYnN" then
-      Print([ans,'\n']);
+      Print([ans, '\n']);
       ans := ans in "yY";
       break;
     elif ans in "\n\r" and default <> fail then

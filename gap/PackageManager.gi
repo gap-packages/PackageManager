@@ -424,8 +424,8 @@ function(name, interactive...)
 
   # Remove directory carefully
   if interactive = false or
-     PKGMAN_AskYesNoQuestion("Really delete directory ", dir, " ?"
-                             : default := false) then
+      PKGMAN_AskYesNoQuestion("Really delete directory ", dir, " ?"
+                              : default := false) then
     PKGMAN_RemoveDir(dir);
     return true;
   fi;
@@ -471,7 +471,7 @@ function(dir)
     Info(InfoPackageManager, 1,
          "Compilation failed (package may still be usable)");
     return false;
-  fi;;
+  fi;
   Info(InfoPackageManager, 3, "Compilation was successful");
   return true;
 end);
@@ -481,7 +481,7 @@ function(dir, cmd, args...)
   local sh, fullcmd, instream, out, outstream, code, logfile;
 
   # Check shell
-  sh := Filename( DirectoriesSystemPrograms(), "sh" );
+  sh := Filename(DirectoriesSystemPrograms(), "sh");
   if sh = fail then
     Info(InfoPackageManager, 1, "No shell available called \"sh\"");
     return fail;
@@ -510,7 +510,7 @@ function(dir, cmd, args...)
 
   # Streams
   instream := InputTextNone();
-  out := "";;
+  out := "";
   outstream := OutputTextString(out, true);
 
   # Execute the command (capture both stdout and stderr)
@@ -571,7 +571,7 @@ function()
   if PKGMAN_CustomPackageDir <> "" then
     dir := PKGMAN_CustomPackageDir;
   else
-    dir := UserHomeExpand("~/.gap/pkg"); # TODO: cygwin?
+    dir := UserHomeExpand("~/.gap/pkg");  # TODO: cygwin?
   fi;
   if not IsDirectoryPath(dir) then
     PKGMAN_CreateDirRecursively(dir);
@@ -585,7 +585,7 @@ function(dir)
   local path, newdir, i, res;
   path := SplitString(dir, "/");
   newdir := "";
-  for i in [1..Length(path)] do
+  for i in [1 .. Length(path)] do
     Append(newdir, path[i]);
     Append(newdir, "/");
     if not IsDirectoryPath(newdir) then
@@ -606,9 +606,9 @@ function(pkgpath)
   local parent;
   # Locate the parent directory
   if EndsWith(pkgpath, "/pkg") then
-    parent := pkgpath{[1..Length(pkgpath)-3]};
+    parent := pkgpath{[1 .. Length(pkgpath) - 3]};
   elif EndsWith(pkgpath, "/pkg/") then
-    parent := pkgpath{[1..Length(pkgpath)-4]};
+    parent := pkgpath{[1 .. Length(pkgpath) - 4]};
   else
     return fail;
   fi;
@@ -617,11 +617,11 @@ function(pkgpath)
     GAPInfo.RootPaths := Immutable(Concatenation([parent], GAPInfo.RootPaths));
   fi;
   # Clear the cache.
-  GAPInfo.DirectoriesLibrary:= AtomicRecord(rec());
+  GAPInfo.DirectoriesLibrary := AtomicRecord(rec());
   # Reread the package information.
   if IsBound(GAPInfo.PackagesInfoInitialized) and
-     GAPInfo.PackagesInfoInitialized = true then
-    GAPInfo.PackagesInfoInitialized:= false;
+      GAPInfo.PackagesInfoInitialized = true then
+    GAPInfo.PackagesInfoInitialized := false;
     InitializePackagesInfoRecords();
   fi;
   return true;
