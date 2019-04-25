@@ -56,7 +56,7 @@ ArchiveFormats := ".tar.gz",
 ##    "dev"           for development versions of packages
 ##    "other"         for all other packages
 ##
-Status := "dev",
+Status := "deposited",
 
 AbstractHTML :=
   "<span class=\"pkgname\">PackageManager</span> is a basic collection of \
