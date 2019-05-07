@@ -1,19 +1,13 @@
-# Install and remove a package by name
-gap> InstallPackage("matgrp");
-true
-gap> InstallPackage("matgrp");
-#I  The newest version of package "matgrp" is already installed
-false
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "matgrp"));
-true
-gap> RemovePackage("matgrp", false);
-true
-gap> RemovePackage("matgrp");
-#I  Package "matgrp" not installed in user package directory
-false
-
 # Install GAP's required packages
+gap> conts := DirectoryContents(PKGMAN_PackageDir());;
+gap> ForAny(conts, f -> StartsWith(f, "primgrp"));
+false
+gap> ForAny(conts, f -> StartsWith(f, "SmallGrp"));
+false
+gap> ForAny(conts, f -> StartsWith(f, "transgrp"));
+false
+gap> ForAny(conts, f -> StartsWith(f, "GAPDoc"));
+false
 gap> InstallRequiredPackages();
 true
 gap> conts := DirectoryContents(PKGMAN_PackageDir());;
@@ -33,6 +27,21 @@ gap> RemovePackage("transgrp", false);
 true
 gap> RemovePackage("GAPDoc", false);
 true
+
+# Install and remove a package by name
+gap> InstallPackage("matgrp");
+true
+gap> InstallPackage("matgrp");
+#I  The newest version of package "matgrp" is already installed
+false
+gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+>           f -> StartsWith(f, "matgrp"));
+true
+gap> RemovePackage("matgrp", false);
+true
+gap> RemovePackage("matgrp");
+#I  Package "matgrp" not installed in user package directory
+false
 
 # Fail to install a GAP required package
 gap> backup := GAPInfo.Dependencies.NeededOtherPackages;;
