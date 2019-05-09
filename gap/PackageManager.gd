@@ -5,7 +5,7 @@
 #
 #! @Chapter Commands
 
-#! @Section Installing packages
+#! @Section Installing and updating packages
 
 #! @Description
 #!   Attempts to download and install a package.  The argument <A>string</A>
@@ -45,6 +45,37 @@
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackage");
+
+#! @Description
+#!   Attempts to update an installed package to the latest version.  The first
+#!   argument <A>name</A> should be a string specifying the name of a package
+#!   installed in the user GAP root (for example, one installed using
+#!   <Ref Func="InstallPackage" />).  The second argument <A>interactive</A> is
+#!   optional, and should be a boolean specifying whether to confirm
+#!   interactively before any directories are deleted (default value
+#!   <K>true</K>).
+#!
+#!   If the package was installed via archive, the new version will be installed
+#!   in a new directory, and the old version will be deleted.  If installed via
+#!   git or mercurial, it will be updated using <C>git pull</C> or <C>hg pull
+#!   -u</C>, so long as there are no outstanding changes.  If no newer version
+#!   is available, no changes will be made.
+#!
+#!   Returns <K>true</K> if a newer version was installed successfully, or if no
+#!   newer version is available.  Returns <K>false</K> otherwise.
+#!
+#! @BeginExample
+#! gap> UpdatePackage("io");
+#! #I  io version 4.6.0 will be installed, replacing 4.5.4
+#! #I  Saved archive to /tmp/tm7r5Ug7/io-4.6.0.tar.gz
+#! Remove old version of io at /home/user/.gap/pkg/io-4.5.4 ? [y/N] y
+#! true
+#! @EndExample
+#!
+#! @Arguments name[, interactive]
+#! @Returns
+#!   true or false
+DeclareGlobalFunction("UpdatePackage");
 
 #! @Description
 #!   Info class for the PackageManager package.  Set this to the following
@@ -169,35 +200,6 @@ DeclareGlobalFunction("InstallRequiredPackages");
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("RemovePackage");
-
-#! @Description
-#!   Attempts to update an installed package to the latest version.  The first
-#!   argument <A>name</A> should be a string specifying the name of a package
-#!   installed in the user GAP root (for example, one installed using
-#!   <Ref Func="InstallPackage" />).  The second argument <A>interactive</A> is
-#!   optional, and should be a boolean specifying whether to confirm
-#!   interactively before any directories are deleted (default value
-#!   <K>true</K>).
-#!
-#!   If the package was installed via archive, the new version will be installed
-#!   in a new directory, and the old version will be deleted.  If installed via
-#!   git or mercurial, it will be updated using <C>git pull</C> or <C>hg pull
-#!   -u</C>, so long as there are no outstanding changes.  If no newer version
-#!   is available, no changes will be made.
-#!
-#!   Returns <K>true</K> if a newer version was installed successfully, or if no
-#!   newer version is available.  Returns <K>false</K> otherwise.
-#!
-#! @BeginExample
-#! gap> UpdatePackage("digraphs");
-#! Delete outdated version /home/user/.gap/pkg/digraphs-0.13.0 ? [y/N] y
-#! true
-#! @EndExample
-#!
-#! @Arguments name[, interactive]
-#! @Returns
-#!   true or false
-DeclareGlobalFunction("UpdatePackage");
 
 DeclareGlobalFunction("GetPackageURLs");
 
