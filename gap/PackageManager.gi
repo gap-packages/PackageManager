@@ -63,7 +63,7 @@ end);
 
 InstallGlobalFunction(InstallPackageFromName,
 function(name, interactive...)
-  local urls, allinfo, info, newest, current;
+  local urls, allinfo, info, newest, current, dirs, vc, q;
 
   # Handle interactivity
   if Length(interactive) = 1 and interactive[1] = false then
@@ -86,26 +86,40 @@ function(name, interactive...)
   allinfo := PackageInfo(name);
   info := Filtered(allinfo,
                    x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));
-  if not IsEmpty(info) then
+  if not IsEmpty(info) then  # Already installed
+    # Any VC installations?
+    dirs := List(info, i -> ShallowCopy(i.InstallationPath));
+    for vc in ["git", "hg"] do
+      if Filename(List(dirs, Directory), Concatenation(".", vc)) <> fail then
+        q := Concatenation("Package \"", name, "\" already installed via ", vc,
+                           ". Update it?");
+        if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
+          return UpdatePackage(name, false);  # Just pull - no interactivity
+        fi;
+      fi;
+    od;
+
+    # Installed by archive only
     newest  := PKGMAN_DownloadPackageInfo(urls.(name));
     current := info[1];  # Highest-priority installation in user pkg directory
     if CompareVersionNumbers(newest.Version, current.Version, "equal") then
-      Info(InfoPackageManager, 1,
+      Info(InfoPackageManager, 2,
            "The newest version of package \"", name,
            "\" is already installed");
-      return false;
+      return true;
     elif CompareVersionNumbers(newest.Version, current.Version) then
-      if interactive and not
-             PKGMAN_AskYesNoQuestion("Package \"", name,
-                                     "\" version ", current.Version,
-                                     " is installed, but ", newest.Version,
-                                     " is available. Install it?"
-                                         : default := false) then
-        return false;
+      q := Concatenation("Package \"", name, "\" version ", current.Version,
+                         " is installed, but ", newest.Version,
+                         " is available. Install it?");
+      if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
+        return UpdatePackage(name, interactive);
+      else
+        return true;
       fi;
-      # TODO: offer to remove existing package?
     fi;
   fi;
+
+  # Not installed yet
   return InstallPackageFromInfo(urls.(name));
 end);
 
@@ -208,23 +222,58 @@ function(url)
 end);
 
 InstallGlobalFunction(InstallPackageFromGit,
-function(url, branch...)
-  local name, dir, exec, info;
-  if Length(branch) = 0 then
-    branch := fail;
-  elif Length(branch) = 1 then
-    branch := branch[1];
-  else
+function(url, args...)
+  local interactive, branch, name, dir, allinfo, info, dirs, repo, q, exec;
+
+  # Process args
+  interactive := true;
+  branch := fail;
+  if Length(args) = 1 then
+    if args[1] in [true, false] then
+      interactive := args[1];
+    elif IsString(args[1]) then
+      branch := args[1];
+    else
+      ErrorNoReturn("PackageManager: InstallPackageFromGit:\n",
+                    "2nd argument should be true, false, or a string");
+    fi;
+  elif Length(args) = 2 then
+    interactive := args[1];
+    branch := args[2];
+    if not interactive in [true, false] then
+      ErrorNoReturn("PackageManager: InstallPackageFromGit:\n",
+                    "<interactive> should be true or false");
+    elif not IsString(branch) then
+      ErrorNoReturn("PackageManager: InstallPackageFromGit:\n",
+                    "<branch> should be a string");
+    fi;
+  elif Length(args) > 2 then
     ErrorNoReturn("PackageManager: InstallPackageFromGit:\n",
-                  "requires 1 or 2 arguments (not ",
+                  "requires 1, 2 or 3 arguments (not ",
                   Length(branch) + 1, ")");
   fi;
+
   name := PKGMAN_NameOfGitRepo(url);
   if name = fail then
     Info(InfoPackageManager, 1, "Could not find repository name (bad URL?)");
     return false;
   fi;
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
+
+  # Check for existing repository
+  allinfo := PackageInfo(name);
+  info := Filtered(allinfo,
+                   x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));
+  dirs := List(info, i -> ShallowCopy(i.InstallationPath));
+  repo := Filename(List(dirs, Directory), ".git");
+  if repo <> fail then  # TODO: check it's the same remote?
+    q := Concatenation("Package \"", name,
+                       "\" already installed via git.  Update it?");
+    if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
+      return UpdatePackage(name, false);  # Just pull - no interactivity
+    fi;
+  fi;
+
   if not PKGMAN_IsValidTargetDir(dir) then
     return false;
   fi;
@@ -263,23 +312,58 @@ function(url, branch...)
 end);
 
 InstallGlobalFunction(InstallPackageFromHg,
-function(url, branch...)
-  local name, dir, exec, info;
-  if Length(branch) = 0 then
-    branch := fail;
-  elif Length(branch) = 1 then
-    branch := branch[1];
-  else
-    ErrorNoReturn("PackageManager: InstallPackageFromHg: ",
-                  "requires 1 or 2 arguments (not ",
+function(url, args...)
+  local interactive, branch, name, dir, allinfo, info, dirs, repo, q, exec;
+
+  # Process args
+  interactive := true;
+  branch := fail;
+  if Length(args) = 1 then
+    if args[1] in [true, false] then
+      interactive := args[1];
+    elif IsString(args[1]) then
+      branch := args[1];
+    else
+      ErrorNoReturn("PackageManager: InstallPackageFromHg:\n",
+                    "2nd argument should be true, false, or a string");
+    fi;
+  elif Length(args) = 2 then
+    interactive := args[1];
+    branch := args[2];
+    if not interactive in [true, false] then
+      ErrorNoReturn("PackageManager: InstallPackageFromHg:\n",
+                    "<interactive> should be true or false");
+    elif not IsString(branch) then
+      ErrorNoReturn("PackageManager: InstallPackageFromHg:\n",
+                    "<branch> should be a string");
+    fi;
+  elif Length(args) > 2 then
+    ErrorNoReturn("PackageManager: InstallPackageFromHg:\n",
+                  "requires 1, 2 or 3 arguments (not ",
                   Length(branch) + 1, ")");
   fi;
+
   name := PKGMAN_NameOfHgRepo(url);
   if name = fail then
     Info(InfoPackageManager, 1, "Could not find repository name (bad URL?)");
     return false;
   fi;
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
+
+  # Check for existing repository
+  allinfo := PackageInfo(name);
+  info := Filtered(allinfo,
+                   x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));
+  dirs := List(info, i -> ShallowCopy(i.InstallationPath));
+  repo := Filename(List(dirs, Directory), ".hg");
+  if repo <> fail then
+    q := Concatenation("Package \"", name,
+                       "\" already installed via mercurial.  Update it?");
+    if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
+      return UpdatePackage(name, false);  # Just pull - no interactivity
+    fi;
+  fi;
+
   if not PKGMAN_IsValidTargetDir(dir) then
     return false;
   fi;
@@ -370,7 +454,7 @@ InstallGlobalFunction(InstallRequiredPackages,
 function()
   local pkg;
   for pkg in List(GAPInfo.Dependencies.NeededOtherPackages, l -> l[1]) do
-    if not InstallPackage(pkg) then
+    if not InstallPackageFromName(pkg) then
       return false;
     fi;
   od;
@@ -431,6 +515,104 @@ function(name, interactive...)
   fi;
   Info(InfoPackageManager, 3, "Directory not deleted");
   return false;
+end);
+
+InstallGlobalFunction(UpdatePackage,
+function(name, interactive...)
+  local user_pkg_dir, allinfo, info, dirs, vc, repo, dir, status, pull, line,
+        urls, newest, current, q, olddir;
+
+  # Check input
+  if not IsString(name) then
+    ErrorNoReturn("PackageManager: UpdatePackage: ",
+                  "<name> must be a string");
+  elif Length(interactive) > 1 then
+    ErrorNoReturn("PackageManager: UpdatePackage: ",
+                  "requires 1 or 2 arguments (not ",
+                  Length(interactive) + 1, ")");
+  elif Length(interactive) = 1 then
+    if interactive[1] = true or interactive[1] = false then
+      interactive := interactive[1];
+    else
+      ErrorNoReturn("PackageManager: UpdatePackage: ",
+                    "<interactive> must be true or false");
+    fi;
+  else
+    interactive := true;
+  fi;
+
+  # Locate the package
+  user_pkg_dir := PKGMAN_PackageDir();
+  allinfo := PackageInfo(name);
+  info := Filtered(allinfo,
+                   x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
+
+  # Package not installed
+  if Length(info) = 0 then
+    Info(InfoPackageManager, 1,
+         "Package \"", name, "\" not installed in user package directory");
+    Info(InfoPackageManager, 2, "(currently set to ", PKGMAN_PackageDir(), ")");
+    if not IsEmpty(allinfo) then
+      Info(InfoPackageManager, 2, "installed at ",
+           List(allinfo, i -> i.InstallationPath), ", not in ", user_pkg_dir);
+    fi;
+    if interactive and PKGMAN_AskYesNoQuestion("Would you like to install it?"
+                                               : default := true) then
+      return InstallPackageFromName(name);
+    fi;
+    return false;
+  fi;
+
+  # Look for VC repos
+  dirs := List(info, i -> ShallowCopy(i.InstallationPath));
+  for vc in [rec(cmd := "git", stflags := "-s", pullflags := "--ff-only"),
+             rec(cmd := "hg", stflags := "", pullflags := "-uy")] do
+    repo := Filename(List(dirs, Directory), Concatenation(".", vc.cmd));
+    if repo <> fail then
+      dir := repo{[1 .. Length(repo) - Length("/.") - Length(vc.cmd)]};
+      status := PKGMAN_Exec(dir, vc.cmd, "status", vc.stflags);
+      if status = fail then
+        return false;
+      elif status.code = 0 and status.output = "" then
+        Info(InfoPackageManager, 3, "Pulling from ", vc.cmd, " repository...");
+        pull := PKGMAN_Exec(dir, vc.cmd, "pull", vc.pullflags);
+        for line in SplitString(pull.output, "\n") do
+          Info(InfoPackageManager, 3, vc.cmd, ": ", line);
+        od;
+        return (pull.code = 0) and PKGMAN_CompileDir(dir);
+      else
+        Info(InfoPackageManager, 1,
+             "Uncommitted changes in ", vc.cmd, " repository");
+        Info(InfoPackageManager, 2, "(at ", dir, ")");
+        return false;
+      fi;
+    fi;
+  od;
+
+  # Installed only by archive
+  urls := GetPackageURLs();
+  newest  := PKGMAN_DownloadPackageInfo(urls.(name));
+  current := info[1];  # Highest-priority version in user pkg directory
+  if CompareVersionNumbers(newest.Version, current.Version, "equal") then
+    Info(InfoPackageManager, 2,
+         "The newest version of package \"", name, "\" is already installed");
+  elif CompareVersionNumbers(newest.Version, current.Version) then
+    Info(InfoPackageManager, 2, name, " version ", newest.Version,
+         " will be installed, replacing ", current.Version);
+    if InstallPackageFromInfo(newest) <> true then
+      return false;
+    fi;
+    olddir := current.InstallationPath;
+    q := Concatenation("Remove old version of ", name, " at ", olddir, " ?");
+    if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
+      PKGMAN_RemoveDir(olddir);
+    fi;
+  else
+    Info(InfoPackageManager, 1,
+         "The installed version of package \"", name,
+         "\" is newer than the latest available version!");
+  fi;
+  return true;
 end);
 
 InstallGlobalFunction(PKGMAN_CheckPackage,

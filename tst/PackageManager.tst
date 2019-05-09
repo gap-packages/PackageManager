@@ -32,8 +32,7 @@ true
 gap> InstallPackage("matgrp");
 true
 gap> InstallPackage("matgrp");
-#I  The newest version of package "matgrp" is already installed
-false
+true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "matgrp"));
 true
@@ -61,38 +60,38 @@ gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 true
 
 # Install a package from a git repository not ending in .git
-gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo");
+gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo", false);
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "RegisterPackageTNUMDemo"));
 true
-gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo");
+gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo", false);
 #I  Package already installed at target location
 false
 
 # Install a package from a git repository by branch
-gap> InstallPackageFromGit("https://github.com/gap-packages/MathInTheMiddle.git", "master");
+gap> InstallPackageFromGit("https://github.com/gap-packages/MathInTheMiddle.git", false, "master");
 true
 gap> RemovePackage("MathInTheMiddle", false);
 true
-gap> InstallPackageFromGit("https://github.com/gap-packages/orb.git", "fiaenfq");
+gap> InstallPackageFromGit("https://github.com/gap-packages/orb.git", false, "fiaenfq");
 #I  Cloning unsuccessful
 false
 gap> InstallPackageFromGit("https://github.com/gap-packages/orb.git", "master", true);
 Error, PackageManager: InstallPackageFromGit:
-requires 1 or 2 arguments (not 3)
+<interactive> should be true or false
 
 # Install a package from a Mercurial repository not ending in .hg
 gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >              f -> StartsWith(f, "forms")) then
 >   RemovePackage("forms", false);
 > fi;
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", true);
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "forms"));
 true
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", false);
 #I  Package already installed at target location
 false
 gap> RemovePackage("forms", false);
@@ -102,7 +101,7 @@ gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 false
 
 # Install a package from a Mercurial repository by branch
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "default");
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", false, "default");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "forms"));
@@ -112,17 +111,18 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "forms"));
 false
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "qfnoiq3eg");
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", false, "qfnoiq3eg");
 #I  Cloning unsuccessful
 false
 gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "default", true);
-Error, PackageManager: InstallPackageFromHg: requires 1 or 2 arguments (not 3)
+Error, PackageManager: InstallPackageFromHg:
+<interactive> should be true or false
 
 # Repositories that don't contain GAP packages
-gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git");
+gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git", true);
 #I  Could not find PackageInfo.g
 false
-gap> InstallPackageFromHg("https://bitbucket.org/mtorpey/lowindex");
+gap> InstallPackageFromHg("https://bitbucket.org/mtorpey/lowindex", true);
 #I  Could not find PackageInfo.g
 false
 
@@ -184,7 +184,7 @@ gap> Print := newPrint;;
 gap> res := InstallPackage("uuid", true);;
 gap> Print := oldPrint;;
 gap> res;
-false
+true
 gap> exp := Concatenation("Package \"uuid\" version 0.5 is installed, but ",
 >                         PKGMAN_DownloadPackageInfo(GetPackageURLs().uuid).Version,
 >                         " is available. Install it? [y/N] \n");;
@@ -401,9 +401,12 @@ gap> PKGMAN_InsertPackageDirectory("/home");  # not ending in pkg
 fail
 
 # PKGMAN_CompileDir error: no shell
+gap> RemovePackage("example", false);
+true
 gap> InstallPackage("example");
-#I  The newest version of package "example" is already installed
-false
+true
+gap> InstallPackage("example");  # latest version already installed
+true
 gap> progs := GAPInfo.DirectoriesPrograms;;
 gap> GAPInfo.DirectoriesPrograms := [];;  # terrible vandalism
 gap> dir := PackageInfo("example")[1].InstallationPath;;
@@ -414,9 +417,8 @@ false
 gap> GAPInfo.DirectoriesPrograms := progs;;
 
 # PKGMAN_CompileDir error: no bin/BuildPackages.sh
-gap> InstallPackage("example", false);
-#I  The newest version of package "example" is already installed
-false
+gap> InstallPackage("example", false);  # latest version already installed
+true
 gap> build_scr := PKGMAN_BuildPackagesScript;;
 gap> PKGMAN_BuildPackagesScript := fail;;
 gap> dir := PackageInfo("example")[1].InstallationPath;;
@@ -426,9 +428,8 @@ false
 gap> PKGMAN_BuildPackagesScript := build_scr;;
 
 # PKGMAN_CompileDir error: missing source
-gap> InstallPackage("example");
-#I  The newest version of package "example" is already installed
-false
+gap> InstallPackage("example");  # latest version already installed
+true
 gap> dir := PackageInfo("example")[1].InstallationPath;;
 gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
 true
@@ -537,7 +538,7 @@ gap> InstallPackageFromHg("https://mtorpey@bitbucket.org/mtorpey/uuid");
 #I  Required package MadeUpPackage unknown
 #I  Dependencies not satisfied for uuid
 false
-gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git");
+gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git", false);
 #I  Required package MadeUpPackage unknown
 #I  Dependencies not satisfied for uuid
 false
@@ -546,7 +547,7 @@ false
 gap> urllist := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList :=
 > "https://gap-packages.github.io/PackageManager/dummy/badurls.txt";;
-gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git");
+gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git", false);
 #I  Could not inspect tarball contents
 #I  Dependencies not satisfied for uuid
 false

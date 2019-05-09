@@ -19,8 +19,8 @@
 #!
 #!   The package will then be downloaded and installed, along with any
 #!   additional packages that are required in order for it to be loaded.  If
-#!   this installation is successful, <K>true</K> is returned; otherwise,
-#!   <K>false</K> is returned.
+#!   this installation is successful, or if this package is already installed,
+#!   <K>true</K> is returned; otherwise, <K>false</K> is returned.
 #!
 #!   By default, packages will be installed in user's home directory at
 #!   <C>~/.gap/pkg</C>.  Note that this location is not the default user pkg
@@ -52,8 +52,8 @@ DeclareGlobalFunction("InstallPackage");
 #!     * 0 - No messages
 #!     * 1 - Problems only: messages describing what went wrong, with no
 #!           messages if an operation is successful
-#!     * 2 - Problems and directories: also displays directories that were used
-#!           for package installation or removal
+#!     * 2 - Directories and versions: also displays informations about package
+#!           versions and installation directories
 #!     * 3 - Progress: also shows step-by-step progress of operations
 #!     * 4 - All: includes extra information such as whether curlInterface is
 #!           being used
@@ -65,7 +65,7 @@ SetInfoLevel(InfoPackageManager, 3);
 
 #! @Description
 #!   Attempts to download and install a package given only its name.  Returns
-#!   <K>true</K> if the installation was successful, and <K>false</K> otherwise.
+#!   <K>false</K> if something went wrong, and <K>true</K> otherwise.
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell - to avoid this
@@ -97,26 +97,36 @@ DeclareGlobalFunction("InstallPackageFromArchive");
 
 #! @Description
 #!   Attempts to download and install a package from a git repository located at
-#!   the given URL.  Returns <K>true</K> if the installation was successful, and
-#!   <K>false</K> otherwise.
+#!   the given URL.  Returns <K>false</K> if something went wrong, and
+#!   <K>true</K> otherwise.
 #!
 #!   If the optional string argument <A>branch</A> is specified, this function
 #!   will install the branch with this name.  Otherwise, the repository's
 #!   default branch will be used.
-#! @Arguments url[, branch]
+#!
+#!   Certain decisions, such as installing newer versions of packages, will be
+#!   confirmed by the user via an interactive shell - to avoid this
+#!   interactivity and use sane defaults instead, the optional second argument
+#!   <A>interactive</A> can be set to <K>false</K>.
+#! @Arguments url[, interactive][, branch]
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromGit");
 
 #! @Description
 #!   Attempts to download and install a package from a Mercurial repository
-#!   located at the given URL.  Returns <K>true</K> if the installation was
-#!   successful, and <K>false</K> otherwise.
+#!   located at the given URL.  Returns <K>false</K> if something went wrong,
+#!   and <K>true</K> otherwise.
 #!
 #!   If the optional string argument <A>branch</A> is specified, this function
 #!   will install the branch with this name.  Otherwise, the repository's
 #!   default branch will be used.
-#! @Arguments url[, branch]
+#!
+#!   Certain decisions, such as installing newer versions of packages, will be
+#!   confirmed by the user via an interactive shell - to avoid this
+#!   interactivity and use sane defaults instead, the optional second argument
+#!   <A>interactive</A> can be set to <K>false</K>.
+#! @Arguments url[, interactive][, branch]
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromHg");
@@ -124,8 +134,8 @@ DeclareGlobalFunction("InstallPackageFromHg");
 #! @Description
 #!   Attempts to download and install the latest versions of all packages
 #!   required for GAP to run.  Currently these packages are GAPDoc, primgrp,
-#!   SmallGrp, and transgrp.  Returns <K>true</K> if the installation was
-#!   successful, and <K>false</K> otherwise.
+#!   SmallGrp, and transgrp.  Returns <K>false</K> if something went wrong, and
+#!   <K>true</K> otherwise.
 #!
 #!   Clearly, since these packages are required for GAP to run, they must be
 #!   loaded before this function can be executed.  However, this function
@@ -143,8 +153,8 @@ DeclareGlobalFunction("InstallRequiredPackages");
 #!   Attempts to remove an installed package using its name.  The first argument
 #!   <A>name</A> should be a string specifying the name of a package installed
 #!   in the user GAP root.  The second argument <A>interactive</A> is optional,
-#!   and should be a boolean specifying whether to confirm interactively before
-#!   any directories are deleted (default value <K>true</K>).
+#!   and should be a boolean specifying whether to confirm certain decisions
+#!   interactively (default value <K>true</K>).
 #!
 #!   Returns <K>true</K> if the removal was successful, and <K>false</K>
 #!   otherwise.
@@ -159,6 +169,35 @@ DeclareGlobalFunction("InstallRequiredPackages");
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("RemovePackage");
+
+#! @Description
+#!   Attempts to update an installed package to the latest version.  The first
+#!   argument <A>name</A> should be a string specifying the name of a package
+#!   installed in the user GAP root (for example, one installed using
+#!   <Ref Func="InstallPackage" />).  The second argument <A>interactive</A> is
+#!   optional, and should be a boolean specifying whether to confirm
+#!   interactively before any directories are deleted (default value
+#!   <K>true</K>).
+#!
+#!   If the package was installed via archive, the new version will be installed
+#!   in a new directory, and the old version will be deleted.  If installed via
+#!   git or mercurial, it will be updated using <C>git pull</C> or <C>hg pull
+#!   -u</C>, so long as there are no outstanding changes.  If no newer version
+#!   is available, no changes will be made.
+#!
+#!   Returns <K>true</K> if a newer version was installed successfully, or if no
+#!   newer version is available.  Returns <K>false</K> otherwise.
+#!
+#! @BeginExample
+#! gap> UpdatePackage("digraphs");
+#! Delete outdated version /home/user/.gap/pkg/digraphs-0.13.0 ? [y/N] y
+#! true
+#! @EndExample
+#!
+#! @Arguments name[, interactive]
+#! @Returns
+#!   true or false
+DeclareGlobalFunction("UpdatePackage");
 
 DeclareGlobalFunction("GetPackageURLs");
 
