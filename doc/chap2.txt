@@ -2,7 +2,7 @@
   [1X2 [33X[0;0YCommands[133X[101X
   
   
-  [1X2.1 [33X[0;0YInstalling packages[133X[101X
+  [1X2.1 [33X[0;0YInstalling and updating packages[133X[101X
   
   [1X2.1-1 InstallPackage[101X
   
@@ -24,7 +24,8 @@
   
   [33X[0;0YThe package will then be downloaded and installed, along with any additional
   packages  that  are  required  in  order  for  it  to  be  loaded.  If  this
-  installation is successful, [9Xtrue[109X is returned; otherwise, [9Xfalse[109X is returned.[133X
+  installation is successful, or if this package is already installed, [9Xtrue[109X is
+  returned; otherwise, [9Xfalse[109X is returned.[133X
   
   [33X[0;0YBy  default,  packages  will  be  installed  in  user's  home  directory  at
   [10X~/.gap/pkg[110X.  Note that this location is not the default user pkg location on
@@ -45,7 +46,36 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X2.1-2 InfoPackageManager[101X
+  [1X2.1-2 UpdatePackage[101X
+  
+  [33X[1;0Y[29X[2XUpdatePackage[102X( [3Xname[103X[, [3Xinteractive[103X] ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to  update  an  installed package to the latest version. The first
+  argument  [3Xname[103X should be a string specifying the name of a package installed
+  in  the  user  GAP  root  (for  example,  one installed using [2XInstallPackage[102X
+  ([14X2.1-1[114X)).  The  second  argument  [3Xinteractive[103X  is  optional, and should be a
+  boolean  specifying  whether to confirm interactively before any directories
+  are deleted (default value [9Xtrue[109X).[133X
+  
+  [33X[0;0YIf  the package was installed via archive, the new version will be installed
+  in  a  new  directory, and the old version will be deleted. If installed via
+  git  or  mercurial, it will be updated using [10Xgit pull[110X or [10Xhg pull -u[110X, so long
+  as  there  are  no outstanding changes. If no newer version is available, no
+  changes will be made.[133X
+  
+  [33X[0;0YReturns  [9Xtrue[109X  if a newer version was installed successfully, or if no newer
+  version is available. Returns [9Xfalse[109X otherwise.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XUpdatePackage("io");[127X[104X
+    [4X[28X#I  io version 4.6.0 will be installed, replacing 4.5.4[128X[104X
+    [4X[28X#I  Saved archive to /tmp/tm7r5Ug7/io-4.6.0.tar.gz[128X[104X
+    [4X[28XRemove old version of io at /home/user/.gap/pkg/io-4.5.4 ? [y/N] y[128X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X2.1-3 InfoPackageManager[101X
   
   [33X[1;0Y[29X[2XInfoPackageManager[102X[32X info class[133X
   
@@ -57,8 +87,8 @@
   [30X    [33X[0;6Y1  -  Problems  only:  messages  describing  what  went wrong, with no
         messages if an operation is successful[133X
   
-  [30X    [33X[0;6Y2 - Problems and directories: also displays directories that were used
-        for package installation or removal[133X
+  [30X    [33X[0;6Y2 - Directories and versions: also displays informations about package
+        versions and installation directories[133X
   
   [30X    [33X[0;6Y3 - Progress: also shows step-by-step progress of operations[133X
   
@@ -68,20 +98,20 @@
   [33X[0;0YSet  this  using,  for  example [10XSetInfoLevel(InfoPackageManager, 1)[110X. Default
   value is 3.[133X
   
-  [1X2.1-3 InstallPackageFromName[101X
+  [1X2.1-4 InstallPackageFromName[101X
   
   [33X[1;0Y[29X[2XInstallPackageFromName[102X( [3Xname[103X[, [3Xinteractive[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
   
-  [33X[0;0YAttempts to download and install a package given only its name. Returns [9Xtrue[109X
-  if the installation was successful, and [9Xfalse[109X otherwise.[133X
+  [33X[0;0YAttempts  to  download  and  install  a package given only its name. Returns
+  [9Xfalse[109X if something went wrong, and [9Xtrue[109X otherwise.[133X
   
   [33X[0;0YCertain  decisions,  such  as installing newer versions of packages, will be
   confirmed by the user via an interactive shell - to avoid this interactivity
   and  use sane defaults instead, the optional second argument [3Xinteractive[103X can
   be set to [9Xfalse[109X.[133X
   
-  [1X2.1-4 InstallPackageFromInfo[101X
+  [1X2.1-5 InstallPackageFromInfo[101X
   
   [33X[1;0Y[29X[2XInstallPackageFromInfo[102X( [3Xinfo[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
@@ -91,7 +121,7 @@
   that  points to a valid PackageInfo.g file. Returns [9Xtrue[109X if the installation
   was successful, and [9Xfalse[109X otherwise.[133X
   
-  [1X2.1-5 InstallPackageFromArchive[101X
+  [1X2.1-6 InstallPackageFromArchive[101X
   
   [33X[1;0Y[29X[2XInstallPackageFromArchive[102X( [3Xurl[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
@@ -100,41 +130,50 @@
   given  URL.  Returns  [9Xtrue[109X  if  the  installation  was successful, and [9Xfalse[109X
   otherwise.[133X
   
-  [1X2.1-6 InstallPackageFromGit[101X
+  [1X2.1-7 InstallPackageFromGit[101X
   
-  [33X[1;0Y[29X[2XInstallPackageFromGit[102X( [3Xurl[103X[, [3Xbranch[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XInstallPackageFromGit[102X( [3Xurl[103X[, [3Xinteractive[103X][, [3Xbranch[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
   
   [33X[0;0YAttempts  to download and install a package from a git repository located at
-  the  given  URL.  Returns [9Xtrue[109X if the installation was successful, and [9Xfalse[109X
+  the given URL. Returns [9Xfalse[109X if something went wrong, and [9Xtrue[109X otherwise.[133X
+  
+  [33X[0;0YIf  the  optional  string  argument  [3Xbranch[103X is specified, this function will
+  install  the  branch  with  this  name.  Otherwise, the repository's default
+  branch will be used.[133X
+  
+  [33X[0;0YCertain  decisions,  such  as installing newer versions of packages, will be
+  confirmed by the user via an interactive shell - to avoid this interactivity
+  and  use sane defaults instead, the optional second argument [3Xinteractive[103X can
+  be set to [9Xfalse[109X.[133X
+  
+  [1X2.1-8 InstallPackageFromHg[101X
+  
+  [33X[1;0Y[29X[2XInstallPackageFromHg[102X( [3Xurl[103X[, [3Xinteractive[103X][, [3Xbranch[103X] ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to  download  and  install  a  package from a Mercurial repository
+  located  at  the  given URL. Returns [9Xfalse[109X if something went wrong, and [9Xtrue[109X
   otherwise.[133X
   
   [33X[0;0YIf  the  optional  string  argument  [3Xbranch[103X is specified, this function will
   install  the  branch  with  this  name.  Otherwise, the repository's default
   branch will be used.[133X
   
-  [1X2.1-7 InstallPackageFromHg[101X
+  [33X[0;0YCertain  decisions,  such  as installing newer versions of packages, will be
+  confirmed by the user via an interactive shell - to avoid this interactivity
+  and  use sane defaults instead, the optional second argument [3Xinteractive[103X can
+  be set to [9Xfalse[109X.[133X
   
-  [33X[1;0Y[29X[2XInstallPackageFromHg[102X( [3Xurl[103X[, [3Xbranch[103X] ) [32X function[133X
-  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
-  
-  [33X[0;0YAttempts  to  download  and  install  a  package from a Mercurial repository
-  located  at  the given URL. Returns [9Xtrue[109X if the installation was successful,
-  and [9Xfalse[109X otherwise.[133X
-  
-  [33X[0;0YIf  the  optional  string  argument  [3Xbranch[103X is specified, this function will
-  install  the  branch  with  this  name.  Otherwise, the repository's default
-  branch will be used.[133X
-  
-  [1X2.1-8 InstallRequiredPackages[101X
+  [1X2.1-9 InstallRequiredPackages[101X
   
   [33X[1;0Y[29X[2XInstallRequiredPackages[102X(  ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
   
   [33X[0;0YAttempts  to  download  and  install  the  latest  versions  of all packages
   required  for  GAP  to  run.  Currently  these packages are GAPDoc, primgrp,
-  SmallGrp, and transgrp. Returns [9Xtrue[109X if the installation was successful, and
-  [9Xfalse[109X otherwise.[133X
+  SmallGrp,  and  transgrp.  Returns  [9Xfalse[109X  if something went wrong, and [9Xtrue[109X
+  otherwise.[133X
   
   [33X[0;0YClearly,  since  these  packages  are  required for GAP to run, they must be
   loaded before this function can be executed. However, this function installs
@@ -153,8 +192,8 @@
   [33X[0;0YAttempts  to  remove an installed package using its name. The first argument
   [3Xname[103X  should  be  a string specifying the name of a package installed in the
   user  GAP root. The second argument [3Xinteractive[103X is optional, and should be a
-  boolean  specifying  whether to confirm interactively before any directories
-  are deleted (default value [9Xtrue[109X).[133X
+  boolean  specifying  whether  to  confirm  certain  decisions  interactively
+  (default value [9Xtrue[109X).[133X
   
   [33X[0;0YReturns [9Xtrue[109X if the removal was successful, and [9Xfalse[109X otherwise.[133X
   
