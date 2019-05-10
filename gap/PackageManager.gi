@@ -103,8 +103,7 @@ function(name, interactive...)
     newest  := PKGMAN_DownloadPackageInfo(urls.(name));
     current := info[1];  # Highest-priority installation in user pkg directory
     if CompareVersionNumbers(newest.Version, current.Version, "equal") then
-      Info(InfoPackageManager, 2,
-           "The newest version of package \"", name,
+      Info(InfoPackageManager, 2, "The newest version of package \"", name,
            "\" is already installed");
       return true;
     elif CompareVersionNumbers(newest.Version, current.Version) then
@@ -556,8 +555,8 @@ function(name, interactive...)
       Info(InfoPackageManager, 2, "installed at ",
            List(allinfo, i -> i.InstallationPath), ", not in ", user_pkg_dir);
     fi;
-    if interactive and PKGMAN_AskYesNoQuestion("Would you like to install it?"
-                                               : default := true) then
+    if interactive and PKGMAN_AskYesNoQuestion("Would you like to install ",
+                                               name, "?" : default := true) then
       return InstallPackageFromName(name);
     fi;
     return false;

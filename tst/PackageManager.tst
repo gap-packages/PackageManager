@@ -157,7 +157,9 @@ gap> RemovePackage("PackageManager", "please default to yes");
 Error, PackageManager: RemovePackage: <interactive> must be true or false
 
 # Interactive tests (via hacking in/out streams)
-gap> InstallPackage("https://github.com/gap-packages/uuid/releases/download/v0.5/uuid-0.5.tar.gz");
+gap> uuid_0_5 := Concatenation("https://github.com/gap-packages/uuid/releases/",
+>                              "download/v0.5/uuid-0.5.tar.gz");;
+gap> InstallPackage(uuid_0_5);
 true
 gap> out := "";;
 gap> f_in := InputTextUser;;
@@ -201,6 +203,49 @@ gap> PositionSublist(out,
 >                    StringFormatted("Really delete directory {} ? [y/N] y\n",
 >                                    Filename(Directory(PKGMAN_PackageDir()),
 >                                             "uuid-0.5"))) <> fail;
+true
+gap> ForAny(DirectoryContents(PKGMAN_PackageDir()), f -> StartsWith(f, "io"));
+false
+gap> InstallPackage("https://github.com/gap-packages/io.git");
+true
+gap> InputTextUser := {} -> InputTextString("y");;
+gap> out := "";;
+gap> Print := newPrint;;
+gap> res := InstallPackage("io");;
+gap> Print := oldPrint;;
+gap> res;
+true
+gap> exp := "Package \"io\" already installed via git. Update it? [y/N] y\n";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> RemovePackage("io", false);
+true
+gap> InputTextUser := {} -> InputTextString("y");;
+gap> out := "";;
+gap> Print := newPrint;;
+gap> res := UpdatePackage("uuid");;
+gap> Print := oldPrint;;
+gap> res;
+true
+gap> exp := "#I  Package \"uuid\" not installed in user package directory\n";;
+gap> Append(exp, "Would you like to install uuid? [Y/n] y\n");
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> RemovePackage("uuid", false);
+true
+gap> InstallPackage(uuid_0_5);
+true
+gap> InputTextUser := {} -> InputTextString("y\n");;
+gap> out := "";;
+gap> Print := newPrint;;
+gap> res := UpdatePackage("uuid");;
+gap> Print := oldPrint;;
+gap> res;
+true
+gap> exp := Concatenation("Remove old version of uuid at ",
+>                         Filename(Directory(PKGMAN_PackageDir()), "uuid-0.5"),
+>                         " ? [y/N] y\n");;
+gap> PositionSublist(out, exp) <> fail;
 true
 gap> InputTextUser := f_in;;
 gap> MakeReadOnlyGlobal("InputTextUser");
