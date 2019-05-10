@@ -608,8 +608,7 @@ function(name, interactive...)
       PKGMAN_RemoveDir(olddir);
     fi;
   else
-    Info(InfoPackageManager, 2,
-         "The installed version of package \"", name,
+    Info(InfoPackageManager, 2, "The installed version of package \"", name,
          "\" is newer than the latest available version!");
   fi;
   return true;
