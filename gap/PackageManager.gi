@@ -105,7 +105,7 @@ function(name, interactive...)
     if CompareVersionNumbers(newest.Version, current.Version, "equal") then
       Info(InfoPackageManager, 2, "The newest version of package \"", name,
            "\" is already installed");
-      return true;
+      return PKGMAN_CheckPackage(current.InstallationPath);
     elif CompareVersionNumbers(newest.Version, current.Version) then
       q := Concatenation("Package \"", name, "\" version ", current.Version,
                          " is installed, but ", newest.Version,
@@ -113,7 +113,7 @@ function(name, interactive...)
       if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
         return UpdatePackage(name, interactive);
       else
-        return true;
+        return PKGMAN_CheckPackage(current.InstallationPath);
       fi;
     fi;
   fi;
@@ -607,25 +607,33 @@ function(name, interactive...)
     if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
       PKGMAN_RemoveDir(olddir);
     fi;
+    return true;
   else
     Info(InfoPackageManager, 2, "The installed version of package \"", name,
          "\" is newer than the latest available version!");
   fi;
-  return true;
+  return PKGMAN_CheckPackage(current.InstallationPath);
 end);
 
 InstallGlobalFunction(PKGMAN_CheckPackage,
 function(dir)
-  local info;
-  info := Filename(Directory(dir), "PackageInfo.g");
-  if not IsReadableFile(info) then
+  local fname, info;
+  fname := Filename(Directory(dir), "PackageInfo.g");
+  if not IsReadableFile(fname) then
     Info(InfoPackageManager, 1, "Could not find PackageInfo.g file");
     return false;
-  elif not ValidatePackageInfo(info) then
+  elif not ValidatePackageInfo(fname) then
     Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
     return false;
   fi;
-  Info(InfoPackageManager, 3, "PackageInfo.g validated successfully");
+  Read(fname);
+  info := GAPInfo.PackageInfoCurrent;
+  if TestPackageAvailability(info.PackageName, info.Version) = fail
+     and not PKGMAN_CompileDir(dir) then
+    Info(InfoPackageManager, 1, "Package could not be compiled properly");
+    return false;
+  fi;
+  Info(InfoPackageManager, 4, "PackageInfo.g validated successfully");
   return true;
 end);
 
