@@ -1,5 +1,10 @@
 This file describes changes in the PackageManager package.
 
+0.4 (2019-05-10)
+  - Introduce UpdatePackage
+  - Change behaviour of InstallPackage to allow interactive updates
+  - Check availability and recompile if needed after an attempted install/update
+
 0.3 (2019-03-26)
   - Introduce InstallRequiredPackages to install the packages required by GAP
   - Allow a branch name to be declared in InstallPackageFromGit/Hg
