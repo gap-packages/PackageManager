@@ -249,7 +249,7 @@ function(url, args...)
   elif Length(args) > 2 then
     ErrorNoReturn("PackageManager: InstallPackageFromGit:\n",
                   "requires 1, 2 or 3 arguments (not ",
-                  Length(branch) + 1, ")");
+                  Length(args) + 1, ")");
   fi;
 
   name := PKGMAN_NameOfGitRepo(url);
@@ -339,7 +339,7 @@ function(url, args...)
   elif Length(args) > 2 then
     ErrorNoReturn("PackageManager: InstallPackageFromHg:\n",
                   "requires 1, 2 or 3 arguments (not ",
-                  Length(branch) + 1, ")");
+                  Length(args) + 1, ")");
   fi;
 
   name := PKGMAN_NameOfHgRepo(url);
@@ -607,7 +607,7 @@ function(name, interactive...)
       PKGMAN_RemoveDir(olddir);
     fi;
   else
-    Info(InfoPackageManager, 1,
+    Info(InfoPackageManager, 2,
          "The installed version of package \"", name,
          "\" is newer than the latest available version!");
   fi;

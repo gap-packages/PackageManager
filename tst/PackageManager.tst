@@ -1,3 +1,8 @@
+# UpdatePackage for non-user packages
+gap> UpdatePackage("GAPDoc", false);
+#I  Package "GAPDoc" not installed in user package directory
+false
+
 # Install GAP's required packages
 gap> conts := DirectoryContents(PKGMAN_PackageDir());;
 gap> ForAny(conts, f -> StartsWith(f, "primgrp"));
@@ -52,12 +57,19 @@ gap> InstallRequiredPackages();
 false
 gap> GAPInfo.Dependencies := rec(NeededOtherPackages := backup);;
 
-# Install a package from a git repository
+# Install a package from a git repository, and modify it
 gap> InstallPackage("https://github.com/gap-packages/Example.git");
 true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "Example"));
+gap> dir := First(DirectoryContents(PKGMAN_PackageDir()),
+>                 f -> StartsWith(f, "Example"));;
+gap> dir := Filename(Directory(PKGMAN_PackageDir()), dir);;
+gap> dir <> fail;
 true
+gap> readme := Filename(Directory(dir), "README.md");;
+gap> FileString(readme, "Some change I've made", true);;  # edit file
+gap> UpdatePackage("example");
+#I  Uncommitted changes in git repository
+false
 
 # Install a package from a git repository not ending in .git
 gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo", false);
@@ -74,12 +86,25 @@ gap> InstallPackageFromGit("https://github.com/gap-packages/MathInTheMiddle.git"
 true
 gap> RemovePackage("MathInTheMiddle", false);
 true
+gap> InstallPackageFromGit("https://github.com/gap-packages/MathInTheMiddle.git", "master");
+true
+gap> RemovePackage("MathInTheMiddle", false);
+true
 gap> InstallPackageFromGit("https://github.com/gap-packages/orb.git", false, "fiaenfq");
 #I  Cloning unsuccessful
 false
 gap> InstallPackageFromGit("https://github.com/gap-packages/orb.git", "master", true);
 Error, PackageManager: InstallPackageFromGit:
 <interactive> should be true or false
+gap> InstallPackageFromGit("https://github.com/a/b.git", false, 3);
+Error, PackageManager: InstallPackageFromGit:
+<branch> should be a string
+gap> InstallPackageFromGit("https://github.com/a/b.git", 3);
+Error, PackageManager: InstallPackageFromGit:
+2nd argument should be true, false, or a string
+gap> InstallPackageFromGit("https://github.com/a/b.git", true, "master", "lol");
+Error, PackageManager: InstallPackageFromGit:
+requires 1, 2 or 3 arguments (not 4)
 
 # Install a package from a Mercurial repository not ending in .hg
 gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()),
@@ -99,6 +124,15 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "forms"));
 false
+gap> InstallPackageFromHg("https://bitbucket.org/a/b", false, 3);
+Error, PackageManager: InstallPackageFromHg:
+<branch> should be a string
+gap> InstallPackageFromHg("https://bitbucket.org/a/b", 3);
+Error, PackageManager: InstallPackageFromHg:
+2nd argument should be true, false, or a string
+gap> InstallPackageFromHg("https://bitbucket.org/a/b", true, "master", "lol");
+Error, PackageManager: InstallPackageFromHg:
+requires 1, 2 or 3 arguments (not 4)
 
 # Install a package from a Mercurial repository by branch
 gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", false, "default");
@@ -111,6 +145,10 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "forms"));
 false
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "default");
+true
+gap> RemovePackage("forms", false);
+true
 gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", false, "qfnoiq3eg");
 #I  Cloning unsuccessful
 false
@@ -155,6 +193,12 @@ gap> RemovePackage("PackageManager", true, false);
 Error, PackageManager: RemovePackage: requires 1 or 2 arguments (not 3)
 gap> RemovePackage("PackageManager", "please default to yes");
 Error, PackageManager: RemovePackage: <interactive> must be true or false
+
+# UpdatePackage bad inputs
+gap> UpdatePackage(3);
+Error, PackageManager: UpdatePackage: <name> must be a string
+gap> UpdatePackage("io", "yes");
+Error, PackageManager: UpdatePackage: <interactive> must be true or false
 
 # Interactive tests (via hacking in/out streams)
 gap> uuid_0_5 := Concatenation("https://github.com/gap-packages/uuid/releases/",
