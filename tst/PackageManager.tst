@@ -180,17 +180,25 @@ gap> PositionSublist(out,
 >                                    Filename(Directory(PKGMAN_PackageDir()),
 >                                             "uuid-0.5"))) <> fail;
 true
-gap> InputTextUser := {} -> InputTextString("x\n");;
+gap> InputTextUser := {} -> InputTextString("y\ny\n");;
 gap> out := "";;
 gap> Print := newPrint;;
 gap> res := InstallPackage("uuid", true);;
 gap> Print := oldPrint;;
 gap> res;
 true
-gap> exp := Concatenation("Package \"uuid\" version 0.5 is installed, but ",
->                         PKGMAN_DownloadPackageInfo(GetPackageURLs().uuid).Version,
->                         " is available. Install it? [y/N] \n");;
-gap> PositionSublist(out, exp) <> fail;
+gap> exp1 := Concatenation("Package \"uuid\" version 0.5 is installed, but ",
+>                          PKGMAN_DownloadPackageInfo(GetPackageURLs().uuid).Version,
+>                          " is available. Install it? [y/N] y\n");;
+gap> exp2 := StringFormatted("Remove old version of uuid at {} ? [y/N] y\n",
+>                            Filename(Directory(PKGMAN_PackageDir()), "uuid-0.5"));;
+gap> PositionSublist(out, exp1) <> fail;
+true
+gap> PositionSublist(out, exp2) <> fail;
+true
+gap> RemovePackage("uuid", false);
+true
+gap> InstallPackage(uuid_0_5);
 true
 gap> InputTextUser := {} -> InputTextString("y");;
 gap> out := "";;
