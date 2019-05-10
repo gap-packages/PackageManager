@@ -1,6 +1,6 @@
 # UpdatePackage for non-user packages
 gap> UpdatePackage("GAPDoc", false);
-#I  Package "GAPDoc" not installed in user package directory
+#I  Package "gapdoc" not installed in user package directory
 false
 
 # Install GAP's required packages
@@ -37,6 +37,8 @@ true
 gap> InstallPackage("matgrp");
 true
 gap> InstallPackage("matgrp");
+true
+gap> UpdatePackage("matgrp");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "matgrp"));
@@ -199,11 +201,15 @@ gap> UpdatePackage(3);
 Error, PackageManager: UpdatePackage: <name> must be a string
 gap> UpdatePackage("io", "yes");
 Error, PackageManager: UpdatePackage: <interactive> must be true or false
+gap> UpdatePackage("io", true, "master", "hello", Group(()), fail, []);
+Error, PackageManager: UpdatePackage: requires 1 or 2 arguments (not 7)
 
 # Interactive tests (via hacking in/out streams)
 gap> uuid_0_5 := Concatenation("https://github.com/gap-packages/uuid/releases/",
 >                              "download/v0.5/uuid-0.5.tar.gz");;
 gap> InstallPackage(uuid_0_5);
+true
+gap> InstallPackage("uuid", false);  # older version already installed
 true
 gap> out := "";;
 gap> f_in := InputTextUser;;
@@ -672,7 +678,11 @@ gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git", false);
 #I  Dependencies not satisfied for uuid
 false
 
-# Fail to install a dependency (sabotaged PackageInfoURLList)
+# Sabotaged PackageInfoURLList to produce some special errors
+gap> InstallPackage("GAPDoc");
+true
+gap> InstallPackage("uuid");
+true
 gap> urllist := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList :=
 > "https://gap-packages.github.io/PackageManager/dummy/badurls.txt";;
@@ -680,10 +690,14 @@ gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git", false);
 #I  Could not inspect tarball contents
 #I  Dependencies not satisfied for uuid
 false
-gap> PKGMAN_PackageInfoURLList := urllist;;
-gap> RemovePackage("uuid");
-#I  Package "uuid" not installed in user package directory
+gap> UpdatePackage("GAPDoc", false);  # Installed version is newer than online
+true
+gap> UpdatePackage("uuid", false);  # Newer version, but fails to install
+#I  Could not inspect tarball contents
 false
+gap> PKGMAN_PackageInfoURLList := urllist;;
+gap> RemovePackage("uuid", false);
+true
 
 # FINAL TEST
 # (keep this at the end of the file)

@@ -541,6 +541,7 @@ function(name, interactive...)
   fi;
 
   # Locate the package
+  name := LowercaseString(name);
   user_pkg_dir := PKGMAN_PackageDir();
   allinfo := PackageInfo(name);
   info := Filtered(allinfo,
