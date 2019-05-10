@@ -94,7 +94,7 @@ function(name, interactive...)
         q := Concatenation("Package \"", name, "\" already installed via ", vc,
                            ". Update it?");
         if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
-          return UpdatePackage(name, false);  # Just pull - no interactivity
+          return UpdatePackage(name, interactive);
         fi;
       fi;
     od;
@@ -267,9 +267,9 @@ function(url, args...)
   repo := Filename(List(dirs, Directory), ".git");
   if repo <> fail then  # TODO: check it's the same remote?
     q := Concatenation("Package \"", name,
-                       "\" already installed via git.  Update it?");
+                       "\" already installed via git. Update it?");
     if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
-      return UpdatePackage(name, false);  # Just pull - no interactivity
+      return UpdatePackage(name, interactive);
     fi;
   fi;
 
@@ -357,9 +357,9 @@ function(url, args...)
   repo := Filename(List(dirs, Directory), ".hg");
   if repo <> fail then
     q := Concatenation("Package \"", name,
-                       "\" already installed via mercurial.  Update it?");
+                       "\" already installed via mercurial. Update it?");
     if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
-      return UpdatePackage(name, false);  # Just pull - no interactivity
+      return UpdatePackage(name, interactive);
     fi;
   fi;
 

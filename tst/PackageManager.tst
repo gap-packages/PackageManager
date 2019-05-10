@@ -247,6 +247,38 @@ gap> exp := Concatenation("Remove old version of uuid at ",
 >                         " ? [y/N] y\n");;
 gap> PositionSublist(out, exp) <> fail;
 true
+gap> RemovePackage("uuid", false);
+true
+gap> InstallPackage("https://github.com/gap-packages/uuid.git");
+true
+gap> InputTextUser := {} -> InputTextString("y\n");;
+gap> out := "";;
+gap> Print := newPrint;;
+gap> res := InstallPackage("https://github.com/gap-packages/uuid.git");;
+gap> Print := oldPrint;;
+gap> res;
+true
+gap> exp := Concatenation("Package \"uuid\" already installed via git. ",
+>                         "Update it? [y/N] y\n");;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> RemovePackage("uuid", false);
+true
+gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
+true
+gap> InputTextUser := {} -> InputTextString("y\n");;
+gap> out := "";;
+gap> Print := newPrint;;
+gap> res := InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");;
+gap> Print := oldPrint;;
+gap> res;
+true
+gap> exp := Concatenation("Package \"forms\" already installed via mercurial. ",
+>                         "Update it? [y/N] y\n");;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> RemovePackage("forms", false);
+true
 gap> InputTextUser := f_in;;
 gap> MakeReadOnlyGlobal("InputTextUser");
 gap> MakeReadOnlyGlobal("Print");
