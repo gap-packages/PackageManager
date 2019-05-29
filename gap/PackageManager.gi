@@ -402,7 +402,8 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallDependencies,
 function(dir)
-  local info, deps, to_install, dep, got, info_urls, infos_to_install, dep_info;
+  local info, deps, to_install, dep, got, info_urls, infos_to_install, current,
+        compile, dep_info;
   info := Filename(Directory(dir), "PackageInfo.g");
   Read(info);
   info := ShallowCopy(GAPInfo.PackageInfoCurrent);
@@ -425,6 +426,21 @@ function(dir)
   info_urls := GetPackageURLs();
   infos_to_install := [];
   for dep in to_install do
+    # Already installed, but needs recompiling?
+    current :=  Filtered(PackageInfo(dep[1]),
+                         x -> StartsWith(x.InstallationPath,
+                                         PKGMAN_PackageDir()));
+    if not IsEmpty(current) then
+      current := current[1];
+      if CompareVersionNumbers(current.Version, dep[2]) then
+        compile := PKGMAN_CompileDir(current.InstallationPath);
+        if compile and TestPackageAvailability(dep[1], dep[2]) <> fail then
+          continue;  # Now installed successfully!
+        fi;
+      fi;
+    fi;
+
+    # Otherwise, install a fresh version
     if not IsBound(info_urls.(LowercaseString(dep[1]))) then
       Info(InfoPackageManager, 1, "Required package ", dep[1], " unknown");
       return false;
