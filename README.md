@@ -44,10 +44,16 @@ https://github.com/gap-packages/PackageManager.
 
 Acknowledgements
 ----------------
-PackageManager was partly created with funding from the OpenDreamKit project:
-https://opendreamkit.org/
 
 <table class="none">
+<tr>
+<td>
+  <img src="https://opendreamkit.org/public/logos/odk-elected-logo.svg" width="128">
+</td>
+<td>
+  PackageManager was partly created with funding from the OpenDreamKit project: https://opendreamkit.org
+</td>
+</tr>
 <tr>
 <td>
   <img src="http://opendreamkit.org/public/logos/Flag_of_Europe.svg" width="128">
