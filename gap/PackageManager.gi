@@ -655,7 +655,14 @@ end);
 
 InstallGlobalFunction(PKGMAN_CompileDir,
 function(dir)
-  local pkg_dir, scr, root, exec;
+  local prerequisites, exec, pkg_dir, scr, root;
+
+  # Run the prerequisites file if it exists
+  # Note: this is mainly for installing Semigroups from GitHub
+  prerequisites := Filename(Directory(dir), "prerequisites.sh");
+  if IsReadableFile(prerequisites) then
+    exec := PKGMAN_Exec(dir, prerequisites);
+  fi;
 
   # Check requirements, and prepare command
   pkg_dir := Filename(Directory(dir), "..");
