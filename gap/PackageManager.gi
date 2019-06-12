@@ -200,7 +200,7 @@ function(url)
     Info(InfoPackageManager, 1, "Extraction unsuccessful");
     return false;
   fi;
-  Info(InfoPackageManager, 3, "Extracted successfully");
+  Info(InfoPackageManager, 4, "Extracted successfully");
 
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
@@ -432,6 +432,7 @@ function(dir)
     if not IsEmpty(current) then
       current := current[1];
       if CompareVersionNumbers(current.Version, dep[2]) then
+        Info(InfoPackageManager, 3, dep[1], "-", dep[2], " installed but not loadable.  Recompiling...");
         compile := PKGMAN_CompileDir(current.InstallationPath);
         if compile and TestPackageAvailability(dep[1], dep[2]) <> fail then
           continue;  # Now installed successfully!
@@ -683,7 +684,7 @@ function(dir)
          "Compilation failed (package may still be usable)");
     return false;
   fi;
-  Info(InfoPackageManager, 3, "Compilation was successful");
+  Info(InfoPackageManager, 4, "Compilation was successful");
   return true;
 end);
 
@@ -932,6 +933,6 @@ function(url)
     Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
     return fail;
   fi;
-  Info(InfoPackageManager, 3, "PackageInfo.g validated successfully");
+  Info(InfoPackageManager, 4, "PackageInfo.g validated successfully");
   return ShallowCopy(info);
 end);
