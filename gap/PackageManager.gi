@@ -426,9 +426,9 @@ function(dir)
   infos_to_install := [];
   for dep in to_install do
     # Already installed, but needs recompiling?
-    current :=  Filtered(PackageInfo(dep[1]),
-                         x -> StartsWith(x.InstallationPath,
-                                         PKGMAN_PackageDir()));
+    current := Filtered(PackageInfo(dep[1]),
+                        x -> StartsWith(x.InstallationPath,
+                                        PKGMAN_PackageDir()));
     if not IsEmpty(current) then
       current := current[1];
       if CompareVersionNumbers(current.Version, dep[2]) then
@@ -644,7 +644,7 @@ function(dir)
   Read(fname);
   info := GAPInfo.PackageInfoCurrent;
   if TestPackageAvailability(info.PackageName, info.Version) = fail
-     and not PKGMAN_CompileDir(dir) then
+      and not PKGMAN_CompileDir(dir) then
     Info(InfoPackageManager, 1, "Package could not be compiled properly");
     return false;
   fi;
