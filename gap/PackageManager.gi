@@ -202,13 +202,6 @@ function(url)
   fi;
   Info(InfoPackageManager, 3, "Extracted successfully");
 
-  # Check validity
-  if PKGMAN_CheckPackage(dir) = false then
-    PKGMAN_RemoveDir(dir);
-    return false;
-  fi;
-  PKGMAN_RefreshPackageInfo();
-
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", topdir);
@@ -216,8 +209,14 @@ function(url)
     return false;
   fi;
 
-  # Compile
-  return PKGMAN_CompileDir(dir);
+  # Check validity
+  if PKGMAN_CheckPackage(dir) = false then
+    PKGMAN_RemoveDir(dir);
+    return false;
+  fi;
+  PKGMAN_RefreshPackageInfo();
+  
+  return true;
 end);
 
 InstallGlobalFunction(InstallPackageFromGit,
