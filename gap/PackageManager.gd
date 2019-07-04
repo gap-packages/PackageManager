@@ -207,6 +207,7 @@ DeclareGlobalFunction("GetPackageURLs");
 DeclareGlobalFunction("PKGMAN_InstallDependencies");
 DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_CompileDir");
+DeclareGlobalFunction("PKGMAN_MakeDoc");
 DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_NameOfGitRepo");
 DeclareGlobalFunction("PKGMAN_NameOfHgRepo");

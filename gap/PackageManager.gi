@@ -305,8 +305,8 @@ function(url, args...)
     return false;
   fi;
 
-  return PKGMAN_CompileDir(dir);
-  # TODO: compile doc and return PKGMAN_CheckPackage(dir);
+  # Compile, make doc, and check
+  return PKGMAN_CheckPackage(dir);
 end);
 
 InstallGlobalFunction(InstallPackageFromHg,
@@ -395,8 +395,8 @@ function(url, args...)
     return false;
   fi;
 
-  return PKGMAN_CompileDir(dir);
-  # TODO: compile doc and return PKGMAN_CheckPackage(dir);
+  # Compile, make doc, and check
+  return PKGMAN_CheckPackage(dir);
 end);
 
 InstallGlobalFunction(PKGMAN_InstallDependencies,
@@ -642,15 +642,30 @@ function(dir)
   if not IsReadableFile(fname) then
     Info(InfoPackageManager, 1, "Could not find PackageInfo.g file");
     return false;
-  elif not ValidatePackageInfo(fname) then
-    Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
-    return false;
   fi;
   Read(fname);
   info := GAPInfo.PackageInfoCurrent;
-  if TestPackageAvailability(info.PackageName, info.Version) = fail
-      and not PKGMAN_CompileDir(dir) then
-    Info(InfoPackageManager, 1, "Package could not be compiled properly");
+
+  # Compile if needed
+  PKGMAN_RefreshPackageInfo();
+  if TestPackageAvailability(info.PackageName, info.Version) = fail then
+    if not PKGMAN_CompileDir(dir) then
+      Info(InfoPackageManager, 1, "Package could not be compiled properly");
+      return false;
+    fi;
+  fi;
+
+  # Make doc if needed
+  if not ValidatePackageInfo(fname) then
+    PKGMAN_MakeDoc(dir);
+  fi;
+
+  PKGMAN_RefreshPackageInfo();
+  if TestPackageAvailability(info.PackageName, info.Version) = fail then
+    Info(InfoPackageManager, 1, "Package availiability test failed (", dir, ")");
+    return false;
+  elif not ValidatePackageInfo(fname) then
+    Info(InfoPackageManager, 1, "PackageInfo.g validation failed (", dir, ")");
     return false;
   fi;
   Info(InfoPackageManager, 4, "PackageInfo.g validated successfully");
@@ -691,6 +706,45 @@ function(dir)
   fi;
   Info(InfoPackageManager, 4, "Compilation was successful");
   return true;
+end);
+
+InstallGlobalFunction(PKGMAN_MakeDoc,
+function(dir)
+  local makedoc_g, doc_dir, doc_make_doc, last_dir, last_infogapdoc, str, exec;
+
+  # Mute GAPDoc
+  last_infogapdoc := InfoLevel(InfoGAPDoc);
+  SetInfoLevel(InfoGAPDoc, 0);
+
+  # Make documentation
+  makedoc_g := Filename(Directory(dir), "makedoc.g");
+  doc_dir := Filename(Directory(dir), "doc");
+  doc_make_doc := Filename(Directory(doc_dir), "make_doc");
+  if IsReadableFile(makedoc_g) then
+    Info(InfoPackageManager, 3,
+         "Building documentation (using makedoc.g)...");
+
+    # Run makedoc.g, in the correct directory, without quitting
+    last_dir := DirectoryCurrent();
+    GAPInfo.DirectoryCurrent := Directory(dir);
+    str := StringFile(makedoc_g);;
+    str := ReplacedString(str, "QUIT;", "");;  # TODO: is there a better way?
+    str := ReplacedString(str, "quit;", "");;
+    Read(InputTextString(str));
+    GAPInfo.DirectoryCurrent := last_dir;
+
+  elif IsReadableFile(doc_make_doc) then
+    Info(InfoPackageManager, 3,
+         "Building documentation (using doc/make_doc)...");
+    exec := PKGMAN_Exec(doc_dir, doc_make_doc);
+    if exec.code <> 0 then
+      Info(InfoPackageManager, 3, "WARNING: doc/make_doc failed");
+    fi;
+  else
+    Info(InfoPackageManager, 3,
+         "WARNING: could not build doc (no makedoc.g or doc/make_doc)");
+  fi;
+  SetInfoLevel(InfoGAPDoc, last_infogapdoc);
 end);
 
 InstallGlobalFunction(PKGMAN_Exec,
