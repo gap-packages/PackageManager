@@ -215,7 +215,7 @@ function(url)
     return false;
   fi;
   PKGMAN_RefreshPackageInfo();
-  
+
   return true;
 end);
 
@@ -432,7 +432,8 @@ function(dir)
     if not IsEmpty(current) then
       current := current[1];
       if CompareVersionNumbers(current.Version, dep[2]) then
-        Info(InfoPackageManager, 3, dep[1], "-", dep[2], " installed but not loadable.  Recompiling...");
+        Info(InfoPackageManager, 3, dep[1], "-", current.Version,
+             " installed but not loadable: recompiling...");
         compile := PKGMAN_CompileDir(current.InstallationPath);
         if compile and TestPackageAvailability(dep[1], dep[2]) <> fail then
           continue;  # Now installed successfully!
@@ -661,6 +662,7 @@ function(dir)
   # Note: this is mainly for installing Semigroups from GitHub
   prerequisites := Filename(Directory(dir), "prerequisites.sh");
   if IsReadableFile(prerequisites) then
+    Info(InfoPackageManager, 1, "Running prerequisites.sh ...");
     exec := PKGMAN_Exec(dir, prerequisites);
   fi;
 
