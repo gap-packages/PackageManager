@@ -444,12 +444,14 @@ function(dir)
     # Otherwise, install a fresh version
     if not IsBound(info_urls.(LowercaseString(dep[1]))) then
       Info(InfoPackageManager, 1, "Required package ", dep[1], " unknown");
+      PKGMAN_MarkedForInstall := [];
       return false;
     fi;
     dep_info := PKGMAN_DownloadPackageInfo(info_urls.(LowercaseString(dep[1])));
     if not CompareVersionNumbers(dep_info.Version, dep[2]) then
       Info(InfoPackageManager, 1, "Package ", dep[1], " ", dep[2],
            " unavailable: only version ", dep_info.Version, " was found");
+      PKGMAN_MarkedForInstall := [];
       return false;
     fi;
     Add(infos_to_install, dep_info);
@@ -460,6 +462,7 @@ function(dir)
          dep_info.PackageName, " ", dep_info.Version, " ...");
     # TODO: make this less recursive and more like APT
     if InstallPackageFromInfo(dep_info) <> true then
+      PKGMAN_MarkedForInstall := [];
       return false;
     fi;
   od;
