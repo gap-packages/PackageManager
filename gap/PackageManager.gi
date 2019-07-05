@@ -401,8 +401,8 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallDependencies,
 function(dir)
-  local info, deps, to_install, dep, got, info_urls, infos_to_install, current,
-        compile, dep_info;
+  local info, deps, to_install, dep, got, info_urls, dep_infos, current,
+        dep_info, i;
   info := Filename(Directory(dir), "PackageInfo.g");
   Read(info);
   info := ShallowCopy(GAPInfo.PackageInfoCurrent);
@@ -411,19 +411,16 @@ function(dir)
   Info(InfoPackageManager, 3,
        "Checking dependencies for ", info.PackageName, "...");
   for dep in deps do
-    # Do we have it, or is it being installed?
-    got := (TestPackageAvailability(dep[1], dep[2]) <> fail or
-            ForAny(Filtered(PKGMAN_MarkedForInstall,
-                            x -> LowercaseString(x[1]) =
-                                 LowercaseString(dep[1])),
-                   x -> CompareVersionNumbers(x[2], dep[2])));
+    # Do we already have it?
+    got := TestPackageAvailability(dep[1], dep[2]) <> fail;
     Info(InfoPackageManager, 3, "  ", dep[1], " ", dep[2], ": ", got);
     if not got then
       Add(to_install, dep);
     fi;
   od;
+
   info_urls := GetPackageURLs();
-  infos_to_install := [];
+  dep_infos := [];
   for dep in to_install do
     # Already installed, but needs recompiling?
     current := Filtered(PackageInfo(dep[1]),
@@ -433,15 +430,17 @@ function(dir)
       current := current[1];
       if CompareVersionNumbers(current.Version, dep[2]) then
         Info(InfoPackageManager, 3, dep[1], "-", current.Version,
-             " installed but not loadable: recompiling...");
-        compile := PKGMAN_CompileDir(current.InstallationPath);
-        if compile and TestPackageAvailability(dep[1], dep[2]) <> fail then
-          continue;  # Now installed successfully!
+             " installed but not loadable: trying to fix...");
+        if PKGMAN_CheckPackage(current.InstallationPath) then
+          continue;  # package fixed!
+        elif PKGMAN_InstallDependencies(current.InstallationPath)
+             and PKGMAN_CheckPackage(current.InstallationPath) then
+          continue;  # dependencies installed!
         fi;
       fi;
     fi;
 
-    # Otherwise, install a fresh version
+    # Otherwise, prepare to install a fresh version
     if not IsBound(info_urls.(LowercaseString(dep[1]))) then
       Info(InfoPackageManager, 1, "Required package ", dep[1], " unknown");
       PKGMAN_MarkedForInstall := [];
@@ -454,13 +453,26 @@ function(dir)
       PKGMAN_MarkedForInstall := [];
       return false;
     fi;
-    Add(infos_to_install, dep_info);
-    Add(PKGMAN_MarkedForInstall, [dep[1], dep_info.Version]);
+    Add(dep_infos, dep_info);
+
+    # If this is already marked for install later, unmark it
+    for i in [1 .. Length(PKGMAN_MarkedForInstall)] do
+      if PKGMAN_MarkedForInstall[i].PackageName = dep_info.PackageName
+         and PKGMAN_MarkedForInstall[i].Version = dep_info.Version then
+        Remove(PKGMAN_MarkedForInstall, i);
+        break;
+      fi;
+    od;
   od;
-  for dep_info in infos_to_install do
+
+  # Add these new dependencies at the front of the queue
+  PKGMAN_MarkedForInstall := Concatenation(dep_infos, PKGMAN_MarkedForInstall);
+
+  # Do the installations (the whole global queue)
+  while not IsEmpty(PKGMAN_MarkedForInstall) do
+    dep_info := Remove(PKGMAN_MarkedForInstall, 1);
     Info(InfoPackageManager, 3, "Installing dependency ",
          dep_info.PackageName, " ", dep_info.Version, " ...");
-    # TODO: make this less recursive and more like APT
     if InstallPackageFromInfo(dep_info) <> true then
       PKGMAN_MarkedForInstall := [];
       return false;
@@ -637,7 +649,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_CheckPackage,
 function(dir)
-  local fname, info;
+  local fname, info, html;
   fname := Filename(Directory(dir), "PackageInfo.g");
   if not IsReadableFile(fname) then
     Info(InfoPackageManager, 1, "Could not find PackageInfo.g file");
@@ -656,7 +668,12 @@ function(dir)
   fi;
 
   # Make doc if needed
-  if not ValidatePackageInfo(fname) then
+  if IsRecord(info.PackageDoc) then
+    html := info.PackageDoc.HTMLStart;
+  else
+    html := info.PackageDoc[1].HTMLStart;
+  fi;
+  if not (IsReadableFile(html) or ValidatePackageInfo(fname)) then
     PKGMAN_MakeDoc(dir);
   fi;
 
