@@ -478,6 +478,7 @@ function(dir)
       return false;
     fi;
   od;
+  PKGMAN_RefreshPackageInfo();
   return true;
 end);
 
@@ -673,13 +674,15 @@ function(dir)
   else
     html := info.PackageDoc[1].HTMLStart;
   fi;
-  if not (IsReadableFile(html) or ValidatePackageInfo(fname)) then
+  html := Filename(Directory(dir), html);
+  # Check for html before full validate
+  if not (IsReadableFile(html) and ValidatePackageInfo(fname)) then
     PKGMAN_MakeDoc(dir);
   fi;
 
   PKGMAN_RefreshPackageInfo();
   if TestPackageAvailability(info.PackageName, info.Version) = fail then
-    Info(InfoPackageManager, 1, "Package availiability test failed (", dir, ")");
+    Info(InfoPackageManager, 1, "Package availability test failed (", dir, ")");
     return false;
   elif not ValidatePackageInfo(fname) then
     Info(InfoPackageManager, 1, "PackageInfo.g validation failed (", dir, ")");
