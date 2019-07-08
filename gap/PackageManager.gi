@@ -651,6 +651,8 @@ end);
 InstallGlobalFunction(PKGMAN_CheckPackage,
 function(dir)
   local fname, info, html;
+
+  # Get PackageInfo
   fname := Filename(Directory(dir), "PackageInfo.g");
   if not IsReadableFile(fname) then
     Info(InfoPackageManager, 1, "Could not find PackageInfo.g file");
@@ -659,13 +661,10 @@ function(dir)
   Read(fname);
   info := GAPInfo.PackageInfoCurrent;
 
-  # Compile if needed
-  PKGMAN_RefreshPackageInfo();
-  if TestPackageAvailability(info.PackageName, info.Version) = fail then
-    if not PKGMAN_CompileDir(dir) then
-      Info(InfoPackageManager, 1, "Package could not be compiled properly");
-      return false;
-    fi;
+  # Simple checks
+  if not (IsBound(info.PackageName) and IsBound(info.PackageDoc)) then
+    Info(InfoPackageManager, 1, "PackageInfo.g validation failed in ", dir);
+    return false;
   fi;
 
   # Make doc if needed
@@ -680,15 +679,30 @@ function(dir)
     PKGMAN_MakeDoc(dir);
   fi;
 
-  PKGMAN_RefreshPackageInfo();
-  if TestPackageAvailability(info.PackageName, info.Version) = fail then
-    Info(InfoPackageManager, 1, "Package availability test failed (", dir, ")");
-    return false;
-  elif not ValidatePackageInfo(fname) then
+  # Ensure valid PackageInfo before proceeding
+  if not ValidatePackageInfo(fname) then
     Info(InfoPackageManager, 1, "PackageInfo.g validation failed (", dir, ")");
     return false;
   fi;
-  Info(InfoPackageManager, 4, "PackageInfo.g validated successfully");
+
+  # Compile if needed
+  PKGMAN_RefreshPackageInfo();
+  if TestPackageAvailability(info.PackageName, info.Version) = fail then
+    if not PKGMAN_CompileDir(dir) then
+      Info(InfoPackageManager, 1, "Package could not be compiled properly");
+      return false;
+    fi;
+  fi;
+
+  # Ensure package is available
+  PKGMAN_RefreshPackageInfo();
+  if TestPackageAvailability(info.PackageName, info.Version) = fail then
+    Info(InfoPackageManager, 1, "Package availability test failed in ", dir);
+    return false;
+  fi;
+
+  # PackageInfo is valid AND the package is available
+  Info(InfoPackageManager, 4, "Package checks successful");
   return true;
 end);
 
