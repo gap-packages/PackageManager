@@ -406,7 +406,14 @@ function(dir)
   info := Filename(Directory(dir), "PackageInfo.g");
   Read(info);
   info := ShallowCopy(GAPInfo.PackageInfoCurrent);
-  deps := info.Dependencies.NeededOtherPackages;
+  if IsBound(info.Dependencies) then
+    deps := info.Dependencies.NeededOtherPackages;
+  else
+    deps := [];
+  fi;
+  if IsEmpty(deps) then
+    return true;
+  fi;
   to_install := [];
   Info(InfoPackageManager, 3,
        "Checking dependencies for ", info.PackageName, "...");
