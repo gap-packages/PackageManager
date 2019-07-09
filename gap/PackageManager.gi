@@ -414,12 +414,19 @@ function(dir)
   if IsEmpty(deps) then
     return true;
   fi;
+  # Mark this package as installing in case of circular dependencies
+  Add(PKGMAN_MarkedForInstall,
+      [LowercaseString(info.PackageName), info.Version]);
   to_install := [];
   Info(InfoPackageManager, 3,
        "Checking dependencies for ", info.PackageName, "...");
   for dep in deps do
     # Do we already have it?
-    got := TestPackageAvailability(dep[1], dep[2]) <> fail;
+    got := TestPackageAvailability(dep[1], dep[2]) <> fail or
+           PositionProperty(PKGMAN_MarkedForInstall,
+                            x -> x[1] = dep[1]
+                                 and CompareVersionNumbers(x[2], dep[2]))
+           <> fail;
     Info(InfoPackageManager, 3, "  ", dep[1], " ", dep[2], ": ", got);
     if not got then
       Add(to_install, dep);
@@ -450,6 +457,7 @@ function(dir)
     # Otherwise, prepare to install a fresh version
     if not IsBound(info_urls.(LowercaseString(dep[1]))) then
       Info(InfoPackageManager, 1, "Required package ", dep[1], " unknown");
+      PKGMAN_InstallQueue := [];
       PKGMAN_MarkedForInstall := [];
       return false;
     fi;
@@ -457,35 +465,38 @@ function(dir)
     if not CompareVersionNumbers(dep_info.Version, dep[2]) then
       Info(InfoPackageManager, 1, "Package ", dep[1], " ", dep[2],
            " unavailable: only version ", dep_info.Version, " was found");
+      PKGMAN_InstallQueue := [];
       PKGMAN_MarkedForInstall := [];
       return false;
     fi;
     Add(dep_infos, dep_info);
 
     # If this is already marked for install later, unmark it
-    for i in [1 .. Length(PKGMAN_MarkedForInstall)] do
-      if PKGMAN_MarkedForInstall[i].PackageName = dep_info.PackageName
-         and PKGMAN_MarkedForInstall[i].Version = dep_info.Version then
-        Remove(PKGMAN_MarkedForInstall, i);
+    for i in [1 .. Length(PKGMAN_InstallQueue)] do
+      if PKGMAN_InstallQueue[i].PackageName = dep_info.PackageName
+         and PKGMAN_InstallQueue[i].Version = dep_info.Version then
+        Remove(PKGMAN_InstallQueue, i);
         break;
       fi;
     od;
   od;
 
   # Add these new dependencies at the front of the queue
-  PKGMAN_MarkedForInstall := Concatenation(dep_infos, PKGMAN_MarkedForInstall);
+  PKGMAN_InstallQueue := Concatenation(dep_infos, PKGMAN_InstallQueue);
 
   # Do the installations (the whole global queue)
-  while not IsEmpty(PKGMAN_MarkedForInstall) do
-    dep_info := Remove(PKGMAN_MarkedForInstall, 1);
+  while not IsEmpty(PKGMAN_InstallQueue) do
+    dep_info := Remove(PKGMAN_InstallQueue, 1);
     Info(InfoPackageManager, 3, "Installing dependency ",
          dep_info.PackageName, " ", dep_info.Version, " ...");
     if InstallPackageFromInfo(dep_info) <> true then
+      PKGMAN_InstallQueue := [];
       PKGMAN_MarkedForInstall := [];
       return false;
     fi;
   od;
   PKGMAN_RefreshPackageInfo();
+  Remove(PKGMAN_MarkedForInstall);  # this package
   return true;
 end);
 
