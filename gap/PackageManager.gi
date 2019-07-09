@@ -681,7 +681,8 @@ function(dir)
 
   # Simple checks
   if not (IsBound(info.PackageName) and IsBound(info.PackageDoc)) then
-    Info(InfoPackageManager, 1, "PackageInfo.g validation failed in ", dir);
+    Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
+    Info(InfoPackageManager, 2, "(in ", dir, ")");
     return false;
   fi;
 
@@ -699,8 +700,8 @@ function(dir)
 
   # Ensure valid PackageInfo before proceeding
   if not ValidatePackageInfo(fname) then
-    Info(InfoPackageManager, 1, "PackageInfo.g validation failed (", dir, ")");
-    return false;
+    Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
+    Info(InfoPackageManager, 2, "(in ", dir, ")");
   fi;
 
   # Compile if needed
@@ -762,11 +763,14 @@ end);
 
 InstallGlobalFunction(PKGMAN_MakeDoc,
 function(dir)
-  local makedoc_g, doc_dir, doc_make_doc, last_dir, last_infogapdoc, str, exec;
+  local last_infogapdoc, last_infowarning, makedoc_g, doc_dir, doc_make_doc,
+        last_dir, str, exec;
 
   # Mute GAPDoc
   last_infogapdoc := InfoLevel(InfoGAPDoc);
+  last_infowarning := InfoLevel(InfoWarning);
   SetInfoLevel(InfoGAPDoc, 0);
+  SetInfoLevel(InfoWarning, 0);
 
   # Make documentation
   makedoc_g := Filename(Directory(dir), "makedoc.g");
@@ -797,6 +801,7 @@ function(dir)
          "WARNING: could not build doc (no makedoc.g or doc/make_doc)");
   fi;
   SetInfoLevel(InfoGAPDoc, last_infogapdoc);
+  SetInfoLevel(InfoWarning, last_infowarning);
 end);
 
 InstallGlobalFunction(PKGMAN_Exec,

@@ -1,3 +1,9 @@
+# Get AutoDoc (for testing)
+gap> InstallPackage("autodoc");
+true
+gap> LoadPackage("autodoc", false);
+true
+
 # UpdatePackage for non-user packages
 gap> UpdatePackage("GAPDoc", false);
 #I  Package "gapdoc" not installed in user package directory
@@ -428,26 +434,7 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/twodirs
 #I  Archive should contain 1 directory (not 2)
 false
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage.tar.gz");
-#E  component `PackageName' must be bound to a nonempty string
-#E  component `Subtitle' must be bound to a string
-#E  component `Version' must be bound to a nonempty string that does not start\
- with `='
-#E  component `Date' must be bound to a string of the form `dd/mm/yyyy'
-#E  component `ArchiveURL' must be bound to a string started with http://, htt\
-ps:// or ftp://
-#E  component `ArchiveFormats' must be bound to a string
-#E  component `Status' must be bound to one of "accepted", "deposited", "dev",\
- "other"
-#E  component `README_URL' must be bound to a string started with http://, htt\
-ps:// or ftp://
-#E  component `PackageInfoURL' must be bound to a string started with http://,\
- https:// or ftp://
-#E  component `AbstractHTML' must be bound to a string
-#E  component `PackageWWWHome' must be bound to a string started with http://,\
- https:// or ftp://
-#E  component `PackageDoc' must be bound to a record or a list of records
-#E  component `AvailabilityTest' must be bound to a function
-#I  Invalid PackageInfo.g file
+#I  PackageInfo.g validation failed
 false
 
 # Fail to extract due to permissions
@@ -495,26 +482,7 @@ false
 gap> FileString(Filename(Directory(baddir), "PackageInfo.g"),
 >               "SetPackageInfo(rec());");;
 gap> PKGMAN_CheckPackage(baddir);
-#E  component `PackageName' must be bound to a nonempty string
-#E  component `Subtitle' must be bound to a string
-#E  component `Version' must be bound to a nonempty string that does not start\
- with `='
-#E  component `Date' must be bound to a string of the form `dd/mm/yyyy'
-#E  component `ArchiveURL' must be bound to a string started with http://, htt\
-ps:// or ftp://
-#E  component `ArchiveFormats' must be bound to a string
-#E  component `Status' must be bound to one of "accepted", "deposited", "dev",\
- "other"
-#E  component `README_URL' must be bound to a string started with http://, htt\
-ps:// or ftp://
-#E  component `PackageInfoURL' must be bound to a string started with http://,\
- https:// or ftp://
-#E  component `AbstractHTML' must be bound to a string
-#E  component `PackageWWWHome' must be bound to a string started with http://,\
- https:// or ftp://
-#E  component `PackageDoc' must be bound to a record or a list of records
-#E  component `AvailabilityTest' must be bound to a function
-#I  Invalid PackageInfo.g file
+#I  PackageInfo.g validation failed
 false
 gap> RemoveDirectoryRecursively(baddir);;
 
