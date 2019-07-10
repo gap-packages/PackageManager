@@ -39,6 +39,10 @@ true
 gap> RemovePackage("GAPDoc", false);
 true
 
+# Install old version of atlasrep (TEMPORARY to matgrp work in the next example)
+gap> InstallPackage("https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/atlasrep1r5p1.tar.gz");
+true
+
 # Install and remove a package by name
 gap> InstallPackage("matgrp");
 true
@@ -614,6 +618,8 @@ gap> PackageInfo("HomalgToCAS");
 [  ]
 gap> PackageInfo("MatricesForHomalg");
 [  ]
+gap> InstallPackage("https://github.com/gap-packages/utils/releases/download/v0.59/utils-0.59.tar.gz");  # TEMP
+true
 gap> InstallPackage("HomalgToCAS");
 true
 gap> ForAll(["HomalgToCAS", "MatricesForHomalg", "GAPDoc", "IO"],
