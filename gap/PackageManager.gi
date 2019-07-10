@@ -715,7 +715,8 @@ function(dir)
 
   # Ensure package is available
   PKGMAN_RefreshPackageInfo();
-  if TestPackageAvailability(info.PackageName, info.Version) = fail then
+  if TestPackageAvailability(info.PackageName, info.Version) = fail and
+     not IsPackageLoaded(LowercaseString(info.PackageName)) then
     Info(InfoPackageManager, 1, "Package availability test failed in ", dir);
     return false;
   fi;
