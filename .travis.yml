@@ -16,6 +16,8 @@ addons:
   apt_packages:
     - libgmp-dev
     - libreadline-dev
+    - texlive-latex-extra
+    - texlive-fonts-recommended
 
 matrix:
   include:
@@ -30,6 +32,8 @@ matrix:
           - libcurl4-openssl-dev:i386
           - libgmp-dev:i386
           - libreadline-dev:i386
+          - texlive-latex-extra:i386
+          - texlive-fonts-recommended:i386
           - gcc-multilib
           - g++-multilib
 
