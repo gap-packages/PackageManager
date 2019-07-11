@@ -673,6 +673,17 @@ gap> PKGMAN_PackageInfoURLList := urllist;;
 gap> RemovePackage("uuid", false);
 true
 
+# The big one: install semigroups, and mess with its dependencies
+gap> InstallPackage("semigroups");
+true
+gap> dig := First(PackageInfo("digraphs"),
+>                 x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));;
+gap> PKGMAN_RemoveDir(Filename(Directory(dig.InstallationPath), "bin"));
+gap> UpdatePackage("semigroups");  # should recompile digraphs
+true
+gap> RemovePackage("semigroups", false);
+true
+
 # FINAL TEST
 # (keep this at the end of the file)
 gap> PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg/"));
