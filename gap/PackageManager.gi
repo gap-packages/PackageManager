@@ -705,9 +705,7 @@ function(dir)
   # Compile if needed
   PKGMAN_RefreshPackageInfo();
   if TestPackageAvailability(info.PackageName, info.Version) = fail then
-    if not PKGMAN_CompileDir(dir) then
-      Info(InfoPackageManager, 1, "Package could not be compiled properly");
-    fi;
+    PKGMAN_CompileDir(dir);
   fi;
 
   # Redo dependencies if needed

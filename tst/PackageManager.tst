@@ -711,6 +711,15 @@ gap> dig := First(PackageInfo("digraphs"),
 gap> PKGMAN_RemoveDir(Filename(Directory(dig.InstallationPath), "bin"));
 gap> UpdatePackage("semigroups");  # should recompile digraphs
 true
+gap> dig := First(PackageInfo("digraphs"),
+>                 x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));;
+gap> RemoveFile(Filename(Directory(dig.InstallationPath), "PackageInfo.g"));
+true
+gap> UpdatePackage("semigroups");  # recompiling doesn't work
+#I  Package already installed at target location
+#I  Dependencies not satisfied
+#I  Package availability test failed
+false
 gap> RemovePackage("semigroups", false);
 true
 
