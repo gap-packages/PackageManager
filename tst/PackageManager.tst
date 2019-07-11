@@ -703,6 +703,19 @@ gap> PKGMAN_PackageInfoURLList := urllist;;
 gap> RemovePackage("uuid", false);
 true
 
+# Build doc with doc/make_doc
+gap> InstallPackage("https://github.com/gap-packages/sonata.git");
+true
+
+# Fail to build doc with doc/make_doc (assumes GAP is located at ../../..)
+gap> InstallPackage("https://github.com/gap-packages/grape.git");
+#E  component `ArchiveURLSubset' must be bound to a list of strings denoting relative paths to readable files or directories
+#E  component `HTMLStart' must be bound to a string denoting a relative path to a readable file
+#E  component `PDFFile' must be bound to a string denoting a relative path to a readable file
+#E  component `SixFile' must be bound to a string denoting a relative path to a readable file
+#I  PackageInfo.g validation failed
+false
+
 # The big one: install semigroups, and mess with its dependencies
 gap> InstallPackage("semigroups");
 true
