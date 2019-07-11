@@ -447,9 +447,6 @@ function(dir)
              " installed but not loadable: trying to fix...");
         if PKGMAN_CheckPackage(current.InstallationPath) then
           continue;  # package fixed!
-        elif PKGMAN_InstallDependencies(current.InstallationPath)
-             and PKGMAN_CheckPackage(current.InstallationPath) then
-          continue;  # dependencies installed!
         fi;
       fi;
     fi;
@@ -702,6 +699,7 @@ function(dir)
   if not ValidatePackageInfo(fname) then
     Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
     Info(InfoPackageManager, 2, "(in ", dir, ")");
+    return false;
   fi;
 
   # Compile if needed
