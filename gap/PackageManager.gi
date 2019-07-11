@@ -716,7 +716,9 @@ function(dir)
   PKGMAN_RefreshPackageInfo();
   if TestPackageAvailability(info.PackageName, info.Version) = fail and
      not IsPackageLoaded(LowercaseString(info.PackageName)) then
-    Info(InfoPackageManager, 1, "Package availability test failed in ", dir);
+    Info(InfoPackageManager, 1, "Package availability test failed");
+    Info(InfoPackageManager, 2,
+         "(for ", info.PackageName, " ", info.Version, ")");
     return false;
   fi;
 
@@ -733,7 +735,7 @@ function(dir)
   # Note: this is mainly for installing Semigroups from GitHub
   prerequisites := Filename(Directory(dir), "prerequisites.sh");
   if IsReadableFile(prerequisites) then
-    Info(InfoPackageManager, 1, "Running prerequisites.sh ...");
+    Info(InfoPackageManager, 3, "Running prerequisites.sh ...");
     exec := PKGMAN_Exec(dir, prerequisites);
   fi;
 
@@ -851,7 +853,8 @@ function(dir, cmd, args...)
   if code <> 0 then
     logfile := Filename(DirectoryTemporary(), "exec-log.txt");
     FileString(logfile, out);
-    Info(InfoPackageManager, 2, "Error detected - see log at ", logfile);
+    Info(InfoPackageManager, 2,
+         "Possible error detected: see log at ", logfile);
   fi;
 
   # Return all the information we captured
