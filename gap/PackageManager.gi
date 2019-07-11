@@ -712,6 +712,13 @@ function(dir)
     fi;
   fi;
 
+  # Redo dependencies if needed
+  if TestPackageAvailability(info.PackageName, info.Version) = fail then
+    if not PKGMAN_InstallDependencies(dir) then
+      Info(InfoPackageManager, 1, "Dependencies not satisfied");
+    fi;
+  fi;
+
   # Ensure package is available
   PKGMAN_RefreshPackageInfo();
   if TestPackageAvailability(info.PackageName, info.Version) = fail and
