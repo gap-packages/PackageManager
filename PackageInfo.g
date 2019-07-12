@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "0.4",
-Date := "10/05/2019",  # dd/mm/yyyy format
+Version := "0.5",
+Date := "12/07/2019",  # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -20,7 +20,7 @@ Persons := [
     IsMaintainer := true,
     FirstNames := "Michael",
     LastName := "Torpey",
-    WWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~mct25/",
+    WWWHome := "http://mtorpey.github.io/",
     Email := "mct25@st-andrews.ac.uk",
     PostalAddress := Concatenation(
                "School of Computer Science\n",

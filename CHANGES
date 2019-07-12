@@ -1,5 +1,13 @@
 This file describes changes in the PackageManager package.
 
+0.5 (2019-07-12)
+  - Build package documentation on install, if not already present
+  - Check and fix existing package if Install or Update is called on it
+  - Run prerequisites.sh on install if it exists (mainly for Semigroups)
+  - Install dependencies in leaf-to-root order, rather than root-to-leaf
+  - Handle circular dependencies correctly
+  - Change this package's doc to use backticks instead of XML-style tags
+
 0.4 (2019-05-10)
   - Introduce UpdatePackage
   - Change behaviour of InstallPackage to allow interactive updates
