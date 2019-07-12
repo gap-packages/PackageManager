@@ -6,20 +6,20 @@ This package provides the ability to install or remove a package using a single
 command: <Ref Func="InstallPackage" /> or <Ref Func="RemovePackage" />.  The
 user can specify a package to install using its name, or using a URL to an
 archive, a repository, or a <C>PackageInfo.g</C> file.  When installing,
-PackageManager also attempts to compile the package, and install the latest
-version of any required packages that are not already available.
+PackageManager also attempts to compile the package, build its documentation if
+necessary, and ensure that its dependencies are also installed.
 
 @Section What does the PackageManager package not do?
 
 At present, PackageManager is fairly basic, without many of the advanced
 features available in package managers such as pip or apt.  For instance, the
-user cannot install a particular version of a package, nor automatically update
-all packages.  Removing a package will not remove any of its dependencies, since
-we do not track how packages were installed.  When a package is installed, no
-tests are run to ensure that it is compatible with the installed version of GAP.
-Any of these features might be added in the future.  Other feature requests can
-be posted on the issue tracker at
-https://github.com/gap-packages/PackageManager/issues.
+user cannot install a particular version of a package except by specifying a
+URL; nor can the user update all packages in one command.  Removing a package
+will not remove any of its dependencies, since we do not track how packages were
+installed.  When a package is installed, no tests are run to ensure that it is
+compatible with the installed version of GAP.  Any of these features might be
+added in the future.  Other feature requests can be posted on the issue tracker
+at https://github.com/gap-packages/PackageManager/issues.
 
 @Section A quick example
 
