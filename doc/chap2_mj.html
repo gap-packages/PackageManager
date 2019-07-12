@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <script type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 <title>GAP (PackageManager) - Chapter 2: Commands</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -58,7 +58,7 @@
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackage</code>( <var class="Arg">string</var>[, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to download and install a package. The argument <var class="Arg">string</var> should be a string containing one of the following:</p>
+<p>Attempts to download and install a package. The argument <code class="code">string</code> should be a string containing one of the following:</p>
 
 
 <ul>
@@ -71,18 +71,18 @@
 <li><p>the URL of a git repository, ending in <code class="code">.git</code>;</p>
 
 </li>
-<li><p>the URL of a mercurial repository, ending in <code class="code">.hg</code>;</p>
+<li><p>the URL of a mercurial repository;</p>
 
 </li>
 <li><p>the URL of a valid <code class="code">PackageInfo.g</code> file.</p>
 
 </li>
 </ul>
-<p>The package will then be downloaded and installed, along with any additional packages that are required in order for it to be loaded. If this installation is successful, or if this package is already installed, <code class="keyw">true</code> is returned; otherwise, <code class="keyw">false</code> is returned.</p>
+<p>The package will then be downloaded and installed, along with any additional packages that are required in order for it to be loaded. Its documentation will also be built if necessary. If this installation is successful, or if this package is already installed, <code class="code">true</code> is returned; otherwise, <code class="code">false</code> is returned.</p>
 
 <p>By default, packages will be installed in user's home directory at <code class="code">~/.gap/pkg</code>. Note that this location is not the default user pkg location on Mac OSX, but it will be created on any system if not already present. Note also that starting GAP with the <code class="code">-r</code> flag will cause all packages in this directory to be ignored.</p>
 
-<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <var class="Arg">interactive</var> can be set to <code class="keyw">false</code>.</p>
+<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <code class="code">interactive</code> can be set to <code class="code">false</code>.</p>
 
 <p>To see more information about this process while it is ongoing, see <code class="code">InfoPackageManager</code>.</p>
 
@@ -99,11 +99,13 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; UpdatePackage</code>( <var class="Arg">name</var>[, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to update an installed package to the latest version. The first argument <var class="Arg">name</var> should be a string specifying the name of a package installed in the user GAP root (for example, one installed using <code class="func">InstallPackage</code> (<a href="chap2_mj.html#X81A6FF1B81D004BA"><span class="RefLink">2.1-1</span></a>)). The second argument <var class="Arg">interactive</var> is optional, and should be a boolean specifying whether to confirm interactively before any directories are deleted (default value <code class="keyw">true</code>).</p>
+<p>Attempts to update an installed package to the latest version. The first argument <code class="code">name</code> should be a string specifying the name of a package installed in the user GAP root (for example, one installed using <code class="func">InstallPackage</code> (<a href="chap2_mj.html#X81A6FF1B81D004BA"><span class="RefLink">2.1-1</span></a>)). The second argument <code class="code">interactive</code> is optional, and should be a boolean specifying whether to confirm interactively before any directories are deleted (default value <code class="code">true</code>).</p>
 
 <p>If the package was installed via archive, the new version will be installed in a new directory, and the old version will be deleted. If installed via git or mercurial, it will be updated using <code class="code">git pull</code> or <code class="code">hg pull -u</code>, so long as there are no outstanding changes. If no newer version is available, no changes will be made.</p>
 
-<p>Returns <code class="keyw">true</code> if a newer version was installed successfully, or if no newer version is available. Returns <code class="keyw">false</code> otherwise.</p>
+<p>This process will also attempt to fix the package if it is broken, for example if it needs to be recompiled or if one of its dependencies is missing or broken.</p>
+
+<p>Returns <code class="code">true</code> if a newer version was installed successfully, or if no newer version is available. Returns <code class="code">false</code> otherwise.</p>
 
 
 <div class="example"><pre>
@@ -148,9 +150,9 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromName</code>( <var class="Arg">name</var>[, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to download and install a package given only its name. Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
+<p>Attempts to download and install a package given only its name. Returns <code class="code">false</code> if something went wrong, and <code class="code">true</code> otherwise.</p>
 
-<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <var class="Arg">interactive</var> can be set to <code class="keyw">false</code>.</p>
+<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <code class="code">interactive</code> can be set to <code class="code">false</code>.</p>
 
 <p><a id="X843B648B855F9C82" name="X843B648B855F9C82"></a></p>
 
@@ -159,7 +161,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromInfo</code>( <var class="Arg">info</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to download and install a package from a valid PackageInfo.g file. The argument <var class="Arg">info</var> should be either a valid package info record, or a URL that points to a valid PackageInfo.g file. Returns <code class="keyw">true</code> if the installation was successful, and <code class="keyw">false</code> otherwise.</p>
+<p>Attempts to download and install a package from a valid PackageInfo.g file. The argument <code class="code">info</code> should be either a valid package info record, or a URL that points to a valid PackageInfo.g file. Returns <code class="code">true</code> if the installation was successful, and <code class="code">false</code> otherwise.</p>
 
 <p><a id="X7CF49C797835BD49" name="X7CF49C797835BD49"></a></p>
 
@@ -168,7 +170,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromArchive</code>( <var class="Arg">url</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to download and install a package from an archive located at the given URL. Returns <code class="keyw">true</code> if the installation was successful, and <code class="keyw">false</code> otherwise.</p>
+<p>Attempts to download and install a package from an archive located at the given URL. Returns <code class="code">true</code> if the installation was successful, and <code class="code">false</code> otherwise.</p>
 
 <p><a id="X869C71188722CFAD" name="X869C71188722CFAD"></a></p>
 
@@ -177,11 +179,11 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromGit</code>( <var class="Arg">url</var>[, <var class="Arg">interactive</var>][, <var class="Arg">branch</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to download and install a package from a git repository located at the given URL. Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
+<p>Attempts to download and install a package from a git repository located at the given URL. Returns <code class="code">false</code> if something went wrong, and <code class="code">true</code> otherwise.</p>
 
-<p>If the optional string argument <var class="Arg">branch</var> is specified, this function will install the branch with this name. Otherwise, the repository's default branch will be used.</p>
+<p>If the optional string argument <code class="code">branch</code> is specified, this function will install the branch with this name. Otherwise, the repository's default branch will be used.</p>
 
-<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <var class="Arg">interactive</var> can be set to <code class="keyw">false</code>.</p>
+<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <code class="code">interactive</code> can be set to <code class="code">false</code>.</p>
 
 <p><a id="X7A1F34D27932BA01" name="X7A1F34D27932BA01"></a></p>
 
@@ -190,11 +192,11 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromHg</code>( <var class="Arg">url</var>[, <var class="Arg">interactive</var>][, <var class="Arg">branch</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to download and install a package from a Mercurial repository located at the given URL. Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
+<p>Attempts to download and install a package from a Mercurial repository located at the given URL. Returns <code class="code">false</code> if something went wrong, and <code class="code">true</code> otherwise.</p>
 
-<p>If the optional string argument <var class="Arg">branch</var> is specified, this function will install the branch with this name. Otherwise, the repository's default branch will be used.</p>
+<p>If the optional string argument <code class="code">branch</code> is specified, this function will install the branch with this name. Otherwise, the repository's default branch will be used.</p>
 
-<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <var class="Arg">interactive</var> can be set to <code class="keyw">false</code>.</p>
+<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <code class="code">interactive</code> can be set to <code class="code">false</code>.</p>
 
 <p><a id="X7B70DED5806B72A7" name="X7B70DED5806B72A7"></a></p>
 
@@ -203,7 +205,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallRequiredPackages</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to download and install the latest versions of all packages required for GAP to run. Currently these packages are GAPDoc, primgrp, SmallGrp, and transgrp. Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
+<p>Attempts to download and install the latest versions of all packages required for GAP to run. Currently these packages are GAPDoc, primgrp, SmallGrp, and transgrp. Returns <code class="code">false</code> if something went wrong, and <code class="code">true</code> otherwise.</p>
 
 <p>Clearly, since these packages are required for GAP to run, they must be loaded before this function can be executed. However, this function installs the packages in the <code class="code">~/.gap/pkg</code> directory, so that they can be managed by PackageManager in the future, and are available for other GAP installations on the machine.</p>
 
@@ -218,9 +220,9 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; RemovePackage</code>( <var class="Arg">name</var>[, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
-<p>Attempts to remove an installed package using its name. The first argument <var class="Arg">name</var> should be a string specifying the name of a package installed in the user GAP root. The second argument <var class="Arg">interactive</var> is optional, and should be a boolean specifying whether to confirm certain decisions interactively (default value <code class="keyw">true</code>).</p>
+<p>Attempts to remove an installed package using its name. The first argument <code class="code">name</code> should be a string specifying the name of a package installed in the user GAP root. The second argument <code class="code">interactive</code> is optional, and should be a boolean specifying whether to confirm certain decisions interactively (default value <code class="code">true</code>).</p>
 
-<p>Returns <code class="keyw">true</code> if the removal was successful, and <code class="keyw">false</code> otherwise.</p>
+<p>Returns <code class="code">true</code> if the removal was successful, and <code class="code">false</code> otherwise.</p>
 
 
 <div class="example"><pre>

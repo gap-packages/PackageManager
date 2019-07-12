@@ -6,10 +6,10 @@
                    [1X Easily download and install [5XGAP[105X packages [101X
   
   
-                                      0.4
+                                      0.5
   
   
-                                  10 May 2019
+                                  12 July 2019
   
   
                                  Michael Torpey
@@ -18,7 +18,7 @@
   
   Michael Torpey
       Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
-      Homepage: [7Xhttp://www-groups.mcs.st-andrews.ac.uk/~mct25/[107X
+      Homepage: [7Xhttp://mtorpey.github.io/[107X
       Address:  [33X[0;14YSchool of Computer Science[133X
                 [33X[0;14YUniversity of St Andrews[133X
                 [33X[0;14YJack Cole Building, North Haugh[133X
