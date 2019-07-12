@@ -8,33 +8,32 @@
 #! @Section Installing and updating packages
 
 #! @Description
-#!   Attempts to download and install a package.  The argument <A>string</A>
-#!   should be a string containing one of the following:
+#!   Attempts to download and install a package.  The argument `string` should
+#!   be a string containing one of the following:
 #!     * the name of a package;
-#!     * the URL of a package archive, ending in <C>.tar.gz</C>
-#!       or <C>.tar.bz2</C>;
-#!     * the URL of a git repository, ending in <C>.git</C>;
-#!     * the URL of a mercurial repository, ending in <C>.hg</C>;
-#!     * the URL of a valid <C>PackageInfo.g</C> file.
+#!     * the URL of a package archive, ending in `.tar.gz` or `.tar.bz2`;
+#!     * the URL of a git repository, ending in `.git`;
+#!     * the URL of a mercurial repository, ending in `.hg`;
+#!     * the URL of a valid `PackageInfo.g` file.
 #!
 #!   The package will then be downloaded and installed, along with any
 #!   additional packages that are required in order for it to be loaded.  If
 #!   this installation is successful, or if this package is already installed,
-#!   <K>true</K> is returned; otherwise, <K>false</K> is returned.
+#!   `true` is returned; otherwise, `false` is returned.
 #!
 #!   By default, packages will be installed in user's home directory at
-#!   <C>~/.gap/pkg</C>.  Note that this location is not the default user pkg
-#!   location on Mac OSX, but it will be created on any system if not already
-#!   present.  Note also that starting GAP with the <C>-r</C> flag will cause
-#!   all packages in this directory to be ignored.
+#!   `~/.gap/pkg`.  Note that this location is not the default user pkg location
+#!   on Mac OSX, but it will be created on any system if not already present.
+#!   Note also that starting GAP with the `-r` flag will cause all packages in
+#!   this directory to be ignored.
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell - to avoid this
 #!   interactivity and use sane defaults instead, the optional second argument
-#!   <A>interactive</A> can be set to <K>false</K>.
+#!   `interactive` can be set to `false`.
 #!
 #!   To see more information about this process while it is ongoing, see
-#!   <C>InfoPackageManager</C>.
+#!   `InfoPackageManager`.
 #!
 #! @BeginExample
 #! gap> InstallPackage("digraphs");
@@ -48,21 +47,20 @@ DeclareGlobalFunction("InstallPackage");
 
 #! @Description
 #!   Attempts to update an installed package to the latest version.  The first
-#!   argument <A>name</A> should be a string specifying the name of a package
-#!   installed in the user GAP root (for example, one installed using
-#!   <Ref Func="InstallPackage" />).  The second argument <A>interactive</A> is
-#!   optional, and should be a boolean specifying whether to confirm
-#!   interactively before any directories are deleted (default value
-#!   <K>true</K>).
+#!   argument `name` should be a string specifying the name of a package
+#!   installed in the user GAP root (for example, one installed using <Ref
+#!   Func="InstallPackage" />).  The second argument `interactive` is optional,
+#!   and should be a boolean specifying whether to confirm interactively before
+#!   any directories are deleted (default value `true`).
 #!
 #!   If the package was installed via archive, the new version will be installed
 #!   in a new directory, and the old version will be deleted.  If installed via
-#!   git or mercurial, it will be updated using <C>git pull</C> or <C>hg pull
-#!   -u</C>, so long as there are no outstanding changes.  If no newer version
-#!   is available, no changes will be made.
+#!   git or mercurial, it will be updated using `git pull` or `hg pull -u`, so
+#!   long as there are no outstanding changes.  If no newer version is
+#!   available, no changes will be made.
 #!
-#!   Returns <K>true</K> if a newer version was installed successfully, or if no
-#!   newer version is available.  Returns <K>false</K> otherwise.
+#!   Returns `true` if a newer version was installed successfully, or if no
+#!   newer version is available.  Returns `false` otherwise.
 #!
 #! @BeginExample
 #! gap> UpdatePackage("io");
@@ -89,19 +87,19 @@ DeclareGlobalFunction("UpdatePackage");
 #!     * 4 - All: includes extra information such as whether curlInterface is
 #!           being used
 #!
-#!   Set this using, for example <C>SetInfoLevel(InfoPackageManager, 1)</C>.
+#!   Set this using, for example `SetInfoLevel(InfoPackageManager, 1)`.
 #!   Default value is 3.
 DeclareInfoClass("InfoPackageManager");
 SetInfoLevel(InfoPackageManager, 3);
 
 #! @Description
 #!   Attempts to download and install a package given only its name.  Returns
-#!   <K>false</K> if something went wrong, and <K>true</K> otherwise.
+#!   `false` if something went wrong, and `true` otherwise.
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell - to avoid this
 #!   interactivity and use sane defaults instead, the optional second argument
-#!   <A>interactive</A> can be set to <K>false</K>.
+#!   `interactive` can be set to `false`.
 #! @Arguments name[, interactive]
 #! @Returns
 #!   true or false
@@ -109,9 +107,9 @@ DeclareGlobalFunction("InstallPackageFromName");
 
 #! @Description
 #!   Attempts to download and install a package from a valid PackageInfo.g file.
-#!   The argument <A>info</A> should be either a valid package info record, or a
-#!   URL that points to a valid PackageInfo.g file.  Returns <K>true</K> if the
-#!   installation was successful, and <K>false</K> otherwise.
+#!   The argument `info` should be either a valid package info record, or a URL
+#!   that points to a valid PackageInfo.g file.  Returns `true` if the
+#!   installation was successful, and `false` otherwise.
 #! @Arguments info
 #! @Returns
 #!   true or false
@@ -119,8 +117,8 @@ DeclareGlobalFunction("InstallPackageFromInfo");
 
 #! @Description
 #!   Attempts to download and install a package from an archive located at the
-#!   given URL.  Returns <K>true</K> if the installation was successful, and
-#!   <K>false</K> otherwise.
+#!   given URL.  Returns `true` if the installation was successful, and `false`
+#!   otherwise.
 #! @Arguments url
 #! @Returns
 #!   true or false
@@ -128,17 +126,17 @@ DeclareGlobalFunction("InstallPackageFromArchive");
 
 #! @Description
 #!   Attempts to download and install a package from a git repository located at
-#!   the given URL.  Returns <K>false</K> if something went wrong, and
-#!   <K>true</K> otherwise.
+#!   the given URL.  Returns `false` if something went wrong, and `true`
+#!   otherwise.
 #!
-#!   If the optional string argument <A>branch</A> is specified, this function
-#!   will install the branch with this name.  Otherwise, the repository's
-#!   default branch will be used.
+#!   If the optional string argument `branch` is specified, this function will
+#!   install the branch with this name.  Otherwise, the repository's default
+#!   branch will be used.
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell - to avoid this
 #!   interactivity and use sane defaults instead, the optional second argument
-#!   <A>interactive</A> can be set to <K>false</K>.
+#!   `interactive` can be set to `false`.
 #! @Arguments url[, interactive][, branch]
 #! @Returns
 #!   true or false
@@ -146,17 +144,17 @@ DeclareGlobalFunction("InstallPackageFromGit");
 
 #! @Description
 #!   Attempts to download and install a package from a Mercurial repository
-#!   located at the given URL.  Returns <K>false</K> if something went wrong,
-#!   and <K>true</K> otherwise.
+#!   located at the given URL.  Returns `false` if something went wrong, and
+#!   `true` otherwise.
 #!
-#!   If the optional string argument <A>branch</A> is specified, this function
-#!   will install the branch with this name.  Otherwise, the repository's
-#!   default branch will be used.
+#!   If the optional string argument `branch` is specified, this function will
+#!   install the branch with this name.  Otherwise, the repository's default
+#!   branch will be used.
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell - to avoid this
 #!   interactivity and use sane defaults instead, the optional second argument
-#!   <A>interactive</A> can be set to <K>false</K>.
+#!   `interactive` can be set to `false`.
 #! @Arguments url[, interactive][, branch]
 #! @Returns
 #!   true or false
@@ -165,13 +163,13 @@ DeclareGlobalFunction("InstallPackageFromHg");
 #! @Description
 #!   Attempts to download and install the latest versions of all packages
 #!   required for GAP to run.  Currently these packages are GAPDoc, primgrp,
-#!   SmallGrp, and transgrp.  Returns <K>false</K> if something went wrong, and
-#!   <K>true</K> otherwise.
+#!   SmallGrp, and transgrp.  Returns `false` if something went wrong, and
+#!   `true` otherwise.
 #!
 #!   Clearly, since these packages are required for GAP to run, they must be
 #!   loaded before this function can be executed.  However, this function
-#!   installs the packages in the <C>~/.gap/pkg</C> directory, so that they can
-#!   be managed by PackageManager in the future, and are available for other GAP
+#!   installs the packages in the `~/.gap/pkg` directory, so that they can be
+#!   managed by PackageManager in the future, and are available for other GAP
 #!   installations on the machine.
 #! @Arguments
 #! @Returns
@@ -182,13 +180,12 @@ DeclareGlobalFunction("InstallRequiredPackages");
 
 #! @Description
 #!   Attempts to remove an installed package using its name.  The first argument
-#!   <A>name</A> should be a string specifying the name of a package installed
-#!   in the user GAP root.  The second argument <A>interactive</A> is optional,
-#!   and should be a boolean specifying whether to confirm certain decisions
-#!   interactively (default value <K>true</K>).
+#!   `name` should be a string specifying the name of a package installed in the
+#!   user GAP root.  The second argument `interactive` is optional, and should
+#!   be a boolean specifying whether to confirm certain decisions interactively
+#!   (default value `true`).
 #!
-#!   Returns <K>true</K> if the removal was successful, and <K>false</K>
-#!   otherwise.
+#!   Returns `true` if the removal was successful, and `false` otherwise.
 #!
 #! @BeginExample
 #! gap> RemovePackage("digraphs");
