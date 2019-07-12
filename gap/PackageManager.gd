@@ -13,13 +13,14 @@
 #!     * the name of a package;
 #!     * the URL of a package archive, ending in `.tar.gz` or `.tar.bz2`;
 #!     * the URL of a git repository, ending in `.git`;
-#!     * the URL of a mercurial repository, ending in `.hg`;
+#!     * the URL of a mercurial repository;
 #!     * the URL of a valid `PackageInfo.g` file.
 #!
 #!   The package will then be downloaded and installed, along with any
-#!   additional packages that are required in order for it to be loaded.  If
-#!   this installation is successful, or if this package is already installed,
-#!   `true` is returned; otherwise, `false` is returned.
+#!   additional packages that are required in order for it to be loaded.  Its
+#!   documentation will also be built if necessary.  If this installation is
+#!   successful, or if this package is already installed, `true` is returned;
+#!   otherwise, `false` is returned.
 #!
 #!   By default, packages will be installed in user's home directory at
 #!   `~/.gap/pkg`.  Note that this location is not the default user pkg location
@@ -58,6 +59,10 @@ DeclareGlobalFunction("InstallPackage");
 #!   git or mercurial, it will be updated using `git pull` or `hg pull -u`, so
 #!   long as there are no outstanding changes.  If no newer version is
 #!   available, no changes will be made.
+#!
+#!   This process will also attempt to fix the package if it is broken, for
+#!   example if it needs to be recompiled or if one of its dependencies is
+#!   missing or broken.
 #!
 #!   Returns `true` if a newer version was installed successfully, or if no
 #!   newer version is available.  Returns `false` otherwise.
@@ -232,5 +237,5 @@ PKGMAN_CurlIntReqVer :=
         item -> item[1] = "curlInterface")[2];
 PKGMAN_BuildPackagesScript := Filename(List(GAPInfo.RootPaths, Directory),
                                        "bin/BuildPackages.sh");
-PKGMAN_InstallQueue := [];
-PKGMAN_MarkedForInstall := [];
+PKGMAN_InstallQueue := [];  # Queue of dependencies to install
+PKGMAN_MarkedForInstall := [];  # Packages currently halfway through installing
