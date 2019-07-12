@@ -471,7 +471,7 @@ function(dir)
     # If this is already marked for install later, unmark it
     for i in [1 .. Length(PKGMAN_InstallQueue)] do
       if PKGMAN_InstallQueue[i].PackageName = dep_info.PackageName
-         and PKGMAN_InstallQueue[i].Version = dep_info.Version then
+          and PKGMAN_InstallQueue[i].Version = dep_info.Version then
         Remove(PKGMAN_InstallQueue, i);
         break;
       fi;
@@ -718,7 +718,7 @@ function(dir)
   # Ensure package is available
   PKGMAN_RefreshPackageInfo();
   if TestPackageAvailability(info.PackageName, info.Version) = fail and
-     not IsPackageLoaded(LowercaseString(info.PackageName)) then
+      not IsPackageLoaded(LowercaseString(info.PackageName)) then
     Info(InfoPackageManager, 1, "Package availability test failed");
     Info(InfoPackageManager, 2,
          "(for ", info.PackageName, " ", info.Version, ")");
@@ -788,9 +788,9 @@ function(dir)
     # Run makedoc.g, in the correct directory, without quitting
     last_dir := DirectoryCurrent();
     GAPInfo.DirectoryCurrent := Directory(dir);
-    str := StringFile(makedoc_g);;
-    str := ReplacedString(str, "QUIT;", "");;  # TODO: is there a better way?
-    str := ReplacedString(str, "quit;", "");;
+    str := StringFile(makedoc_g);
+    str := ReplacedString(str, "QUIT;", "");  # TODO: is there a better way?
+    str := ReplacedString(str, "quit;", "");
     Read(InputTextString(str));
     GAPInfo.DirectoryCurrent := last_dir;
 

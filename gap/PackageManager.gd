@@ -237,5 +237,5 @@ PKGMAN_CurlIntReqVer :=
         item -> item[1] = "curlInterface")[2];
 PKGMAN_BuildPackagesScript := Filename(List(GAPInfo.RootPaths, Directory),
                                        "bin/BuildPackages.sh");
-PKGMAN_InstallQueue := [];  # Queue of dependencies to install
+PKGMAN_InstallQueue := [];      # Queue of dependencies to install
 PKGMAN_MarkedForInstall := [];  # Packages currently halfway through installing
