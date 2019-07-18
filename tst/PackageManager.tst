@@ -665,10 +665,6 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 > fi;
 
 # Dependency failure
-gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-too-new.tar.gz");
-#I  Package GAPDoc >= 999.0 unavailable: only version 1.6.3 was found
-#I  Dependencies not satisfied for uuid-0.6
-false
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-badname.tar.gz");
 #I  Required package madeuppackage unknown
 #I  Dependencies not satisfied for uuid-0.6
@@ -699,9 +695,13 @@ true
 gap> UpdatePackage("uuid", false);  # Newer version, but fails to install
 #I  Could not inspect tarball contents
 false
-gap> PKGMAN_PackageInfoURLList := urllist;;
 gap> RemovePackage("uuid", false);
 true
+gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-too-new.tar.gz");
+#I  Package GAPDoc >= 999.0 unavailable: only version 0.2 was found
+#I  Dependencies not satisfied for uuid-0.6
+false
+gap> PKGMAN_PackageInfoURLList := urllist;;
 
 # Build doc with doc/make_doc
 gap> InstallPackage("https://github.com/gap-packages/sonata.git");
