@@ -9,7 +9,7 @@ function()
   # Get PackageInfo URLs from configurable list
   get := PKGMAN_DownloadURL(PKGMAN_PackageInfoURLList);
   if not get.success then
-    ErrorNoReturn("PackageManager: GetPackageList: could not contact server");
+    ErrorNoReturn("PackageManager: GetPackageURLs: could not contact server");
   fi;
   urls := rec();
   for line in SplitString(get.result, "\n") do
@@ -19,7 +19,7 @@ function()
       continue;
     elif Length(items) = 1 or Length(items) > 3
          or (Length(items) = 3 and items[2] <> "MOVE") then
-      ErrorNoReturn("PackageManager: GetPackageList: bad line:\n", line);
+      ErrorNoReturn("PackageManager: GetPackageURLs: bad line:\n", line);
     fi;
     urls.(LowercaseString(items[1])) := items[Length(items)];
   od;
