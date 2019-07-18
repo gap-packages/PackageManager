@@ -666,7 +666,7 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 
 # Dependency failure
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-too-new.tar.gz");
-#I  Package GAPDoc >= 999.0 unavailable: only version 1.6.2 was found
+#I  Package GAPDoc >= 999.0 unavailable: only version 1.6.3 was found
 #I  Dependencies not satisfied for uuid-0.6
 false
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-badname.tar.gz");
