@@ -61,3 +61,5 @@ src/*.lo
 
 /tmp/
 /gh-pages/
+
+notebooks/.ipynb_checkpoints/
