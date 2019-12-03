@@ -2,8 +2,6 @@ dist: xenial
 language: c
 env:
   global:
-    - GAPROOT=gaproot
-    - COVDIR=coverage
     - GAP_BOOTSTRAP=minimal
     - GAP_PKGS_TO_CLONE="json io profiling curlInterface"
     - GAP_PKGS_TO_BUILD="json io profiling curlInterface"
@@ -16,6 +14,7 @@ addons:
   apt_packages:
     - libgmp-dev
     - libreadline-dev
+    - zlib1g-dev
     - texlive-latex-extra
     - texlive-fonts-recommended
 
@@ -38,11 +37,10 @@ matrix:
           - g++-multilib
 
 before_script:
-  - export GAPROOT="$HOME/gap"
   - git clone https://github.com/gap-system/pkg-ci-scripts.git scripts
   - scripts/build_gap.sh
 script:
   - scripts/build_pkg.sh && scripts/run_tests.sh
 after_script:
-  - bash scripts/gather-coverage.sh
+  - scripts/gather-coverage.sh
   - bash <(curl -s https://codecov.io/bash)
