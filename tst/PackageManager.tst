@@ -4,6 +4,13 @@ true
 gap> LoadPackage("autodoc", false);
 true
 
+# Get curlInterface (for testing)
+gap> InstallPackage("curlInterface");
+true
+gap> UnbindGlobal("DownloadURL");  # TEMP: suppress a curl-related warning
+gap> LoadPackage("curlInterface", false);
+true
+
 # UpdatePackage for non-user packages
 gap> UpdatePackage("GAPDoc", false);
 #I  Package "gapdoc" not installed in user package directory

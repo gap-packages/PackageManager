@@ -1,10 +1,10 @@
-dist: xenial
 language: c
+
 env:
   global:
     - GAP_BOOTSTRAP=minimal
-    - GAP_PKGS_TO_CLONE="json io profiling curlInterface"
-    - GAP_PKGS_TO_BUILD="json io profiling curlInterface"
+    - GAP_PKGS_TO_CLONE="json io profiling"
+    - GAP_PKGS_TO_BUILD="json io profiling"
 
 branches:
   except:
