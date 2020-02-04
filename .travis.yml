@@ -5,6 +5,7 @@ env:
     - GAP_BOOTSTRAP=minimal
     - GAP_PKGS_TO_CLONE="json io profiling"
     - GAP_PKGS_TO_BUILD="json io profiling"
+    - GAP_TESTFILE=tst/testall.g  # to be explicit
 
 branches:
   except:
