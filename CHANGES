@@ -1,5 +1,10 @@
 This file describes changes in the PackageManager package.
 
+1.0 (2020-02-04)
+  - Interactive demo notebook
+  - Adjust test suite for use with Docker
+  - Major version number indicating a mature project
+
 0.5.1 (2019-07-18)
   - Fix a broken test and an outdated error message
 
