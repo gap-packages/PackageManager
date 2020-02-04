@@ -1,6 +1,6 @@
 name: PackageManager
-version: 0.5.1
-date: 2019-07-18
+version: 1.0
+date: 2020-02-04
 description: |
     Easily download and install GAP packages
 
@@ -30,7 +30,7 @@ packageinfo: https://gap-packages.github.io/PackageManager/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/PackageManager/releases/download/v0.5.1/PackageManager-0.5.1.tar.gz
+      url: https://github.com/gap-packages/PackageManager/releases/download/v1.0/PackageManager-1.0.tar.gz
 
 abstract: |
     <span class="pkgname">PackageManager</span> is a basic collection of    simple functions for installing and removing    <span class="pkgname">GAP</span> packages, with the eventual aim of    becoming a full pip-style package manager for the    <span class="pkgname">GAP</span> system.
@@ -40,26 +40,26 @@ doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
 citeas: |
     <p class='BibEntry'>
-    [<span class='BibKey'>Tor19</span>]   <b class='BibAuthor'>Torpey, M.</b>,
+    [<span class='BibKey'>Tor20</span>]   <b class='BibAuthor'>Torpey, M.</b>,
      <i class='BibTitle'>PackageManager, Easily download and install GAP packages,
-             Version 0.5.1</i>
-     (<span class='BibYear'>2019</span>)<br />
+             Version 1.0</i>
+     (<span class='BibYear'>2020</span>)<br />
     (<span class='BibNote'>GAP package</span>),
     <span class='BibHowpublished'><a href="https://gap-packages.github.io/PackageManager/">https://gap-packages.github.io/PackageManager/</a></span>.
     </p>
     
 
 bibtex: |
-    @misc{ PackageManager0.5.1,
+    @misc{ PackageManager1.0,
       author =           {Torpey, M.},
       title =            {{PackageManager},  Easily  download  and  install  GAP
-                          packages, {V}ersion 0.5.1},
-      month =            {Jul},
-      year =             {2019},
+                          packages, {V}ersion 1.0},
+      month =            {Feb},
+      year =             {2020},
       note =             {GAP package},
       howpublished =     {\href {https://gap-packages.github.io/PackageManager/}
                           {\texttt{https://gap-packages.github.io/}\discretionary
                           {}{}{}\texttt{PackageManager/}}},
-      printedkey =       {Tor19}
+      printedkey =       {Tor20}
     }
 

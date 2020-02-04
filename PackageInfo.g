@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "0.5.1",
-Date := "18/07/2019",  # dd/mm/yyyy format
+Version := "1.0",
+Date := "04/02/2020",  # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -85,7 +85,10 @@ AvailabilityTest := function()
         return true;
     end,
 
-TestFile := "tst/testall.g",
+# This is a limited test suite that doesn't try to build docs,
+# since the GAP Docker images don't have texlive installed.
+# For a full test suite, run tst/testall.g (as Travis does).
+TestFile := "tst/test-without-texlive.g",
 
 #Keywords := [ "TODO" ],
 
