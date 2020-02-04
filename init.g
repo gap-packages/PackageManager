@@ -6,7 +6,7 @@
 
 # If curlInterface is not loaded, set dummy variable
 if not IsPackageMarkedForLoading("curlInterface", ">=2.1.0") then
-  DownloadURL := ReturnFalse;
+  DownloadURL := fail;
 fi;
 
 ReadPackage("PackageManager", "gap/PackageManager.gd");

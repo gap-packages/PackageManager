@@ -1,9 +1,9 @@
 # Get curlInterface (for testing)
 gap> InstallPackage("curlInterface");
 true
-gap> if IsBoundGlobal("DownloadURL") then
->      UnbindGlobal("DownloadURL");
->    fi;  # TEMP: suppress a curl-related warning
+gap> if DownloadURL = fail then
+>   Unbind(DownloadURL);  # unbind dummy variable set in init.g
+> fi;
 gap> LoadPackage("curlInterface", false);
 true
 
