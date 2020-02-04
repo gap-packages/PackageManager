@@ -297,8 +297,6 @@ gap> PKGMAN_InsertPackageDirectory("/home");  # not ending in pkg
 fail
 
 # PKGMAN_CompileDir error: no shell
-gap> RemovePackage("example", false);
-true
 gap> InstallPackage("example");
 true
 gap> InstallPackage("example");  # latest version already installed

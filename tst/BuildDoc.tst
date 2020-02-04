@@ -17,6 +17,8 @@ gap> FileString(readme, "Some change I've made", true);;  # edit file
 gap> UpdatePackage("example");
 #I  Uncommitted changes in git repository
 false
+gap> RemovePackage("example", false);
+true
 
 # Install a package from a git repository not ending in .git
 gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo", false);
