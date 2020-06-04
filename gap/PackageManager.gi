@@ -744,16 +744,16 @@ function(dir)
 
   # Check requirements, and prepare command
   pkg_dir := Filename(Directory(dir), "..");
-  scr := PKGMAN_BuildPackagesScript;
+  scr := PKGMAN_Sysinfo;
   if scr = fail then
-    Info(InfoPackageManager, 1, "No bin/BuildPackages.sh script available");
+    Info(InfoPackageManager, 1, "No sysinfo.gap found");
     return false;
   fi;
-  root := scr{[1 .. Length(scr) - Length("/bin/BuildPackages.sh")]};
+  root := scr{[1 .. Length(scr) - Length("/sysinfo.gap")]};
 
   # Call the script
   Info(InfoPackageManager, 3, "Running compilation script on ", dir, " ...");
-  exec := PKGMAN_Exec(pkg_dir, Concatenation(root, "/bin/BuildPackages.sh"),
+  exec := PKGMAN_Exec(pkg_dir, PKGMAN_BuildPackagesScript,
                       "--strict",
                       Concatenation("--with-gaproot=", root),
                       dir);
