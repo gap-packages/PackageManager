@@ -42,10 +42,6 @@ true
 gap> RemovePackage("GAPDoc", false);
 true
 
-# Install old version of atlasrep (TEMPORARY to matgrp work in the next example)
-gap> InstallPackage("https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/atlasrep1r5p1.tar.gz");
-true
-
 # Install and remove a package by name
 gap> InstallPackage("matgrp");
 true
