@@ -312,13 +312,13 @@ gap> GAPInfo.DirectoriesPrograms := progs;;
 # PKGMAN_CompileDir error: no bin/BuildPackages.sh
 gap> InstallPackage("example", false);  # latest version already installed
 true
-gap> build_scr := PKGMAN_BuildPackagesScript;;
-gap> PKGMAN_BuildPackagesScript := fail;;
+gap> sysinfo_scr := PKGMAN_Sysinfo;;
+gap> PKGMAN_Sysinfo := fail;;
 gap> dir := PackageInfo("example")[1].InstallationPath;;
 gap> PKGMAN_CompileDir(dir);
-#I  No bin/BuildPackages.sh script available
+#I  No sysinfo.gap found
 false
-gap> PKGMAN_BuildPackagesScript := build_scr;;
+gap> PKGMAN_Sysinfo := sysinfo_scr;;
 
 # PKGMAN_CompileDir error: missing source
 gap> InstallPackage("example");  # latest version already installed
