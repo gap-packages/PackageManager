@@ -333,7 +333,7 @@ false
 # Missing curlInterface: use wget instead
 gap> ver := PKGMAN_CurlIntReqVer;;
 gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
-gap> InstallPackage("Memoisation");
+gap> InstallPackage("https://gap-packages.github.io/Memoisation/PackageInfo.g");
 true
 gap> RemovePackage("Memoisation", false);
 true
