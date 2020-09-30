@@ -90,10 +90,10 @@ gap> RemovePackage("autpgrp", false);
 true
 
 # Install a package from a .tar.gz archive
-gap> InstallPackage("https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/MapClass-1.4.3.tar.gz");
+gap> InstallPackage("https://github.com/gap-packages/example/releases/download/v4.2.1/Example-4.2.1.tar.gz");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(LowercaseString(f), "mapclass"));
+>           f -> StartsWith(LowercaseString(f), "example"));
 true
 
 # RemovePackage failure
@@ -334,9 +334,9 @@ false
 # Missing curlInterface: use wget instead
 gap> ver := PKGMAN_CurlIntReqVer;;
 gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
-gap> InstallPackage("4ti2Interface");
+gap> InstallPackage("Memoisation");
 true
-gap> RemovePackage("4ti2Interface", false);
+gap> RemovePackage("Memoisation", false);
 true
 gap> PKGMAN_CurlIntReqVer := ver;;
 
