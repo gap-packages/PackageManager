@@ -157,7 +157,7 @@ end);
 
 InstallGlobalFunction(InstallPackageFromArchive,
 function(url)
-  local get, user_pkg_dir, filename, exec, files, topdir, dir;
+  local get, user_pkg_dir, url_parts, filename, path, exec, files, topdir, dir;
 
   # Download archive
   Info(InfoPackageManager, 3, "Downloading archive from URL ", url, " ...");
@@ -167,13 +167,15 @@ function(url)
     return false;
   fi;
   user_pkg_dir := PKGMAN_PackageDir();
-  url := SplitString(url, "/");
-  filename := Filename(DirectoryTemporary(), url[Length(url)]);
-  FileString(filename, get.result);
-  Info(InfoPackageManager, 2, "Saved archive to ", filename);
+  url_parts := SplitString(url, "/");
+  filename := url_parts[Length(url_parts)];
+  path := Filename(DirectoryTemporary(), filename);
+  path := Concatenation(path, ".pkgman");  # TEMP: hack till GAP #4110 is merged
+  FileString(path, get.result);
+  Info(InfoPackageManager, 2, "Saved archive to ", path);
 
   # Check contents
-  exec := PKGMAN_Exec(".", "tar", "-tf", filename);
+  exec := PKGMAN_Exec(".", "tar", "-tf", path);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Could not inspect tarball contents");
     return false;
@@ -195,7 +197,7 @@ function(url)
 
   # Extract package
   Info(InfoPackageManager, 2, "Extracting to ", dir, " ...");
-  exec := PKGMAN_Exec(".", "tar", "xf", filename, "-C", user_pkg_dir);
+  exec := PKGMAN_Exec(".", "tar", "xf", path, "-C", user_pkg_dir);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Extraction unsuccessful");
     return false;
