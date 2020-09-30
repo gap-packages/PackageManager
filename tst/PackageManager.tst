@@ -177,10 +177,13 @@ ps:// or ftp://
 #E  component `AvailabilityTest' must be bound to a function
 #I  Invalid PackageInfo.g file
 false
-gap> InstallPackage("nilmat");
-#I  No supported archive formats available, so could not install
-#I  Only [ ".zip" ] available
-false
+
+# TODO: package that doesn't offer a ".tar.gz" archive
+# I'm not sure any such packages currently exist.
+#gap> InstallPackage("nilmat");
+##I  No supported archive formats available, so could not install
+##I  Only [ ".zip" ] available
+#false
 
 # InstallPackageFromArchive failure
 gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
