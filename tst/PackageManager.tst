@@ -76,7 +76,7 @@ gap> GAPInfo.Dependencies := rec(NeededOtherPackages := backup);;
 gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git", true);
 #I  Could not find PackageInfo.g
 false
-gap> InstallPackageFromHg("https://bitbucket.org/mtorpey/lowindex", true);
+gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/empty_repo", true);
 #I  Could not find PackageInfo.g
 false
 
@@ -426,14 +426,16 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-ba
 #I  Required package madeuppackage unknown
 #I  Dependencies not satisfied for uuid-0.6
 false
-gap> InstallPackageFromHg("https://mtorpey@bitbucket.org/mtorpey/uuid");
-#I  Required package MadeUpPackage unknown
-#I  Dependencies not satisfied for uuid
-false
 gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git", false);
 #I  Required package MadeUpPackage unknown
 #I  Dependencies not satisfied for uuid
 false
+
+# TODO: hg repo with bad dependency package name
+#gap> InstallPackageFromHg("https://mtorpey@bitbucket.org/mtorpey/uuid");
+##I  Required package MadeUpPackage unknown
+##I  Dependencies not satisfied for uuid
+#false
 
 # Sabotaged PackageInfoURLList to produce some special errors
 gap> InstallPackage("GAPDoc");

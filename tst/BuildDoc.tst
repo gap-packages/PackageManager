@@ -60,12 +60,12 @@ gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >              f -> StartsWith(f, "forms")) then
 >   RemovePackage("forms", false);
 > fi;
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", true);
+gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", true);
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "forms"));
 true
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", false);
+gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", false);
 #I  Package already installed at target location
 false
 gap> RemovePackage("forms", false);
@@ -84,7 +84,7 @@ Error, PackageManager: InstallPackageFromHg:
 requires 1, 2 or 3 arguments (not 4)
 
 # Install a package from a Mercurial repository by branch
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", false, "default");
+gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", false, "default");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "forms"));
@@ -94,14 +94,14 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "forms"));
 false
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "default");
+gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", "default");
 true
 gap> RemovePackage("forms", false);
 true
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", false, "qfnoiq3eg");
+gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", false, "qfnoiq3eg");
 #I  Cloning unsuccessful
 false
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms", "default", true);
+gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", "default", true);
 Error, PackageManager: InstallPackageFromHg:
 <interactive> should be true or false
 
@@ -223,12 +223,12 @@ gap> PositionSublist(out, exp) <> fail;
 true
 gap> RemovePackage("uuid", false);
 true
-gap> InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");
+gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms");
 true
 gap> InputTextUser := {} -> InputTextString("y\n");;
 gap> out := "";;
 gap> Print := newPrint;;
-gap> res := InstallPackageFromHg("https://bitbucket.org/jdebeule/forms");;
+gap> res := InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms");;
 gap> Print := oldPrint;;
 gap> res;
 true
