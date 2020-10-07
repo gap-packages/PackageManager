@@ -7,6 +7,10 @@ gap> if DownloadURL = fail then
 gap> LoadPackage("curlInterface", false);
 true
 
+# IO should be pre-installed for these tests to pass
+gap> IsEmpty(PackageInfo("io"));
+false
+
 # UpdatePackage for non-user packages
 gap> UpdatePackage("GAPDoc", false);
 #I  Package "gapdoc" not installed in user package directory
