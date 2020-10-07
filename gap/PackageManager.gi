@@ -759,7 +759,9 @@ function(dir)
                       "--strict",
                       Concatenation("--with-gaproot=", root),
                       dir);
-  if exec = fail or exec.code <> 0 then
+  if exec = fail or
+     exec.code <> 0 or
+     PositionSublist(exec.output, "Failed to build") <> fail then
     Info(InfoPackageManager, 1,
          "Compilation failed (package may still be usable)");
     return false;
