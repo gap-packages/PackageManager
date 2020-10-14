@@ -21,7 +21,7 @@ addons:
 
 matrix:
   include:
-    - env: GAPBRANCH="stable-4.10"
+    - env: GAPBRANCH="stable-4.11"
     - env: CFLAGS="-O2"
       compiler: gcc
     - env: CFLAGS="-O2" CC=clang CXX=clang++
