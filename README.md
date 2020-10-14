@@ -36,7 +36,7 @@ Citing
 ------
 Please cite this package as:
 
-[Tor19]
+[Tor20]
 M. Torpey,
 PackageManager (GAP package),
 Easily download and install GAP packages,

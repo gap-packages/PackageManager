@@ -6,10 +6,10 @@
                    [1X Easily download and install [5XGAP[105X packages [101X
   
   
-                                      1.0
+                                      1.1
   
   
-                                4 February 2020
+                                14 October 2020
   
   
                                  Michael Torpey
@@ -40,13 +40,14 @@
     2.1 [33X[0;0YInstalling and updating packages[133X
       2.1-1 InstallPackage
       2.1-2 UpdatePackage
-      2.1-3 InfoPackageManager
-      2.1-4 InstallPackageFromName
-      2.1-5 InstallPackageFromInfo
-      2.1-6 InstallPackageFromArchive
-      2.1-7 InstallPackageFromGit
-      2.1-8 InstallPackageFromHg
-      2.1-9 InstallRequiredPackages
+      2.1-3 CompilePackage
+      2.1-4 InfoPackageManager
+      2.1-5 InstallPackageFromName
+      2.1-6 InstallPackageFromInfo
+      2.1-7 InstallPackageFromArchive
+      2.1-8 InstallPackageFromGit
+      2.1-9 InstallPackageFromHg
+      2.1-10 InstallRequiredPackages
     2.2 [33X[0;0YRemoving packages[133X
       2.2-1 RemovePackage
   

@@ -80,9 +80,36 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X2.1-3 InfoPackageManager[101X
+  [1X2.1-3 CompilePackage[101X
   
-  [33X[1;0Y[29X[2XInfoPackageManager[102X[32X info class[133X
+  [33X[1;0Y[29X[2XCompilePackage[102X( [3Xname[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  
+  [33X[0;0YAttempts  to  compile  an  installed package. Takes one argument [10Xname[110X, which
+  should  be  a  string specifying the name of a package installed in the user
+  GAP root (for example, one installed using [2XInstallPackage[102X ([14X2.1-1[114X)).[133X
+  
+  [33X[0;0YCompilation is done automatically when a package is installed or updated, so
+  in  most  cases  this  command  is  not needed. However, it may sometimes be
+  necessary  to  recompile  some  packages  if  you  update  or  move your GAP
+  installation.[133X
+  
+  [33X[0;0YCompilation  is  done using the [10Xbin/BuildPackages.sh[110X script included in GAP.
+  If  the  specified package does not have a compiled component, this function
+  should have no effect.[133X
+  
+  [33X[0;0YReturns  [10Xtrue[110X  if  compilation  was  successful  or  if  no  compilation was
+  necessary. Returns [10Xfalse[110X otherwise.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XCompilePackage("orb");[127X[104X
+    [4X[28X#I  Running compilation script on /home/user/.gap/pkg/orb-4.8.3 ...[128X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X2.1-4 InfoPackageManager[101X
+  
+  [33X[1;0Y[29X[2XInfoPackageManager[102X [32X info class[133X
   
   [33X[0;0YInfo  class for the PackageManager package. Set this to the following levels
   for different levels of information:[133X
@@ -103,7 +130,7 @@
   [33X[0;0YSet  this  using,  for  example [10XSetInfoLevel(InfoPackageManager, 1)[110X. Default
   value is 3.[133X
   
-  [1X2.1-4 InstallPackageFromName[101X
+  [1X2.1-5 InstallPackageFromName[101X
   
   [33X[1;0Y[29X[2XInstallPackageFromName[102X( [3Xname[103X[, [3Xinteractive[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
@@ -116,7 +143,7 @@
   and  use sane defaults instead, the optional second argument [10Xinteractive[110X can
   be set to [10Xfalse[110X.[133X
   
-  [1X2.1-5 InstallPackageFromInfo[101X
+  [1X2.1-6 InstallPackageFromInfo[101X
   
   [33X[1;0Y[29X[2XInstallPackageFromInfo[102X( [3Xinfo[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
@@ -126,7 +153,7 @@
   that  points to a valid PackageInfo.g file. Returns [10Xtrue[110X if the installation
   was successful, and [10Xfalse[110X otherwise.[133X
   
-  [1X2.1-6 InstallPackageFromArchive[101X
+  [1X2.1-7 InstallPackageFromArchive[101X
   
   [33X[1;0Y[29X[2XInstallPackageFromArchive[102X( [3Xurl[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
@@ -135,7 +162,7 @@
   given  URL.  Returns  [10Xtrue[110X  if  the  installation  was successful, and [10Xfalse[110X
   otherwise.[133X
   
-  [1X2.1-7 InstallPackageFromGit[101X
+  [1X2.1-8 InstallPackageFromGit[101X
   
   [33X[1;0Y[29X[2XInstallPackageFromGit[102X( [3Xurl[103X[, [3Xinteractive[103X][, [3Xbranch[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
@@ -152,7 +179,7 @@
   and  use sane defaults instead, the optional second argument [10Xinteractive[110X can
   be set to [10Xfalse[110X.[133X
   
-  [1X2.1-8 InstallPackageFromHg[101X
+  [1X2.1-9 InstallPackageFromHg[101X
   
   [33X[1;0Y[29X[2XInstallPackageFromHg[102X( [3Xurl[103X[, [3Xinteractive[103X][, [3Xbranch[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
@@ -170,7 +197,7 @@
   and  use sane defaults instead, the optional second argument [10Xinteractive[110X can
   be set to [10Xfalse[110X.[133X
   
-  [1X2.1-9 InstallRequiredPackages[101X
+  [1X2.1-10 InstallRequiredPackages[101X
   
   [33X[1;0Y[29X[2XInstallRequiredPackages[102X(  ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X

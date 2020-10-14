@@ -27,13 +27,14 @@
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X81A6FF1B81D004BA">2.1-1 InstallPackage</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X7A3A079387DAA79A">2.1-2 UpdatePackage</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X847EF83681889E47">2.1-3 InfoPackageManager</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X7D61C07E7AAA7575">2.1-4 InstallPackageFromName</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X843B648B855F9C82">2.1-5 InstallPackageFromInfo</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X7CF49C797835BD49">2.1-6 InstallPackageFromArchive</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X869C71188722CFAD">2.1-7 InstallPackageFromGit</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X7A1F34D27932BA01">2.1-8 InstallPackageFromHg</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X7B70DED5806B72A7">2.1-9 InstallRequiredPackages</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X84CA6E417D8FC84C">2.1-3 CompilePackage</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X847EF83681889E47">2.1-4 InfoPackageManager</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X7D61C07E7AAA7575">2.1-5 InstallPackageFromName</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X843B648B855F9C82">2.1-6 InstallPackageFromInfo</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X7CF49C797835BD49">2.1-7 InstallPackageFromArchive</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X869C71188722CFAD">2.1-8 InstallPackageFromGit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X7A1F34D27932BA01">2.1-9 InstallPackageFromHg</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2.html#X7B70DED5806B72A7">2.1-10 InstallRequiredPackages</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap2.html#X7AD97D497EAA18D2">2.2 <span class="Heading">Removing packages</span></a>
 </span>
@@ -113,9 +114,31 @@ Remove old version of io at /home/user/.gap/pkg/io-4.5.4 ? [y/N] y
 true
 </pre></div>
 
+<p><a id="X84CA6E417D8FC84C" name="X84CA6E417D8FC84C"></a></p>
+
+<h5>2.1-3 CompilePackage</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CompilePackage</code>( <var class="Arg">name</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<p>Returns: true or false</p>
+
+<p>Attempts to compile an installed package. Takes one argument <code class="code">name</code>, which should be a string specifying the name of a package installed in the user GAP root (for example, one installed using <code class="func">InstallPackage</code> (<a href="chap2.html#X81A6FF1B81D004BA"><span class="RefLink">2.1-1</span></a>)).</p>
+
+<p>Compilation is done automatically when a package is installed or updated, so in most cases this command is not needed. However, it may sometimes be necessary to recompile some packages if you update or move your GAP installation.</p>
+
+<p>Compilation is done using the <code class="code">bin/BuildPackages.sh</code> script included in GAP. If the specified package does not have a compiled component, this function should have no effect.</p>
+
+<p>Returns <code class="code">true</code> if compilation was successful or if no compilation was necessary. Returns <code class="code">false</code> otherwise.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CompilePackage("orb");</span>
+#I  Running compilation script on /home/user/.gap/pkg/orb-4.8.3 ...
+true
+</pre></div>
+
 <p><a id="X847EF83681889E47" name="X847EF83681889E47"></a></p>
 
-<h5>2.1-3 InfoPackageManager</h5>
+<h5>2.1-4 InfoPackageManager</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InfoPackageManager</code></td><td class="tdright">(&nbsp;info class&nbsp;)</td></tr></table></div>
 <p>Info class for the PackageManager package. Set this to the following levels for different levels of information:</p>
@@ -142,7 +165,7 @@ true
 
 <p><a id="X7D61C07E7AAA7575" name="X7D61C07E7AAA7575"></a></p>
 
-<h5>2.1-4 InstallPackageFromName</h5>
+<h5>2.1-5 InstallPackageFromName</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromName</code>( <var class="Arg">name</var>[, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
@@ -153,7 +176,7 @@ true
 
 <p><a id="X843B648B855F9C82" name="X843B648B855F9C82"></a></p>
 
-<h5>2.1-5 InstallPackageFromInfo</h5>
+<h5>2.1-6 InstallPackageFromInfo</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromInfo</code>( <var class="Arg">info</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
@@ -162,7 +185,7 @@ true
 
 <p><a id="X7CF49C797835BD49" name="X7CF49C797835BD49"></a></p>
 
-<h5>2.1-6 InstallPackageFromArchive</h5>
+<h5>2.1-7 InstallPackageFromArchive</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromArchive</code>( <var class="Arg">url</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
@@ -171,7 +194,7 @@ true
 
 <p><a id="X869C71188722CFAD" name="X869C71188722CFAD"></a></p>
 
-<h5>2.1-7 InstallPackageFromGit</h5>
+<h5>2.1-8 InstallPackageFromGit</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromGit</code>( <var class="Arg">url</var>[, <var class="Arg">interactive</var>][, <var class="Arg">branch</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
@@ -184,7 +207,7 @@ true
 
 <p><a id="X7A1F34D27932BA01" name="X7A1F34D27932BA01"></a></p>
 
-<h5>2.1-8 InstallPackageFromHg</h5>
+<h5>2.1-9 InstallPackageFromHg</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromHg</code>( <var class="Arg">url</var>[, <var class="Arg">interactive</var>][, <var class="Arg">branch</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
@@ -197,7 +220,7 @@ true
 
 <p><a id="X7B70DED5806B72A7" name="X7B70DED5806B72A7"></a></p>
 
-<h5>2.1-9 InstallRequiredPackages</h5>
+<h5>2.1-10 InstallRequiredPackages</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallRequiredPackages</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>

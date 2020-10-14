@@ -2,14 +2,15 @@
   
   [1XIndex[101X
   
-  [2XInfoPackageManager[102X 2.1-3 
+  [2XCompilePackage[102X 2.1-3 
+  [2XInfoPackageManager[102X 2.1-4 
   [2XInstallPackage[102X 2.1-1 
-  [2XInstallPackageFromArchive[102X 2.1-6 
-  [2XInstallPackageFromGit[102X 2.1-7 
-  [2XInstallPackageFromHg[102X 2.1-8 
-  [2XInstallPackageFromInfo[102X 2.1-5 
-  [2XInstallPackageFromName[102X 2.1-4 
-  [2XInstallRequiredPackages[102X 2.1-9 
+  [2XInstallPackageFromArchive[102X 2.1-7 
+  [2XInstallPackageFromGit[102X 2.1-8 
+  [2XInstallPackageFromHg[102X 2.1-9 
+  [2XInstallPackageFromInfo[102X 2.1-6 
+  [2XInstallPackageFromName[102X 2.1-5 
+  [2XInstallRequiredPackages[102X 2.1-10 
   [2XRemovePackage[102X 2.2-1 
   [2XUpdatePackage[102X 2.1-2 
   
