@@ -81,6 +81,34 @@ DeclareGlobalFunction("InstallPackage");
 DeclareGlobalFunction("UpdatePackage");
 
 #! @Description
+#!   Attempts to compile an installed package.  Takes one argument `name`, which
+#!   should be a string specifying the name of a package installed in the user
+#!   GAP root (for example, one installed using <Ref Func="InstallPackage" />).
+#!
+#!   Compilation is done automatically when a package is installed or updated,
+#!   so in most cases this command is not needed.  However, it may sometimes be
+#!   necessary to recompile some packages if you update or move your GAP
+#!   installation.
+#!
+#!   Compilation is done using the `bin/BuildPackages.sh` script included in
+#!   GAP.  If the specified package does not have a compiled component, this
+#!   function should have no effect.
+#!
+#!   Returns `true` if compilation was successful or if no compilation was
+#!   necessary.  Returns `false` otherwise.
+#!
+#! @BeginExample
+#! gap> CompilePackage("orb");
+#! #I  Running compilation script on /home/user/.gap/pkg/orb-4.8.3 ...
+#! true
+#! @EndExample
+#!
+#! @Arguments name
+#! @Returns
+#!   true or false
+DeclareGlobalFunction("CompilePackage");
+
+#! @Description
 #!   Info class for the PackageManager package.  Set this to the following
 #!   levels for different levels of information:
 #!     * 0 - No messages

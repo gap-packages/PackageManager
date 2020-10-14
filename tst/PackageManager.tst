@@ -7,8 +7,29 @@ gap> if DownloadURL = fail then
 gap> LoadPackage("curlInterface", false);
 true
 
+# Compile curlInterface again (already done, so nothing happens)
+gap> CompilePackage("curlInterface");
+true
+
+# Clean up and recompile curlInterface
+gap> dir := PackageInfo("curlInterface")[1].InstallationPath;;
+gap> RemoveDirectoryRecursively(Filename(Directory(dir), "bin"));
+true
+gap> CompilePackage("curlInterface");
+true
+
 # IO should be pre-installed for these tests to pass
 gap> IsEmpty(PackageInfo("io"));
+false
+
+# Try to compile IO (which we assume is installed but not in the user pkg dir)
+gap> CompilePackage("io");
+#I  Package "io" not installed in user package directory
+false
+
+# Try to compile something that's not there at all
+gap> CompilePackage("madeUpPackage");
+#I  Package "madeuppackage" not installed in user package directory
 false
 
 # UpdatePackage for non-user packages
@@ -117,6 +138,12 @@ gap> UpdatePackage("io", "yes");
 Error, PackageManager: UpdatePackage: <interactive> must be true or false
 gap> UpdatePackage("io", true, "master", "hello", Group(()), fail, []);
 Error, PackageManager: UpdatePackage: requires 1 or 2 arguments (not 7)
+
+# CompilePackage bad input
+gap> CompilePackage(3);
+Error, PackageManager: CompilePackage: <name> must be a string
+gap> CompilePackage(true);
+Error, PackageManager: CompilePackage: <name> must be a string
 
 # Installing multiple versions
 gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6/grpconst-2.6.tar.gz");

@@ -665,6 +665,39 @@ function(name, interactive...)
   return PKGMAN_CheckPackage(current.InstallationPath);
 end);
 
+InstallGlobalFunction(CompilePackage,
+function(name)
+  local user_pkg_dir, allinfo, info;
+
+  # Check input
+  if not IsString(name) then
+    ErrorNoReturn("PackageManager: CompilePackage: ",
+                  "<name> must be a string");
+  fi;
+
+  # Locate the package
+  name := LowercaseString(name);
+  user_pkg_dir := PKGMAN_PackageDir();
+  allinfo := PackageInfo(name);
+  info := Filtered(allinfo,
+                   x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
+
+  # Package not installed
+  if Length(info) = 0 then
+    Info(InfoPackageManager, 1,
+         "Package \"", name, "\" not installed in user package directory");
+    Info(InfoPackageManager, 2, "(currently set to ", PKGMAN_PackageDir(), ")");
+    if not IsEmpty(allinfo) then
+      Info(InfoPackageManager, 2, "installed at ",
+           List(allinfo, i -> i.InstallationPath), ", not in ", user_pkg_dir);
+    fi;
+    return false;
+  fi;
+
+  # Compile it
+  return PKGMAN_CompileDir(info[1].InstallationPath);
+end);
+
 InstallGlobalFunction(PKGMAN_CheckPackage,
 function(dir)
   local fname, info, html;
