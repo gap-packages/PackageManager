@@ -743,7 +743,11 @@ function(dir)
   if not ValidatePackageInfo(fname) then
     Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
     Info(InfoPackageManager, 2, "(in ", dir, ")");
-    return false;
+    if IsPackageLoaded("GAPDoc") then
+      return false;
+    else
+      Info(InfoPackageManager, 1, "Proceeding anyway, since GAPDoc not loaded");
+    fi;
   fi;
 
   # Compile if needed
@@ -819,6 +823,7 @@ function(dir)
   if not IsPackageLoaded("GAPDoc") then
     Info(InfoPackageManager, 1,
          "GAPDoc package not found, skipping building the documentation...");
+    return;
   fi;
 
   # Mute GAPDoc
