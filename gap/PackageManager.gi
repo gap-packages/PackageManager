@@ -3,6 +3,15 @@
 #
 # Implementations
 #
+
+if not IsBoundGlobal("WHITESPACE") then
+  BindGlobal("WHITESPACE", " \n\t\r");
+fi;
+
+if not IsBoundGlobal("InfoGAPDoc") then
+  BindGlobal("InfoGAPDoc", fail);
+fi;
+
 InstallGlobalFunction(GetPackageURLs,
 function()
   local get, urls, line, items;
@@ -807,6 +816,10 @@ InstallGlobalFunction(PKGMAN_MakeDoc,
 function(dir)
   local last_infogapdoc, last_infowarning, makedoc_g, doc_dir, doc_make_doc,
         last_dir, str, exec;
+  if not IsPackageLoaded("GAPDoc") then
+    Info(InfoPackageManager, 1,
+         "GAPDoc package not found, skipping building the documentation...");
+  fi;
 
   # Mute GAPDoc
   last_infogapdoc := InfoLevel(InfoGAPDoc);
