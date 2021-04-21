@@ -116,6 +116,8 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(LowercaseString(f), "example"));
 true
+gap> RemovePackage("example", false);
+true
 
 # RemovePackage failure
 gap> RemovePackage(3);
@@ -191,7 +193,8 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/Package
 #E  component `Subtitle' must be bound to a string
 #E  component `Version' must be bound to a nonempty string that does not start\
  with `='
-#E  component `Date' must be bound to a string of the form `dd/mm/yyyy'
+#E  component `Date' must be bound to a string of the form yyyy-mm-dd or dd/mm\
+/yyyy that represents a date since 1999
 #E  component `ArchiveURL' must be bound to a string started with http://, htt\
 ps:// or ftp://
 #E  component `ArchiveFormats' must be bound to a string
@@ -233,7 +236,8 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpack
 #E  component `Subtitle' must be bound to a string
 #E  component `Version' must be bound to a nonempty string that does not start\
  with `='
-#E  component `Date' must be bound to a string of the form `dd/mm/yyyy'
+#E  component `Date' must be bound to a string of the form yyyy-mm-dd or dd/mm\
+/yyyy that represents a date since 1999
 #E  component `ArchiveURL' must be bound to a string started with http://, htt\
 ps:// or ftp://
 #E  component `ArchiveFormats' must be bound to a string
