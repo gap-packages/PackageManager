@@ -31,19 +31,37 @@
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell - to avoid this
 #!   interactivity and use sane defaults instead, the optional second argument
-#!   `interactive` can be set to `false`.
+#!   `interactive_or_version` can be set to `false`.
 #!
 #!   To see more information about this process while it is ongoing, see
 #!   `InfoPackageManager`.
+#!
+#!   If `string` is the name of the package in question then one can specify
+#!   a required package version via a string as value of the optional argument
+#!   `interactive_or_version`, which is interpreted as described in Section
+#!   <Ref Sect="Version Numbers" BookName="ref"/>.
+#!   In particular, if `interactive_or_version` starts with `=` then the
+#!   function will try to install exactly the given version, and otherwise
+#!   it will try to install a version that is not smaller than the given one.
+#!   If a version is prescribed then no interactivity happens.
+#!   If an installed version satisfies the condition on the version then
+#!   `true` is returned without an attempt to upgrade the package.
+#!   If the package is not yet installed or if no installed version satisfies
+#!   the version condition then an upgrade is tried only if the package version
+#!   that is listed on the &GAP; webpages satisfies the condition.
+#!   (The function will not update a dev version of the package if a version
+#!   number is prescribed;
+#!   otherwise it could happen that one updates the installation and
+#!   afterwards notices that the version condition is still not satisfied.)
 #!
 #! @BeginExample
 #! gap> InstallPackage("digraphs");
 #! true
 #! @EndExample
 #!
-#! @Arguments string[, interactive]
+#! @Arguments string[, interactive_or_version]
 #! @Returns
-#!   true or false
+#!   `true` or `false`
 DeclareGlobalFunction("InstallPackage");
 
 #! @Description

@@ -46,11 +46,12 @@ function(string, interactive...)
                   "requires 1 or 2 arguments (not ",
                   Length(interactive) + 1, ")");
   elif Length(interactive) = 1 then
-    if interactive[1] = true or interactive[1] = false then
+    if IsString( interactive[1] ) or interactive[1] = true
+                                  or interactive[1] = false then
       interactive := interactive[1];
     else
       ErrorNoReturn("PackageManager: InstallPackage: ",
-                    "<interactive> must be true or false");
+        "<interactive> must be true or false or a version string");
     fi;
   else
     interactive := true;
@@ -72,10 +73,14 @@ end);
 
 InstallGlobalFunction(InstallPackageFromName,
 function(name, interactive...)
-  local urls, allinfo, info, newest, current, dirs, vc, q;
+  local version, urls, allinfo, info, newest, current, dirs, vc, q;
 
-  # Handle interactivity
-  if Length(interactive) = 1 and interactive[1] = false then
+  # Handle version condition and interactivity
+  version := true;
+  if Length(interactive) = 1 and IsString(interactive[1]) then
+    version := interactive[1];
+    interactive := false;
+  elif Length(interactive) = 1 and interactive[1] = false then
     interactive := false;
   else
     interactive := true;
@@ -96,7 +101,17 @@ function(name, interactive...)
   info := Filtered(allinfo,
                    x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));
   if not IsEmpty(info) then  # Already installed
+    # Does the installed version already satisfy the prescribed version?
+    current := info[1];  # Highest-priority installation in user pkg directory
+    if version <> true and
+       CompareVersionNumbers( current.Version, version ) then
+      Info(InfoPackageManager, 2, "Version ", current.Version,
+           " of package \"", name, "\" is already installed");
+      return PKGMAN_CheckPackage(current.InstallationPath);
+    fi;
+
     # Any VC installations?
+    # (This step is not relevant in case of a prescribed version number.)
     dirs := List(info, i -> ShallowCopy(i.InstallationPath));
     for vc in ["git", "hg"] do
       if Filename(List(dirs, Directory), Concatenation(".", vc)) <> fail then
@@ -110,8 +125,15 @@ function(name, interactive...)
 
     # Installed by archive only
     newest  := PKGMAN_DownloadPackageInfo(urls.(name));
-    current := info[1];  # Highest-priority installation in user pkg directory
-    if CompareVersionNumbers(newest.Version, current.Version, "equal") then
+    if version <> true then
+      # Update or give up, but do not ask questions.
+      if CompareVersionNumbers( newest.Version, version ) then
+        # Updating to the newest version will satisfy the version condition.
+        return UpdatePackage(name, interactive);
+      else
+        return false;
+      fi;
+    elif CompareVersionNumbers(newest.Version, current.Version, "equal") then
       Info(InfoPackageManager, 2, "The newest version of package \"", name,
            "\" is already installed");
       return PKGMAN_CheckPackage(current.InstallationPath);
@@ -128,11 +150,11 @@ function(name, interactive...)
   fi;
 
   # Not installed yet
-  return InstallPackageFromInfo(urls.(name));
+  return InstallPackageFromInfo(urls.(name), version);
 end);
 
 InstallGlobalFunction(InstallPackageFromInfo,
-function(info)
+function(info, version...)
   local formats, format, url;
 
   # Check input
@@ -147,6 +169,12 @@ function(info)
     if info = fail then
       return false;
     fi;
+  fi;
+
+  # Check the version condition.
+  if Length(version) = 1 and IsString(version[1])
+     and not CompareVersionNumbers(info.Version, version[1]) then
+    return false;
   fi;
 
   # Read the information we want from it
