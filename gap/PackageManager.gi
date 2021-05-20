@@ -50,7 +50,7 @@ function(string, interactive...)
                                   or interactive[1] = false then
       interactive := interactive[1];
     else
-      ErrorNoReturn("PackageManager: InstallPackage: ",
+      ErrorNoReturn("PackageManager: InstallPackage:\n",
         "<interactive> must be true or false or a version string");
     fi;
   else
