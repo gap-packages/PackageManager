@@ -170,8 +170,9 @@ gap> PKGMAN_PackageInfoURLList := default_url;;
 # InstallPackage input failure
 gap> InstallPackage(3);
 Error, PackageManager: InstallPackage: <string> must be a string
-gap> InstallPackage("semigroups", "yes");
-Error, PackageManager: InstallPackage: <interactive> must be true or false
+gap> InstallPackage("semigroups", 'y');
+Error, PackageManager: InstallPackage:
+<interactive> must be true or false or a version string
 gap> InstallPackage("semigroups", "yes", "actually no");
 Error, PackageManager: InstallPackage: requires 1 or 2 arguments (not 3)
 
