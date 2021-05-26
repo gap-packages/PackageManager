@@ -491,7 +491,7 @@ false
 gap> RemovePackage("uuid", false);
 true
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-too-new.tar.gz");
-#I  Package GAPDoc >= 999.0 unavailable: only version 0.2 was found
+#I  Package GAPDoc = 999.0 unavailable: only version 0.2 was found
 #I  Dependencies not satisfied for uuid-0.6
 false
 gap> PKGMAN_PackageInfoURLList := urllist;;
