@@ -217,7 +217,7 @@ function(url)
     Info(InfoPackageManager, 1, "Could not inspect tarball contents");
     return false;
   fi;
-  files := SplitString(exec.output, "", WHITESPACE);
+  files := SplitString(exec.output, "", "\n");
   topdir := Set(files, f -> SplitString(f, "/")[1]);
   if Length(topdir) <> 1 then
     Info(InfoPackageManager, 1,
