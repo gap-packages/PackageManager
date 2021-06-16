@@ -771,7 +771,7 @@ function(dir)
   if not ValidatePackageInfo(fname) then
     Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
     Info(InfoPackageManager, 2, "(in ", dir, ")");
-    if IsPackageLoaded("GAPDoc") then
+    if IsPackageLoaded("gapdoc") then
       return false;
     else
       Info(InfoPackageManager, 1, "Proceeding anyway, since GAPDoc not loaded");
@@ -848,7 +848,7 @@ InstallGlobalFunction(PKGMAN_MakeDoc,
 function(dir)
   local last_infogapdoc, last_infowarning, makedoc_g, doc_dir, doc_make_doc,
         last_dir, str, exec;
-  if not IsPackageLoaded("GAPDoc") then
+  if not IsPackageLoaded("gapdoc") then
     Info(InfoPackageManager, 1,
          "GAPDoc package not found, skipping building the documentation...");
     return;

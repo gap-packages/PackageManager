@@ -163,8 +163,9 @@ gap> PositionSublist(out,
 >                                    Filename(Directory(PKGMAN_PackageDir()),
 >                                             "uuid-0.5"))) <> fail;
 true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()), f -> StartsWith(f, "io"));
-false
+gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()), f -> StartsWith(f, "io")) then
+>   RemovePackage("io", false);;
+> fi;
 gap> InstallPackage("https://github.com/gap-packages/io.git");
 true
 gap> InputTextUser := {} -> InputTextString("y");;
@@ -249,6 +250,78 @@ gap> Print = oldPrint;
 true
 gap> Print = newPrint;
 false
+
+# Bad package info
+# (very complicated and changeable output, just checking some bits)
+# (no need for all this hackery after #E messages are removed from GAP)
+gap> newPrint := function(args...)
+>   CallFuncList(PrintTo, Concatenation([OutputTextString(out, true)], args));
+> end;;
+gap> out := "";;
+gap> MakeReadWriteGlobal("Print");
+gap> Print := newPrint;;
+gap> res := InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage2.tar.gz");;
+gap> Print := oldPrint;;
+gap> MakeReadOnlyGlobal("Print");
+gap> res;
+false
+gap> exp := "#E  component `Subtitle' must be bound to a string";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#E  component `Version' must be bound to";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#E  component `Date' must be bound to";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "yyyy";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#E  component `ArchiveURL' must be bound to";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#E  component `PackageInfoURL' must be bound to a string";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#I  PackageInfo.g validation failed";;
+gap> PositionSublist(out, exp) <> fail;
+true
+
+# InstallPackageFromInfo fail
+# (very complicated and changeable output, just checking some bits)
+# (no need for all this hackery after #E messages are removed from GAP)
+gap> newPrint := function(args...)
+>   CallFuncList(PrintTo, Concatenation([OutputTextString(out, true)], args));
+> end;;
+gap> out := "";;
+gap> MakeReadWriteGlobal("Print");
+gap> Print := newPrint;;
+gap> res := InstallPackage("https://gap-packages.github.io/PackageManager/dummy/PackageInfo.g");;
+gap> Print := oldPrint;;
+gap> MakeReadOnlyGlobal("Print");
+gap> res;
+false
+gap> exp := "#E  component `Subtitle' must be bound to a string";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#E  component `Version' must be bound to";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#E  component `Date' must be bound to";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "yyyy";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#E  component `ArchiveURL' must be bound to";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#E  component `PackageInfoURL' must be bound to a string";;
+gap> PositionSublist(out, exp) <> fail;
+true
+gap> exp := "#I  Invalid PackageInfo.g file";;
+gap> PositionSublist(out, exp) <> fail;
+true
 
 # Build doc with doc/make_doc
 gap> InstallPackage("https://github.com/gap-packages/sonata.git");

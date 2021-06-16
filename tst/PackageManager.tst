@@ -22,7 +22,7 @@ true
 gap> IsEmpty(PackageInfo("io"));
 false
 
-# Try to compile IO (which we assume is installed but not in the user pkg dir)
+# Try to compile IO (which should be installed but not in the user pkg dir)
 gap> CompilePackage("io");
 #I  Package "io" not installed in user package directory
 false
@@ -189,29 +189,6 @@ Error, PackageManager: InstallPackageFromInfo: <info> should be a rec or URL
 gap> InstallPackage("http://www.nothing.rubbish/PackageInfo.g");
 #I  Unable to download from http://www.nothing.rubbish/PackageInfo.g
 false
-gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/PackageInfo.g");
-#E  component `PackageName' must be bound to a nonempty string
-#E  component `Subtitle' must be bound to a string
-#E  component `Version' must be bound to a nonempty string that does not start\
- with `='
-#E  component `Date' must be bound to a string of the form yyyy-mm-dd or dd/mm\
-/yyyy that represents a date since 1999
-#E  component `ArchiveURL' must be bound to a string started with http://, htt\
-ps:// or ftp://
-#E  component `ArchiveFormats' must be bound to a string
-#E  component `Status' must be bound to one of "accepted", "deposited", "dev",\
- "other"
-#E  component `README_URL' must be bound to a string started with http://, htt\
-ps:// or ftp://
-#E  component `PackageInfoURL' must be bound to a string started with http://,\
- https:// or ftp://
-#E  component `AbstractHTML' must be bound to a string
-#E  component `PackageWWWHome' must be bound to a string started with http://,\
- https:// or ftp://
-#E  component `PackageDoc' must be bound to a record or a list of records
-#E  component `AvailabilityTest' must be bound to a function
-#I  Invalid PackageInfo.g file
-false
 
 # TODO: package that doesn't offer a ".tar.gz" archive
 # I'm not sure any such packages currently exist.
@@ -231,37 +208,6 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/twodirs
 #I  Archive should contain 1 directory (not 2)
 false
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage.tar.gz");
-#I  PackageInfo.g validation failed
-false
-gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage2.tar.gz");
-#E  component `Subtitle' must be bound to a string
-#E  component `Version' must be bound to a nonempty string that does not start\
- with `='
-#E  component `Date' must be bound to a string of the form yyyy-mm-dd or dd/mm\
-/yyyy that represents a date since 1999
-#E  component `ArchiveURL' must be bound to a string started with http://, htt\
-ps:// or ftp://
-#E  component `ArchiveFormats' must be bound to a string
-#E  component `Status' must be bound to one of "accepted", "deposited", "dev",\
- "other"
-#E  component `README_URL' must be bound to a string started with http://, htt\
-ps:// or ftp://
-#E  component `PackageInfoURL' must be bound to a string started with http://,\
- https:// or ftp://
-#E  component `AbstractHTML' must be bound to a string
-#E  component `PackageWWWHome' must be bound to a string started with http://,\
- https:// or ftp://
-#E  component `BookName' must be bound to a string
-#E  component `ArchiveURLSubset' must be bound to a list of strings denoting r\
-elative paths to readable files or directories
-#E  component `HTMLStart' must be bound to a string denoting a relative path t\
-o a readable file
-#E  component `PDFFile' must be bound to a string denoting a relative path to \
-a readable file
-#E  component `SixFile' must be bound to a string denoting a relative path to \
-a readable file
-#E  component `LongTitle' must be bound to a string
-#E  component `AvailabilityTest' must be bound to a function
 #I  PackageInfo.g validation failed
 false
 
