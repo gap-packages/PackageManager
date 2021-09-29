@@ -312,6 +312,14 @@ gap> PKGMAN_CompileDir(dir);
 #I  Compilation failed (package may still be usable)
 false
 
+# Missing BuildPackages script
+gap> temp := PKGMAN_BuildPackagesScript;;
+gap> PKGMAN_BuildPackagesScript := fail;;
+gap> CompilePackage("curlInterface");
+#I  Compilation script not found
+false
+gap> PKGMAN_BuildPackagesScript := temp;;
+
 # Missing curlInterface: use wget instead
 gap> ver := PKGMAN_CurlIntReqVer;;
 gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
