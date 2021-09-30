@@ -7,10 +7,6 @@ gap> if DownloadURL = fail then
 gap> LoadPackage("curlInterface", false);
 true
 
-# Compile curlInterface again (already done, so nothing happens)
-gap> CompilePackage("curlInterface");
-true
-
 # Clean up and recompile curlInterface
 gap> dir := PackageInfo("curlInterface")[1].InstallationPath;;
 gap> RemoveDirectoryRecursively(Filename(Directory(dir), "bin"));
@@ -355,6 +351,10 @@ gap> PKGMAN_CurlIntReqVer := ver;;
 gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.4"));
 true
 gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.9.4/Toric-1.9.4.tar.gz");
+true
+
+# Compile already compiled
+gap> CompilePackage("toric");
 true
 
 # curl failure
