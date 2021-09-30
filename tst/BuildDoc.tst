@@ -127,9 +127,10 @@ gap> Print := oldPrint;;
 gap> res;
 false
 gap> PositionSublist(out,
->                    StringFormatted("Really delete directory {} ? [y/N] n\n",
->                                    Filename(Directory(PKGMAN_PackageDir()),
->                                             "uuid-0.5"))) <> fail;
+>                    Concatenation("Really delete directory ",
+>                                  Filename(Directory(PKGMAN_PackageDir()),
+>                                           "uuid-0.5"),
+>                                  " ? [y/N] n\n")) <> fail;
 true
 gap> InputTextUser := {} -> InputTextString("y\ny\n");;
 gap> out := "";;
@@ -141,8 +142,9 @@ true
 gap> exp1 := Concatenation("Package \"uuid\" version 0.5 is installed, but ",
 >                          PKGMAN_DownloadPackageInfo(GetPackageURLs().uuid).Version,
 >                          " is available. Install it? [y/N] y\n");;
-gap> exp2 := StringFormatted("Remove old version of uuid at {} ? [y/N] y\n",
->                            Filename(Directory(PKGMAN_PackageDir()), "uuid-0.5"));;
+gap> exp2 := Concatenation("Remove old version of uuid at ",
+>                          Filename(Directory(PKGMAN_PackageDir()), "uuid-0.5"),
+>                          " ? [y/N] y\n");;
 gap> PositionSublist(out, exp1) <> fail;
 true
 gap> PositionSublist(out, exp2) <> fail;
@@ -159,9 +161,10 @@ gap> Print := oldPrint;;
 gap> res;
 true
 gap> PositionSublist(out,
->                    StringFormatted("Really delete directory {} ? [y/N] y\n",
->                                    Filename(Directory(PKGMAN_PackageDir()),
->                                             "uuid-0.5"))) <> fail;
+>                    Concatenation("Really delete directory ",
+>                                  Filename(Directory(PKGMAN_PackageDir()),
+>                                           "uuid-0.5"),
+>                                  " ? [y/N] y\n")) <> fail;
 true
 gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()), f -> StartsWith(f, "io")) then
 >   RemovePackage("io", false);;
