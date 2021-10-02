@@ -53,8 +53,8 @@
 
 <h5>2.1-1 InstallPackage</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackage</code>( <var class="Arg">string</var>[, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
-<p>Returns: true or false</p>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackage</code>( <var class="Arg">string</var>[, <var class="Arg">version</var>][, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="code">true</code> or <code class="code">false</code></p>
 
 <p>Attempts to download and install a package. The argument <code class="code">string</code> should be a string containing one of the following:</p>
 
@@ -80,9 +80,11 @@
 
 <p>By default, packages will be installed in user's home directory at <code class="code">~/.gap/pkg</code>. Note that this location is not the default user pkg location on Mac OSX, but it will be created on any system if not already present. Note also that starting GAP with the <code class="code">-r</code> flag will cause all packages in this directory to be ignored.</p>
 
-<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <code class="code">interactive</code> can be set to <code class="code">false</code>.</p>
+<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional argument <code class="code">interactive</code> can be set to <code class="code">false</code>.</p>
 
 <p>To see more information about this process while it is ongoing, see <code class="code">InfoPackageManager</code>.</p>
+
+<p>If <code class="code">string</code> is the name of the package in question then one can specify a required package version via a string as value of the optional argument <code class="code">version</code>, which is interpreted as described in Section <a href="https://www.gap-system.org/Manuals/doc/ref/chap76.html#X8180BCDA82587F41"><span class="RefLink">Reference: Version Numbers</span></a>. In particular, if <code class="code">version</code> starts with <code class="code">=</code> then the function will try to install exactly the given version, and otherwise it will try to install a version that is not smaller than the given one. If an installed version satisfies the condition on the version then <code class="code">true</code> is returned without an attempt to upgrade the package. If the package is not yet installed or if no installed version satisfies the version condition then an upgrade is tried only if the package version that is listed on the <strong class="pkg">GAP</strong> webpages satisfies the condition. (The function will not update a dev version of the package if a version number is prescribed; otherwise it could happen that one updates the installation and afterwards notices that the version condition is still not satisfied.)</p>
 
 
 <div class="example"><pre>
@@ -167,12 +169,14 @@ true
 
 <h5>2.1-5 InstallPackageFromName</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromName</code>( <var class="Arg">name</var>[, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromName</code>( <var class="Arg">name</var>[, <var class="Arg">version</var>][, <var class="Arg">interactive</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: true or false</p>
 
 <p>Attempts to download and install a package given only its name. Returns <code class="code">false</code> if something went wrong, and <code class="code">true</code> otherwise.</p>
 
-<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional second argument <code class="code">interactive</code> can be set to <code class="code">false</code>.</p>
+<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell - to avoid this interactivity and use sane defaults instead, the optional argument <code class="code">interactive</code> can be set to <code class="code">false</code>.</p>
+
+<p>A required version can also be specified using the optional argument <code class="code">version</code>. It works as described in the <code class="func">InstallPackage</code> (<a href="chap2.html#X81A6FF1B81D004BA"><span class="RefLink">2.1-1</span></a>) function.</p>
 
 <p><a id="X843B648B855F9C82" name="X843B648B855F9C82"></a></p>
 

@@ -6,8 +6,8 @@
   
   [1X2.1-1 InstallPackage[101X
   
-  [33X[1;0Y[29X[2XInstallPackage[102X( [3Xstring[103X[, [3Xinteractive[103X] ) [32X function[133X
-  [6XReturns:[106X  [33X[0;10Ytrue or false[133X
+  [33X[1;0Y[29X[2XInstallPackage[102X( [3Xstring[103X[, [3Xversion[103X][, [3Xinteractive[103X] ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10Y[10Xtrue[110X or [10Xfalse[110X[133X
   
   [33X[0;0YAttempts  to download and install a package. The argument [10Xstring[110X should be a
   string containing one of the following:[133X
@@ -36,11 +36,26 @@
   
   [33X[0;0YCertain  decisions,  such  as installing newer versions of packages, will be
   confirmed by the user via an interactive shell - to avoid this interactivity
-  and  use sane defaults instead, the optional second argument [10Xinteractive[110X can
-  be set to [10Xfalse[110X.[133X
+  and  use sane defaults instead, the optional argument [10Xinteractive[110X can be set
+  to [10Xfalse[110X.[133X
   
   [33X[0;0YTo  see  more  information  about  this  process  while  it  is ongoing, see
   [10XInfoPackageManager[110X.[133X
+  
+  [33X[0;0YIf  [10Xstring[110X  is  the  name  of the package in question then one can specify a
+  required  package  version  via  a  string as value of the optional argument
+  [10Xversion[110X,  which  is  interpreted as described in Section [14X'Reference: Version
+  Numbers'[114X. In particular, if [10Xversion[110X starts with [10X=[110X then the function will try
+  to install exactly the given version, and otherwise it will try to install a
+  version  that  is  not  smaller  than the given one. If an installed version
+  satisfies  the  condition  on  the  version then [10Xtrue[110X is returned without an
+  attempt to upgrade the package. If the package is not yet installed or if no
+  installed  version  satisfies the version condition then an upgrade is tried
+  only if the package version that is listed on the [5XGAP[105X webpages satisfies the
+  condition.  (The  function will not update a dev version of the package if a
+  version number is prescribed; otherwise it could happen that one updates the
+  installation  and afterwards notices that the version condition is still not
+  satisfied.)[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XInstallPackage("digraphs");[127X[104X
@@ -132,7 +147,7 @@
   
   [1X2.1-5 InstallPackageFromName[101X
   
-  [33X[1;0Y[29X[2XInstallPackageFromName[102X( [3Xname[103X[, [3Xinteractive[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XInstallPackageFromName[102X( [3Xname[103X[, [3Xversion[103X][, [3Xinteractive[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Ytrue or false[133X
   
   [33X[0;0YAttempts  to  download  and  install  a package given only its name. Returns
@@ -140,8 +155,11 @@
   
   [33X[0;0YCertain  decisions,  such  as installing newer versions of packages, will be
   confirmed by the user via an interactive shell - to avoid this interactivity
-  and  use sane defaults instead, the optional second argument [10Xinteractive[110X can
-  be set to [10Xfalse[110X.[133X
+  and  use sane defaults instead, the optional argument [10Xinteractive[110X can be set
+  to [10Xfalse[110X.[133X
+  
+  [33X[0;0YA  required  version  can  also  be  specified  using  the optional argument
+  [10Xversion[110X. It works as described in the [2XInstallPackage[102X ([14X2.1-1[114X) function.[133X
   
   [1X2.1-6 InstallPackageFromInfo[101X
   

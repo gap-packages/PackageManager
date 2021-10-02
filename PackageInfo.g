@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "1.1",
-Date := "14/10/2020",  # dd/mm/yyyy format
+Version := "1.2",
+Date := "02/10/2021",  # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -19,8 +19,8 @@ Persons := [
     IsAuthor := true,
     IsMaintainer := true,
     FirstNames := "Michael",
-    LastName := "Torpey",
-    WWWHome := "http://mtorpey.github.io/",
+    LastName := "Young",
+    WWWHome := "https://mct25.host.cs.st-andrews.ac.uk/",
     Email := "mct25@st-andrews.ac.uk",
     PostalAddress := Concatenation(
                "School of Computer Science\n",
@@ -76,8 +76,8 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">= 4.9",
-  NeededOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ] ],
-  SuggestedOtherPackages := [ [ "curlInterface", ">= 2.1.0" ] ],
+  NeededOtherPackages := [],
+  SuggestedOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ], [ "curlInterface", ">= 2.1.0" ] ],
   ExternalConditions := [ ],
 ),
 

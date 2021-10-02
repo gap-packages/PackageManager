@@ -1,7 +1,7 @@
 The GAP 4 package "PackageManager"
 ==================================
 
-[![Build Status](https://travis-ci.org/gap-packages/PackageManager.svg?branch=master)](https://travis-ci.org/gap-packages/PackageManager)
+[![Build Status](https://github.com/gap-packages/PackageManager/workflows/CI/badge.svg?branch=master)](https://github.com/gap-packages/PackageManager/actions?query=workflow%3ACI+branch%3Amaster)
 [![Code Coverage](https://codecov.io/github/gap-packages/PackageManager/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/PackageManager)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gap-packages/PackageManager/master?filepath=PackageManager-demo.ipynb)
 
@@ -34,13 +34,13 @@ or enter GAP and call, for example,
 
 Citing
 ------
-Please cite this package as:
+Please cite this package using the following format:
 
-[Tor20]
-M. Torpey,
+[YouXX]
+M. Young,
 PackageManager (GAP package),
 Easily download and install GAP packages,
-Version X.Y (20XX),
+Version X.Y.Z (20XX),
 https://github.com/gap-packages/PackageManager.
 
 Acknowledgements

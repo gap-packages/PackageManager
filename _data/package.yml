@@ -1,25 +1,23 @@
 name: PackageManager
-version: 1.1
-date: 2020-10-14
+version: 1.2
+date: 2021-10-02
 description: |
     Easily download and install GAP packages
 
 authors:
-    - name: Michael Torpey
-      url: http://mtorpey.github.io/
+    - name: Michael Young
+      url: https://mct25.host.cs.st-andrews.ac.uk/
 
 maintainers:
-    - name: Michael Torpey
-      url: http://mtorpey.github.io/
+    - name: Michael Young
+      url: https://mct25.host.cs.st-andrews.ac.uk/
 
 GAP: ">= 4.9"
 
-needed-pkgs:
+suggested-pkgs:
     - name: "GAPDoc"
       version: ">= 1.6.1"
       url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
-
-suggested-pkgs:
     - name: "curlInterface"
       version: ">= 2.1.0"
       url: "https://gap-packages.github.io/curlInterface/"
@@ -30,7 +28,7 @@ packageinfo: https://gap-packages.github.io/PackageManager/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/PackageManager/releases/download/v1.1/PackageManager-1.1.tar.gz
+      url: https://github.com/gap-packages/PackageManager/releases/download/v1.2/PackageManager-1.2.tar.gz
 
 abstract: |
     <span class="pkgname">PackageManager</span> is a basic collection of    simple functions for installing and removing    <span class="pkgname">GAP</span> packages, with the eventual aim of    becoming a full pip-style package manager for the    <span class="pkgname">GAP</span> system.
@@ -40,26 +38,26 @@ doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
 citeas: |
     <p class='BibEntry'>
-    [<span class='BibKey'>Tor20</span>]   <b class='BibAuthor'>Torpey, M.</b>,
+    [<span class='BibKey'>You21</span>]   <b class='BibAuthor'>Young, M.</b>,
      <i class='BibTitle'>PackageManager, Easily download and install GAP packages,
-             Version 1.1</i>
-     (<span class='BibYear'>2020</span>)<br />
+             Version 1.2</i>
+     (<span class='BibYear'>2021</span>)<br />
     (<span class='BibNote'>GAP package</span>),
     <span class='BibHowpublished'><a href="https://gap-packages.github.io/PackageManager/">https://gap-packages.github.io/PackageManager/</a></span>.
     </p>
     
 
 bibtex: |
-    @misc{ PackageManager1.1,
-      author =           {Torpey, M.},
+    @misc{ PackageManager1.2,
+      author =           {Young, M.},
       title =            {{PackageManager},  Easily  download  and  install  GAP
-                          packages, {V}ersion 1.1},
+                          packages, {V}ersion 1.2},
       month =            {Oct},
-      year =             {2020},
+      year =             {2021},
       note =             {GAP package},
       howpublished =     {\href {https://gap-packages.github.io/PackageManager/}
                           {\texttt{https://gap-packages.github.io/}\discretionary
                           {}{}{}\texttt{PackageManager/}}},
-      printedkey =       {Tor20}
+      printedkey =       {You21}
     }
 
