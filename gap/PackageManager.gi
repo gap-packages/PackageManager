@@ -44,25 +44,31 @@ function()
 end);
 
 InstallGlobalFunction(InstallPackage,
-function(string, interactive...)
+function(string, args...)
+  local version, interactive;
+
   # Check input
+  version := true;
+  interactive := true;
   if not IsString(string) then
     ErrorNoReturn("PackageManager: InstallPackage: ",
                   "<string> must be a string");
-  elif Length(interactive) > 1 then
+  elif Length(args) > 2 then
     ErrorNoReturn("PackageManager: InstallPackage: ",
-                  "requires 1 or 2 arguments (not ",
-                  Length(interactive) + 1, ")");
-  elif Length(interactive) = 1 then
-    if IsString( interactive[1] ) or interactive[1] = true
-                                  or interactive[1] = false then
-      interactive := interactive[1];
+                  "requires 1 to 3 arguments (not ",
+                  Length(args) + 1, ")");
+  elif Length(args) = 1 then
+    if IsString(args[1]) then
+      version := args[1];
+    elif args[1] = true or args[1] = false then
+      interactive := args[1];
     else
       ErrorNoReturn("PackageManager: InstallPackage:\n",
-        "<interactive> must be true or false or a version string");
+                    "2nd argument must be true or false or a version string");
     fi;
-  else
-    interactive := true;
+  elif Length(args) = 2 then
+    version := args[1];
+    interactive := args[2];
   fi;
 
   # Call the appropriate function
@@ -76,22 +82,44 @@ function(string, interactive...)
   elif EndsWith(string, "PackageInfo.g") then
     return InstallPackageFromInfo(string);
   fi;
-  return InstallPackageFromName(string, interactive);
+  return InstallPackageFromName(string, version, interactive);
 end);
 
 InstallGlobalFunction(InstallPackageFromName,
-function(name, interactive...)
-  local version, urls, allinfo, info, newest, current, dirs, vc, q;
+function(name, args...)
+  local version, interactive, urls, allinfo, info, current, dirs, vc, q, newest;
 
   # Handle version condition and interactivity
   version := true;
-  if Length(interactive) = 1 and IsString(interactive[1]) then
-    version := interactive[1];
-    interactive := false;
-  elif Length(interactive) = 1 and interactive[1] = false then
-    interactive := false;
-  else
-    interactive := true;
+  interactive := true;
+  if not IsString(name) then
+    ErrorNoReturn("PackageManager: InstallPackageFromName: ",
+                  "<name> must be a string");
+  elif Length(args) > 2 then
+    ErrorNoReturn("PackageManager: InstallPackageFromName: ",
+                  "requires 1 to 3 arguments (not ",
+                  Length(args) + 1, ")");
+  elif Length(args) = 1 then
+    if IsString(args[1]) then
+      version := args[1];
+    elif args[1] = true or args[1] = false then
+      interactive := args[1];
+    else
+      ErrorNoReturn("PackageManager: InstallPackageFromName:\n",
+                    "2nd argument must be true or false or a version string");
+    fi;
+  elif Length(args) = 2 then
+    version := args[1];
+    interactive := args[2];
+  fi;
+
+  # Check arguments
+  if not (IsString(version) or version = true) then
+    ErrorNoReturn("PackageManager: InstallPackageFromName:\n",
+                  "if specified, <version> must be a version string");
+  elif not (interactive = true or interactive = false) then
+    ErrorNoReturn("PackageManager: InstallPackageFromName:\n",
+                  "if specified, <interactive> must be true or false");
   fi;
 
   # Get package URL from name
@@ -139,6 +167,10 @@ function(name, interactive...)
         # Updating to the newest version will satisfy the version condition.
         return UpdatePackage(name, interactive);
       else
+        Info(InfoPackageManager, 1, "Version \"", version, "\" of package \"", 
+             name, "\" cannot be satisfied");
+        Info(InfoPackageManager, 2,
+             "The newest version available is ", newest.Version);
         return false;
       fi;
     elif CompareVersionNumbers(newest.Version, current.Version, "equal") then
@@ -182,6 +214,10 @@ function(info, version...)
   # Check the version condition.
   if Length(version) = 1 and IsString(version[1])
      and not CompareVersionNumbers(info.Version, version[1]) then
+    Info(InfoPackageManager, 1, "Version \"", version[1], "\" of package \"", 
+         info.PackageName, "\" cannot be satisfied");
+    Info(InfoPackageManager, 2,
+         "The newest version available is ", info.Version);
     return false;
   fi;
 

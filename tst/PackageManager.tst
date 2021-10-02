@@ -79,6 +79,21 @@ gap> RemovePackage("matgrp");
 #I  Package "matgrp" not installed in user package directory
 false
 
+# Install using a required package number
+gap> InstallPackage("matgrp", ">=0.5");
+true
+gap> RemovePackage("matgrp", false);
+true
+gap> InstallPackage("matgrp", "0.5", false);
+true
+gap> RemovePackage("matgrp", false);
+true
+
+# Required package number too high
+gap> InstallPackage("matgrp", "9999.0");
+#I  Version "9999.0" of package "matgrp" cannot be satisfied
+false
+
 # Fail to install a GAP required package
 gap> backup := GAPInfo.Dependencies.NeededOtherPackages;;
 gap> needed := ShallowCopy(backup);;
@@ -168,9 +183,12 @@ gap> InstallPackage(3);
 Error, PackageManager: InstallPackage: <string> must be a string
 gap> InstallPackage("semigroups", 'y');
 Error, PackageManager: InstallPackage:
-<interactive> must be true or false or a version string
+2nd argument must be true or false or a version string
 gap> InstallPackage("semigroups", "yes", "actually no");
-Error, PackageManager: InstallPackage: requires 1 or 2 arguments (not 3)
+Error, PackageManager: InstallPackageFromName:
+if specified, <interactive> must be true or false
+gap> InstallPackage("semigroups", ">=3.0", true, "i dont know");
+Error, PackageManager: InstallPackage: requires 1 to 3 arguments (not 4)
 
 # InstallPackageFromName failure
 gap> InstallPackage("sillypackage");

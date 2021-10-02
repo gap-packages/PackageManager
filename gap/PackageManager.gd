@@ -30,20 +30,19 @@
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell - to avoid this
-#!   interactivity and use sane defaults instead, the optional second argument
-#!   `interactive_or_version` can be set to `false`.
+#!   interactivity and use sane defaults instead, the optional argument
+#!   `interactive` can be set to `false`.
 #!
 #!   To see more information about this process while it is ongoing, see
 #!   `InfoPackageManager`.
 #!
 #!   If `string` is the name of the package in question then one can specify
 #!   a required package version via a string as value of the optional argument
-#!   `interactive_or_version`, which is interpreted as described in Section
+#!   `version`, which is interpreted as described in Section
 #!   <Ref Sect="Version Numbers" BookName="ref"/>.
-#!   In particular, if `interactive_or_version` starts with `=` then the
+#!   In particular, if `version` starts with `=` then the
 #!   function will try to install exactly the given version, and otherwise
 #!   it will try to install a version that is not smaller than the given one.
-#!   If a version is prescribed then no interactivity happens.
 #!   If an installed version satisfies the condition on the version then
 #!   `true` is returned without an attempt to upgrade the package.
 #!   If the package is not yet installed or if no installed version satisfies
@@ -59,7 +58,7 @@
 #! true
 #! @EndExample
 #!
-#! @Arguments string[, interactive_or_version]
+#! @Arguments string[, version][, interactive]
 #! @Returns
 #!   `true` or `false`
 DeclareGlobalFunction("InstallPackage");
@@ -149,9 +148,13 @@ SetInfoLevel(InfoPackageManager, 3);
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell - to avoid this
-#!   interactivity and use sane defaults instead, the optional second argument
+#!   interactivity and use sane defaults instead, the optional argument
 #!   `interactive` can be set to `false`.
-#! @Arguments name[, interactive]
+#!
+#!   A required version can also be specified using the optional argument
+#!   `version`.  It works as described in the <Ref Func="InstallPackage" />
+#!   function.
+#! @Arguments name[, version][, interactive]
 #! @Returns
 #!   true or false
 DeclareGlobalFunction("InstallPackageFromName");
