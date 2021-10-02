@@ -1,5 +1,9 @@
 This file describes changes in the PackageManager package.
 
+1.2 (2021-10-02)
+  - InstallPackage now supports a required minimum version argument
+  - Compatibility changes to re-enable support for GAP 4.9
+
 1.1 (2020-10-14)
   - Introduce CompilePackage for forcing a recompile
   - Fixes to support newer BuildPackages.sh scripts
