@@ -19,8 +19,8 @@ Persons := [
     IsAuthor := true,
     IsMaintainer := true,
     FirstNames := "Michael",
-    LastName := "Torpey",
-    WWWHome := "http://mtorpey.github.io/",
+    LastName := "Young",
+    WWWHome := "https://mct25.host.cs.st-andrews.ac.uk/",
     Email := "mct25@st-andrews.ac.uk",
     PostalAddress := Concatenation(
                "School of Computer Science\n",

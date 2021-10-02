@@ -34,13 +34,13 @@ or enter GAP and call, for example,
 
 Citing
 ------
-Please cite this package as:
+Please cite this package using the following format:
 
-[Tor20]
-M. Torpey,
+[YouXX]
+M. Young,
 PackageManager (GAP package),
 Easily download and install GAP packages,
-Version X.Y (20XX),
+Version X.Y.Z (20XX),
 https://github.com/gap-packages/PackageManager.
 
 Acknowledgements

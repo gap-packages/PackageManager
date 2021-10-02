@@ -1,6 +1,6 @@
 FROM gapsystem/gap-docker
 
-MAINTAINER Michael Torpey <mct25@st-andrews.ac.uk>
+MAINTAINER Michael Young <mct25@st-andrews.ac.uk>
 
 COPY --chown=1000:1000 binder $HOME/demos
 
