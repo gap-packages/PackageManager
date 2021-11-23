@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: gap-actions/setup-gap-for-packages@v2
+      - uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_BUILD: "io profiling json"
           GAPBRANCH: ${{ matrix.gap-branch }}
@@ -39,8 +39,10 @@ jobs:
             libcurl4-openssl-dev
           )
           sudo apt-get install "${packages[@]}"
-      - uses: gap-actions/build-package@v1
-      - uses: gap-actions/run-test-for-packages@v1
+      - uses: gap-actions/build-pkg@v1
+      - uses: gap-actions/run-pkg-tests@v2
+      - uses: gap-actions/process-coverage@v2
+      - uses: codecov/codecov-action@v1
 
   # The documentation job
   manual:
@@ -51,23 +53,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: gap-actions/setup-gap-for-packages@v1
+      - uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_BUILD: "io profiling json"
-      - name: 'Install additional dependencies'
-        run: |
-          packages=(
-            texlive-latex-base
-            texlive-latex-recommended
-            texlive-latex-extra
-            texlive-extra-utils
-            texlive-fonts-recommended
-            texlive-fonts-extra
-            libcurl4-openssl-dev
-          )
-          sudo apt-get install "${packages[@]}"
-      - uses: gap-actions/build-package@v1
-      - uses: gap-actions/compile-documentation-for-packages@v1
+      - uses: gap-actions/build-pkg-docs@v1
         with:
           use-latex: 'true'
       - name: 'Upload documentation'
