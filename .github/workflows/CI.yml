@@ -40,7 +40,14 @@ jobs:
           )
           sudo apt-get install "${packages[@]}"
       - uses: gap-actions/build-pkg@v1
-      - uses: gap-actions/run-pkg-tests@v2
+      - name: "Run tst/testall.g"
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          GAP_TESTFILE: "tst/testall.g"
+      - name: "Run tst/test-without-texlive.g"
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          GAP_TESTFILE: "tst/test-without-texlive.g"
       - uses: gap-actions/process-coverage@v2
       - uses: codecov/codecov-action@v2
 
