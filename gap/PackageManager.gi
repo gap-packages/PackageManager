@@ -256,7 +256,7 @@ function(url)
   Info(InfoPackageManager, 2, "Saved archive to ", path);
 
   # Check contents
-  exec := PKGMAN_Exec(".", "tar", "-tf", path);
+  exec := PKGMAN_Exec(".", "tar", "--warning=none", "-tf", path);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Could not inspect tarball contents");
     return false;
