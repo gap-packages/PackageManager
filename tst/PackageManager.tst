@@ -171,11 +171,13 @@ false
 gap> default_url := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList := "http://www.nothing.rubbish/abc.txt";;
 gap> GetPackageURLs();
-Error, PackageManager: GetPackageURLs: could not contact server
+#I  PackageManager: GetPackageURLs: could not contact server
+rec( success := false )
 gap> PKGMAN_PackageInfoURLList := "https://www.gap-system.org";;
 gap> GetPackageURLs();
-Error, PackageManager: GetPackageURLs: bad line:
-<?xml version="1.0" encoding="utf-8"?>
+#I  PackageManager: GetPackageURLs: bad line:
+#I  <?xml version="1.0" encoding="utf-8"?>
+rec( success := false )
 gap> PKGMAN_PackageInfoURLList := default_url;;
 
 # InstallPackage input failure

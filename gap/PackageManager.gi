@@ -39,7 +39,7 @@ function()
     elif Length(items) = 1 or Length(items) > 3
          or (Length(items) = 3 and items[2] <> "MOVE") then
       Info(InfoPackageManager, 1,
-           "PackageManager: GetPackageURLs: bad line:\n", line);
+           "PackageManager: GetPackageURLs: bad line:\n#I  ", line);
       return urls;
     fi;
     urls.(LowercaseString(items[1])) := items[Length(items)];
