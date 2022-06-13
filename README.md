@@ -6,8 +6,7 @@ The GAP 4 package "PackageManager"
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gap-packages/PackageManager/master?filepath=PackageManager-demo.ipynb)
 
 A basic collection of simple functions for installing and removing GAP packages,
-with the eventual aim of becoming a full pip-style package manager for the GAP
-system.
+with the eventual aim of becoming a full package manager for the GAP system.
 
 Example invocations:
 
