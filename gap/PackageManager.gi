@@ -25,10 +25,12 @@ function()
   local get, urls, line, items;
   # Get PackageInfo URLs from configurable list
   get := PKGMAN_DownloadURL(PKGMAN_PackageInfoURLList);
+  urls := rec(success:= false);
   if not get.success then
-    ErrorNoReturn("PackageManager: GetPackageURLs: could not contact server");
+    Info(InfoPackageManager, 1,
+         "PackageManager: GetPackageURLs: could not contact server");
+    return urls;
   fi;
-  urls := rec();
   for line in SplitString(get.result, "\n") do
     # Format: <name> [MOVE] <URL>
     items := SplitString(line, "", WHITESPACE);
@@ -36,10 +38,13 @@ function()
       continue;
     elif Length(items) = 1 or Length(items) > 3
          or (Length(items) = 3 and items[2] <> "MOVE") then
-      ErrorNoReturn("PackageManager: GetPackageURLs: bad line:\n", line);
+      Info(InfoPackageManager, 1,
+           "PackageManager: GetPackageURLs: bad line:\n", line);
+      return urls;
     fi;
     urls.(LowercaseString(items[1])) := items[Length(items)];
   od;
+  urls.success := true;
   return urls;
 end);
 
@@ -126,7 +131,10 @@ function(name, args...)
   name := LowercaseString(name);
   Info(InfoPackageManager, 3, "Getting PackageInfo URLs...");
   urls := GetPackageURLs();
-  if not IsBound(urls.(name)) then
+  if urls.success = false then
+    # An info message has already been printed.
+    return false;
+  elif not IsBound(urls.(name)) then
     Info(InfoPackageManager, 1,
          "Package \"", name, "\" not found in package list");
     return false;
@@ -517,6 +525,10 @@ function(dir)
   od;
 
   info_urls := GetPackageURLs();
+  if info_urls.success = false then
+    # An info message has already been printed.
+    return false;
+  fi;
   dep_infos := [];
   for dep in to_install do
     # Already installed, but needs recompiling?
@@ -722,6 +734,10 @@ function(name, interactive...)
 
   # Installed only by archive
   urls := GetPackageURLs();
+  if urls.success = false then
+    # An info message has already been printed.
+    return false;
+  fi;
   newest  := PKGMAN_DownloadPackageInfo(urls.(name));
   current := info[1];  # Highest-priority version in user pkg directory
   if CompareVersionNumbers(newest.Version, current.Version, "equal") then
