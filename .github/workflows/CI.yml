@@ -31,10 +31,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: gap-actions/setup-gap@v2
-        with:
-          GAP_PKGS_TO_BUILD: "io profiling json"
-          GAPBRANCH: ${{ matrix.gap-branch }}
       - name: 'Install additional dependencies'
         run: |
           packages=(
@@ -47,6 +43,10 @@ jobs:
             libcurl4-openssl-dev
           )
           sudo apt-get install "${packages[@]}"
+      - uses: gap-actions/setup-gap@v2
+        with:
+          GAP_PKGS_TO_BUILD: "io profiling json curlInterface"
+          GAPBRANCH: ${{ matrix.gap-branch }}
       - uses: gap-actions/build-pkg@v1
       - uses: gap-actions/run-pkg-tests@v2
       - uses: gap-actions/process-coverage@v2
