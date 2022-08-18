@@ -2,7 +2,9 @@ This file describes changes in the PackageManager package.
 
 1.3 (2020-MM-DD)
   - Require GAP >= 4.10
-  - ...
+  - Install packages in GAPInfo.UserGapRoot, rather than hard-wire .gap
+  - Improve the package documentation
+  - Improve internal error handling
 
 1.2 (2021-10-02)
   - InstallPackage now supports a required minimum version argument
