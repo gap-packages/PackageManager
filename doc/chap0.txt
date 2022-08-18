@@ -6,10 +6,10 @@
                    [1X Easily download and install [5XGAP[105X packages [101X
   
   
-                                      1.2
+                                      1.3
   
   
-                                 2 October 2021
+                                 18 August 2022
   
   
                                  Michael Young
@@ -33,8 +33,8 @@
   [1XContents (PackageManager)[101X
   
   1 [33X[0;0YIntroduction[133X
-    1.1 [33X[0;0YWhat does the PackageManager package do?[133X
-    1.2 [33X[0;0YWhat does the PackageManager package not do?[133X
+    1.1 [33X[0;0YWhat does the [5XPackageManager[105X package do?[133X
+    1.2 [33X[0;0YWhat does the [5XPackageManager[105X package not do?[133X
     1.3 [33X[0;0YA quick example[133X
   2 [33X[0;0YCommands[133X
     2.1 [33X[0;0YInstalling and updating packages[133X

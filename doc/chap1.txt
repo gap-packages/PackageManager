@@ -2,48 +2,51 @@
   [1X1 [33X[0;0YIntroduction[133X[101X
   
   
-  [1X1.1 [33X[0;0YWhat does the PackageManager package do?[133X[101X
+  [1X1.1 [33X[0;0YWhat does the [5XPackageManager[105X[101X[1X package do?[133X[101X
   
   [33X[0;0YThis  package  provides  the  ability to install or remove a package using a
   single  command:  [2XInstallPackage[102X  ([14X2.1-1[114X) or [2XRemovePackage[102X ([14X2.2-1[114X). The user
   can  specify  a  package  to  install  using  its name, or using a URL to an
   archive,   a   repository,   or   a  [10XPackageInfo.g[110X  file.  When  installing,
-  PackageManager also attempts to compile the package, build its documentation
+  [5XPackageManager[105X also attempts to compile the package, build its documentation
   if necessary, and ensure that its dependencies are also installed.[133X
   
   
-  [1X1.2 [33X[0;0YWhat does the PackageManager package not do?[133X[101X
+  [1X1.2 [33X[0;0YWhat does the [5XPackageManager[105X[101X[1X package not do?[133X[101X
   
-  [33X[0;0YAt  present,  PackageManager  is  fairly basic, without many of the advanced
+  [33X[0;0YAt  present,  [5XPackageManager[105X  is  fairly basic, without many of the advanced
   features available in package managers such as pip or apt. For instance, the
-  user cannot install a particular version of a package except by specifying a
-  URL; nor can the user update all packages in one command. Removing a package
-  will  not remove any of its dependencies, since we do not track how packages
-  were installed. When a package is installed, no tests are run to ensure that
-  it  is  compatible  with the installed version of GAP. Any of these features
-  might  be  added  in the future. Other feature requests can be posted on the
-  issue tracker at https://github.com/gap-packages/PackageManager/issues.[133X
+  user  cannot update all packages in one command. Removing a package will not
+  remove  any  of  its  dependencies,  since we do not track how packages were
+  installed.  When  a package is installed, no tests are run to ensure that it
+  is compatible with the installed version of GAP. Any of these features might
+  be  added  in  the future. Other feature requests can be posted on the issue
+  tracker at [7Xhttps://github.com/gap-packages/PackageManager/issues[107X.[133X
   
   
   [1X1.3 [33X[0;0YA quick example[133X[101X
   
-  [33X[0;0YTo  install  the  latest deposited version of the Digraphs packages, use the
+  [33X[0;0YTo  install  the  latest  deposited version of the [5XDigraphs[105X package, use the
   following:[133X
   
   [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XLoadPackage("PackageManager");[127X[104X
     [4X[25Xgap>[125X [27XInstallPackage("digraphs");[127X[104X
   [4X[32X[104X
   
   [33X[0;0YTo uninstall it later, use the following:[133X
   
   [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XLoadPackage("PackageManager");[127X[104X
     [4X[25Xgap>[125X [27XRemovePackage("digraphs");[127X[104X
   [4X[32X[104X
   
-  [33X[0;0YPackageManager  also  supports  version control repositories. To install the
-  latest version of the curlInterface package from GitHub, use the following:[133X
+  [33X[0;0Y[5XPackageManager[105X  also  supports  version control repositories. To install the
+  latest    version    of    the    curlInterface    package    from    GitHub
+  ([7Xhttps://github.com/gap-packages/curlInterface.git[107X), use the following:[133X
   
   [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XLoadPackage("PackageManager");[127X[104X
     [4X[25Xgap>[125X [27XInstallPackage("https://github.com/gap-packages/curlInterface.git");[127X[104X
   [4X[32X[104X
   
