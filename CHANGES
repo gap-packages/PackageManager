@@ -1,5 +1,9 @@
 This file describes changes in the PackageManager package.
 
+1.3 (2020-MM-DD)
+  - Require GAP >= 4.10
+  - ...
+
 1.2 (2021-10-02)
   - InstallPackage now supports a required minimum version argument
   - Compatibility changes to re-enable support for GAP 4.9
