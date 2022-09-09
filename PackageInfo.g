@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "1.2",
-Date := "02/10/2021",  # dd/mm/yyyy format
+Version := "1.3",
+Date := "18/08/2022",  # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -68,14 +68,14 @@ AbstractHTML :=
 PackageDoc := rec(
   BookName  := "PackageManager",
   ArchiveURLSubset := ["doc"],
-  HTMLStart := "doc/chap0.html",
+  HTMLStart := "doc/chap0_mj.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Easily download and install GAP packages",
 ),
 
 Dependencies := rec(
-  GAP := ">= 4.9",
+  GAP := ">= 4.10",
   NeededOtherPackages := [ [ "utils", ">= 0.77" ] ],
   SuggestedOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ] ],
   ExternalConditions := [ ],

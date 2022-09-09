@@ -1,17 +1,4 @@
-# Get curlInterface (for testing)
-gap> InstallPackage("curlInterface");
-true
-gap> if DownloadURL = fail then
->   Unbind(DownloadURL);  # unbind dummy variable set in init.g
-> fi;
 gap> LoadPackage("curlInterface", false);
-true
-
-# Clean up and recompile curlInterface
-gap> dir := PackageInfo("curlInterface")[1].InstallationPath;;
-gap> RemoveDirectoryRecursively(Filename(Directory(dir), "bin"));
-true
-gap> CompilePackage("curlInterface");
 true
 
 # IO should be pre-installed for these tests to pass
@@ -126,6 +113,10 @@ gap> InstallPackage("https://github.com/gap-packages/example/releases/download/v
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(LowercaseString(f), "example"));
+true
+
+# Check package can be recompiled and removed
+gap> CompilePackage("example");
 true
 gap> RemovePackage("example", false);
 true
@@ -331,7 +322,7 @@ false
 # Missing BuildPackages script
 gap> temp := PKGMAN_BuildPackagesScript;;
 gap> PKGMAN_BuildPackagesScript := fail;;
-gap> CompilePackage("curlInterface");
+gap> CompilePackage("example");
 #I  Compilation script not found
 false
 gap> PKGMAN_BuildPackagesScript := temp;;

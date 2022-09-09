@@ -12,14 +12,6 @@ if not IsBoundGlobal("InfoGAPDoc") then
   BindGlobal("InfoGAPDoc", fail);
 fi;
 
-# GAP 4.9 doesn't have IsPackageLoaded, so this is for compatibility.
-# IsPackageMarkedForLoading isn't really the same, but is close enough for this.
-if not IsBoundGlobal("IsPackageLoaded") then
-  DeclareGlobalFunction("IsPackageLoaded");
-  InstallGlobalFunction("IsPackageLoaded", 
-                        name -> IsPackageMarkedForLoading(name, ">=0"));
-fi;
-
 InstallGlobalFunction(GetPackageURLs,
 function()
   local get, urls, line, items;
@@ -1057,7 +1049,10 @@ function()
   if PKGMAN_CustomPackageDir <> "" then
     dir := PKGMAN_CustomPackageDir;
   else
-    dir := UserHomeExpand("~/.gap/pkg");  # TODO: cygwin?
+    if GAPInfo.UserGapRoot = fail then
+      ErrorNoReturn("UserGapRoot not set. Cannot determine package directory");
+    fi;
+    dir := Concatenation(GAPInfo.UserGapRoot, "/pkg");
   fi;
   if not IsDirectoryPath(dir) then
     PKGMAN_CreateDirRecursively(dir);
