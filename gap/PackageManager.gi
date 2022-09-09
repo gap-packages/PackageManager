@@ -24,7 +24,7 @@ InstallGlobalFunction(GetPackageURLs,
 function()
   local get, urls, line, items;
   # Get PackageInfo URLs from configurable list
-  get := PKGMAN_DownloadURL(PKGMAN_PackageInfoURLList);
+  get := Download(PKGMAN_PackageInfoURLList);
   urls := rec(success:= false);
   if not get.success then
     Info(InfoPackageManager, 1,
@@ -250,7 +250,7 @@ function(url)
 
   # Download archive
   Info(InfoPackageManager, 3, "Downloading archive from URL ", url, " ...");
-  get := PKGMAN_DownloadURL(url);
+  get := Download(url);
   if get.success <> true then
     Info(InfoPackageManager, 1, "Could not download from ", url);
     return false;
@@ -1151,33 +1151,6 @@ function(dir)
   # No return value
 end);
 
-InstallGlobalFunction(PKGMAN_DownloadURL,
-function(url)
-  local tool, exec;
-
-  # Use curlInterface if available
-  if TestPackageAvailability("curlInterface", PKGMAN_CurlIntReqVer) = true then
-    Info(InfoPackageManager, 4, "Using curlInterface to download...");
-    return DownloadURL(url);
-  fi;
-
-  # Try command line tools (wget/curl)
-  for tool in PKGMAN_DownloadCmds do
-    Info(InfoPackageManager, 4, "Using ", tool[1], " to download...");
-    exec := CallFuncList(PKGMAN_Exec,
-                         Concatenation(["."], [tool[1]], tool[2], [url]));
-    if exec = fail then
-      Info(InfoPackageManager, 4, tool[1], " unavailable");
-    elif exec.code <> 0 then
-      Info(InfoPackageManager, 4, "Download failed with ", tool[1]);
-    else
-      return rec(success := true, result := exec.output);
-    fi;
-  od;
-
-  return rec(success := false, error := "no download method is available");
-end);
-
 InstallGlobalFunction(PKGMAN_RemoveDir,
 function(dir)
   # this 'if' statement is a paranoid check - it should always be true
@@ -1193,7 +1166,7 @@ function(url)
   local get, stream, info;
 
   Info(InfoPackageManager, 3, "Retrieving PackageInfo.g from ", url, " ...");
-  get := PKGMAN_DownloadURL(url);
+  get := Download(url);
   if not get.success then
     Info(InfoPackageManager, 1, "Unable to download from ", url);
     return fail;

@@ -275,7 +275,6 @@ DeclareGlobalFunction("PKGMAN_IsValidTargetDir");
 DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
 DeclareGlobalFunction("PKGMAN_InsertPackageDirectory");
 DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");
-DeclareGlobalFunction("PKGMAN_DownloadURL");
 DeclareGlobalFunction("PKGMAN_RemoveDir");
 DeclareGlobalFunction("PKGMAN_DownloadPackageInfo");
 
@@ -286,11 +285,6 @@ PKGMAN_PackageInfoURLList :=
                 "gap-distribution/master/DistributionUpdate/",
                 "PackageUpdate/currentPackageInfoURLList");
 PKGMAN_ArchiveFormats := [".tar.gz", ".tar.bz2"];
-PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
-                         [ "curl", ["--silent", "-L", "--output", "-"] ] ];
-PKGMAN_CurlIntReqVer :=
-  First(PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages,
-        item -> item[1] = "curlInterface")[2];
 PKGMAN_BuildPackagesScript := Filename(DirectoriesLibrary("bin"),
                                        "BuildPackages.sh");
 PKGMAN_Sysinfo := Filename(DirectoriesLibrary(""), "sysinfo.gap");
