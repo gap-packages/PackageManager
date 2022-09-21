@@ -238,7 +238,8 @@ end);
 
 InstallGlobalFunction(InstallPackageFromArchive,
 function(url)
-  local get, user_pkg_dir, url_parts, filename, path, exec, files, topdir, dir;
+  local get, user_pkg_dir, url_parts, filename, path, tar, options, exec,
+  files, topdir, dir;
 
   # Download archive
   Info(InfoPackageManager, 3, "Downloading archive from URL ", url, " ...");
@@ -255,8 +256,16 @@ function(url)
   FileString(path, get.result);
   Info(InfoPackageManager, 2, "Saved archive to ", path);
 
+  # Check which version of tar we are using
+  tar := PKGMAN_Exec(".", "tar", "--version");
+  if StartsWith(tar.output, "tar (GNU tar)") then
+    options := "--warning=none";
+  else
+    options := "";
+  fi;
+
   # Check contents
-  exec := PKGMAN_Exec(".", "tar", "--warning=none", "-tf", path);
+  exec := PKGMAN_Exec(".", "tar", options, "-tf", path);
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Could not inspect tarball contents");
     return false;
