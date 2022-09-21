@@ -989,7 +989,7 @@ function(dir, cmd, args...)
     # we must look up the path
     fullcmd := Filename(DirectoriesSystemPrograms(), cmd);
     if fullcmd = fail or not IsExecutableFile(fullcmd) then
-      Info(InfoPackageManager, 3, "Command ", cmd, " not found");
+      Info(InfoPackageManager, 4, "Command ", cmd, " not found");
       return fail;
     fi;
   fi;
