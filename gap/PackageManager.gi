@@ -1162,7 +1162,7 @@ function(url)
   # Use curlInterface if available
   if TestPackageAvailability("curlInterface", PKGMAN_CurlIntReqVer) = true then
     Info(InfoPackageManager, 4, "Using curlInterface to download...");
-    return DownloadURL(url);
+    return ValueGlobal("DownloadURL")(url);
   fi;
 
   # Try command line tools (wget/curl)
