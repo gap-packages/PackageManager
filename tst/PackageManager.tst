@@ -294,7 +294,7 @@ gap> GAPInfo.DirectoriesPrograms := [];;  # terrible vandalism
 gap> dir := PackageInfo("example")[1].InstallationPath;;
 gap> PKGMAN_CompileDir(dir);
 #I  No shell available called "sh"
-#I  Compilation failed (package may still be usable)
+#I  Compilation failed for package 'Example' (package may still be usable)
 false
 gap> GAPInfo.DirectoriesPrograms := progs;;
 
@@ -316,7 +316,7 @@ gap> dir := PackageInfo("example")[1].InstallationPath;;
 gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
 true
 gap> PKGMAN_CompileDir(dir);
-#I  Compilation failed (package may still be usable)
+#I  Compilation failed for package 'Example' (package may still be usable)
 false
 
 # Missing BuildPackages script
