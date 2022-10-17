@@ -31,6 +31,13 @@ Persons := [
     Place := "St Andrews",
     Institution := "University of St Andrews",
   ),
+  rec(
+    LastName      := "GAP Team",
+    FirstNames    := "The",
+    IsAuthor      := false,
+    IsMaintainer  := true,
+    Email         := "support@gap-system.org",
+  ),
 ],
 
 SourceRepository := rec(
