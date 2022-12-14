@@ -278,6 +278,7 @@ DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");
 DeclareGlobalFunction("PKGMAN_DownloadURL");
 DeclareGlobalFunction("PKGMAN_RemoveDir");
 DeclareGlobalFunction("PKGMAN_DownloadPackageInfo");
+DeclareGlobalFunction("PKGMAN_InfoWithIndent");
 
 # Hidden variables
 PKGMAN_CustomPackageDir := "";

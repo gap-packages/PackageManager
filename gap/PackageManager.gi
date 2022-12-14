@@ -1027,10 +1027,9 @@ function(dir, cmd, args...)
   CloseStream(outstream);
 
   if code <> 0 then
-    logfile := Filename(DirectoryTemporary(), "exec-log.txt");
-    FileString(logfile, out);
     Info(InfoPackageManager, 2,
-         "Possible error detected: see log at ", logfile);
+         "Possible error detected, see log:");
+    PKGMAN_InfoWithIndent(2, out, 2);
   fi;
 
   # Return all the information we captured
@@ -1231,4 +1230,13 @@ function(url)
   fi;
   Info(InfoPackageManager, 4, "PackageInfo.g validated successfully");
   return ShallowCopy(info);
+end);
+
+InstallGlobalFunction(PKGMAN_InfoWithIndent,
+function(infoLevel, message, indentLevel)
+  local indent, line;
+  indent := RepeatedString(" ", indentLevel);
+  for line in SplitString(message, "\n") do
+    Info(InfoPackageManager, infoLevel, indent + line);
+  od;
 end);
