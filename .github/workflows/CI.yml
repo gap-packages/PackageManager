@@ -30,7 +30,7 @@ jobs:
           - stable-4.11
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: 'Install additional dependencies'
         run: |
           packages=(
@@ -50,7 +50,7 @@ jobs:
       - uses: gap-actions/build-pkg@v1
       - uses: gap-actions/run-pkg-tests@v2
       - uses: gap-actions/process-coverage@v2
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
 
   # The documentation job
   manual:
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_BUILD: "io profiling json"
@@ -66,7 +66,8 @@ jobs:
         with:
           use-latex: 'true'
       - name: 'Upload documentation'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: manual
           path: ./doc/manual.pdf
+          if-no-files-found: error
