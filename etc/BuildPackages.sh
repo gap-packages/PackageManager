@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -e
 
@@ -15,11 +15,11 @@ notice "Using GAP root $GAPROOT"
 # Many package require GNU make. So use gmake if available,
 # for improved compatibility with *BSD systems where "make"
 # is BSD make, not GNU make.
-if hash gmake 2> /dev/null
+if command -v gmake >/dev/null 2>&1
 then
-  MAKE=gmake
+  MAKE="gmake"
 else
-  MAKE=make
+  MAKE="make"
 fi
 
 # print the given command plus arguments, single quoted, then run it
@@ -35,11 +35,11 @@ set -e
 
 cd "$PKGDIR"
 
-if [[ -x autogen.sh && ! -x configure ]]
+if [ -x autogen.sh ] && [ ! -x configure ]
 then
   echo_run ./autogen.sh
 fi
-if [[ -x configure ]]
+if [ -x configure ]
 then
   # We want to know if this is an autoconf configure script
   # or not, without actually executing it!
