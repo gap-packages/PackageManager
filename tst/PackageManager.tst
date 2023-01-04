@@ -51,34 +51,34 @@ gap> RemovePackage("GAPDoc", false);
 true
 
 # Install and remove a package by name
-gap> InstallPackage("matgrp");
+gap> InstallPackage("format");
 true
-gap> InstallPackage("matgrp");
+gap> InstallPackage("format");
 true
-gap> UpdatePackage("matgrp");
+gap> UpdatePackage("format");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "matgrp"));
+>           f -> StartsWith(f, "format"));
 true
-gap> RemovePackage("matgrp", false);
+gap> RemovePackage("format", false);
 true
-gap> RemovePackage("matgrp");
-#I  Package "matgrp" not installed in user package directory
+gap> RemovePackage("format");
+#I  Package "format" not installed in user package directory
 false
 
 # Install using a required package number
-gap> InstallPackage("matgrp", ">=0.5");
+gap> InstallPackage("format", ">=0.5");
 true
-gap> RemovePackage("matgrp", false);
+gap> RemovePackage("format", false);
 true
-gap> InstallPackage("matgrp", "0.5", false);
+gap> InstallPackage("format", "0.5", false);
 true
-gap> RemovePackage("matgrp", false);
+gap> RemovePackage("format", false);
 true
 
 # Required package number too high
-gap> InstallPackage("matgrp", "9999.0");
-#I  Version "9999.0" of package "matgrp" cannot be satisfied
+gap> InstallPackage("format", "9999.0");
+#I  Version "9999.0" of package "FORMAT" cannot be satisfied
 false
 
 # Fail to install a GAP required package
