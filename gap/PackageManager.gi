@@ -912,8 +912,6 @@ function(dir)
   if not (IsString(PKGMAN_BuildPackagesScript)
           and IsReadableFile(PKGMAN_BuildPackagesScript)) then
     Info(InfoPackageManager, 1, "Compilation script not found");
-    Info(InfoPackageManager, 2, "It should be at ",
-         DirectoriesLibrary("bin")[1]![1], "BuildPackages.sh");
     return false;
   fi;
 
