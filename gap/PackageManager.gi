@@ -918,7 +918,6 @@ function(dir)
   # Call the script
   Info(InfoPackageManager, 3, "Running compilation script on ", dir, " ...");
   exec := PKGMAN_Exec(pkg_dir, PKGMAN_BuildPackagesScript,
-                      "--strict",
                       Concatenation("--with-gaproot=", root),
                       dir);
   if exec = fail or
