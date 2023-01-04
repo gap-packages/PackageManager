@@ -1237,6 +1237,6 @@ function(infoLevel, message, indentLevel)
   local indent, line;
   indent := RepeatedString(" ", indentLevel);
   for line in SplitString(message, "\n") do
-    Info(InfoPackageManager, infoLevel, indent + line);
+    Info(InfoPackageManager, infoLevel, indent, line);
   od;
 end);
