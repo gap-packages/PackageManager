@@ -5,13 +5,6 @@ set -e
 GAPROOT="$1"
 PKGDIR="$2"
 
-# Some helper functions for printing user messages
-notice()    { printf "%s\n" "$@" ; }
-warning()   { printf "WARNING: %s\n" "$@" ; }
-error()     { printf "ERROR: %s\n" "$@" ; exit 1 ; }
-
-notice "Using GAP root $GAPROOT"
-
 # Many package require GNU make. So use gmake if available,
 # for improved compatibility with *BSD systems where "make"
 # is BSD make, not GNU make.
@@ -22,16 +15,11 @@ else
   MAKE="make"
 fi
 
-# print the given command plus arguments, single quoted, then run it
+# print the given command plus arguments, then run it
 echo_run() {
-  # when printf is given a format string with only one format specification,
-  # it applies that format string to each argument in sequence
-  notice "Running $(printf "'%s' " "$@")"
+  echo "Running $@"
   "$@"
 }
-
-(
-set -e
 
 cd "$PKGDIR"
 
@@ -60,4 +48,3 @@ then
   fi
   echo_run "$MAKE"
 fi
-) || error "Failed to build $PKG"
