@@ -928,7 +928,10 @@ function(dir)
      PositionSublist(exec.output, "Failed to build") <> fail then
     Info(InfoPackageManager, 1,
          "Compilation failed for package '", info.PackageName, "' (package may still be usable)");
+    Info(InfoPackageManager, 2, exec.output);
     return false;
+  else
+    Info(InfoPackageManager, 3, exec.output);
   fi;
   Info(InfoPackageManager, 4, "Compilation was successful");
   return true;
