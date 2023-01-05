@@ -110,8 +110,8 @@ DeclareGlobalFunction("UpdatePackage");
 #!   necessary to recompile some packages if you update or move your &GAP;
 #!   installation.
 #!
-#!   Compilation is done using the `bin/BuildPackages.sh` script included in
-#!   &GAP;.  If the specified package does not have a compiled component, this
+#!   Compilation is done using the `etc/BuildPackages.sh` script bundled with
+#!   &PackageManager;.  If the specified package does not have a compiled component, this
 #!   function should have no effect.
 #!
 #!   Returns <K>true</K> if compilation was successful or if no compilation was
@@ -292,7 +292,7 @@ PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
 PKGMAN_CurlIntReqVer :=
   First(PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages,
         item -> item[1] = "curlInterface")[2];
-PKGMAN_BuildPackagesScript := Filename(DirectoriesLibrary("bin"),
+PKGMAN_BuildPackagesScript := Filename(DirectoriesPackageLibrary("PackageManager", "etc"),
                                        "BuildPackages.sh");
 PKGMAN_Sysinfo := Filename(DirectoriesLibrary(""), "sysinfo.gap");
 PKGMAN_InstallQueue := [];      # Queue of dependencies to install

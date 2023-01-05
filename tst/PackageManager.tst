@@ -298,7 +298,7 @@ gap> PKGMAN_CompileDir(dir);
 false
 gap> GAPInfo.DirectoriesPrograms := progs;;
 
-# PKGMAN_CompileDir error: no bin/BuildPackages.sh
+# PKGMAN_CompileDir error: no etc/BuildPackages.sh
 gap> InstallPackage("example", false);  # latest version already installed
 true
 gap> sysinfo_scr := PKGMAN_Sysinfo;;
