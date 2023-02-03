@@ -31,6 +31,59 @@ or enter GAP and call, for example,
 
     gap> ?InstallPackage
 
+Installing and configuring GAP using PackageManager
+---------------------------------------------------
+It should be possible to install GAP from source, and install all required
+packages, using nothing but GAP and PackageManager.  The following instructions
+attempt to install GAP in your home directory `~`, with the package manager in a
+`~/.gap/pkg` directory.  This should work on a Debian/Ubuntu machine, but might
+need some alterations on a Mac.
+
+First, make sure you've got the required dependencies for GAP installed on your
+computer.  On a Debian/Ubuntu machine you can get the required software using:
+```bash
+sudo apt install autoconf build-essential curl git graphviz libtool libgmp-dev texlive-full
+```
+
+On a Mac, you can get the required software by installing Homebrew, and running:
+```bash
+brew install git autoconf automake curl GMP graphviz libtool
+```
+
+Now, to install GAP and PackageManager, open a terminal window and enter the following:
+```bash
+cd ~
+git clone git@github.com:gap-system/gap.git
+cd gap
+./autogen.sh
+./configure
+make
+cd ~/
+mkdir .gap
+cd .gap
+mkdir pkg
+cd pkg
+git clone git@github.com:gap-packages/PackageManager.git
+cd ~/gap
+./gap --bare
+```
+
+In the GAP window that opens, enter the following:
+```gap
+LoadPackage("PackageManager");
+InstallRequiredPackages();
+quit;
+```
+
+Now compile the documentation using:
+```bash
+make doc
+```
+
+You should now be able to load GAP with `./gap` and everything should work
+normally.  Further required packages can be installed with `InstallPackage` when
+you need them.
+
 Citing
 ------
 Please cite this package using the following format:

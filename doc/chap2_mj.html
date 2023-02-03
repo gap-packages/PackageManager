@@ -128,7 +128,7 @@ true
 
 <p>Attempts to compile an installed package. Takes one argument <var class="Arg">name</var>, which should be a string specifying the name of a package installed in the user <strong class="pkg">GAP</strong> root (for example, one installed using <code class="func">InstallPackage</code> (<a href="chap2_mj.html#X81A6FF1B81D004BA"><span class="RefLink">2.1-1</span></a>)), see <a href="https://www.gap-system.org/Manuals/doc/ref/chap9_mj.html#X7A4973627A5DB27D"><span class="RefLink">Reference: GAP Root Directories</span></a>. Compilation is done automatically when a package is installed or updated, so in most cases this command is not needed. However, it may sometimes be necessary to recompile some packages if you update or move your <strong class="pkg">GAP</strong> installation.</p>
 
-<p>Compilation is done using the <code class="code">bin/BuildPackages.sh</code> script included in <strong class="pkg">GAP</strong>. If the specified package does not have a compiled component, this function should have no effect.</p>
+<p>Compilation is done using the <code class="code">etc/BuildPackages.sh</code> script bundled with <strong class="pkg">PackageManager</strong>. If the specified package does not have a compiled component, this function should have no effect.</p>
 
 <p>Returns <code class="keyw">true</code> if compilation was successful or if no compilation was necessary. Returns <code class="keyw">false</code> otherwise.</p>
 

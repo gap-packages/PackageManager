@@ -109,9 +109,9 @@
   needed. However, it may sometimes be necessary to recompile some packages if
   you update or move your [5XGAP[105X installation.[133X
   
-  [33X[0;0YCompilation  is  done using the [10Xbin/BuildPackages.sh[110X script included in [5XGAP[105X.
-  If  the  specified package does not have a compiled component, this function
-  should have no effect.[133X
+  [33X[0;0YCompilation  is  done  using  the  [10Xetc/BuildPackages.sh[110X  script bundled with
+  [5XPackageManager[105X. If the specified package does not have a compiled component,
+  this function should have no effect.[133X
   
   [33X[0;0YReturns  [9Xtrue[109X  if  compilation  was  successful  or  if  no  compilation was
   necessary. Returns [9Xfalse[109X otherwise.[133X
