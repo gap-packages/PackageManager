@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "1.3.2",
-Date := "06/10/2022",  # dd/mm/yyyy format
+Version := "1.4.0",
+Date := "04/02/2023",  # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
