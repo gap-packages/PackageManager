@@ -1,6 +1,6 @@
 name: PackageManager
 version: 1.4.0
-date: 2022-02-04
+date: 2023-02-04
 description: |
     Easily download and install GAP packages
 
@@ -40,10 +40,10 @@ doc-html: doc/chap0_mj.html
 doc-pdf: doc/manual.pdf
 citeas: |
     <p class='BibEntry'>
-    [<span class='BibKey'>YT22</span>]   <b class='BibAuthor'>Young, M. and GAP Team, T.</b>,
+    [<span class='BibKey'>YT23</span>]   <b class='BibAuthor'>Young, M. and GAP Team, T.</b>,
      <i class='BibTitle'>PackageManager, Easily download and install GAP packages,
              Version 1.4.0</i>
-     (<span class='BibYear'>2022</span>)<br />
+     (<span class='BibYear'>2023</span>)<br />
     (<span class='BibNote'>GAP package</span>),
     <span class='BibHowpublished'><a href="https://gap-packages.github.io/PackageManager/">https://gap-packages.github.io/PackageManager/</a></span>.
     </p>
@@ -55,11 +55,11 @@ bibtex: |
       title =            {{PackageManager},  Easily  download  and  install  GAP
                           packages, {V}ersion 1.4.0},
       month =            {Feb},
-      year =             {2022},
+      year =             {2023},
       note =             {GAP package},
       howpublished =     {\href {https://gap-packages.github.io/PackageManager/}
                           {\texttt{https://gap-packages.github.io/}\discretionary
                           {}{}{}\texttt{PackageManager/}}},
-      printedkey =       {YT22}
+      printedkey =       {YT23}
     }
 
