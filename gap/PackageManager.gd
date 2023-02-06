@@ -283,9 +283,7 @@ DeclareGlobalFunction("PKGMAN_InfoWithIndent");
 # Hidden variables
 PKGMAN_CustomPackageDir := "";
 PKGMAN_PackageInfoURLList :=
-  Concatenation("https://raw.githubusercontent.com/gap-system/",
-                "gap-distribution/master/DistributionUpdate/",
-                "PackageUpdate/currentPackageInfoURLList");
+  "https://github.com/gap-system/PackageDistro/releases/download/latest/pkglist.csv";
 PKGMAN_ArchiveFormats := [".tar.gz", ".tar.bz2"];
 PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
                          [ "curl", ["--silent", "-L", "--output", "-"] ] ];
