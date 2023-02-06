@@ -4,13 +4,7 @@
 # Implementations
 #
 
-if not IsBoundGlobal("WHITESPACE") then
-  BindGlobal("WHITESPACE", " \n\t\r");
-fi;
-
-if not IsBoundGlobal("InfoGAPDoc") then
-  BindGlobal("InfoGAPDoc", fail);
-fi;
+BindGlobal("PKGMAN_WHITESPACE", MakeImmutable(" \n\t\r"));
 
 InstallGlobalFunction(GetPackageURLs,
 function()
@@ -25,7 +19,7 @@ function()
   fi;
   for line in SplitString(get.result, "\n") do
     # Format: <name> [MOVE] <URL>
-    items := SplitString(line, "", WHITESPACE);
+    items := SplitString(line, "", PKGMAN_WHITESPACE);
     if Length(items) = 0 or items[1][1] = '#' then
       continue;
     elif Length(items) = 1 or Length(items) > 3
@@ -943,9 +937,12 @@ function(dir)
   fi;
 
   # Mute GAPDoc
-  last_infogapdoc := InfoLevel(InfoGAPDoc);
+  if IsBoundGlobal("InfoGAPDoc") then
+    last_infogapdoc := InfoLevel(ValueGlobal("InfoGAPDoc"));
+    SetInfoLevel(ValueGlobal("InfoGAPDoc"), 0);
+  fi;
+
   last_infowarning := InfoLevel(InfoWarning);
-  SetInfoLevel(InfoGAPDoc, 0);
   SetInfoLevel(InfoWarning, 0);
 
   # Make documentation
@@ -976,7 +973,9 @@ function(dir)
     Info(InfoPackageManager, 3,
          "WARNING: could not build doc (no makedoc.g or doc/make_doc)");
   fi;
-  SetInfoLevel(InfoGAPDoc, last_infogapdoc);
+  if IsBoundGlobal("InfoGAPDoc") then
+    SetInfoLevel(ValueGlobal("InfoGAPDoc"), last_infogapdoc);
+  fi;
   SetInfoLevel(InfoWarning, last_infowarning);
 end);
 
