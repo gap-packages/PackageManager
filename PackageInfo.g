@@ -88,6 +88,11 @@ Dependencies := rec(
   ExternalConditions := [ ],
 ),
 
+Extensions := [
+    rec( needed := [ [ "JuliaInterface", ">= 0.9.3" ] ],
+         filename := "gap/Download.g" ),
+],
+
 AvailabilityTest := function()
         return true;
     end,
