@@ -401,15 +401,15 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 >   GAPInfo.PackagesInfoInitialized := false;
 >   InitializePackagesInfoRecords();
 > fi;
-gap> PackageInfo("HomalgToCAS");
+gap> PackageInfo("corelg");
 [  ]
-gap> PackageInfo("MatricesForHomalg");
+gap> PackageInfo("sla");
 [  ]
 gap> InstallPackage("https://github.com/gap-packages/utils/releases/download/v0.59/utils-0.59.tar.gz");  # TEMP
 true
-gap> InstallPackage("HomalgToCAS");
+gap> InstallPackage("corelg");
 true
-gap> ForAll(["HomalgToCAS", "MatricesForHomalg", "GAPDoc", "IO"],
+gap> ForAll(["corelg", "sla", "quagroup"],
 >           name -> Length(PackageInfo(name)) = 1 or
 >                   IsPackageLoaded(LowercaseString(name)));
 true
