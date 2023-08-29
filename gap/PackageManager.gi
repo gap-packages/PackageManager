@@ -291,13 +291,17 @@ function(url)
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", topdir);
-    PKGMAN_RemoveDir(dir);
+    if ValueOption("debug") <> true then
+      PKGMAN_RemoveDir(dir);
+    fi;
     return false;
   fi;
 
   # Check validity
   if PKGMAN_CheckPackage(dir) = false then
-    PKGMAN_RemoveDir(dir);
+    if ValueOption("debug") <> true then
+      PKGMAN_RemoveDir(dir);
+    fi;
     return false;
   fi;
   PKGMAN_RefreshPackageInfo();
@@ -380,14 +384,18 @@ function(url, args...)
   info := Filename(Directory(dir), "PackageInfo.g");
   if not IsReadableFile(info) then
     Info(InfoPackageManager, 1, "Could not find PackageInfo.g");
-    PKGMAN_RemoveDir(dir);
+    if ValueOption("debug") <> true then
+      PKGMAN_RemoveDir(dir);
+    fi;
     return false;
   fi;
 
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", name);
-    PKGMAN_RemoveDir(dir);
+    if ValueOption("debug") <> true then
+      PKGMAN_RemoveDir(dir);
+    fi;
     return false;
   fi;
 
@@ -470,14 +478,18 @@ function(url, args...)
   info := Filename(Directory(dir), "PackageInfo.g");
   if not IsReadableFile(info) then
     Info(InfoPackageManager, 1, "Could not find PackageInfo.g");
-    PKGMAN_RemoveDir(dir);
+    if ValueOption("debug") <> true then
+      PKGMAN_RemoveDir(dir);
+    fi;
     return false;
   fi;
 
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", name);
-    PKGMAN_RemoveDir(dir);
+    if ValueOption("debug") <> true then
+      PKGMAN_RemoveDir(dir);
+    fi;
     return false;
   fi;
 
