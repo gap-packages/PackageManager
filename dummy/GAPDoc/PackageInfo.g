@@ -13,6 +13,8 @@ Subtitle := "A Meta Package for GAP Documentation",
 Version := "0.2",  # SABOTAGED by M Torpey!  This is way older than it should be
 ##  DD/MM/YYYY format:
 Date := "17/10/2018",
+License := "GPL-2.0-or-later",
+
 SourceRepository := rec(
     Type := "git",
     URL := "https://github.com/frankluebeck/GAPDoc"

@@ -12,6 +12,7 @@ PackageName := "MadeUpPackage",
 Subtitle := "Easily download and install GAP packages",
 Version := "999.0",
 Date := "03/10/2018", # dd/mm/yyyy format
+License := "GPL-2.0-or-later",
 
 Persons := [
   rec(

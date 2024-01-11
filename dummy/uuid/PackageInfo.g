@@ -12,6 +12,7 @@ PackageName := "uuid",
 Subtitle := "RFC 4122 UUIDs",
 Version := "999.0",  # VANDALISED by M Torpey
 Date := "22/09/2018", # dd/mm/yyyy format
+License := "GPL-2.0-or-later",
 
 Persons := [
   rec(
