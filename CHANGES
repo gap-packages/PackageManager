@@ -1,5 +1,9 @@
 This file describes changes in the PackageManager package.
 
+1.4.3 (2024-01-12)
+  - Janitorial changes (adjust tests to pass with package validation
+    in GAP 4.13 making the `License` field mandatory)
+
 1.4.2 (2023-12-20)
   - Add 'debug' option which preserves directories resulting from
     failed package installations
