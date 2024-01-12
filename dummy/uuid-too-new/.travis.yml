@@ -1,0 +1,35 @@
+language: c
+env:
+  global:
+    - GAPROOT=gaproot
+    - COVDIR=coverage
+
+addons:
+  apt_packages:
+    - libgmp-dev
+    - libreadline-dev
+
+matrix:
+  include:
+    - env:
+    - env: ABI=32
+      addons:
+        apt_packages:
+          - pari-gp:i386
+          - libgmp-dev:i386
+          - libreadline-dev:i386
+          - gcc-multilib
+          - g++-multilib
+
+branches:
+  only:
+    - master
+
+before_script:
+  - export GAPROOT="$HOME/gap"
+  - scripts/build_gap.sh
+script:
+  - scripts/build_pkg.sh && scripts/run_tests.sh
+after_script:
+  - bash scripts/gather-coverage.sh
+  - bash <(curl -s https://codecov.io/bash)

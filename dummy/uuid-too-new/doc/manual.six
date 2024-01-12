@@ -1,0 +1,25 @@
+#SIXFORMAT  GapDocGAP
+HELPBOOKINFOSIXTMP := rec(
+encoding := "UTF-8",
+bookname := "uuid",
+entries :=
+[ [ "Title page", ".", [ 0, 0, 0 ], 1, 1, "title page", "X7D2C85EC87DD46E5" ],
+  [ "Table of Contents", ".-1", [ 0, 0, 1 ], 28, 2, "table of contents", 
+      "X8537FEB07AF2BEC8" ], 
+  [ 
+      "\033[1X\033[33X\033[0;-2Yuuid automatic generated documentation\033[133X\\
+033[101X", "1", [ 1, 0, 0 ], 1, 3, "uuid automatic generated documentation", 
+      "X82AFD62E810B280C" ], 
+  [ 
+      "\033[1X\033[33X\033[0;-2Yuuid automatic generated documentation of global \
+functions\033[133X\033[101X", "1.1", [ 1, 1, 0 ], 4, 3, 
+      "uuid automatic generated documentation of global functions", 
+      "X7E414B3D815E309D" ], 
+  [ "Index", "ind", [ "Ind", 0, 0 ], 1, 4, "index", "X83A0356F839C696F" ], 
+  [ "\033[2XRandomUUID\033[102X", "1.1-1", [ 1, 1, 1 ], 7, 3, "randomuuid", 
+      "X87E17B607FCD4EEE" ], 
+  [ "\033[2XStringUUID\033[102X", "1.1-2", [ 1, 1, 2 ], 13, 3, "stringuuid", 
+      "X7BCAD54A7C7CBB07" ], 
+  [ "\033[2XHexStringUUID\033[102X", "1.1-3", [ 1, 1, 3 ], 17, 3, 
+      "hexstringuuid", "X78104E187BD83927" ] ]
+);
