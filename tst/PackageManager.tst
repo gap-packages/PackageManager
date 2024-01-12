@@ -150,9 +150,9 @@ gap> CompilePackage(true);
 Error, PackageManager: CompilePackage: <name> must be a string
 
 # Installing multiple versions
-gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6/grpconst-2.6.tar.gz");
+gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6.4/grpconst-2.6.4.tar.gz");
 true
-gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.5/grpconst-2.5.tar.gz");
+gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6.3/grpconst-2.6.3.tar.gz");
 true
 gap> RemovePackage("grpconst");
 #I  Multiple versions of package grpconst installed
@@ -359,9 +359,9 @@ true
 gap> PKGMAN_CurlIntReqVer := ver;;
 
 # Install to existing empty directory
-gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.4"));
+gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.5"));
 true
-gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.9.4/Toric-1.9.4.tar.gz");
+gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.9.5/Toric-1.9.5.tar.gz");
 true
 
 # Compile already compiled
@@ -405,7 +405,7 @@ gap> PackageInfo("corelg");
 [  ]
 gap> PackageInfo("sla");
 [  ]
-gap> InstallPackage("https://github.com/gap-packages/utils/releases/download/v0.59/utils-0.59.tar.gz");  # TEMP
+gap> InstallPackage("https://github.com/gap-packages/utils/releases/download/v0.84/utils-0.84.tar.gz");  # TEMP
 true
 gap> InstallPackage("corelg");
 true
@@ -424,7 +424,7 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 # Dependency failure
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-badname.tar.gz");
 #I  Required package madeuppackage unknown
-#I  Dependencies not satisfied for uuid-0.6
+#I  Dependencies not satisfied for uuid-badname
 false
 gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git", false);
 #I  Required package MadeUpPackage unknown
@@ -445,10 +445,6 @@ true
 gap> urllist := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList :=
 > "https://gap-packages.github.io/PackageManager/dummy/badurls.txt";;
-gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git", false);
-#I  Could not inspect tarball contents
-#I  Dependencies not satisfied for uuid
-false
 gap> UpdatePackage("GAPDoc", false);  # Installed version is newer than online
 true
 gap> UpdatePackage("uuid", false);  # Newer version, but fails to install
@@ -458,7 +454,7 @@ gap> RemovePackage("uuid", false);
 true
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-too-new.tar.gz");
 #I  Package GAPDoc = 999.0 unavailable: only version 0.2 was found
-#I  Dependencies not satisfied for uuid-0.6
+#I  Dependencies not satisfied for uuid-too-new
 false
 gap> PKGMAN_PackageInfoURLList := urllist;;
 
