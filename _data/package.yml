@@ -1,5 +1,6 @@
 name: PackageManager
-version: 1.4.3
+version: "1.4.3"
+license: "GPL-2.0-or-later"
 date: 2024-01-12
 description: |
     Easily download and install GAP packages
