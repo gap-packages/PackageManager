@@ -8,8 +8,8 @@
 #! @Section Installing and updating packages
 
 #! @Description
-#!   Attempts to download and install a package.  The argument <A>string</A> should
-#!   be a string containing one of the following:
+#!   Attempts to download and install a package.  The argument <A>string</A>
+#!   should be a string containing one of the following:
 #!     * the name of a package;
 #!     * the URL of a package archive, ending in `.tar.gz` or `.tar.bz2`;
 #!     * the URL of a git repository, ending in `.git`;
@@ -101,18 +101,18 @@ DeclareGlobalFunction("InstallPackage");
 DeclareGlobalFunction("UpdatePackage");
 
 #! @Description
-#!   Attempts to compile an installed package.  Takes one argument <A>name</A>, which
-#!   should be a string specifying the name of a package installed in the user
-#!   &GAP; root (for example, one installed using <Ref Func="InstallPackage" />),
-#!   see <Ref BookName="ref" Sect="GAP Root Directories"/>.
-#!   Compilation is done automatically when a package is installed or updated,
-#!   so in most cases this command is not needed.  However, it may sometimes be
-#!   necessary to recompile some packages if you update or move your &GAP;
-#!   installation.
+#!   Attempts to compile an installed package.  Takes one argument <A>name</A>,
+#!   which should be a string specifying the name of a package installed in the
+#!   user &GAP; root (for example, one installed using <Ref
+#!   Func="InstallPackage" />), see <Ref BookName="ref" Sect="GAP Root
+#!   Directories"/>.  Compilation is done automatically when a package is
+#!   installed or updated, so in most cases this command is not needed.
+#!   However, it may sometimes be necessary to recompile some packages if you
+#!   update or move your &GAP; installation.
 #!
 #!   Compilation is done using the `etc/BuildPackages.sh` script bundled with
-#!   &PackageManager;.  If the specified package does not have a compiled component, this
-#!   function should have no effect.
+#!   &PackageManager;.  If the specified package does not have a compiled
+#!   component, this function should have no effect.
 #!
 #!   Returns <K>true</K> if compilation was successful or if no compilation was
 #!   necessary.  Returns <K>false</K> otherwise.
@@ -129,8 +129,8 @@ DeclareGlobalFunction("UpdatePackage");
 DeclareGlobalFunction("CompilePackage");
 
 #! @Description
-#!   Info class for the <Package>PackageManager</Package> package.  Set this to the following
-#!   levels for different levels of information:
+#!   Info class for the <Package>PackageManager</Package> package.  Set this to
+#!   the following levels for different levels of information:
 #!     * 0 - No messages
 #!     * 1 - Problems only: messages describing what went wrong, with no
 #!           messages if an operation is successful
@@ -163,10 +163,10 @@ SetInfoLevel(InfoPackageManager, 3);
 DeclareGlobalFunction("InstallPackageFromName");
 
 #! @Description
-#!   Attempts to download and install a package from a valid `PackageInfo.g` file.
-#!   The argument <A>info</A> should be either a valid package info record, or a URL
-#!   that points to a valid `PackageInfo.g` file.  Returns <K>true</K> if the
-#!   installation was successful, and <K>false</K> otherwise.
+#!   Attempts to download and install a package from a valid `PackageInfo.g`
+#!   file.  The argument <A>info</A> should be either a valid package info
+#!   record, or a URL that points to a valid `PackageInfo.g` file.  Returns
+#!   <K>true</K> if the installation was successful, and <K>false</K> otherwise.
 #! @Arguments info
 #! @Returns
 #!   <K>true</K> or <K>false</K>
@@ -174,8 +174,8 @@ DeclareGlobalFunction("InstallPackageFromInfo");
 
 #! @Description
 #!   Attempts to download and install a package from an archive located at the
-#!   given URL.  Returns <K>true</K> if the installation was successful, and <K>false</K>
-#!   otherwise.
+#!   given URL.  Returns <K>true</K> if the installation was successful, and
+#!   <K>false</K> otherwise.
 #! @Arguments url
 #! @Returns
 #!   <K>true</K> or <K>false</K>
@@ -183,12 +183,12 @@ DeclareGlobalFunction("InstallPackageFromArchive");
 
 #! @Description
 #!   Attempts to download and install a package from a git repository located at
-#!   the given URL.  Returns <K>false</K> if something went wrong, and <K>true</K>
-#!   otherwise.
+#!   the given URL.  Returns <K>false</K> if something went wrong, and
+#!   <K>true</K> otherwise.
 #!
-#!   If the optional string argument <A>branch</A> is specified, this function will
-#!   install the branch with this name.  Otherwise, the repository's default
-#!   branch will be used.
+#!   If the optional string argument <A>branch</A> is specified, this function
+#!   will install the branch with this name.  Otherwise, the repository's
+#!   default branch will be used.
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell &ndash; to avoid this
@@ -204,9 +204,9 @@ DeclareGlobalFunction("InstallPackageFromGit");
 #!   located at the given URL.  Returns <K>false</K> if something went wrong, and
 #!   <K>true</K> otherwise.
 #!
-#!   If the optional string argument <A>branch</A> is specified, this function will
-#!   install the branch with this name.  Otherwise, the repository's default
-#!   branch will be used.
+#!   If the optional string argument <A>branch</A> is specified, this function
+#!   will install the branch with this name.  Otherwise, the repository's
+#!   default branch will be used.
 #!
 #!   Certain decisions, such as installing newer versions of packages, will be
 #!   confirmed by the user via an interactive shell &ndash; to avoid this
@@ -228,8 +228,8 @@ DeclareGlobalFunction("InstallPackageFromHg");
 #!   Clearly, since these packages are required for &GAP; to run, they must be
 #!   loaded before this function can be executed.  However, this function
 #!   installs the packages in the `~/.gap/pkg` directory, so that they can be
-#!   managed by <Package>PackageManager</Package> in the future, and are available for other &GAP;
-#!   installations on the machine.
+#!   managed by <Package>PackageManager</Package> in the future, and are
+#!   available for other &GAP; installations on the machine.
 #! @Arguments
 #! @Returns
 #!   <K>true</K> or <K>false</K>
@@ -239,14 +239,15 @@ DeclareGlobalFunction("InstallRequiredPackages");
 
 #! @Description
 #!   Attempts to remove an installed package using its name.  The first argument
-#!   <A>name</A> should be a string specifying the name of a package installed in the
-#!   user &GAP; root,
+#!   <A>name</A> should be a string specifying the name of a package installed
+#!   in the user &GAP; root,
 #!   see <Ref BookName="ref" Sect="GAP Root Directories"/>.
 #!   The second argument <A>interactive</A> is optional, and should
 #!   be a boolean specifying whether to confirm certain decisions interactively
 #!   (default value <K>true</K>).
 #!
-#!   Returns <K>true</K> if the removal was successful, and <K>false</K> otherwise.
+#!   Returns <K>true</K> if the removal was successful, and <K>false</K>
+#!   otherwise.
 #!
 #! @BeginExample
 #! gap> RemovePackage("digraphs");
@@ -283,15 +284,17 @@ DeclareGlobalFunction("PKGMAN_InfoWithIndent");
 # Hidden variables
 PKGMAN_CustomPackageDir := "";
 PKGMAN_PackageInfoURLList :=
-  "https://github.com/gap-system/PackageDistro/releases/download/latest/pkglist.csv";
+  Concatenation("https://github.com/gap-system/PackageDistro/",
+                "releases/download/latest/pkglist.csv");
 PKGMAN_ArchiveFormats := [".tar.gz", ".tar.bz2"];
 PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
                          [ "curl", ["--silent", "-L", "--output", "-"] ] ];
 PKGMAN_CurlIntReqVer :=
   First(PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages,
         item -> item[1] = "curlInterface")[2];
-PKGMAN_BuildPackagesScript := Filename(DirectoriesPackageLibrary("PackageManager", "etc"),
-                                       "BuildPackages.sh");
+PKGMAN_BuildPackagesScript :=
+  Filename(DirectoriesPackageLibrary("PackageManager", "etc"),
+           "BuildPackages.sh");
 PKGMAN_Sysinfo := Filename(DirectoriesLibrary(""), "sysinfo.gap");
 PKGMAN_InstallQueue := [];      # Queue of dependencies to install
 PKGMAN_MarkedForInstall := [];  # Packages currently halfway through installing

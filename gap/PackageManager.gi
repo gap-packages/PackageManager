@@ -11,7 +11,7 @@ function()
   local get, urls, line, items;
   # Get PackageInfo URLs from configurable list
   get := PKGMAN_DownloadURL(PKGMAN_PackageInfoURLList);
-  urls := rec(success:= false);
+  urls := rec(success := false);
   if not get.success then
     Info(InfoPackageManager, 1,
          "PackageManager: GetPackageURLs: could not contact server");
@@ -134,7 +134,7 @@ function(name, args...)
     # Does the installed version already satisfy the prescribed version?
     current := info[1];  # Highest-priority installation in user pkg directory
     if version <> true and
-       CompareVersionNumbers( current.Version, version ) then
+        CompareVersionNumbers(current.Version, version) then
       Info(InfoPackageManager, 2, "Version ", current.Version,
            " of package \"", name, "\" is already installed");
       return PKGMAN_CheckPackage(current.InstallationPath);
@@ -161,7 +161,7 @@ function(name, args...)
         # Updating to the newest version will satisfy the version condition.
         return UpdatePackage(name, interactive);
       else
-        Info(InfoPackageManager, 1, "Version \"", version, "\" of package \"", 
+        Info(InfoPackageManager, 1, "Version \"", version, "\" of package \"",
              name, "\" cannot be satisfied");
         Info(InfoPackageManager, 2,
              "The newest version available is ", newest.Version);
@@ -207,8 +207,8 @@ function(info, version...)
 
   # Check the version condition.
   if Length(version) = 1 and IsString(version[1])
-     and not CompareVersionNumbers(info.Version, version[1]) then
-    Info(InfoPackageManager, 1, "Version \"", version[1], "\" of package \"", 
+      and not CompareVersionNumbers(info.Version, version[1]) then
+    Info(InfoPackageManager, 1, "Version \"", version[1], "\" of package \"",
          info.PackageName, "\" cannot be satisfied");
     Info(InfoPackageManager, 2,
          "The newest version available is ", info.Version);
@@ -845,7 +845,8 @@ function(dir)
   fi;
   html := Filename(Directory(dir), html);
   # Check for html before full validate
-  if not (IsReadableFile(html) and ValidatePackageInfo(info.InstallationPath)) then
+  if not (IsReadableFile(html)
+          and ValidatePackageInfo(info.InstallationPath)) then
     PKGMAN_MakeDoc(dir);
   fi;
 
@@ -901,7 +902,8 @@ function(dir)
   # Note: this is mainly for installing Semigroups from GitHub
   prerequisites := Filename(Directory(dir), "prerequisites.sh");
   if IsReadableFile(prerequisites) then
-    Info(InfoPackageManager, 3, "Running prerequisites.sh for ", info.PackageName, "...");
+    Info(InfoPackageManager, 3,
+         "Running prerequisites.sh for ", info.PackageName, "...");
     exec := PKGMAN_Exec(dir, prerequisites);
   fi;
 
@@ -925,10 +927,12 @@ function(dir)
   Info(InfoPackageManager, 3, "Running compilation script on ", dir, " ...");
   exec := PKGMAN_Exec(pkg_dir, PKGMAN_BuildPackagesScript, root, dir);
   if exec = fail or
-     exec.code <> 0 or
-     PositionSublist(exec.output, "Failed to build") <> fail then
+      exec.code <> 0 or
+      PositionSublist(exec.output, "Failed to build") <> fail then
     Info(InfoPackageManager, 1,
-         "Compilation failed for package '", info.PackageName, "' (package may still be usable)");
+         "Compilation failed for package '",
+         info.PackageName,
+         "' (package may still be usable)");
     Info(InfoPackageManager, 2, exec.output);
     return false;
   else
@@ -993,7 +997,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_Exec,
 function(dir, cmd, args...)
-  local sh, fullcmd, instream, out, outstream, code, logfile;
+  local sh, fullcmd, instream, out, outstream, code;
 
   # Check shell
   sh := Filename(DirectoriesSystemPrograms(), "sh");
