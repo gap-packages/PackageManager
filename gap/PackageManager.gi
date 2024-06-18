@@ -970,13 +970,13 @@ function(dir)
          "Building documentation (using makedoc.g)...");
 
     # Run makedoc.g, in the correct directory, without quitting
-    last_dir := DirectoryCurrent();
-    GAPInfo.DirectoryCurrent := Directory(dir);
+    last_dir := Filename(DirectoryCurrent(), "");
+    ChangeDirectoryCurrent(dir);
     str := StringFile(makedoc_g);
     str := ReplacedString(str, "QUIT;", "");  # TODO: is there a better way?
     str := ReplacedString(str, "quit;", "");
     Read(InputTextString(str));
-    GAPInfo.DirectoryCurrent := last_dir;
+    ChangeDirectoryCurrent(last_dir);
 
   elif IsReadableFile(doc_make_doc) then
     Info(InfoPackageManager, 3,
