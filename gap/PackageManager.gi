@@ -67,9 +67,9 @@ function(string, args...)
   if ForAny(PKGMAN_ArchiveFormats, ext -> EndsWith(string, ext)) then
     return InstallPackageFromArchive(string);
   elif EndsWith(string, ".git") then
-    return InstallPackageFromGit(string);
+    return InstallPackageFromGit(string, interactive);
   elif EndsWith(string, ".hg") then
-    return InstallPackageFromHg(string);
+    return InstallPackageFromHg(string, interactive);
   elif EndsWith(string, "PackageInfo.g") then
     return InstallPackageFromInfo(string);
   fi;
