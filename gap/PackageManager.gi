@@ -6,6 +6,18 @@
 
 BindGlobal("PKGMAN_WHITESPACE", MakeImmutable(" \n\t\r"));
 
+BindGlobal("PKGMAN_PathSystemProgram", function(name)
+  local dir, path;
+
+  for dir in DirectoriesSystemPrograms() do
+    path:= Filename(dir, name);
+    if IsExecutableFile(path) then
+      return path;
+    fi;
+  od;
+  return fail;
+end);
+
 InstallGlobalFunction(GetPackageURLs,
 function()
   local get, urls, line, items;
@@ -1000,7 +1012,7 @@ function(dir, cmd, args...)
   local sh, fullcmd, instream, out, outstream, code;
 
   # Check shell
-  sh := Filename(DirectoriesSystemPrograms(), "sh");
+  sh := PKGMAN_PathSystemProgram("sh");
   if sh = fail then
     Info(InfoPackageManager, 1, "No shell available called \"sh\"");
     return fail;
@@ -1020,7 +1032,7 @@ function(dir, cmd, args...)
     fullcmd := cmd;
   else
     # we must look up the path
-    fullcmd := Filename(DirectoriesSystemPrograms(), cmd);
+    fullcmd := PKGMAN_PathSystemProgram(cmd);
     if fullcmd = fail or not IsExecutableFile(fullcmd) then
       Info(InfoPackageManager, 4, "Command ", cmd, " not found");
       return fail;
@@ -1033,7 +1045,7 @@ function(dir, cmd, args...)
   outstream := OutputTextString(out, true);
 
   # Execute the command (capture both stdout and stderr)
-  sh := Filename(DirectoriesSystemPrograms(), "sh");
+  sh := PKGMAN_PathSystemProgram("sh");
   args := JoinStringsWithSeparator(args, " ");
   fullcmd := Concatenation(fullcmd, " ", args, " 2>&1");
   code := Process(dir, sh, instream, outstream, ["-c", fullcmd]);
