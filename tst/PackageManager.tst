@@ -460,14 +460,6 @@ gap> PKGMAN_PackageInfoURLList := urllist;;
 
 # Fail to build doc with doc/make_doc (assumes GAP is located at ../../..)
 gap> InstallPackage("https://github.com/gap-packages/grape.git");
-#E  component `ArchiveURLSubset' must be bound to a list of strings denoting r\
-elative paths to readable files or directories
-#E  component `HTMLStart' must be bound to a string denoting a relative path t\
-o a readable file
-#E  component `PDFFile' must be bound to a string denoting a relative path to \
-a readable file
-#E  component `SixFile' must be bound to a string denoting a relative path to \
-a readable file
 #I  PackageInfo.g validation failed
 false
 

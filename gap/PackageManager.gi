@@ -846,12 +846,13 @@ function(dir)
   html := Filename(Directory(dir), html);
   # Check for html before full validate
   if not (IsReadableFile(html)
-          and ValidatePackageInfo(info.InstallationPath)) then
+          and ValidatePackageInfo(info.InstallationPath
+                                  : verbose := false)) then
     PKGMAN_MakeDoc(dir);
   fi;
 
   # Ensure valid PackageInfo before proceeding
-  if not ValidatePackageInfo(info.InstallationPath) then
+  if not ValidatePackageInfo(info.InstallationPath : verbose := false) then
     Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
     Info(InfoPackageManager, 2, "(in ", dir, ")");
     if IsPackageLoaded("gapdoc") then
@@ -1237,7 +1238,7 @@ function(url)
   info := PKGMAN_GetPackageInfo(InputTextString(get.result));
 
   # Read the information we want from it
-  if not ValidatePackageInfo(info) then
+  if not ValidatePackageInfo(info : verbose := false) then
     Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
     return fail;
   fi;
