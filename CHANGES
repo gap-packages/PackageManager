@@ -1,5 +1,14 @@
 This file describes changes in the PackageManager package.
 
+1.4.4 (2024-07-29)
+  - Fix code changing the current directory (fixes an issue when installing
+    the `recog` package from directly its source code repository)
+  - Allow switching off interactive mode in `InstallPackage` also when
+    installing from a source code repository
+  - Fix weird issues on systems with `.` in the `PATH` environment variable
+    and the current directory contains a file with a name like `git` matching
+    that of a program PackageManager needs to execute.
+
 1.4.3 (2024-01-12)
   - Janitorial changes (adjust tests to pass with package validation
     in GAP 4.13 making the `License` field mandatory)
