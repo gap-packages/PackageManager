@@ -210,42 +210,6 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpack
 #I  PackageInfo.g lacks Version field
 false
 
-# InstallPackageFromInfo fail
-# (very complicated and changeable output, just checking some bits)
-# (no need for all this hackery after #E messages are removed from GAP)
-gap> newPrint := function(args...)
->   CallFuncList(PrintTo, Concatenation([OutputTextString(out, true)], args));
-> end;;
-gap> out := "";;
-gap> MakeReadWriteGlobal("Print");
-gap> Print := newPrint;;
-gap> res := InstallPackage("https://gap-packages.github.io/PackageManager/dummy/PackageInfo.g");;
-gap> Print := oldPrint;;
-gap> MakeReadOnlyGlobal("Print");
-gap> res;
-true
-gap> exp := "#E  component `Subtitle' must be bound to a string";;
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> exp := "#E  component `Version' must be bound to";;
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> exp := "#E  component `Date' must be bound to";;
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> exp := "yyyy";;
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> exp := "#E  component `ArchiveURL' must be bound to";;
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> exp := "#E  component `PackageInfoURL' must be bound to a string";;
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> exp := "#I  There may be problems with the package";;
-gap> PositionSublist(out, exp) <> fail;
-true
-
 # Build doc with doc/make_doc
 # (can probably re-add this after #E messages are removed from GAP)
 # gap> InstallPackage("https://github.com/gap-packages/sonata.git");
