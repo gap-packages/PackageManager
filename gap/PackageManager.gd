@@ -13,7 +13,6 @@
 #!     * the name of a package;
 #!     * the URL of a package archive, ending in `.tar.gz` or `.tar.bz2`;
 #!     * the URL of a git repository, ending in `.git`;
-#!     * the URL of a mercurial repository;
 #!     * the URL of a valid `PackageInfo.g` file.
 #!
 #!   The package will then be downloaded and installed, along with any
@@ -76,7 +75,7 @@ DeclareGlobalFunction("InstallPackage");
 #!
 #!   If the package was installed via archive, the new version will be installed
 #!   in a new directory, and the old version will be deleted.  If installed via
-#!   git or mercurial, it will be updated using `git pull` or `hg pull -u`, so
+#!   git, it will be updated using `git pull`, so
 #!   long as there are no outstanding changes.  If no newer version is
 #!   available, no changes will be made.
 #!
@@ -199,22 +198,7 @@ DeclareGlobalFunction("InstallPackageFromArchive");
 #!   <K>true</K> or <K>false</K>
 DeclareGlobalFunction("InstallPackageFromGit");
 
-#! @Description
-#!   Attempts to download and install a package from a Mercurial repository
-#!   located at the given URL.  Returns <K>false</K> if something went wrong, and
-#!   <K>true</K> otherwise.
-#!
-#!   If the optional string argument <A>branch</A> is specified, this function
-#!   will install the branch with this name.  Otherwise, the repository's
-#!   default branch will be used.
-#!
-#!   Certain decisions, such as installing newer versions of packages, will be
-#!   confirmed by the user via an interactive shell &ndash; to avoid this
-#!   interactivity and use sane defaults instead, the optional second argument
-#!   <A>interactive</A> can be set to <K>false</K>.
-#! @Arguments url[, interactive][, branch]
-#! @Returns
-#!   <K>true</K> or <K>false</K>
+# DEPRECATED
 DeclareGlobalFunction("InstallPackageFromHg");
 
 #! @Description

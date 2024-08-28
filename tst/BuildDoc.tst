@@ -55,56 +55,6 @@ gap> InstallPackageFromGit("https://github.com/a/b.git", true, "master", "lol");
 Error, PackageManager: InstallPackageFromGit:
 requires 1, 2 or 3 arguments (not 4)
 
-# Install a package from a Mercurial repository not ending in .hg
-gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()),
->              f -> StartsWith(f, "forms")) then
->   RemovePackage("forms", false);
-> fi;
-gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", true);
-true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "forms"));
-true
-gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", false);
-#I  Package already installed at target location
-false
-gap> RemovePackage("forms", false);
-true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "forms"));
-false
-gap> InstallPackageFromHg("https://bitbucket.org/a/b", false, 3);
-Error, PackageManager: InstallPackageFromHg:
-<branch> should be a string
-gap> InstallPackageFromHg("https://bitbucket.org/a/b", 3);
-Error, PackageManager: InstallPackageFromHg:
-2nd argument should be true, false, or a string
-gap> InstallPackageFromHg("https://bitbucket.org/a/b", true, "master", "lol");
-Error, PackageManager: InstallPackageFromHg:
-requires 1, 2 or 3 arguments (not 4)
-
-# Install a package from a Mercurial repository by branch
-gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", false, "default");
-true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "forms"));
-true
-gap> RemovePackage("forms", false);
-true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "forms"));
-false
-gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", "default");
-true
-gap> RemovePackage("forms", false);
-true
-gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", false, "qfnoiq3eg");
-#I  Cloning unsuccessful
-false
-gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms", "default", true);
-Error, PackageManager: InstallPackageFromHg:
-<interactive> should be true or false
-
 # Interactive tests (via hacking in/out streams)
 gap> uuid_0_5 := Concatenation("https://github.com/gap-packages/uuid/releases/",
 >                              "download/v0.5/uuid-0.5.tar.gz");;
@@ -226,21 +176,6 @@ gap> exp := Concatenation("Package \"uuid\" already installed via git. ",
 gap> PositionSublist(out, exp) <> fail;
 true
 gap> RemovePackage("uuid", false);
-true
-gap> InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms");
-true
-gap> InputTextUser := {} -> InputTextString("y\n");;
-gap> out := "";;
-gap> Print := newPrint;;
-gap> res := InstallPackageFromHg("http://hg.code.sf.net/p/pkgmanforms/forms");;
-gap> Print := oldPrint;;
-gap> res;
-true
-gap> exp := Concatenation("Package \"forms\" already installed via mercurial. ",
->                         "Update it? [y/N] y\n");;
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> RemovePackage("forms", false);
 true
 gap> InputTextUser := f_in;;
 gap> MakeReadOnlyGlobal("InputTextUser");
