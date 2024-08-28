@@ -36,6 +36,9 @@ function()
       continue;
     elif Length(items) = 1 or Length(items) > 3
          or (Length(items) = 3 and items[2] <> "MOVE") then
+      if Length(line) > 74 then  # don't show too much
+        line := Concatenation(line{[1..71]}, "...");
+      fi;
       Info(InfoPackageManager, 1,
            "PackageManager: GetPackageURLs: bad line:\n#I  ", line);
       return urls;

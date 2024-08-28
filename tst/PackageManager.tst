@@ -167,7 +167,7 @@ rec( success := false )
 gap> PKGMAN_PackageInfoURLList := "https://www.gap-system.org";;
 gap> GetPackageURLs();
 #I  PackageManager: GetPackageURLs: bad line:
-#I  <?xml version="1.0" encoding="utf-8"?>
+#I  <!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta...
 rec( success := false )
 gap> PKGMAN_PackageInfoURLList := default_url;;
 
