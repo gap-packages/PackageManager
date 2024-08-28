@@ -282,3 +282,9 @@ PKGMAN_BuildPackagesScript :=
 PKGMAN_Sysinfo := Filename(DirectoriesLibrary(""), "sysinfo.gap");
 PKGMAN_InstallQueue := [];      # Queue of dependencies to install
 PKGMAN_MarkedForInstall := [];  # Packages currently halfway through installing
+
+# PackageInfo must at least contain the following to pass:
+PKGMAN_RequiredPackageInfoFields := ["PackageName",
+                                     "PackageDoc",
+                                     "Version",
+                                     "Date"];

@@ -212,7 +212,7 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/twodirs
 #I  Archive should contain 1 directory (not 2)
 false
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage.tar.gz");
-#I  PackageInfo.g validation failed
+#I  PackageInfo.g lacks PackageName field
 false
 
 # Fail to extract due to permissions
@@ -252,7 +252,7 @@ false
 gap> FileString(Filename(Directory(baddir), "PackageInfo.g"),
 >               "SetPackageInfo(rec());");;
 gap> PKGMAN_CheckPackage(baddir);
-#I  PackageInfo.g validation failed
+#I  PackageInfo.g lacks PackageName field
 false
 gap> RemoveDirectoryRecursively(baddir);;
 
@@ -441,7 +441,7 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-to
 false
 gap> PKGMAN_PackageInfoURLList := urllist;;
 
-# Fail to build doc with doc/make_doc (assumes GAP is located at ../../..)
+# Fail to build doc but completes installation (assumes GAP is located at ../../..)
 gap> InstallPackage("https://github.com/gap-packages/grape.git");
 #E  component `ArchiveURLSubset' must be bound to a list of strings denoting r\
 elative paths to readable files or directories
@@ -452,7 +452,8 @@ a readable file
 #E  component `SixFile' must be bound to a string denoting a relative path to \
 a readable file
 #I  PackageInfo.g validation failed
-false
+#I  There may be problems with the package
+true
 
 # FINAL TEST
 # (keep this at the end of the file)

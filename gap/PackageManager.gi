@@ -837,7 +837,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_CheckPackage,
 function(dir)
-  local info, html;
+  local info, fname, html;
 
   # Get PackageInfo
   info := PKGMAN_GetPackageInfo(dir);
@@ -846,11 +846,13 @@ function(dir)
   fi;
 
   # Simple checks
-  if not (IsBound(info.PackageName) and IsBound(info.PackageDoc)) then
-    Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
-    Info(InfoPackageManager, 2, "(in ", dir, ")");
-    return false;
-  fi;
+  for fname in PKGMAN_RequiredPackageInfoFields do
+    if not IsBound(info.(fname)) then
+      Info(InfoPackageManager, 1, "PackageInfo.g lacks ", fname, " field");
+      Info(InfoPackageManager, 2, "(in ", dir, ")");
+      return false;
+    fi;
+  od;
 
   # Make doc if needed
   if IsRecord(info.PackageDoc) then
@@ -859,21 +861,15 @@ function(dir)
     html := info.PackageDoc[1].HTMLStart;
   fi;
   html := Filename(Directory(dir), html);
-  # Check for html before full validate
-  if not (IsReadableFile(html)
-          and ValidatePackageInfo(info.InstallationPath)) then
+  if not (IsReadableFile(html)) then
     PKGMAN_MakeDoc(dir);
   fi;
 
-  # Ensure valid PackageInfo before proceeding
+  # Validate PackageInfo before proceeding
   if not ValidatePackageInfo(info.InstallationPath) then
     Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
     Info(InfoPackageManager, 2, "(in ", dir, ")");
-    if IsPackageLoaded("gapdoc") then
-      return false;
-    else
-      Info(InfoPackageManager, 1, "Proceeding anyway, since GAPDoc not loaded");
-    fi;
+    Info(InfoPackageManager, 1, "There may be problems with the package");
   fi;
 
   # Compile if needed
@@ -1252,11 +1248,12 @@ function(url)
   info := PKGMAN_GetPackageInfo(InputTextString(get.result));
 
   # Read the information we want from it
-  if not ValidatePackageInfo(info) then
-    Info(InfoPackageManager, 1, "Invalid PackageInfo.g file");
-    return fail;
+  if ValidatePackageInfo(info) then
+    Info(InfoPackageManager, 4, "PackageInfo.g validated successfully");
+  else
+    Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
+    Info(InfoPackageManager, 1, "There may be problems with the package");
   fi;
-  Info(InfoPackageManager, 4, "PackageInfo.g validated successfully");
   return ShallowCopy(info);
 end);
 
