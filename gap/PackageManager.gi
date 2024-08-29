@@ -1047,6 +1047,7 @@ function(dir, cmd, args...)
   sh := PKGMAN_PathSystemProgram("sh");
   args := JoinStringsWithSeparator(args, " ");
   fullcmd := Concatenation(fullcmd, " ", args, " 2>&1");
+  ChangeDirectoryCurrent(".");  # avoids temporary dir problems in stable-4.12
   code := Process(dir, sh, instream, outstream, ["-c", fullcmd]);
   CloseStream(outstream);
 
