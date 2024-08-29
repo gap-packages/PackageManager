@@ -100,7 +100,7 @@ AvailabilityTest := function()
 # This is a limited test suite that doesn't try to build docs,
 # since the GAP Docker images don't have texlive installed.
 # For a full test suite, run tst/testall.g (as Travis does).
-TestFile := "tst/test-without-texlive.g",
+TestFile := "tst/testall.g",
 
 #Keywords := [ "TODO" ],
 
