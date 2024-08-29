@@ -18,7 +18,12 @@ if not IsBound(PKGMAN_ExcludeTestFiles) then
 fi;
 
 # For old GAP versions, exclude some cutting edge tests
-if not CompareVersionNumbers(GAPInfo.Version, ">=4.14") then
+version := GAPInfo.Version;
+if EndsWith(version, "dev") then
+  # old dev versions are still old versions
+  version := version{[1 .. Length(version) - 3]};
+fi;
+if not CompareVersionNumbers(version, ">=4.14") then
   Add(PKGMAN_ExcludeTestFiles, "RecentGapOnly.tst");
 fi;
 
