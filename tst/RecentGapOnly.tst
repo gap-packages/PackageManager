@@ -1,3 +1,9 @@
+# Get AutoDoc (for testing)
+gap> InstallPackage("autodoc");
+true
+gap> LoadPackage("autodoc", false);
+true
+
 # Fail to build doc but completes installation (assumes GAP is located at ../../..)
 # Prints lots of #E messages in GAP 4.13 and earlier
 gap> InstallPackage("https://github.com/gap-packages/grape.git");
