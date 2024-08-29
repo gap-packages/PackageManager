@@ -59,14 +59,10 @@ requires 1, 2 or 3 arguments (not 4)
 gap> uuid_0_5 := Concatenation("https://github.com/gap-packages/uuid/releases/",
 >                              "download/v0.5/uuid-0.5.tar.gz");;
 gap> InstallPackage(uuid_0_5);
-#E  component `License' must be bound to a nonempty string containing an SPDX \
-ID
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
 true
 gap> InstallPackage("uuid", false);  # older version already installed
-#E  component `License' must be bound to a nonempty string containing an SPDX \
-ID
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
 true
@@ -110,8 +106,6 @@ true
 gap> RemovePackage("uuid", false);
 true
 gap> InstallPackage(uuid_0_5);
-#E  component `License' must be bound to a nonempty string containing an SPDX \
-ID
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
 true
@@ -159,8 +153,6 @@ true
 gap> RemovePackage("uuid", false);
 true
 gap> InstallPackage(uuid_0_5);
-#E  component `License' must be bound to a nonempty string containing an SPDX \
-ID
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
 true
@@ -209,11 +201,6 @@ false
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpackage2.tar.gz");
 #I  PackageInfo.g lacks Version field
 false
-
-# Build doc with doc/make_doc
-# (can probably re-add this after #E messages are removed from GAP)
-# gap> InstallPackage("https://github.com/gap-packages/sonata.git");
-# true
 
 # The big one: install semigroups, and mess with its dependencies
 # TEMP: removed since semigroups now takes around 10 minutes to compile

@@ -866,7 +866,7 @@ function(dir)
   fi;
 
   # Validate PackageInfo before proceeding
-  if not ValidatePackageInfo(info.InstallationPath) then
+  if not PKGMAN_ValidatePackageInfo(info.InstallationPath) then
     Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
     Info(InfoPackageManager, 2, "(in ", dir, ")");
     Info(InfoPackageManager, 1, "There may be problems with the package");
@@ -1252,13 +1252,21 @@ function(url)
   info := PKGMAN_GetPackageInfo(InputTextString(get.result));
 
   # Read the information we want from it
-  if ValidatePackageInfo(info) then
+  if PKGMAN_ValidatePackageInfo(info) then
     Info(InfoPackageManager, 4, "PackageInfo.g validated successfully");
   else
     Info(InfoPackageManager, 1, "PackageInfo.g validation failed");
     Info(InfoPackageManager, 1, "There may be problems with the package");
   fi;
   return ShallowCopy(info);
+end);
+
+InstallGlobalFunction(PKGMAN_ValidatePackageInfo,
+function(info)
+  local quiet;
+  # Suppress output unless info level is maximum
+  quiet := InfoLevel(InfoPackageManager) < 4;
+  return ValidatePackageInfo(info : quiet := quiet);
 end);
 
 InstallGlobalFunction(PKGMAN_InfoWithIndent,

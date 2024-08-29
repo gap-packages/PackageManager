@@ -137,7 +137,7 @@ DeclareGlobalFunction("CompilePackage");
 #!           versions and installation directories
 #!     * 3 - Progress: also shows step-by-step progress of operations
 #!     * 4 - All: includes extra information such as whether curlInterface is
-#!           being used
+#!           being used, and package info validation
 #!
 #!   Set this using, for example `SetInfoLevel(InfoPackageManager, 1)`.
 #!   Default value is 3.
@@ -263,6 +263,7 @@ DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");
 DeclareGlobalFunction("PKGMAN_DownloadURL");
 DeclareGlobalFunction("PKGMAN_RemoveDir");
 DeclareGlobalFunction("PKGMAN_DownloadPackageInfo");
+DeclareGlobalFunction("PKGMAN_ValidatePackageInfo");
 DeclareGlobalFunction("PKGMAN_InfoWithIndent");
 
 # Hidden variables
