@@ -441,12 +441,6 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-to
 false
 gap> PKGMAN_PackageInfoURLList := urllist;;
 
-# Fail to build doc but completes installation (assumes GAP is located at ../../..)
-gap> InstallPackage("https://github.com/gap-packages/grape.git");
-#I  PackageInfo.g validation failed
-#I  There may be problems with the package
-true
-
 # FINAL TEST
 # (keep this at the end of the file)
 gap> PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg/"));

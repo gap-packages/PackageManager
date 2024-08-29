@@ -17,6 +17,11 @@ if not IsBound(PKGMAN_ExcludeTestFiles) then
   PKGMAN_ExcludeTestFiles := [];
 fi;
 
+# For old GAP versions, exclude some cutting edge tests
+if not CompareVersionNumbers(GAPInfo.Version, ">=4.14") then
+  Add(PKGMAN_ExcludeTestFiles, "RecentGapOnly.tst");
+fi;
+
 # Run tests
 TestDirectory(DirectoriesPackageLibrary("PackageManager", "tst"),
               rec(exitGAP := true,
