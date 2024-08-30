@@ -22,18 +22,25 @@ at <URL>https://github.com/gap-packages/PackageManager/issues</URL>.
 
 @Section A quick example
 
+<Package>PackageManager</Package> is distributed with GAP, so it should already
+be available on your system.  To load the package, call:
+
+@BeginExample
+LoadPackage("PackageManager");
+@EndExample
+
+Note that you'll need to do this in each session when you want to use the package manager.
+
 To install the latest deposited version of the <Package>Digraphs</Package>
 package, use the following:
 
 @BeginExample
-LoadPackage("PackageManager");
 InstallPackage("digraphs");
 @EndExample
 
 To uninstall it later, use the following:
 
 @BeginExample
-LoadPackage("PackageManager");
 RemovePackage("digraphs");
 @EndExample
 
@@ -41,7 +48,6 @@ RemovePackage("digraphs");
 latest version of the <URL Text="curlInterface package from GitHub">https://github.com/gap-packages/curlInterface.git</URL>, use the following:
 
 @BeginExample
-LoadPackage("PackageManager");
 InstallPackage("https://github.com/gap-packages/curlInterface.git");
 @EndExample
 
