@@ -5,16 +5,6 @@ true
 gap> IsEmpty(PackageInfo("io"));
 false
 
-# Try to compile IO (which should be installed but not in the user pkg dir)
-gap> CompilePackage("io");
-#I  Package "io" not installed in user package directory
-false
-
-# Try to compile something that's not there at all
-gap> CompilePackage("madeUpPackage");
-#I  Package "madeuppackage" not installed in user package directory
-false
-
 # UpdatePackage for non-user packages
 gap> UpdatePackage("GAPDoc", false);
 #I  Package "gapdoc" not installed in user package directory
@@ -119,12 +109,6 @@ gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(LowercaseString(f), "example"));
 true
 
-# Check package can be recompiled and removed
-gap> CompilePackage("example");
-true
-gap> RemovePackage("example", false);
-true
-
 # RemovePackage failure
 gap> RemovePackage(3);
 Error, PackageManager: RemovePackage: <name> must be a string
@@ -146,12 +130,6 @@ gap> UpdatePackage("io", "yes");
 Error, PackageManager: UpdatePackage: <interactive> must be true or false
 gap> UpdatePackage("io", true, "master", "hello", Group(()), fail, []);
 Error, PackageManager: UpdatePackage: requires 1 or 2 arguments (not 7)
-
-# CompilePackage bad input
-gap> CompilePackage(3);
-Error, PackageManager: CompilePackage: <name> must be a string
-gap> CompilePackage(true);
-Error, PackageManager: CompilePackage: <name> must be a string
 
 # Installing multiple versions
 gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6.4/grpconst-2.6.4.tar.gz");
@@ -280,49 +258,6 @@ fail
 gap> PKGMAN_InsertPackageDirectory("/home");  # not ending in pkg
 fail
 
-# PKGMAN_CompileDir error: no shell
-gap> InstallPackage("example");
-true
-gap> InstallPackage("example");  # latest version already installed
-true
-gap> progs := GAPInfo.DirectoriesPrograms;;
-gap> GAPInfo.DirectoriesPrograms := [];;  # terrible vandalism
-gap> dir := PackageInfo("example")[1].InstallationPath;;
-gap> PKGMAN_CompileDir(dir);
-#I  No shell available called "sh"
-#I  Compilation failed for package 'Example' (package may still be usable)
-false
-gap> GAPInfo.DirectoriesPrograms := progs;;
-
-# PKGMAN_CompileDir error: no etc/BuildPackages.sh
-gap> InstallPackage("example", false);  # latest version already installed
-true
-gap> sysinfo_scr := PKGMAN_Sysinfo;;
-gap> PKGMAN_Sysinfo := fail;;
-gap> dir := PackageInfo("example")[1].InstallationPath;;
-gap> PKGMAN_CompileDir(dir);
-#I  No sysinfo.gap found
-false
-gap> PKGMAN_Sysinfo := sysinfo_scr;;
-
-# PKGMAN_CompileDir error: missing source
-gap> InstallPackage("example");  # latest version already installed
-true
-gap> dir := PackageInfo("example")[1].InstallationPath;;
-gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
-true
-gap> PKGMAN_CompileDir(dir);
-#I  Compilation failed for package 'Example' (package may still be usable)
-false
-
-# Missing BuildPackages script
-gap> temp := PKGMAN_BuildPackagesScript;;
-gap> PKGMAN_BuildPackagesScript := fail;;
-gap> CompilePackage("example");
-#I  Compilation script not found
-false
-gap> PKGMAN_BuildPackagesScript := temp;;
-
 # Missing curlInterface: use wget instead
 gap> ver := PKGMAN_CurlIntReqVer;;
 gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
@@ -358,10 +293,6 @@ gap> PKGMAN_CurlIntReqVer := ver;;
 gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.5"));
 true
 gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.9.5/Toric-1.9.5.tar.gz");
-true
-
-# Compile already compiled
-gap> CompilePackage("toric");
 true
 
 # curl failure

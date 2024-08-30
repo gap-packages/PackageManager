@@ -52,3 +52,4 @@ InstallPackage("https://github.com/gap-packages/curlInterface.git");
 @EndExample
 
 @Chapter Commands
+@Chapter Compilation

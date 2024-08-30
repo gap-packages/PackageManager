@@ -106,34 +106,6 @@ DeclareGlobalFunction("InstallPackage");
 DeclareGlobalFunction("UpdatePackage");
 
 #! @Description
-#!   Attempts to compile an installed package.  Takes one argument <A>name</A>,
-#!   which should be a string specifying the name of a package installed in the
-#!   user &GAP; root (for example, one installed using <Ref
-#!   Func="InstallPackage" />), see <Ref BookName="ref" Sect="GAP Root
-#!   Directories"/>.  Compilation is done automatically when a package is
-#!   installed or updated, so in most cases this command is not needed.
-#!   However, it may sometimes be necessary to recompile some packages if you
-#!   update or move your &GAP; installation.
-#!
-#!   Compilation is done using the `etc/BuildPackages.sh` script bundled with
-#!   &PackageManager;.  If the specified package does not have a compiled
-#!   component, this function should have no effect.
-#!
-#!   Returns <K>true</K> if compilation was successful or if no compilation was
-#!   necessary.  Returns <K>false</K> otherwise.
-#!
-#! @BeginExample
-#! gap> CompilePackage("orb");
-#! #I  Running compilation script on /home/user/.gap/pkg/orb-4.8.3 ...
-#! true
-#! @EndExample
-#!
-#! @Arguments name
-#! @Returns
-#!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("CompilePackage");
-
-#! @Description
 #!   Info class for the <Package>PackageManager</Package> package.  Set this to
 #!   the following levels for different levels of information:
 #!     * 0 - No messages
@@ -255,7 +227,6 @@ DeclareGlobalFunction("GetPackageURLs");
 # Hidden functions
 DeclareGlobalFunction("PKGMAN_InstallDependencies");
 DeclareGlobalFunction("PKGMAN_CheckPackage");
-DeclareGlobalFunction("PKGMAN_CompileDir");
 DeclareGlobalFunction("PKGMAN_MakeDoc");
 DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_NameOfGitRepo");
@@ -283,9 +254,6 @@ PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
 PKGMAN_CurlIntReqVer :=
   First(PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages,
         item -> item[1] = "curlInterface")[2];
-PKGMAN_BuildPackagesScript :=
-  Filename(DirectoriesPackageLibrary("PackageManager", "etc"),
-           "BuildPackages.sh");
 PKGMAN_Sysinfo := Filename(DirectoriesLibrary(""), "sysinfo.gap");
 PKGMAN_InstallQueue := [];      # Queue of dependencies to install
 PKGMAN_MarkedForInstall := [];  # Packages currently halfway through installing
