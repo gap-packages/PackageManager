@@ -90,7 +90,7 @@ Dependencies := rec(
 
 Extensions := [
     rec( needed := [ [ "JuliaInterface", ">= 0.9.3" ] ],
-         filename := "gap/Download.g" ),
+         filename := "gap/Julia.g" ),
 ],
 
 AvailabilityTest := function()
