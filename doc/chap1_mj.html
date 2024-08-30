@@ -54,11 +54,19 @@
 
 <h4>1.3 <span class="Heading">A quick example</span></h4>
 
-<p>To install the latest deposited version of the <strong class="pkg">Digraphs</strong> package, use the following:</p>
+<p><strong class="pkg">PackageManager</strong> is distributed with GAP, so it should already be available on your system. To load the package, call:</p>
 
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">LoadPackage("PackageManager");</span>
+</pre></div>
+
+<p>Note that you'll need to do this in each session when you want to use the package manager.</p>
+
+<p>To install the latest deposited version of the <strong class="pkg">Digraphs</strong> package, use the following:</p>
+
+
+<div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InstallPackage("digraphs");</span>
 </pre></div>
 
@@ -66,7 +74,6 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">LoadPackage("PackageManager");</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RemovePackage("digraphs");</span>
 </pre></div>
 
@@ -74,7 +81,6 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">LoadPackage("PackageManager");</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InstallPackage("https://github.com/gap-packages/curlInterface.git");</span>
 </pre></div>
 

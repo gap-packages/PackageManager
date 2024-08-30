@@ -36,8 +36,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X843B648B855F9C82">2.1-6 InstallPackageFromInfo</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X7CF49C797835BD49">2.1-7 InstallPackageFromArchive</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X869C71188722CFAD">2.1-8 InstallPackageFromGit</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X7A1F34D27932BA01">2.1-9 InstallPackageFromHg</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X7B70DED5806B72A7">2.1-10 InstallRequiredPackages</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X7B70DED5806B72A7">2.1-9 InstallRequiredPackages</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap2_mj.html#X7AD97D497EAA18D2">2.2 <span class="Heading">Removing packages</span></a>
 </span>
@@ -72,9 +71,6 @@
 <li><p>the URL of a git repository, ending in <code class="code">.git</code>;</p>
 
 </li>
-<li><p>the URL of a mercurial repository;</p>
-
-</li>
 <li><p>the URL of a valid <code class="code">PackageInfo.g</code> file.</p>
 
 </li>
@@ -88,6 +84,8 @@
 <p>To see more information about this process while it is ongoing, see <code class="func">InfoPackageManager</code> (<a href="chap2_mj.html#X847EF83681889E47"><span class="RefLink">2.1-4</span></a>).</p>
 
 <p>If <var class="Arg">string</var> is the name of the package in question then one can specify a required package version via a string as value of the optional argument <var class="Arg">version</var>, which is interpreted as described in Section <a href="https://docs.gap-system.org/doc/ref/chap76_mj.html#X8180BCDA82587F41"><span class="RefLink">Reference: Version Numbers</span></a>. In particular, if <var class="Arg">version</var> starts with <code class="code">=</code> then the function will try to install exactly the given version, and otherwise it will try to install a version that is not smaller than the given one. If an installed version satisfies the condition on the version then <code class="keyw">true</code> is returned without an attempt to upgrade the package. If the package is not yet installed or if no installed version satisfies the version condition then an upgrade is tried only if the package version that is listed on the <strong class="pkg">GAP</strong> webpages satisfies the condition. (The function will not update a dev version of the package if a version number is prescribed; otherwise it could happen that one updates the installation and afterwards notices that the version condition is still not satisfied.)</p>
+
+<p>If installation fails, then any new directories that were created will be removed. To override this behaviour, the option <code class="keyw">keepDirectory</code> can be set to <code class="keyw">true</code> using, for example, <code class="code">InstallPackage("example" : keepDirectory)</code>, in which case such directories will be preserved for debugging.</p>
 
 
 <div class="example"><pre>
@@ -104,7 +102,7 @@ true
 
 <p>Attempts to update an installed package to the latest version. The first argument <var class="Arg">name</var> should be a string specifying the name of a package installed in the user <strong class="pkg">GAP</strong> root (for example, one installed using <code class="func">InstallPackage</code> (<a href="chap2_mj.html#X81A6FF1B81D004BA"><span class="RefLink">2.1-1</span></a>)), see <a href="https://docs.gap-system.org/doc/ref/chap9_mj.html#X7A4973627A5DB27D"><span class="RefLink">Reference: GAP Root Directories</span></a>. The second argument <var class="Arg">interactive</var> is optional, and should be a boolean specifying whether to confirm interactively before any directories are deleted (default value <code class="keyw">true</code>).</p>
 
-<p>If the package was installed via archive, the new version will be installed in a new directory, and the old version will be deleted. If installed via git or mercurial, it will be updated using <code class="code">git pull</code> or <code class="code">hg pull -u</code>, so long as there are no outstanding changes. If no newer version is available, no changes will be made.</p>
+<p>If the package was installed via archive, the new version will be installed in a new directory, and the old version will be deleted. If installed via git, it will be updated using <code class="code">git pull</code>, so long as there are no outstanding changes. If no newer version is available, no changes will be made.</p>
 
 <p>This process will also attempt to fix the package if it is broken, for example if it needs to be recompiled or if one of its dependencies is missing or broken.</p>
 
@@ -160,7 +158,7 @@ true
 <li><p>3 - Progress: also shows step-by-step progress of operations</p>
 
 </li>
-<li><p>4 - All: includes extra information such as whether curlInterface is being used</p>
+<li><p>4 - All: includes extra information such as whether curlInterface is being used, and package info validation</p>
 
 </li>
 </ul>
@@ -210,22 +208,9 @@ true
 
 <p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell – to avoid this interactivity and use sane defaults instead, the optional second argument <var class="Arg">interactive</var> can be set to <code class="keyw">false</code>.</p>
 
-<p><a id="X7A1F34D27932BA01" name="X7A1F34D27932BA01"></a></p>
-
-<h5>2.1-9 InstallPackageFromHg</h5>
-
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallPackageFromHg</code>( <var class="Arg">url</var>[, <var class="Arg">interactive</var>][, <var class="Arg">branch</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
-<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code></p>
-
-<p>Attempts to download and install a package from a Mercurial repository located at the given URL. Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
-
-<p>If the optional string argument <var class="Arg">branch</var> is specified, this function will install the branch with this name. Otherwise, the repository's default branch will be used.</p>
-
-<p>Certain decisions, such as installing newer versions of packages, will be confirmed by the user via an interactive shell – to avoid this interactivity and use sane defaults instead, the optional second argument <var class="Arg">interactive</var> can be set to <code class="keyw">false</code>.</p>
-
 <p><a id="X7B70DED5806B72A7" name="X7B70DED5806B72A7"></a></p>
 
-<h5>2.1-10 InstallRequiredPackages</h5>
+<h5>2.1-9 InstallRequiredPackages</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallRequiredPackages</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code></p>

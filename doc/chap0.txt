@@ -6,10 +6,10 @@
                    [1X Easily download and install [5XGAP[105X packages [101X
   
   
-                                     1.4.4
+                                      1.5
   
   
-                                  29 July 2024
+                                 30 August 2024
   
   
                                  Michael Young
@@ -46,8 +46,7 @@
       2.1-6 InstallPackageFromInfo
       2.1-7 InstallPackageFromArchive
       2.1-8 InstallPackageFromGit
-      2.1-9 InstallPackageFromHg
-      2.1-10 InstallRequiredPackages
+      2.1-9 InstallRequiredPackages
     2.2 [33X[0;0YRemoving packages[133X
       2.2-1 RemovePackage
   

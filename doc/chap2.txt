@@ -18,8 +18,6 @@
   
   [30X    [33X[0;6Ythe URL of a git repository, ending in [10X.git[110X;[133X
   
-  [30X    [33X[0;6Ythe URL of a mercurial repository;[133X
-  
   [30X    [33X[0;6Ythe URL of a valid [10XPackageInfo.g[110X file.[133X
   
   [33X[0;0YThe package will then be downloaded and installed, along with any additional
@@ -57,6 +55,11 @@
   installation  and afterwards notices that the version condition is still not
   satisfied.)[133X
   
+  [33X[0;0YIf  installation  fails,  then any new directories that were created will be
+  removed.  To override this behaviour, the option [9XkeepDirectory[109X can be set to
+  [9Xtrue[109X using, for example, [10XInstallPackage("example" : keepDirectory)[110X, in which
+  case such directories will be preserved for debugging.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XInstallPackage("digraphs");[127X[104X
     [4X[28Xtrue[128X[104X
@@ -77,9 +80,8 @@
   
   [33X[0;0YIf  the package was installed via archive, the new version will be installed
   in  a  new  directory, and the old version will be deleted. If installed via
-  git  or  mercurial, it will be updated using [10Xgit pull[110X or [10Xhg pull -u[110X, so long
-  as  there  are  no outstanding changes. If no newer version is available, no
-  changes will be made.[133X
+  git,  it will be updated using [10Xgit pull[110X, so long as there are no outstanding
+  changes. If no newer version is available, no changes will be made.[133X
   
   [33X[0;0YThis  process  will  also  attempt  to  fix the package if it is broken, for
   example  if  it  needs  to  be  recompiled  or if one of its dependencies is
@@ -140,7 +142,7 @@
   [30X    [33X[0;6Y3 - Progress: also shows step-by-step progress of operations[133X
   
   [30X    [33X[0;6Y4  -  All: includes extra information such as whether curlInterface is
-        being used[133X
+        being used, and package info validation[133X
   
   [33X[0;0YSet  this  using,  for  example [10XSetInfoLevel(InfoPackageManager, 1)[110X. Default
   value is 3.[133X
@@ -197,25 +199,7 @@
   and  use sane defaults instead, the optional second argument [3Xinteractive[103X can
   be set to [9Xfalse[109X.[133X
   
-  [1X2.1-9 InstallPackageFromHg[101X
-  
-  [33X[1;0Y[29X[2XInstallPackageFromHg[102X( [3Xurl[103X[, [3Xinteractive[103X][, [3Xbranch[103X] ) [32X function[133X
-  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X[133X
-  
-  [33X[0;0YAttempts  to  download  and  install  a  package from a Mercurial repository
-  located  at  the  given URL. Returns [9Xfalse[109X if something went wrong, and [9Xtrue[109X
-  otherwise.[133X
-  
-  [33X[0;0YIf  the  optional  string  argument  [3Xbranch[103X is specified, this function will
-  install  the  branch  with  this  name.  Otherwise, the repository's default
-  branch will be used.[133X
-  
-  [33X[0;0YCertain  decisions,  such  as installing newer versions of packages, will be
-  confirmed by the user via an interactive shell – to avoid this interactivity
-  and  use sane defaults instead, the optional second argument [3Xinteractive[103X can
-  be set to [9Xfalse[109X.[133X
-  
-  [1X2.1-10 InstallRequiredPackages[101X
+  [1X2.1-9 InstallRequiredPackages[101X
   
   [33X[1;0Y[29X[2XInstallRequiredPackages[102X(  ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X[133X

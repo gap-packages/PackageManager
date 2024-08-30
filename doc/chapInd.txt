@@ -7,10 +7,9 @@
   [2XInstallPackage[102X 2.1-1 
   [2XInstallPackageFromArchive[102X 2.1-7 
   [2XInstallPackageFromGit[102X 2.1-8 
-  [2XInstallPackageFromHg[102X 2.1-9 
   [2XInstallPackageFromInfo[102X 2.1-6 
   [2XInstallPackageFromName[102X 2.1-5 
-  [2XInstallRequiredPackages[102X 2.1-10 
+  [2XInstallRequiredPackages[102X 2.1-9 
   [2XRemovePackage[102X 2.2-1 
   [2XUpdatePackage[102X 2.1-2 
   
