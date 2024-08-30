@@ -441,6 +441,22 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-to
 false
 gap> PKGMAN_PackageInfoURLList := urllist;;
 
+# Updating old package that doesn't have the version number in its directory name
+gap> InstallPackage("https://www.math.colostate.edu/~hulpke/transgrp/transgrp3.6.4.tar.gz");
+true
+gap> oldinfo := First(PackageInfo("transgrp"), x -> x.Version = "3.6.4");;
+gap> oldinfo <> fail;
+true
+gap> PositionSublist(oldinfo.InstallationPath, "3.6.4");  # version number not in dir name
+fail
+gap> UpdatePackage("transgrp", false);
+#I  Package already installed at target location
+#I  Appending '.old' to old version directory
+true
+gap> newinfo := PackageInfo("transgrp")[1];;
+gap> CompareVersionNumbers(newinfo.Version, ">=3.6.5");
+true
+
 # FINAL TEST
 # (keep this at the end of the file)
 gap> PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg/"));

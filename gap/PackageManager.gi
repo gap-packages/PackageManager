@@ -255,7 +255,7 @@ end);
 InstallGlobalFunction(InstallPackageFromArchive,
 function(url)
   local get, user_pkg_dir, url_parts, filename, path, tar, options, exec,
-  files, topdir, dir;
+  files, topdir, dir, movedname;
 
   # Download archive
   Info(InfoPackageManager, 3, "Downloading archive from URL ", url, " ...");
@@ -298,7 +298,19 @@ function(url)
   # Check availability of target location
   dir := Filename(Directory(user_pkg_dir), topdir);
   if not PKGMAN_IsValidTargetDir(dir) then
-    return false;
+    if IsDirectoryPath(dir) and IsWritableFile(dir) and IsReadableFile(dir) then
+      # old version installed with the same name: change dir name
+      movedname := Concatenation(dir, ".old");
+      Info(InfoPackageManager, 1, "Appending '.old' to old version directory");
+      exec := PKGMAN_Exec(".", "mv", dir, movedname);
+      PKGMAN_RefreshPackageInfo();
+      if exec.code <> 0 then
+        Info(InfoPackageManager, 1, "Could not rename old package directory");
+        return false;
+      fi;
+    else
+      return false;
+    fi;
   fi;
 
   # Extract package
@@ -709,7 +721,7 @@ end);
 InstallGlobalFunction(UpdatePackage,
 function(name, interactive...)
   local user_pkg_dir, allinfo, info, dirs, vc, repo, dir, status, pull, line,
-        urls, newest, current, q, olddir;
+        urls, newest, old, oldVer, olddir, q;
 
   # Check input
   if not IsString(name) then
@@ -786,17 +798,25 @@ function(name, interactive...)
     return false;
   fi;
   newest  := PKGMAN_DownloadPackageInfo(urls.(name));
-  current := info[1];  # Highest-priority version in user pkg directory
-  if CompareVersionNumbers(newest.Version, current.Version, "equal") then
+  old := info[1];  # Highest-priority version in user pkg directory
+  oldVer := old.Version;
+  if CompareVersionNumbers(newest.Version, oldVer, "equal") then
     Info(InfoPackageManager, 2,
          "The newest version of package \"", name, "\" is already installed");
-  elif CompareVersionNumbers(newest.Version, current.Version) then
+    return PKGMAN_CheckPackage(old.InstallationPath);
+  elif CompareVersionNumbers(newest.Version, oldVer) then
     Info(InfoPackageManager, 2, name, " version ", newest.Version,
-         " will be installed, replacing ", current.Version);
+         " will be installed, replacing ", oldVer);
     if InstallPackageFromInfo(newest) <> true then
       return false;
     fi;
-    olddir := current.InstallationPath;
+
+    # Remove old version (which might have changed its name)
+    allinfo := PackageInfo(name);
+    info := Filtered(allinfo,
+                     x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
+    old := First(info, x -> x.Version = oldVer);
+    olddir := old.InstallationPath;
     q := Concatenation("Remove old version of ", name, " at ", olddir, " ?");
     if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
       PKGMAN_RemoveDir(olddir);
@@ -805,8 +825,8 @@ function(name, interactive...)
   else
     Info(InfoPackageManager, 2, "The installed version of package \"", name,
          "\" is newer than the latest available version!");
+    return PKGMAN_CheckPackage(old.InstallationPath);
   fi;
-  return PKGMAN_CheckPackage(current.InstallationPath);
 end);
 
 InstallGlobalFunction(CompilePackage,
