@@ -1,5 +1,13 @@
 This file describes changes in the PackageManager package.
 
+1.5 (2024-08-30)
+  - Add 'keepDirectory' option to avoid deleting directories on failure
+  - Require GAP version 4.12 or later
+  - Allow package installation to continue even when compilation or
+    documentation fails
+  - Deprecate Mercurial support, which is now hard to test
+  - Print less unnecessary output during installation
+
 1.4.4 (2024-07-29)
   - Fix code changing the current directory (fixes an issue when installing
     the `recog` package from directly its source code repository)
