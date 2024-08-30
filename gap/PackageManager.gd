@@ -53,6 +53,12 @@
 #!   otherwise it could happen that one updates the installation and
 #!   afterwards notices that the version condition is still not satisfied.)
 #!
+#!   If installation fails, then any new directories that were created will be
+#!   removed.  To override this behaviour, the option <K>keepDirectory</K> can
+#!   be set to <K>true</K> using, for example,
+#!   <C>InstallPackage("example" : keepDirectory)</C>,
+#!   in which case such directories will be preserved for debugging.
+#!
 #! @BeginExample
 #! gap> InstallPackage("digraphs");
 #! true

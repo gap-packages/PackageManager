@@ -95,6 +95,13 @@ gap> GAPInfo.Dependencies := rec(NeededOtherPackages := backup);;
 gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git", true);
 #I  Could not find PackageInfo.g
 false
+gap> IsReadableFile(Filename(Directory(PKGMAN_PackageDir()), "planets"));
+false
+gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git", true : keepDirectory);
+#I  Could not find PackageInfo.g
+false
+gap> IsReadableFile(Filename(Directory(PKGMAN_PackageDir()), "planets"));
+true
 
 # Install a package from a PackageInfo.g URL (includes redirect)
 gap> InstallPackage("https://gap-packages.github.io/autpgrp/PackageInfo.g");
