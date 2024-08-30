@@ -781,7 +781,12 @@ function(name, interactive...)
         for line in SplitString(pull.output, "\n") do
           Info(InfoPackageManager, 3, vc.cmd, ": ", line);
         od;
-        return (pull.code = 0) and PKGMAN_CompileDir(dir);
+        if pull.code = 0 then
+          PKGMAN_CompileDir(dir);
+          return true;
+        else
+          return false;
+        fi;
       else
         Info(InfoPackageManager, 1,
              "Uncommitted changes in ", vc.cmd, " repository");
