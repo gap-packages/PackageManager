@@ -123,23 +123,6 @@ DeclareInfoClass("InfoPackageManager");
 SetInfoLevel(InfoPackageManager, 3);
 
 #! @Description
-#!   Attempts to download and install a package given only its name.  Returns
-#!   <K>false</K> if something went wrong, and <K>true</K> otherwise.
-#!
-#!   Certain decisions, such as installing newer versions of packages, will be
-#!   confirmed by the user via an interactive shell &ndash; to avoid this
-#!   interactivity and use sane defaults instead, the optional argument
-#!   <A>interactive</A> can be set to <K>false</K>.
-#!
-#!   A required version can also be specified using the optional argument
-#!   <A>version</A>.  It works as described in the <Ref Func="InstallPackage" />
-#!   function.
-#! @Arguments name[, version][, interactive]
-#! @Returns
-#!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("InstallPackageFromName");
-
-#! @Description
 #!   Attempts to download and install a package from a valid `PackageInfo.g`
 #!   file.  The argument <A>info</A> should be either a valid package info
 #!   record, or a URL that points to a valid `PackageInfo.g` file.  Returns
@@ -157,24 +140,6 @@ DeclareGlobalFunction("InstallPackageFromInfo");
 #! @Returns
 #!   <K>true</K> or <K>false</K>
 DeclareGlobalFunction("InstallPackageFromArchive");
-
-#! @Description
-#!   Attempts to download and install the latest versions of all packages
-#!   required for &GAP; to run.  Currently these packages are
-#!   <Package>GAPDoc</Package>, <Package>primgrp</Package>,
-#!   <Package>SmallGrp</Package>, and <Package>transgrp</Package>.
-#!   Returns <K>false</K> if something went wrong, and
-#!   <K>true</K> otherwise.
-#!
-#!   Clearly, since these packages are required for &GAP; to run, they must be
-#!   loaded before this function can be executed.  However, this function
-#!   installs the packages in the `~/.gap/pkg` directory, so that they can be
-#!   managed by <Package>PackageManager</Package> in the future, and are
-#!   available for other &GAP; installations on the machine.
-#! @Arguments
-#! @Returns
-#!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("InstallRequiredPackages");
 
 #! @Section Removing packages
 
@@ -201,10 +166,7 @@ DeclareGlobalFunction("InstallRequiredPackages");
 #!   <K>true</K> or <K>false</K>
 DeclareGlobalFunction("RemovePackage");
 
-DeclareGlobalFunction("GetPackageURLs");
-
 # Hidden functions
-DeclareGlobalFunction("PKGMAN_InstallDependencies");
 DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_PackageDir");
@@ -221,9 +183,6 @@ DeclareGlobalFunction("PKGMAN_InfoWithIndent");
 
 # Hidden variables
 PKGMAN_CustomPackageDir := "";
-PKGMAN_PackageInfoURLList :=
-  Concatenation("https://github.com/gap-system/PackageDistro/",
-                "releases/download/latest/pkglist.csv");
 PKGMAN_ArchiveFormats := [".tar.gz", ".tar.bz2"];
 PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
                          [ "curl", ["--silent", "-L", "--output", "-"] ] ];
@@ -231,8 +190,6 @@ PKGMAN_CurlIntReqVer :=
   First(PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages,
         item -> item[1] = "curlInterface")[2];
 PKGMAN_Sysinfo := Filename(DirectoriesLibrary(""), "sysinfo.gap");
-PKGMAN_InstallQueue := [];      # Queue of dependencies to install
-PKGMAN_MarkedForInstall := [];  # Packages currently halfway through installing
 
 # PackageInfo must at least contain the following to pass:
 PKGMAN_RequiredPackageInfoFields := ["PackageName",
