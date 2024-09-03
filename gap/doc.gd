@@ -1,0 +1,1 @@
+DeclareGlobalFunction("PKGMAN_MakeDoc");

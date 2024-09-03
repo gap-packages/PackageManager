@@ -64,6 +64,8 @@ gap> CompilePackage("example");
 #I  Compilation script not found
 false
 gap> PKGMAN_BuildPackagesScript := temp;;
+gap> RemovePackage("example", false);
+true
 
 # Compile already compiled
 gap> InstallPackage("toric");

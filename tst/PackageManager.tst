@@ -108,6 +108,8 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(LowercaseString(f), "example"));
 true
+gap> RemovePackage("example", false);
+true
 
 # RemovePackage failure
 gap> RemovePackage(3);
