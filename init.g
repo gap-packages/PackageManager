@@ -9,4 +9,4 @@ ReadPackage("PackageManager", "gap/compile.gd");
 ReadPackage("PackageManager", "gap/doc.gd");
 ReadPackage("PackageManager", "gap/git.gd");
 ReadPackage("PackageManager", "gap/hg.gd");
-ReadPackage("PackageManager", "gap/Interactive.gd");
+ReadPackage("PackageManager", "gap/interactive.gd");
