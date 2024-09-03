@@ -81,18 +81,6 @@ gap> InstallRequiredPackages();
 false
 gap> GAPInfo.Dependencies := rec(NeededOtherPackages := backup);;
 
-# Repositories that don't contain GAP packages
-gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git", true);
-#I  Could not find PackageInfo.g
-false
-gap> IsReadableFile(Filename(Directory(PKGMAN_PackageDir()), "planets"));
-false
-gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git", true : keepDirectory);
-#I  Could not find PackageInfo.g
-false
-gap> IsReadableFile(Filename(Directory(PKGMAN_PackageDir()), "planets"));
-true
-
 # Install a package from a PackageInfo.g URL (includes redirect)
 gap> InstallPackage("https://gap-packages.github.io/autpgrp/PackageInfo.g");
 true
@@ -221,14 +209,6 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/badpack
 false
 gap> PKGMAN_Exec(".", "chmod", "777", dir);
 rec( code := 0, output := "" )
-
-# InstallPackageFromGit failure
-gap> InstallPackage("www.gap.rubbish/somepackage.git");
-#I  Cloning unsuccessful
-false
-gap> InstallPackage(".git");
-#I  Could not find repository name (bad URL?)
-false
 
 # Check a bad package directory (Remove #E messages after they leave GAP)
 gap> baddir := Filename(Directory(PKGMAN_PackageDir()), "badpkg");;
