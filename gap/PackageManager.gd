@@ -169,20 +169,12 @@ DeclareGlobalFunction("RemovePackage");
 # Hidden functions
 DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_Exec");
-DeclareGlobalFunction("PKGMAN_PackageDir");
-DeclareGlobalFunction("PKGMAN_CreateDirRecursively");
-DeclareGlobalFunction("PKGMAN_IsValidTargetDir");
 DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
-DeclareGlobalFunction("PKGMAN_InsertPackageDirectory");
-DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");
-DeclareGlobalFunction("PKGMAN_RemoveDir");
 DeclareGlobalFunction("PKGMAN_ValidatePackageInfo");
 DeclareGlobalFunction("PKGMAN_InfoWithIndent");
 
 # Hidden variables
-PKGMAN_CustomPackageDir := "";
 PKGMAN_ArchiveFormats := [".tar.gz", ".tar.bz2"];
-PKGMAN_Sysinfo := Filename(DirectoriesLibrary(""), "sysinfo.gap");
 
 # PackageInfo must at least contain the following to pass:
 PKGMAN_RequiredPackageInfoFields := ["PackageName",
