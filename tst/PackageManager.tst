@@ -144,60 +144,11 @@ fail
 gap> PKGMAN_InsertPackageDirectory("/home");  # not ending in pkg
 fail
 
-# Missing curlInterface: use wget instead
-gap> ver := PKGMAN_CurlIntReqVer;;
-gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
-gap> InstallPackage("https://gap-packages.github.io/Memoisation/PackageInfo.g");
-true
-gap> RemovePackage("Memoisation", false);
-true
-gap> PKGMAN_CurlIntReqVer := ver;;
-
-# wget failure
-gap> ver := PKGMAN_CurlIntReqVer;;
-gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
-gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
-#I  Could not download from www.gap.rubbish/somepackage.tar.gz
-false
-gap> PKGMAN_CurlIntReqVer := ver;;
-
-# Missing curlInterface: use curl instead
-gap> ver := PKGMAN_CurlIntReqVer;;
-gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
-gap> tmp := PKGMAN_DownloadCmds[1];;
-gap> PKGMAN_DownloadCmds[1] := PKGMAN_DownloadCmds[2];;
-gap> PKGMAN_DownloadCmds[2] := tmp;;
-gap> PKGMAN_DownloadCmds[1][1];
-"curl"
-gap> InstallPackage("uuid");
-true
-gap> RemovePackage("uuid", false);
-true
-gap> PKGMAN_CurlIntReqVer := ver;;
-
 # Install to existing empty directory
 gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.5"));
 true
 gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.9.5/Toric-1.9.5.tar.gz");
 true
-
-# curl failure
-gap> ver := PKGMAN_CurlIntReqVer;;
-gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
-gap> PKGMAN_DownloadCmds[1][1];
-"curl"
-gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
-#I  Could not download from www.gap.rubbish/somepackage.tar.gz
-false
-gap> PKGMAN_CurlIntReqVer := ver;;
-
-# Missing first command
-gap> ver := PKGMAN_CurlIntReqVer;;
-gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
-gap> PKGMAN_DownloadCmds[1][1] := "abababaxyz";;
-gap> InstallPackage("crypting");
-true
-gap> PKGMAN_CurlIntReqVer := ver;;
 
 # Updating old package that doesn't have the version number in its directory name
 gap> InstallPackage("https://www.math.colostate.edu/~hulpke/transgrp/transgrp3.6.4.tar.gz");

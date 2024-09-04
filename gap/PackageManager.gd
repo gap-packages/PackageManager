@@ -175,20 +175,13 @@ DeclareGlobalFunction("PKGMAN_IsValidTargetDir");
 DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
 DeclareGlobalFunction("PKGMAN_InsertPackageDirectory");
 DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");
-DeclareGlobalFunction("PKGMAN_DownloadURL");
 DeclareGlobalFunction("PKGMAN_RemoveDir");
-DeclareGlobalFunction("PKGMAN_DownloadPackageInfo");
 DeclareGlobalFunction("PKGMAN_ValidatePackageInfo");
 DeclareGlobalFunction("PKGMAN_InfoWithIndent");
 
 # Hidden variables
 PKGMAN_CustomPackageDir := "";
 PKGMAN_ArchiveFormats := [".tar.gz", ".tar.bz2"];
-PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
-                         [ "curl", ["--silent", "-L", "--output", "-"] ] ];
-PKGMAN_CurlIntReqVer :=
-  First(PackageInfo("PackageManager")[1].Dependencies.SuggestedOtherPackages,
-        item -> item[1] = "curlInterface")[2];
 PKGMAN_Sysinfo := Filename(DirectoriesLibrary(""), "sysinfo.gap");
 
 # PackageInfo must at least contain the following to pass:
