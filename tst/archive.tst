@@ -41,3 +41,11 @@ true
 gap> PKGMAN_RefreshPackageInfo();
 gap> RemovePackage("transgrp", false);
 true
+
+# Install to existing empty directory
+gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.5"));
+true
+gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.9.5/Toric-1.9.5.tar.gz");
+true
+gap> RemovePackage("toric", false);
+true
