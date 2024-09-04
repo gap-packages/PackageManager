@@ -29,16 +29,13 @@ gap> oldinfo <> fail;
 true
 gap> PositionSublist(oldinfo.InstallationPath, "3.6.4");  # version number not in dir name
 fail
-gap> UpdatePackage("transgrp", false);
+gap> UpdatePackage("transgrp", false);  # also removes old version
 #I  Package already installed at target location
 #I  Appending '.old' to old version directory
 true
 gap> newinfo := PackageInfo("transgrp")[1];;
 gap> CompareVersionNumbers(newinfo.Version, ">=3.6.5");
 true
-gap> RemoveDirectoryRecursively(newinfo.InstallationPath);  # clean up for future tests
-true
-gap> PKGMAN_RefreshPackageInfo();
 gap> RemovePackage("transgrp", false);
 true
 

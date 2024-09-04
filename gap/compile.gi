@@ -10,25 +10,15 @@ function(name)
 
   # Locate the package
   name := LowercaseString(name);
-  user_pkg_dir := PKGMAN_PackageDir();
-  allinfo := PackageInfo(name);
-  info := Filtered(allinfo,
-                   x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
+  info := PKGMAN_UserPackageInfo(name : expectUnique);
 
   # Package not installed
   if Length(info) = 0 then
-    Info(InfoPackageManager, 1,
-         "Package \"", name, "\" not installed in user package directory");
-    Info(InfoPackageManager, 2, "(currently set to ", PKGMAN_PackageDir(), ")");
-    if not IsEmpty(allinfo) then
-      Info(InfoPackageManager, 2, "installed at ",
-           List(allinfo, i -> i.InstallationPath), ", not in ", user_pkg_dir);
-    fi;
     return false;
   fi;
 
-  # Compile it
-  return PKGMAN_CompileDir(info[1].InstallationPath);
+  # Compile all installations that were found
+  return ForAll(info, i -> PKGMAN_CompileDir(i.InstallationPath));
 end);
 
 InstallGlobalFunction(PKGMAN_CompileDir,

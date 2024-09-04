@@ -19,8 +19,7 @@ function(string, args...)
   version := true;
   interactive := true;
   if not IsString(string) then
-    ErrorNoReturn("PackageManager: InstallPackage: ",
-                  "<string> must be a string");
+    ErrorNoReturn("PackageManager: InstallPackage: <string> must be a string");
   elif Length(args) > 2 then
     ErrorNoReturn("PackageManager: InstallPackage: ",
                   "requires 1 to 3 arguments (not ",
@@ -38,9 +37,11 @@ function(string, args...)
     version := args[1];
     interactive := args[2];
   fi;
+  
+  # Tidy up the string
+  NormalizeWhitespace(string);
 
   # Call the appropriate function
-  NormalizeWhitespace(string);
   if ForAny(PKGMAN_ArchiveFormats, ext -> EndsWith(string, ext)) then
     return InstallPackageFromArchive(string);
   elif EndsWith(string, ".git") then
@@ -55,12 +56,11 @@ end);
 
 InstallGlobalFunction(RemovePackage,
 function(name, interactive...)
-  local user_pkg_dir, allinfo, info, dir;
-
+  local info, dir, q;
+  
   # Check input
   if not IsString(name) then
-    ErrorNoReturn("PackageManager: RemovePackage: ",
-                  "<name> must be a string");
+    ErrorNoReturn("PackageManager: RemovePackage: <name> must be a string");
   elif Length(interactive) > 1 then
     ErrorNoReturn("PackageManager: RemovePackage: ",
                   "requires 1 or 2 arguments (not ",
@@ -77,31 +77,17 @@ function(name, interactive...)
   fi;
 
   # Locate the package
-  user_pkg_dir := PKGMAN_PackageDir();
-  allinfo := PackageInfo(name);
-  info := Filtered(allinfo,
-                   x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
-  if Length(info) = 0 then
-    Info(InfoPackageManager, 1,
-         "Package \"", name, "\" not installed in user package directory");
-    Info(InfoPackageManager, 2, "(currently set to ", PKGMAN_PackageDir(), ")");
-    if not IsEmpty(allinfo) then
-      Info(InfoPackageManager, 2, "installed at ",
-           List(allinfo, i -> i.InstallationPath), ", not in ", user_pkg_dir);
-    fi;
-    return false;
-  elif Length(info) >= 2 then
-    Info(InfoPackageManager, 1,
-         "Multiple versions of package ", name, " installed");
-    Info(InfoPackageManager, 3, "at ", List(info, x -> x.InstallationPath));
+  info := PKGMAN_UserPackageInfo(name : expectUnique);
+  
+  # Need precisely one version
+  if Length(info) <> 1 then
     return false;
   fi;
-  dir := ShallowCopy(info[1].InstallationPath);
 
   # Remove directory carefully
-  if interactive = false or
-      PKGMAN_AskYesNoQuestion("Really delete directory ", dir, " ?"
-                              : default := false) then
+  dir := ShallowCopy(info[1].InstallationPath);
+  q := Concatenation("Really delete directory ", dir, " ?");
+  if interactive = false or PKGMAN_AskYesNoQuestion(q : default := false) then
     PKGMAN_RemoveDir(dir);
     return true;
   fi;
@@ -132,23 +118,15 @@ function(name, interactive...)
   else
     interactive := true;
   fi;
-
-  # Locate the package
+  
+  # Package names should be case-insensitive
   name := LowercaseString(name);
-  user_pkg_dir := PKGMAN_PackageDir();
-  allinfo := PackageInfo(name);
-  info := Filtered(allinfo,
-                   x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
+  
+  # Locate the package
+  info := PKGMAN_UserPackageInfo(name);
 
   # Package not installed
   if Length(info) = 0 then
-    Info(InfoPackageManager, 1,
-         "Package \"", name, "\" not installed in user package directory");
-    Info(InfoPackageManager, 2, "(currently set to ", PKGMAN_PackageDir(), ")");
-    if not IsEmpty(allinfo) then
-      Info(InfoPackageManager, 2, "installed at ",
-           List(allinfo, i -> i.InstallationPath), ", not in ", user_pkg_dir);
-    fi;
     if interactive and PKGMAN_AskYesNoQuestion("Would you like to install ",
                                                name, "?" : default := true) then
       return InstallPackageFromName(name);
@@ -208,13 +186,11 @@ function(name, interactive...)
     fi;
 
     # Remove old version (which might have changed its name)
-    allinfo := PackageInfo(name);
-    info := Filtered(allinfo,
-                     x -> IsMatchingSublist(x.InstallationPath, user_pkg_dir));
+    info := PKGMAN_UserPackageInfo(name);
     old := First(info, x -> x.Version = oldVer);
     olddir := old.InstallationPath;
     q := Concatenation("Remove old version of ", name, " at ", olddir, " ?");
-    if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
+    if interactive = false or PKGMAN_AskYesNoQuestion(q : default := false) then
       PKGMAN_RemoveDir(olddir);
     fi;
     return true;
