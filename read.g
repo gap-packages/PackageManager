@@ -5,6 +5,7 @@
 #
 
 ReadPackage("PackageManager", "gap/PackageManager.gi");
+ReadPackage("PackageManager", "gap/archive.gi");
 ReadPackage("PackageManager", "gap/compile.gi");
 ReadPackage("PackageManager", "gap/directories.gi");
 ReadPackage("PackageManager", "gap/distro.gi");

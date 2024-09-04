@@ -132,15 +132,6 @@ SetInfoLevel(InfoPackageManager, 3);
 #!   <K>true</K> or <K>false</K>
 DeclareGlobalFunction("InstallPackageFromInfo");
 
-#! @Description
-#!   Attempts to download and install a package from an archive located at the
-#!   given URL.  Returns <K>true</K> if the installation was successful, and
-#!   <K>false</K> otherwise.
-#! @Arguments url
-#! @Returns
-#!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("InstallPackageFromArchive");
-
 #! @Section Removing packages
 
 #! @Description
@@ -172,9 +163,6 @@ DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
 DeclareGlobalFunction("PKGMAN_ValidatePackageInfo");
 DeclareGlobalFunction("PKGMAN_InfoWithIndent");
-
-# Hidden variables
-PKGMAN_ArchiveFormats := [".tar.gz", ".tar.bz2"];
 
 # PackageInfo must at least contain the following to pass:
 PKGMAN_RequiredPackageInfoFields := ["PackageName",
