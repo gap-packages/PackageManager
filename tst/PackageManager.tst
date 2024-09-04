@@ -75,7 +75,7 @@ Error, PackageManager: InstallPackage: requires 1 to 3 arguments (not 4)
 gap> InstallPackageFromInfo(42);
 Error, PackageManager: InstallPackageFromInfo: <info> should be a rec or URL
 
-# InstallPackageFromInfo failure (Remove #E messages after they leave GAP)
+# InstallPackageFromInfo failure
 gap> InstallPackage("http://www.nothing.rubbish/PackageInfo.g");
 #I  Unable to download from http://www.nothing.rubbish/PackageInfo.g
 false
@@ -114,7 +114,7 @@ false
 gap> PKGMAN_Exec(".", "chmod", "777", dir);
 rec( code := 0, output := "" )
 
-# Check a bad package directory (Remove #E messages after they leave GAP)
+# Check a bad package directory
 gap> baddir := Filename(Directory(PKGMAN_PackageDir()), "badpkg");;
 gap> CreateDir(baddir);;
 gap> PKGMAN_CheckPackage(baddir);
