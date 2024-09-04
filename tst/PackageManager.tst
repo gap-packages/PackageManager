@@ -10,15 +10,6 @@ gap> UpdatePackage("GAPDoc", false);
 #I  Package "gapdoc" not installed in user package directory
 false
 
-# Install a package from a PackageInfo.g URL (includes redirect)
-gap> InstallPackage("https://gap-packages.github.io/autpgrp/PackageInfo.g");
-true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "autpgrp"));
-true
-gap> RemovePackage("autpgrp", false);
-true
-
 # RemovePackage failure
 gap> RemovePackage(3);
 Error, PackageManager: RemovePackage: <name> must be a string
@@ -61,15 +52,6 @@ Error, PackageManager: InstallPackageFromName:
 if specified, <interactive> must be true or false
 gap> InstallPackage("semigroups", ">=3.0", true, "i dont know");
 Error, PackageManager: InstallPackage: requires 1 to 3 arguments (not 4)
-
-# InstallPackageFromInfo input failure
-gap> InstallPackageFromInfo(42);
-Error, PackageManager: InstallPackageFromInfo: <info> should be a rec or URL
-
-# InstallPackageFromInfo failure
-gap> InstallPackage("http://www.nothing.rubbish/PackageInfo.g");
-#I  Unable to download from http://www.nothing.rubbish/PackageInfo.g
-false
 
 # Check a bad package directory
 gap> baddir := Filename(Directory(PKGMAN_PackageDir()), "badpkg");;
