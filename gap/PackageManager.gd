@@ -147,7 +147,9 @@ SetInfoLevel(InfoPackageManager, 3);
 #!   <K>true</K> or <K>false</K>
 DeclareGlobalFunction("RemovePackage");
 
-# Hidden functions
 DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_InfoWithIndent");
+DeclareGlobalFunction("PKGMAN_PathSystemProgram");
+
+BindGlobal("PKGMAN_WHITESPACE", MakeImmutable(" \n\t\r"));

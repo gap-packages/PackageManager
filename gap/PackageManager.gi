@@ -4,20 +4,6 @@
 # Implementations
 #
 
-BindGlobal("PKGMAN_WHITESPACE", MakeImmutable(" \n\t\r"));
-
-BindGlobal("PKGMAN_PathSystemProgram", function(name)
-  local dir, path;
-
-  for dir in DirectoriesSystemPrograms() do
-    path:= Filename(dir, name);
-    if IsExecutableFile(path) then
-      return path;
-    fi;
-  od;
-  return fail;
-end);
-
 # Install fallback ChangeDirectoryCurrent if GAP is too old and io isn't loaded
 if not IsBound(ChangeDirectoryCurrent) then
   ChangeDirectoryCurrent := function(dir)
@@ -367,4 +353,17 @@ function(infoLevel, message, indentLevel)
   for line in SplitString(message, "\n") do
     Info(InfoPackageManager, infoLevel, indent, line);
   od;
+end);
+
+InstallGlobalFunction(PKGMAN_PathSystemProgram,
+function(name)
+  local dir, path;
+
+  for dir in DirectoriesSystemPrograms() do
+    path:= Filename(dir, name);
+    if IsExecutableFile(path) then
+      return path;
+    fi;
+  od;
+  return fail;
 end);
