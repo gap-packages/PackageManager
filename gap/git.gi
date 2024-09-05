@@ -1,6 +1,6 @@
 InstallGlobalFunction(InstallPackageFromGit,
 function(url, args...)
-  local interactive, branch, name, dir, allinfo, info, dirs, repo, q, exec;
+  local interactive, branch, name, dir, info, dirs, repo, q, exec;
 
   # Process args
   interactive := true;
@@ -38,9 +38,7 @@ function(url, args...)
   dir := Filename(Directory(PKGMAN_PackageDir()), name);
 
   # Check for existing repository
-  allinfo := PackageInfo(name);
-  info := Filtered(allinfo,
-                   x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));
+  info := PKGMAN_UserPackageInfo(name);
   dirs := List(info, i -> ShallowCopy(i.InstallationPath));
   repo := Filename(List(dirs, Directory), ".git");
   if repo <> fail then  # TODO: check it's the same remote?

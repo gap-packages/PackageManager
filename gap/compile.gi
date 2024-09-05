@@ -1,6 +1,6 @@
 InstallGlobalFunction(CompilePackage,
 function(name)
-  local user_pkg_dir, allinfo, info;
+  local info;
 
   # Check input
   if not IsString(name) then
@@ -10,7 +10,7 @@ function(name)
 
   # Locate the package
   name := LowercaseString(name);
-  info := PKGMAN_UserPackageInfo(name : expectUnique);
+  info := PKGMAN_UserPackageInfo(name : warnIfNone, warnIfMultiple);
 
   # Package not installed
   if Length(info) = 0 then

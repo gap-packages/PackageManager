@@ -77,7 +77,7 @@ function(name, interactive...)
   fi;
 
   # Locate the package
-  info := PKGMAN_UserPackageInfo(name : expectUnique);
+  info := PKGMAN_UserPackageInfo(name : warnIfNone, warnIfMultiple);
   
   # Need precisely one version
   if Length(info) <> 1 then
@@ -97,8 +97,8 @@ end);
 
 InstallGlobalFunction(UpdatePackage,
 function(name, interactive...)
-  local user_pkg_dir, allinfo, info, dirs, vc, repo, dir, status, pull, line,
-        urls, newest, old, oldVer, olddir, q;
+  local user_pkg_dir, info, dirs, vc, repo, dir, status, pull, line, urls,
+        newest, old, oldVer, olddir, q;
 
   # Check input
   if not IsString(name) then
@@ -123,7 +123,7 @@ function(name, interactive...)
   name := LowercaseString(name);
   
   # Locate the package
-  info := PKGMAN_UserPackageInfo(name);
+  info := PKGMAN_UserPackageInfo(name : warnIfNone);
 
   # Package not installed
   if Length(info) = 0 then

@@ -1,6 +1,6 @@
 InstallGlobalFunction(InstallPackageFromName,
 function(name, args...)
-  local version, interactive, urls, allinfo, info, current, dirs, vc, q, newest;
+  local version, interactive, urls, info, current, dirs, vc, q, newest;
 
   # Handle version condition and interactivity
   version := true;
@@ -49,9 +49,7 @@ function(name, args...)
   fi;
 
   # Check for already-installed versions
-  allinfo := PackageInfo(name);
-  info := Filtered(allinfo,
-                   x -> StartsWith(x.InstallationPath, PKGMAN_PackageDir()));
+  info := PKGMAN_UserPackageInfo(name);
   if not IsEmpty(info) then  # Already installed
     # Does the installed version already satisfy the prescribed version?
     current := info[1];  # Highest-priority installation in user pkg directory
@@ -191,9 +189,7 @@ function(dir)
   dep_infos := [];
   for dep in to_install do
     # Already installed, but needs recompiling?
-    current := Filtered(PackageInfo(dep[1]),
-                        x -> StartsWith(x.InstallationPath,
-                                        PKGMAN_PackageDir()));
+    current := PKGMAN_UserPackageInfo(dep[1]);
     if not IsEmpty(current) then
       current := current[1];
       if CompareVersionNumbers(current.Version, dep[2]) then
