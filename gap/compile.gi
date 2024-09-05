@@ -4,8 +4,7 @@ function(name)
 
   # Check input
   if not IsString(name) then
-    ErrorNoReturn("PackageManager: CompilePackage: ",
-                  "<name> must be a string");
+    ErrorNoReturn("<name> must be a string");
   fi;
 
   # Locate the package

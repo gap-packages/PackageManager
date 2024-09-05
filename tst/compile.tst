@@ -18,9 +18,9 @@ true
 
 # CompilePackage bad input
 gap> CompilePackage(3);
-Error, PackageManager: CompilePackage: <name> must be a string
+Error, <name> must be a string
 gap> CompilePackage(true);
-Error, PackageManager: CompilePackage: <name> must be a string
+Error, <name> must be a string
 
 # PKGMAN_CompileDir error: no shell
 gap> InstallPackage("example");

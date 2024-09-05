@@ -9,7 +9,7 @@ true
 
 # InstallPackageFromInfo input failure
 gap> InstallPackageFromInfo(42);
-Error, PackageManager: InstallPackageFromInfo: <info> should be a rec or URL
+Error, <info> should be a rec or URL
 
 # InstallPackageFromInfo failure
 gap> InstallPackage("http://www.nothing.rubbish/PackageInfo.g");

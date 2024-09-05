@@ -6,20 +6,16 @@ function(name, args...)
   version := true;
   interactive := true;
   if not IsString(name) then
-    ErrorNoReturn("PackageManager: InstallPackageFromName: ",
-                  "<name> must be a string");
+    ErrorNoReturn("<name> must be a string");
   elif Length(args) > 2 then
-    ErrorNoReturn("PackageManager: InstallPackageFromName: ",
-                  "requires 1 to 3 arguments (not ",
-                  Length(args) + 1, ")");
+    ErrorNoReturn("requires 1 to 3 arguments (not ", Length(args) + 1, ")");
   elif Length(args) = 1 then
     if IsString(args[1]) then
       version := args[1];
     elif args[1] = true or args[1] = false then
       interactive := args[1];
     else
-      ErrorNoReturn("PackageManager: InstallPackageFromName:\n",
-                    "2nd argument must be true or false or a version string");
+      ErrorNoReturn("2nd argument must be true or false or a version string");
     fi;
   elif Length(args) = 2 then
     version := args[1];
@@ -28,11 +24,9 @@ function(name, args...)
 
   # Check arguments
   if not (IsString(version) or version = true) then
-    ErrorNoReturn("PackageManager: InstallPackageFromName:\n",
-                  "if specified, <version> must be a version string");
+    ErrorNoReturn("if specified, <version> must be a version string");
   elif not (interactive = true or interactive = false) then
-    ErrorNoReturn("PackageManager: InstallPackageFromName:\n",
-                  "if specified, <interactive> must be true or false");
+    ErrorNoReturn("if specified, <interactive> must be true or false");
   fi;
 
   # Get package URL from name

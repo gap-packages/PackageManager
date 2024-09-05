@@ -19,19 +19,16 @@ function(string, args...)
   version := true;
   interactive := true;
   if not IsString(string) then
-    ErrorNoReturn("PackageManager: InstallPackage: <string> must be a string");
+    ErrorNoReturn("<string> must be a string");
   elif Length(args) > 2 then
-    ErrorNoReturn("PackageManager: InstallPackage: ",
-                  "requires 1 to 3 arguments (not ",
-                  Length(args) + 1, ")");
+    ErrorNoReturn("requires 1 to 3 arguments (not ", Length(args) + 1, ")");
   elif Length(args) = 1 then
     if IsString(args[1]) then
       version := args[1];
     elif args[1] = true or args[1] = false then
       interactive := args[1];
     else
-      ErrorNoReturn("PackageManager: InstallPackage:\n",
-                    "2nd argument must be true or false or a version string");
+      ErrorNoReturn("2nd argument must be true or false or a version string");
     fi;
   elif Length(args) = 2 then
     version := args[1];
@@ -60,17 +57,14 @@ function(name, interactive...)
 
   # Check input
   if not IsString(name) then
-    ErrorNoReturn("PackageManager: RemovePackage: <name> must be a string");
+    ErrorNoReturn("<name> must be a string");
   elif Length(interactive) > 1 then
-    ErrorNoReturn("PackageManager: RemovePackage: ",
-                  "requires 1 or 2 arguments (not ",
-                  Length(interactive) + 1, ")");
+    ErrorNoReturn("requires 1 or 2 arguments (not ", Length(interactive) + 1, ")");
   elif Length(interactive) = 1 then
     if interactive[1] = true or interactive[1] = false then
       interactive := interactive[1];
     else
-      ErrorNoReturn("PackageManager: RemovePackage: ",
-                    "<interactive> must be true or false");
+      ErrorNoReturn("<interactive> must be true or false");
     fi;
   else
     interactive := true;
@@ -102,18 +96,14 @@ function(name, interactive...)
 
   # Check input
   if not IsString(name) then
-    ErrorNoReturn("PackageManager: UpdatePackage: ",
-                  "<name> must be a string");
+    ErrorNoReturn("<name> must be a string");
   elif Length(interactive) > 1 then
-    ErrorNoReturn("PackageManager: UpdatePackage: ",
-                  "requires 1 or 2 arguments (not ",
-                  Length(interactive) + 1, ")");
+    ErrorNoReturn("requires 1 or 2 arguments (not ", Length(interactive) + 1, ")");
   elif Length(interactive) = 1 then
     if interactive[1] = true or interactive[1] = false then
       interactive := interactive[1];
     else
-      ErrorNoReturn("PackageManager: UpdatePackage: ",
-                    "<interactive> must be true or false");
+      ErrorNoReturn("<interactive> must be true or false");
     fi;
   else
     interactive := true;

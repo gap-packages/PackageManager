@@ -33,17 +33,13 @@ gap> InstallPackageFromGit("https://github.com/gap-packages/orb.git", false, "fi
 #I  Cloning unsuccessful
 false
 gap> InstallPackageFromGit("https://github.com/gap-packages/orb.git", "master", true);
-Error, PackageManager: InstallPackageFromGit:
-<interactive> should be true or false
+Error, <interactive> should be true or false
 gap> InstallPackageFromGit("https://github.com/a/b.git", false, 3);
-Error, PackageManager: InstallPackageFromGit:
-<branch> should be a string
+Error, <branch> should be a string
 gap> InstallPackageFromGit("https://github.com/a/b.git", 3);
-Error, PackageManager: InstallPackageFromGit:
-2nd argument should be true, false, or a string
+Error, 2nd argument should be true, false, or a string
 gap> InstallPackageFromGit("https://github.com/a/b.git", true, "master", "lol");
-Error, PackageManager: InstallPackageFromGit:
-requires 1, 2 or 3 arguments (not 4)
+Error, requires 1, 2 or 3 arguments (not 4)
 
 # Install a package from a git repository not ending in .git
 gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo", false);

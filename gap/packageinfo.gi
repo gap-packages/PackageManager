@@ -4,8 +4,7 @@ function(info, version...)
 
   # Check input
   if not (IsString(info) or IsRecord(info)) then
-    ErrorNoReturn("PackageManager: InstallPackageFromInfo: ",
-                  "<info> should be a rec or URL");
+    ErrorNoReturn("<info> should be a rec or URL");
   fi;
 
   # Get file from URL

@@ -11,23 +11,18 @@ function(url, args...)
     elif IsString(args[1]) then
       branch := args[1];
     else
-      ErrorNoReturn("PackageManager: InstallPackageFromHg:\n",
-                    "2nd argument should be true, false, or a string");
+      ErrorNoReturn("2nd argument should be true, false, or a string");
     fi;
   elif Length(args) = 2 then
     interactive := args[1];
     branch := args[2];
     if not interactive in [true, false] then
-      ErrorNoReturn("PackageManager: InstallPackageFromHg:\n",
-                    "<interactive> should be true or false");
+      ErrorNoReturn("<interactive> should be true or false");
     elif not IsString(branch) then
-      ErrorNoReturn("PackageManager: InstallPackageFromHg:\n",
-                    "<branch> should be a string");
+      ErrorNoReturn("<branch> should be a string");
     fi;
   elif Length(args) > 2 then
-    ErrorNoReturn("PackageManager: InstallPackageFromHg:\n",
-                  "requires 1, 2 or 3 arguments (not ",
-                  Length(args) + 1, ")");
+    ErrorNoReturn("requires 1, 2 or 3 arguments (not ", Length(args) + 1, ")");
   fi;
 
   name := PKGMAN_NameOfHgRepo(url);
