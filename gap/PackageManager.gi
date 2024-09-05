@@ -37,7 +37,7 @@ function(string, args...)
     version := args[1];
     interactive := args[2];
   fi;
-  
+
   # Tidy up the string
   NormalizeWhitespace(string);
 
@@ -57,7 +57,7 @@ end);
 InstallGlobalFunction(RemovePackage,
 function(name, interactive...)
   local info, dir, q;
-  
+
   # Check input
   if not IsString(name) then
     ErrorNoReturn("PackageManager: RemovePackage: <name> must be a string");
@@ -78,7 +78,7 @@ function(name, interactive...)
 
   # Locate the package
   info := PKGMAN_UserPackageInfo(name : warnIfNone, warnIfMultiple);
-  
+
   # Need precisely one version
   if Length(info) <> 1 then
     return false;
@@ -97,8 +97,8 @@ end);
 
 InstallGlobalFunction(UpdatePackage,
 function(name, interactive...)
-  local user_pkg_dir, info, dirs, vc, repo, dir, status, pull, line, urls,
-        newest, old, oldVer, olddir, q;
+  local info, dirs, vc, repo, dir, status, pull, line, urls, newest, old,
+        oldVer, olddir, q;
 
   # Check input
   if not IsString(name) then
@@ -118,10 +118,10 @@ function(name, interactive...)
   else
     interactive := true;
   fi;
-  
+
   # Package names should be case-insensitive
   name := LowercaseString(name);
-  
+
   # Locate the package
   info := PKGMAN_UserPackageInfo(name : warnIfNone);
 
@@ -336,7 +336,7 @@ function(name)
   local dir, path;
 
   for dir in DirectoriesSystemPrograms() do
-    path:= Filename(dir, name);
+    path := Filename(dir, name);
     if IsExecutableFile(path) then
       return path;
     fi;

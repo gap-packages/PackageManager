@@ -7,5 +7,5 @@ PKGMAN_CurlIntReqVer :=
         item -> item[1] = "curlInterface")[2];
 
 # Shell commands used for downloading if curlInterface not loaded
-PKGMAN_DownloadCmds := [ [ "wget", ["--quiet", "-O", "-"] ],
-                         [ "curl", ["--silent", "-L", "--output", "-"] ] ];
+PKGMAN_DownloadCmds := [["wget", ["--quiet", "-O", "-"]],
+                        ["curl", ["--silent", "-L", "--output", "-"]]];

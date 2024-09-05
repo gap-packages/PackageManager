@@ -99,7 +99,7 @@ function(url)
     return parts[n];
   fi;
   if parts[n] = "hg" and n > 1 then
-    return parts[n-1];
+    return parts[n - 1];
   fi;
   return fail;
 end);

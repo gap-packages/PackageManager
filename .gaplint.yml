@@ -1,7 +1,3 @@
-columns: 80
+columns: 120
 disable:
-- no-space-after-comment
 - align-assignments
-- whitespace-op-negative
-- space-before-bracket
-- space-after-bracket

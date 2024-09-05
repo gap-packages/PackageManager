@@ -82,11 +82,11 @@ end);
 InstallGlobalFunction(PKGMAN_UserPackageInfo,
 function(name)
   local user_pkg_dir, allinfo, userinfo;
-  
+
   user_pkg_dir := PKGMAN_PackageDir();
   allinfo := PackageInfo(name);
   userinfo := Filtered(allinfo, i -> StartsWith(i.InstallationPath, user_pkg_dir));
-  
+
   # Package not found
   if ValueOption("warnIfNone") = true and Length(userinfo) = 0 then
     Info(InfoPackageManager, 1, "Package \"", name, "\" not installed in user package directory");
@@ -95,12 +95,12 @@ function(name)
       Info(InfoPackageManager, 2, "but installed at ", List(allinfo, i -> i.InstallationPath));
     fi;
   fi;
-  
+
   # Multiple versions found
   if ValueOption("warnIfMultiple") = true and Length(userinfo) > 1 then
     Info(InfoPackageManager, 1, "Multiple versions of package ", name, " installed");
     Info(InfoPackageManager, 2, "at ", List(userinfo, i -> i.InstallationPath));
   fi;
-  
+
   return userinfo;
 end);

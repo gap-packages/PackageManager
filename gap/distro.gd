@@ -43,8 +43,9 @@ DeclareGlobalFunction("InstallRequiredPackages");
 DeclareGlobalFunction("GetPackageURLs");
 DeclareGlobalFunction("PKGMAN_InstallDependencies");
 
-PKGMAN_PackageInfoURLList :=    # Source of latest package releases
-  Concatenation("https://github.com/gap-system/PackageDistro/",
-                "releases/download/latest/pkglist.csv");
+# Source of latest package releases
+PKGMAN_PackageInfoURLList :=
+  "https://github.com/gap-system/PackageDistro/releases/download/latest/pkglist.csv";
+
 PKGMAN_InstallQueue := [];      # Queue of dependencies to install
 PKGMAN_MarkedForInstall := [];  # Packages currently halfway through installing
