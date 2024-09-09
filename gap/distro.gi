@@ -81,7 +81,7 @@ function(name, args...)
       Info(InfoPackageManager, 2, "The newest version of package \"", name, "\" is already installed");
       return PKGMAN_CheckPackage(current.InstallationPath);
     elif CompareVersionNumbers(newest.Version, current.Version) then
-      q := "Package \"{}\" version '{}' is installed, but {} is available. Install it?";
+      q := "Package \"{}\" version {} is installed, but {} is available. Install it?";
       q := StringFormatted(q, name, current.Version, newest.Version);
       if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
         return UpdatePackage(name, interactive);
