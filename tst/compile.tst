@@ -55,7 +55,8 @@ gap> dir := PackageInfo("example")[1].InstallationPath;;
 gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
 true
 gap> PKGMAN_CompileDir(dir);
-#I  Compilation failed for package 'Example' (package may still be usable)
+#I  Compilation failed for package 'Example'
+#I  (package may still be usable)
 false
 
 # Missing BuildPackages script
