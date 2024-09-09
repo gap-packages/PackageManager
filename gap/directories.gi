@@ -100,6 +100,13 @@ function(dir)
   return true;
 end);
 
+InstallGlobalFunction(PKGMAN_RemoveDirOptional,
+function(dir)
+  if ValueOption("keepDirectory") <> true then
+    PKGMAN_RemoveDir(dir);
+  fi;
+end);
+
 InstallGlobalFunction(PKGMAN_RemoveDir,
 function(dir)
   # this 'if' statement is a paranoid check - it should always be true

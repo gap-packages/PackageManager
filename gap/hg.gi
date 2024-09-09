@@ -66,18 +66,14 @@ function(url, args...)
   info := Filename(Directory(dir), "PackageInfo.g");
   if not IsReadableFile(info) then
     Info(InfoPackageManager, 1, "Could not find PackageInfo.g");
-    if ValueOption("keepDirectory") <> true then
-      PKGMAN_RemoveDir(dir);
-    fi;
+    PKGMAN_RemoveDirOptional(dir);
     return false;
   fi;
 
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", name);
-    if ValueOption("keepDirectory") <> true then
-      PKGMAN_RemoveDir(dir);
-    fi;
+    PKGMAN_RemoveDirOptional(dir);
     return false;
   fi;
 

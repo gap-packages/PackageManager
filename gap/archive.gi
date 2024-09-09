@@ -1,7 +1,7 @@
 InstallGlobalFunction(InstallPackageFromArchive,
 function(url)
-  local get, user_pkg_dir, url_parts, filename, path, tar, options, exec,
-  files, topdir, dir, movedname;
+  local get, user_pkg_dir, url_parts, filename, path, exec, topdir, dir,
+        movedname;
 
   # Download archive
   Info(InfoPackageManager, 3, "Downloading archive from URL ", url, " ...");
@@ -18,27 +18,11 @@ function(url)
   FileString(path, get.result);
   Info(InfoPackageManager, 2, "Saved archive to ", path);
 
-  # Check which version of tar we are using
-  tar := PKGMAN_Exec(".", "tar", "--version");
-  if StartsWith(tar.output, "tar (GNU tar)") then
-    options := "--warning=none";
-  else
-    options := "";
-  fi;
-
-  # Check contents
-  exec := PKGMAN_Exec(".", "tar", options, "-tf", path);
-  if exec.code <> 0 then
-    Info(InfoPackageManager, 1, "Could not inspect tarball contents");
+  # Find the name of the directory in the archive
+  topdir := PKGMAN_TarTopDirectory(path);
+  if topdir = fail then
     return false;
   fi;
-  files := SplitString(exec.output, "", "\n");
-  topdir := Set(files, f -> SplitString(f, "/")[1]);
-  if Length(topdir) <> 1 then
-    Info(InfoPackageManager, 1, "Archive should contain 1 directory (not ", Length(topdir), ")");
-    return false;
-  fi;
-  topdir := topdir[1];
 
   # Check availability of target location
   dir := Filename(Directory(user_pkg_dir), topdir);
@@ -70,20 +54,45 @@ function(url)
   # Install dependencies
   if PKGMAN_InstallDependencies(dir) <> true then
     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", topdir);
-    if ValueOption("keepDirectory") <> true then
-      PKGMAN_RemoveDir(dir);
-    fi;
+    PKGMAN_RemoveDirOptional(dir);
     return false;
   fi;
 
   # Check validity
   if PKGMAN_CheckPackage(dir) = false then
-    if ValueOption("keepDirectory") <> true then
-      PKGMAN_RemoveDir(dir);
-    fi;
+    PKGMAN_RemoveDirOptional(dir);
     return false;
   fi;
-  PKGMAN_RefreshPackageInfo();
 
+  PKGMAN_RefreshPackageInfo();
   return true;
+end);
+
+InstallGlobalFunction(PKGMAN_TarTopDirectory,
+function(path)
+  local tar, options, exec, files, topdir;
+  # Check which version of tar we are using
+  tar := PKGMAN_Exec(".", "tar", "--version");
+  if StartsWith(tar.output, "tar (GNU tar)") then
+    options := "--warning=none";
+  else
+    options := "";
+  fi;
+
+  # Check contents
+  exec := PKGMAN_Exec(".", "tar", options, "-tf", path);
+  if exec.code <> 0 then
+    Info(InfoPackageManager, 1, "Could not inspect tarball contents");
+    return fail;
+  fi;
+
+  # Expect to find a single directory and nothing else
+  files := SplitString(exec.output, "", "\n");
+  topdir := Set(files, f -> SplitString(f, "/")[1]);
+  if Length(topdir) <> 1 then
+    Info(InfoPackageManager, 1, "Archive should contain 1 directory (not ", Length(topdir), ")");
+    return fail;
+  fi;
+
+  return topdir[1];
 end);
