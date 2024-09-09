@@ -94,8 +94,7 @@ function(dir)
     return false;
   elif Length(DirectoryContents(dir)) > 2 then
     Info(InfoPackageManager, 1, "Package already installed at target location");
-    Info(InfoPackageManager, 2,
-         "Target directory ", dir, " exists and is non-empty");
+    Info(InfoPackageManager, 2, "Target directory ", dir, " exists and is non-empty");
     return false;
   fi;
   return true;

@@ -33,8 +33,7 @@ function(dir)
   # Note: this is mainly for installing Semigroups from GitHub
   prerequisites := Filename(Directory(dir), "prerequisites.sh");
   if IsReadableFile(prerequisites) then
-    Info(InfoPackageManager, 3,
-         "Running prerequisites.sh for ", info.PackageName, "...");
+    Info(InfoPackageManager, 3, "Running prerequisites.sh for ", info.PackageName, "...");
     exec := PKGMAN_Exec(dir, prerequisites);
   fi;
 
@@ -60,10 +59,8 @@ function(dir)
   if exec = fail or
       exec.code <> 0 or
       PositionSublist(exec.output, "Failed to build") <> fail then
-    Info(InfoPackageManager, 1,
-         "Compilation failed for package '",
-         info.PackageName,
-         "' (package may still be usable)");
+    Info(InfoPackageManager, 1, "Compilation failed for package '", info.PackageName, "'");
+    Info(InfoPackageManager, 1, "(package may still be usable)");
     Info(InfoPackageManager, 2, exec.output);
     return false;
   else

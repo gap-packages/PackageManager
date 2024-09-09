@@ -37,8 +37,7 @@ function(name, args...)
     # An info message has already been printed.
     return false;
   elif not IsBound(urls.(name)) then
-    Info(InfoPackageManager, 1,
-         "Package \"", name, "\" not found in package list");
+    Info(InfoPackageManager, 1, "Package \"", name, "\" not found in package list");
     return false;
   fi;
 
@@ -49,8 +48,7 @@ function(name, args...)
     current := info[1];  # Highest-priority installation in user pkg directory
     if version <> true and
         CompareVersionNumbers(current.Version, version) then
-      Info(InfoPackageManager, 2, "Version ", current.Version,
-           " of package \"", name, "\" is already installed");
+      Info(InfoPackageManager, 2, "Version ", current.Version, " of package \"", name, "\" is already installed");
       return PKGMAN_CheckPackage(current.InstallationPath);
     fi;
 
@@ -75,20 +73,16 @@ function(name, args...)
         # Updating to the newest version will satisfy the version condition.
         return UpdatePackage(name, interactive);
       else
-        Info(InfoPackageManager, 1, "Version \"", version, "\" of package \"",
-             name, "\" cannot be satisfied");
-        Info(InfoPackageManager, 2,
-             "The newest version available is ", newest.Version);
+        Info(InfoPackageManager, 1, "Version \"", version, "\" of package \"", name, "\" cannot be satisfied");
+        Info(InfoPackageManager, 2, "The newest version available is ", newest.Version);
         return false;
       fi;
     elif CompareVersionNumbers(newest.Version, current.Version, "equal") then
-      Info(InfoPackageManager, 2, "The newest version of package \"", name,
-           "\" is already installed");
+      Info(InfoPackageManager, 2, "The newest version of package \"", name, "\" is already installed");
       return PKGMAN_CheckPackage(current.InstallationPath);
     elif CompareVersionNumbers(newest.Version, current.Version) then
-      q := Concatenation("Package \"", name, "\" version ", current.Version,
-                         " is installed, but ", newest.Version,
-                         " is available. Install it?");
+      q := "Package '{}' version '{}' is installed, but '{}' is available. Install it?";
+      q := StringFormatted(q, name, current.Version, newest.Version);
       if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
         return UpdatePackage(name, interactive);
       else

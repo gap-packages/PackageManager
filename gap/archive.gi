@@ -35,8 +35,7 @@ function(url)
   files := SplitString(exec.output, "", "\n");
   topdir := Set(files, f -> SplitString(f, "/")[1]);
   if Length(topdir) <> 1 then
-    Info(InfoPackageManager, 1,
-         "Archive should contain 1 directory (not ", Length(topdir), ")");
+    Info(InfoPackageManager, 1, "Archive should contain 1 directory (not ", Length(topdir), ")");
     return false;
   fi;
   topdir := topdir[1];

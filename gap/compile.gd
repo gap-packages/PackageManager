@@ -33,5 +33,4 @@ DeclareGlobalFunction("CompilePackage");
 DeclareGlobalFunction("PKGMAN_CompileDir");
 
 PKGMAN_BuildPackagesScript :=
-  Filename(DirectoriesPackageLibrary("PackageManager", "etc"),
-           "BuildPackages.sh");
+  Filename(DirectoriesPackageLibrary("PackageManager", "etc"), "BuildPackages.sh");
