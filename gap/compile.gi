@@ -8,7 +8,6 @@ function(name)
   fi;
 
   # Locate the package
-  name := LowercaseString(name);
   info := PKGMAN_UserPackageInfo(name : warnIfNone, warnIfMultiple);
 
   # Package not installed
@@ -22,7 +21,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_CompileDir,
 function(dir)
-  local prerequisites, exec, pkg_dir, scr, root, info;
+  local info, prerequisites, exec, pkg_dir, gap_root;
 
   info := PKGMAN_GetPackageInfo(dir);
   if info = fail then
@@ -39,32 +38,27 @@ function(dir)
 
   # Check requirements, and prepare command
   pkg_dir := Filename(Directory(dir), "..");
-  scr := PKGMAN_Sysinfo;
-  if scr = fail then
-    Info(InfoPackageManager, 1, "No sysinfo.gap found");
+  gap_root := PKGMAN_GapRootDir();
+  if gap_root = fail then
     return false;
   fi;
-  root := scr{[1 .. Length(scr) - Length("/sysinfo.gap")]};
 
   # Is the compilation script available?
-  if not (IsString(PKGMAN_BuildPackagesScript)
-          and IsReadableFile(PKGMAN_BuildPackagesScript)) then
+  if not (IsString(PKGMAN_BuildPackagesScript) and IsReadableFile(PKGMAN_BuildPackagesScript)) then
     Info(InfoPackageManager, 1, "Compilation script not found");
     return false;
   fi;
 
   # Call the script
   Info(InfoPackageManager, 3, "Running compilation script on ", dir, " ...");
-  exec := PKGMAN_Exec(pkg_dir, PKGMAN_BuildPackagesScript, root, dir);
-  if exec = fail or
-      exec.code <> 0 or
-      PositionSublist(exec.output, "Failed to build") <> fail then
+  exec := PKGMAN_Exec(pkg_dir, PKGMAN_BuildPackagesScript, gap_root, dir);
+  if exec = fail or exec.code <> 0 or PositionSublist(exec.output, "Failed to build") <> fail then
     Info(InfoPackageManager, 1, "Compilation failed for package '", info.PackageName, "'");
     Info(InfoPackageManager, 1, "(package may still be usable)");
-    Info(InfoPackageManager, 2, exec.output);
+    PKGMAN_InfoWithIndent(2, exec.output, 2);
     return false;
   else
-    Info(InfoPackageManager, 3, exec.output);
+    PKGMAN_InfoWithIndent(3, exec.output, 2);
   fi;
   Info(InfoPackageManager, 4, "Compilation was successful");
   return true;

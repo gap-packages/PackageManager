@@ -116,3 +116,14 @@ function(dir)
     PKGMAN_RefreshPackageInfo();
   fi;
 end);
+
+InstallGlobalFunction(PKGMAN_GapRootDir,
+function()
+  local sysinfo;
+  sysinfo := PKGMAN_Sysinfo;
+  if sysinfo = fail then
+    Info(InfoPackageManager, 1, "No sysinfo.gap found");
+    return fail;
+  fi;
+  return sysinfo{[1 .. Length(sysinfo) - Length("/sysinfo.gap")]};
+end);
