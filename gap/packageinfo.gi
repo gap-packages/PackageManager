@@ -1,6 +1,6 @@
 InstallGlobalFunction(InstallPackageFromInfo,
 function(info, version...)
-  local formats, format, url;
+  local equal, formats, format, url;
 
   # Check input
   if not (IsString(info) or IsRecord(info)) then
@@ -16,13 +16,19 @@ function(info, version...)
   fi;
 
   # Check the version condition.
-  if Length(version) = 1 and IsString(version[1])
-      and not CompareVersionNumbers(info.Version, version[1]) then
-    Info(InfoPackageManager, 1, "Version \"", version[1], "\" of package \"",
-         info.PackageName, "\" cannot be satisfied");
-    Info(InfoPackageManager, 2,
-         "The newest version available is ", info.Version);
-    return false;
+  if Length(version) = 1 and IsString(version[1]) then
+    if StartsWith(version[1], "=" ) then
+      equal:= "equal";
+    else
+      equal:= "";
+    fi;
+    if not CompareVersionNumbers(info.Version, version[1], equal) then
+      Info(InfoPackageManager, 1, "Version \"", version[1], "\" of package \"",
+           info.PackageName, "\" cannot be satisfied");
+      Info(InfoPackageManager, 2,
+           "The newest version available is ", info.Version);
+      return false;
+    fi;
   fi;
 
   # Read the information we want from it
