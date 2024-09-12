@@ -55,7 +55,9 @@ function(dir)
   if exec = fail or exec.code <> 0 or PositionSublist(exec.output, "Failed to build") <> fail then
     Info(InfoPackageManager, 1, "Compilation failed for package '", info.PackageName, "'");
     Info(InfoPackageManager, 1, "(package may still be usable)");
-    PKGMAN_InfoWithIndent(2, exec.output, 2);
+    if exec <> fail then
+      PKGMAN_InfoWithIndent(2, exec.output, 2);
+    fi;
     return false;
   else
     PKGMAN_InfoWithIndent(3, exec.output, 2);

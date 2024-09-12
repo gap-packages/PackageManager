@@ -5,7 +5,7 @@ false
 
 # Try to compile something that's not there at all
 gap> CompilePackage("madeUpPackage");
-#I  Package "madeuppackage" not installed in user package directory
+#I  Package "madeUpPackage" not installed in user package directory
 false
 
 # Check package can be recompiled and removed

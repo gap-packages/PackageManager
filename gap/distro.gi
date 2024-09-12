@@ -1,6 +1,6 @@
 InstallGlobalFunction(InstallPackageFromName,
 function(name, args...)
-  local version, interactive, urls, info, current, dirs, vc, q, newest;
+  local version, interactive, equal, urls, info, current, dirs, vc, q, newest;
 
   # Handle version condition and interactivity
   version := true;
@@ -20,6 +20,11 @@ function(name, args...)
   elif Length(args) = 2 then
     version := args[1];
     interactive := args[2];
+  fi;
+  if IsString(version) and StartsWith(version, "=") then
+    equal := "equal";
+  else
+    equal := "";
   fi;
 
   # Check arguments
@@ -47,7 +52,7 @@ function(name, args...)
     # Does the installed version already satisfy the prescribed version?
     current := info[1];  # Highest-priority installation in user pkg directory
     if version <> true and
-        CompareVersionNumbers(current.Version, version) then
+        CompareVersionNumbers(current.Version, version, equal) then
       Info(InfoPackageManager, 2, "Version ", current.Version, " of package \"", name, "\" is already installed");
       return PKGMAN_CheckPackage(current.InstallationPath);
     fi;
@@ -69,7 +74,7 @@ function(name, args...)
     newest  := PKGMAN_DownloadPackageInfo(urls.(name));
     if version <> true then
       # Update or give up, but do not ask questions.
-      if CompareVersionNumbers(newest.Version, version) then
+      if CompareVersionNumbers(newest.Version, version, equal) then
         # Updating to the newest version will satisfy the version condition.
         return UpdatePackage(name, interactive);
       else
@@ -162,6 +167,8 @@ function(dir)
            PositionProperty(PKGMAN_MarkedForInstall,
                             x -> x[1] = dep[1]
                                  and CompareVersionNumbers(x[2], dep[2]))
+#TODO: dep[2] may start with "="
+#      (this does not happen for the currently distributed packages)
            <> fail;
     Info(InfoPackageManager, 3, "  ", dep[1], " ", dep[2], ": ", got);
     if not got then
