@@ -5,22 +5,8 @@
 # automatically installing dependencies.
 #
 
-#! @Description
-#!   Attempts to download and install a package given only its name.  Returns
-#!   <K>false</K> if something went wrong, and <K>true</K> otherwise.
-#!
-#!   Certain decisions, such as installing newer versions of packages, will be
-#!   confirmed by the user via an interactive shell &ndash; to avoid this
-#!   interactivity and use sane defaults instead, the optional argument
-#!   <A>interactive</A> can be set to <K>false</K>.
-#!
-#!   A required version can also be specified using the optional argument
-#!   <A>version</A>.  It works as described in the <Ref Func="InstallPackage" />
-#!   function.
-#! @Arguments name[, version][, interactive]
-#! @Returns
-#!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("InstallPackageFromName");
+#! @Chapter Commands
+#! @Section Main commands
 
 #! @Description
 #!   Attempts to download and install the latest versions of all packages
@@ -40,6 +26,7 @@ DeclareGlobalFunction("InstallPackageFromName");
 #!   <K>true</K> or <K>false</K>
 DeclareGlobalFunction("InstallRequiredPackages");
 
+DeclareGlobalFunction("InstallPackageFromName");
 DeclareGlobalFunction("GetPackageURLs");
 DeclareGlobalFunction("PKGMAN_InstallDependencies");
 

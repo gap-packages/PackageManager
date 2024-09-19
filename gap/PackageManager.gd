@@ -4,8 +4,7 @@
 # Declarations
 #
 #! @Chapter Commands
-
-#! @Section Installing and updating packages
+#! @Section Main commands
 
 #! @Description
 #!   Attempts to download and install a package.  The argument <A>string</A>
@@ -106,25 +105,6 @@ DeclareGlobalFunction("InstallPackage");
 DeclareGlobalFunction("UpdatePackage");
 
 #! @Description
-#!   Info class for the <Package>PackageManager</Package> package.  Set this to
-#!   the following levels for different levels of information:
-#!     * 0 - No messages
-#!     * 1 - Problems only: messages describing what went wrong, with no
-#!           messages if an operation is successful
-#!     * 2 - Directories and versions: also displays informations about package
-#!           versions and installation directories
-#!     * 3 - Progress: also shows step-by-step progress of operations
-#!     * 4 - All: includes extra information such as whether curlInterface is
-#!           being used, and package info validation
-#!
-#!   Set this using, for example `SetInfoLevel(InfoPackageManager, 1)`.
-#!   Default value is 3.
-DeclareInfoClass("InfoPackageManager");
-SetInfoLevel(InfoPackageManager, 3);
-
-#! @Section Removing packages
-
-#! @Description
 #!   Attempts to remove an installed package using its name.  The first argument
 #!   <A>name</A> should be a string specifying the name of a package installed
 #!   in the user &GAP; root,
@@ -146,6 +126,25 @@ SetInfoLevel(InfoPackageManager, 3);
 #! @Returns
 #!   <K>true</K> or <K>false</K>
 DeclareGlobalFunction("RemovePackage");
+
+#! @Section Info warnings
+
+#! @Description
+#!   Info class for the <Package>PackageManager</Package> package.  Set this to
+#!   the following levels for different levels of information:
+#!     * 0 - No messages
+#!     * 1 - Problems only: messages describing what went wrong, with no
+#!           messages if an operation is successful
+#!     * 2 - Directories and versions: also displays informations about package
+#!           versions and installation directories
+#!     * 3 - Progress: also shows step-by-step progress of operations
+#!     * 4 - All: includes extra information such as whether curlInterface is
+#!           being used, and package info validation
+#!
+#!   Set this using, for example `SetInfoLevel(InfoPackageManager, 1)`.
+#!   Default value is 3.
+DeclareInfoClass("InfoPackageManager");
+SetInfoLevel(InfoPackageManager, 3);
 
 DeclareGlobalFunction("PKGMAN_CheckPackage");
 DeclareGlobalFunction("PKGMAN_Exec");

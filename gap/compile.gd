@@ -1,5 +1,4 @@
-#! @Chapter Compilation
-
+#! @Chapter Commands
 #! @Section Manual compilation
 
 #! @Description
