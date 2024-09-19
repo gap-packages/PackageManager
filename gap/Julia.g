@@ -7,16 +7,20 @@
 # (Note that Downloads.jl gets loaded by GAP.jl.)
 # For that, we replace the code of `PKGMAN_DownloadURL`.
 
-if IsBound(Julia) and JuliaImportPackage("Downloads") = true then
+if IsBound(Julia) then
   MakeReadWriteGlobal("PKGMAN_DownloadURL");
   UnbindGlobal("PKGMAN_DownloadURL");
   BindGlobal("PKGMAN_DownloadURL", function(url)
     local res;
 
-    res := CallJuliaFunctionWithCatch(Julia.Downloads.download,
-               [Julia.string(url), Julia.IOBuffer()]);
-    if res.ok then
-      res := Julia.String(Julia.("take!")(res.value));
+    res := Julia.GAP.call_with_catch(
+             Julia.GAP.UnwrapJuliaFunc(Julia.GAP.kwarg_wrapper),
+               GAPToJulia([Julia.GAP.Packages.Downloads.download,
+                   [Julia.string(url), Julia.IOBuffer()],
+                   rec(downloader:= Julia.getindex(
+                         Julia.GAP.Packages.DOWNLOAD_HELPER))]));
+    if res[1] = true then
+      res := Julia.String(Julia.take\!(res[2]));
       return rec(success := true, result := JuliaToGAP(IsString, res));
     else
       return rec(success := false);
