@@ -6,10 +6,10 @@
                    [1X Easily download and install [5XGAP[105X packages [101X
   
   
-                                      1.5
+                                      1.6
   
   
-                                 30 August 2024
+                               19 September 2024
   
   
                                  Michael Young
@@ -37,18 +37,15 @@
     1.2 [33X[0;0YWhat does the [5XPackageManager[105X package not do?[133X
     1.3 [33X[0;0YA quick example[133X
   2 [33X[0;0YCommands[133X
-    2.1 [33X[0;0YInstalling and updating packages[133X
+    2.1 [33X[0;0YMain commands[133X
       2.1-1 InstallPackage
       2.1-2 UpdatePackage
-      2.1-3 CompilePackage
-      2.1-4 InfoPackageManager
-      2.1-5 InstallPackageFromName
-      2.1-6 InstallPackageFromInfo
-      2.1-7 InstallPackageFromArchive
-      2.1-8 InstallPackageFromGit
-      2.1-9 InstallRequiredPackages
-    2.2 [33X[0;0YRemoving packages[133X
-      2.2-1 RemovePackage
+      2.1-3 RemovePackage
+      2.1-4 InstallRequiredPackages
+    2.2 [33X[0;0YInfo warnings[133X
+      2.2-1 InfoPackageManager
+    2.3 [33X[0;0YManual compilation[133X
+      2.3-1 CompilePackage
   
   
   [32X

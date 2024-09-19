@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "1.5",
-Date := "30/08/2024",  # dd/mm/yyyy format
+Version := "1.6",
+Date := "19/09/2024",  # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -84,13 +84,15 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">= 4.12",
   NeededOtherPackages := [],
-  SuggestedOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ], [ "curlInterface", ">= 2.1.0" ] ],
+  SuggestedOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ],
+                              [ "AutoDoc", ">= 2023.06.19" ],
+                              [ "curlInterface", ">= 2.1.0" ] ],
   ExternalConditions := [ ],
 ),
 
 Extensions := [
     rec( needed := [ [ "JuliaInterface", ">= 0.9.3" ] ],
-         filename := "gap/Download.g" ),
+         filename := "gap/Julia.g" ),
 ],
 
 AvailabilityTest := function()
