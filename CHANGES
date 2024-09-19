@@ -1,5 +1,12 @@
 This file describes changes in the PackageManager package.
 
+1.6 (2024-09-19)
+  - Deprecate functions beginning "InstallPackageFrom", instead preferring
+    InstallPackage as a single entry point.
+  - Make version ranges for InstallPackage more consistent
+  - Improve Julia code for downloading files
+  - Widespread restructuring of code to aid maintainability
+
 1.5 (2024-08-30)
   - Add 'keepDirectory' option to avoid deleting directories on failure
   - Require GAP version 4.12 or later
