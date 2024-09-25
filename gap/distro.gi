@@ -101,15 +101,7 @@ function(name, args...)
 end);
 
 InstallGlobalFunction(InstallRequiredPackages,
-function()
-  local pkg;
-  for pkg in List(GAPInfo.Dependencies.NeededOtherPackages, l -> l[1]) do
-    if not InstallPackageFromName(pkg) then
-      return false;
-    fi;
-  od;
-  return true;
-end);
+{} -> ForAll(GAPInfo.Dependencies.NeededOtherPackages, p -> InstallPackageFromName(p[1])));
 
 InstallGlobalFunction(GetPackageURLs,
 function()
@@ -118,8 +110,7 @@ function()
   get := PKGMAN_DownloadURL(PKGMAN_PackageInfoURLList);
   urls := rec(success := false);
   if not get.success then
-    Info(InfoPackageManager, 1,
-         "PackageManager: GetPackageURLs: could not contact server");
+    Info(InfoPackageManager, 1, "Could not contact server");
     return urls;
   fi;
   for line in SplitString(get.result, "\n") do
@@ -132,8 +123,7 @@ function()
       if Length(line) > 74 then  # don't show too much
         line := Concatenation(line{[1 .. 71]}, "...");
       fi;
-      Info(InfoPackageManager, 1,
-           "PackageManager: GetPackageURLs: bad line:\n#I  ", line);
+      Info(InfoPackageManager, 1, "Bad line in package URLs list:\n#I  ", line);
       return urls;
     fi;
     urls.(LowercaseString(items[1])) := items[Length(items)];
@@ -165,11 +155,10 @@ function(dir)
     # Do we already have it?
     got := TestPackageAvailability(dep[1], dep[2]) <> fail or
            PositionProperty(PKGMAN_MarkedForInstall,
-                            x -> x[1] = dep[1]
-                                 and CompareVersionNumbers(x[2], dep[2]))
-#TODO: dep[2] may start with "="
-#      (this does not happen for the currently distributed packages)
+                            x -> x[1] = dep[1] and CompareVersionNumbers(x[2], dep[2]))
            <> fail;
+    # TODO: dep[2] may start with "="
+    # (this does not happen for the currently distributed packages)
     Info(InfoPackageManager, 3, "  ", dep[1], " ", dep[2], ": ", got);
     if not got then
       Add(to_install, dep);

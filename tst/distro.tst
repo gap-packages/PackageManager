@@ -63,7 +63,7 @@ true
 
 # Required package number too high
 gap> InstallPackage("format", "9999.0");
-#I  Version "9999.0" of package "FORMAT" cannot be satisfied
+#I  Version 9999.0 of package 'FORMAT' cannot be satisfied
 false
 
 # Fail to install a GAP required package
@@ -80,11 +80,11 @@ gap> GAPInfo.Dependencies := rec(NeededOtherPackages := backup);;
 gap> default_url := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList := "http://www.nothing.rubbish/abc.txt";;
 gap> GetPackageURLs();
-#I  PackageManager: GetPackageURLs: could not contact server
+#I  Could not contact server
 rec( success := false )
 gap> PKGMAN_PackageInfoURLList := "https://www.gap-system.org";;
 gap> GetPackageURLs();
-#I  PackageManager: GetPackageURLs: bad line:
+#I  Bad line in package URLs list:
 #I  <!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta...
 rec( success := false )
 gap> PKGMAN_PackageInfoURLList := default_url;;

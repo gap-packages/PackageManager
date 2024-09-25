@@ -11,8 +11,7 @@ function(url)
   # Try command line tools (wget/curl)
   for tool in PKGMAN_DownloadCmds do
     Info(InfoPackageManager, 4, "Using ", tool[1], " to download...");
-    exec := CallFuncList(PKGMAN_Exec,
-                         Concatenation(["."], [tool[1]], tool[2], [url]));
+    exec := CallFuncList(PKGMAN_Exec, Concatenation(["."], [tool[1]], tool[2], [url]));
     if exec = fail then
       Info(InfoPackageManager, 4, tool[1], " unavailable");
     elif exec.code <> 0 then

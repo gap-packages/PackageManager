@@ -17,16 +17,15 @@ function(info, version...)
 
   # Check the version condition.
   if Length(version) = 1 and IsString(version[1]) then
-    if StartsWith(version[1], "=" ) then
-      equal:= "equal";
+    if StartsWith(version[1], "=") then
+      equal := "equal";
     else
-      equal:= "";
+      equal := "";
     fi;
     if not CompareVersionNumbers(info.Version, version[1], equal) then
-      Info(InfoPackageManager, 1, "Version \"", version[1], "\" of package \"",
-           info.PackageName, "\" cannot be satisfied");
-      Info(InfoPackageManager, 2,
-           "The newest version available is ", info.Version);
+      Info(InfoPackageManager, 1,
+           StringFormatted("Version {} of package '{}' cannot be satisfied", version[1], info.PackageName));
+      Info(InfoPackageManager, 2, "The newest version available is ", info.Version);
       return false;
     fi;
   fi;
@@ -35,8 +34,7 @@ function(info, version...)
   formats := SplitString(info.ArchiveFormats, "", ", \n\r\t");
   format := First(PKGMAN_ArchiveFormats, f -> f in formats);
   if format = fail then
-    Info(InfoPackageManager, 1,
-         "No supported archive formats available, so could not install");
+    Info(InfoPackageManager, 1, "No supported archive formats available, so could not install");
     Info(InfoPackageManager, 1, "Only ", formats, " available");
     return false;
   fi;

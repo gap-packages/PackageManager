@@ -12,12 +12,11 @@ if IsBound(Julia) then
   UnbindGlobal("PKGMAN_DownloadURL");
   BindGlobal("PKGMAN_DownloadURL", function(url)
     local res;
-
     res := Julia.GAP.call_with_catch(
              Julia.GAP.UnwrapJuliaFunc(Julia.GAP.kwarg_wrapper),
                GAPToJulia([Julia.GAP.Packages.Downloads.download,
                    [Julia.string(url), Julia.IOBuffer()],
-                   rec(downloader:= Julia.getindex(
+                   rec(downloader := Julia.getindex(
                          Julia.GAP.Packages.DOWNLOAD_HELPER))]));
     if res[1] = true then
       res := Julia.String(Julia.take\!(res[2]));

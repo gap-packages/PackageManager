@@ -7,5 +7,5 @@ DeclareGlobalFunction("PKGMAN_RemoveDirOptional");
 DeclareGlobalFunction("PKGMAN_RemoveDir");
 DeclareGlobalFunction("PKGMAN_GapRootDir");
 
-PKGMAN_CustomPackageDir := "";
+PKGMAN_CustomPackageDir := "";  # Empty indicates no custom directory
 PKGMAN_Sysinfo := Filename(DirectoriesLibrary(""), "sysinfo.gap");

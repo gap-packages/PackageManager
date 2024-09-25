@@ -65,14 +65,13 @@ function(pkgpath)
     return fail;
   fi;
   if not parent in GAPInfo.RootPaths then
-    # Append the new root paths.
+    # Append the new root paths
     GAPInfo.RootPaths := Immutable(Concatenation([parent], GAPInfo.RootPaths));
   fi;
-  # Clear the cache.
+  # Clear the cache
   GAPInfo.DirectoriesLibrary := AtomicRecord(rec());
-  # Reread the package information.
-  if IsBound(GAPInfo.PackagesInfoInitialized) and
-      GAPInfo.PackagesInfoInitialized = true then
+  # Reread the package information
+  if IsBound(GAPInfo.PackagesInfoInitialized) and GAPInfo.PackagesInfoInitialized then
     GAPInfo.PackagesInfoInitialized := false;
     InitializePackagesInfoRecords();
   fi;

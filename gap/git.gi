@@ -37,24 +37,26 @@ function(url, args...)
   dirs := List(info, i -> ShallowCopy(i.InstallationPath));
   repo := Filename(List(dirs, Directory), ".git");
   if repo <> fail then  # TODO: check it's the same remote?
-    q := Concatenation("Package \"", name,
-                       "\" already installed via git. Update it?");
+    q := Concatenation("Package \"", name, "\" already installed via git. Update it?");
     if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
       return UpdatePackage(name, interactive);
     fi;
   fi;
 
+  # Check for a valid location
   if not PKGMAN_IsValidTargetDir(dir) then
     return false;
   fi;
-  Info(InfoPackageManager, 2, "Cloning to ", dir, " ...");
 
+  # Do the cloning
+  Info(InfoPackageManager, 2, "Cloning to ", dir, " ...");
   if branch = fail then
     exec := PKGMAN_Exec(".", "git", "clone", url, dir);
   else
     exec := PKGMAN_Exec(".", "git", "clone", url, dir, "-b", branch);
   fi;
 
+  # Was the download successful?
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Cloning unsuccessful");
     return false;
@@ -86,10 +88,9 @@ function(url)
   local parts, n;
   parts := SplitString(url, "", "/:. \n\t\r");
   n := Length(parts);
-  if n <> 0 and parts[n] <> "git" then
+  if n > 0 and parts[n] <> "git" then
     return parts[n];
-  fi;
-  if parts[n] = "git" and n > 1 then
+  elif n > 1 and parts[n] = "git" then
     return parts[n - 1];
   fi;
   return fail;

@@ -1,8 +1,3 @@
-InstallGlobalFunction(PKGMAN_FlushOutput,
-function()
-    Print("\c");
-end);
-
 InstallGlobalFunction(PKGMAN_AskYesNoQuestion,
 function(question...)
   local stream, default, ans;
@@ -42,4 +37,9 @@ function(question...)
 
   CloseStream(stream);
   return ans;
+end);
+
+InstallGlobalFunction(PKGMAN_FlushOutput,
+function()
+    Print("\c");
 end);
