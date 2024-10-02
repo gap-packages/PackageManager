@@ -1,3 +1,4 @@
+DeclareGlobalFunction("PKGMAN_DownloadUrlToTempFile");
 DeclareGlobalFunction("PKGMAN_DownloadURL");
 DeclareGlobalFunction("PKGMAN_DownloadPackageInfo");
 

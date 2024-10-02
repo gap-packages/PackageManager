@@ -1,3 +1,21 @@
+InstallGlobalFunction(PKGMAN_DownloadUrlToTempFile,
+function(url)
+  local get, url_parts, filename, path;
+  Info(InfoPackageManager, 3, "Downloading archive from URL ", url, " ...");
+  get := PKGMAN_DownloadURL(url);
+  if get.success <> true then
+    Info(InfoPackageManager, 1, "Could not download from ", url);
+    return fail;
+  fi;
+  url_parts := SplitString(url, "/");
+  filename := url_parts[Length(url_parts)];
+  path := Filename(DirectoryTemporary(), filename);
+  path := Concatenation(path, ".pkgman");  # TEMP: hack till GAP #4110 is merged
+  FileString(path, get.result);
+  Info(InfoPackageManager, 2, "Saved archive to ", path);
+  return path;
+end);
+
 InstallGlobalFunction(PKGMAN_DownloadURL,
 function(url)
   local tool, exec;
