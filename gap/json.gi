@@ -8,7 +8,8 @@
 InstallGlobalFunction(PKGMAN_JsonToGap,
 function(string)
   local eat, parseExpectedCharacters, skipAllWhitespace, parseSomething, 
-        parseObject, parseList, parseString, parseBoolean, pos;
+        parseObject, parseList, parseString, parseEscapeCharacter, parseBoolean,
+        pos;
   
   eat := function(expected)
     parseExpectedCharacters(expected);
@@ -88,21 +89,7 @@ function(string)
     codepoints := [];
     while string[pos + 1] <> '"' do
       if string[pos + 1] = '\\' then
-        if string[pos + 2] = 'n' then
-          Add(codepoints, IntChar('\n'));
-          pos := pos + 2;
-        elif string[pos + 2] = '\\' then
-          Add(codepoints, IntChar('\\'));
-          pos := pos + 2;
-        elif string[pos + 2] = '"' then
-          Add(codepoints, IntChar('"'));
-          pos := pos + 2;
-        elif string[pos + 2] = 'u' then
-          Add(codepoints, IntHexString(string{[pos + 3 .. pos + 6]}));
-          pos := pos + 6;
-        else
-          ErrorNoReturn("unknown escape sequence: \\", string[pos + 2]);
-        fi;
+        Add(codepoints, parseEscapeCharacter());
       else
         Add(codepoints, IntChar(string[pos + 1]));
         pos := pos + 1;
@@ -110,6 +97,26 @@ function(string)
     od;
     eat("\"");
     return Encode(Unicode(codepoints));
+  end;
+  
+  parseEscapeCharacter := function()
+    local char;
+    if string[pos + 2] = 'n' then
+      char := IntChar('\n');
+      pos := pos + 2;
+    elif string[pos + 2] = '\\' then
+      char := IntChar('\\');
+      pos := pos + 2;
+    elif string[pos + 2] = '"' then
+      char := IntChar('"');
+      pos := pos + 2;
+    elif string[pos + 2] = 'u' then
+      char := IntHexString(string{[pos + 3 .. pos + 6]});
+      pos := pos + 6;
+    else
+      ErrorNoReturn("unknown escape sequence: \\", string[pos + 2]);
+    fi;
+    return char;
   end;
 
   parseBoolean := function()
