@@ -95,9 +95,7 @@ Extensions := [
          filename := "gap/Julia.g" ),
 ],
 
-AvailabilityTest := function()
-        return true;
-    end,
+AvailabilityTest := ReturnTrue,
 
 # This is a limited test suite that doesn't try to build docs,
 # since the GAP Docker images don't have texlive installed.
