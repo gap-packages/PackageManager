@@ -102,7 +102,10 @@ false
 #false
 
 # Installing dependencies
-gap> old_paths := GAPInfo.RootPaths;;
+gap> old_root_paths := GAPInfo.RootPaths;;
+gap> if IsBound(GAPInfo.PackageDirectories) then
+>   old_pkg_dirs := GAPInfo.PackageDirectories;
+> fi;
 gap> dir := PKGMAN_PackageDir();;
 gap> dir := SplitString(dir, "/");;
 gap> Remove(dir) = "pkg";
@@ -110,6 +113,9 @@ true
 gap> dir := JoinStringsWithSeparator(dir, "/");;
 gap> dir := Concatenation(dir, "/");;
 gap> GAPInfo.RootPaths := Immutable([dir]);;
+gap> if IsBound(GAPInfo.PackageDirectories) then
+>   GAPInfo.PackageDirectories := [ ];;
+> fi;
 gap> GAPInfo.DirectoriesLibrary := AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 >   GAPInfo.PackagesInfoInitialized = true then
@@ -128,7 +134,10 @@ gap> ForAll(["corelg", "sla", "quagroup"],
 >           name -> Length(PackageInfo(name)) = 1 or
 >                   IsPackageLoaded(LowercaseString(name)));
 true
-gap> GAPInfo.RootPaths := old_paths;;
+gap> GAPInfo.RootPaths := old_root_paths;;
+gap> if IsBound(GAPInfo.PackageDirectories) then
+>   GAPInfo.PackageDirectories := old_pkg_dirs;;
+> fi;
 gap> GAPInfo.DirectoriesLibrary := AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 >   GAPInfo.PackagesInfoInitialized = true then
