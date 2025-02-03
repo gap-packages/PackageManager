@@ -14,4 +14,5 @@ ReadPackage("PackageManager", "gap/download.gd");
 ReadPackage("PackageManager", "gap/git.gd");
 ReadPackage("PackageManager", "gap/hg.gd");
 ReadPackage("PackageManager", "gap/interactive.gd");
+ReadPackage("PackageManager", "gap/json.gd");
 ReadPackage("PackageManager", "gap/packageinfo.gd");

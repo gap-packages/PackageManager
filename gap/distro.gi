@@ -230,3 +230,16 @@ function(dir)
   Remove(PKGMAN_MarkedForInstall);  # this package
   return true;
 end);
+
+InstallGlobalFunction(PKGMAN_GetPackageDistroJson,
+function()
+  local download, instream, out, json;
+  download := PKGMAN_DownloadURL(PKGMAN_PackageDistroJsonUrl);
+  # TODO: check download.success
+  instream := InputTextString(download.result);;
+  out := PKGMAN_Exec(".", "gunzip" : instream := instream);;
+  # TODO: check out.code
+  json := out.output;
+  # TODO: use this data somehow (json package?)
+  return json;
+end);
