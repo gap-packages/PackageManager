@@ -288,7 +288,10 @@ function(dir, cmd, args...)
   fi;
 
   # Streams
-  instream := InputTextNone();
+  instream := ValueOption("instream");
+  if instream = fail then
+    instream := InputTextNone();
+  fi;
   out := "";
   outstream := OutputTextString(out, true);
 
