@@ -289,10 +289,7 @@ function(dir, cmd, args...)
   fi;
 
   # Streams
-  instream := ValueOption("instream");
-  if instream = fail then
-    instream := InputTextNone();
-  fi;
+  instream := InputTextNone();
   out := "";
   outstream := OutputTextString(out, true);
 
