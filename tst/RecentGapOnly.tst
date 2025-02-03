@@ -153,3 +153,70 @@ gap> Print = oldPrint;
 true
 gap> Print = newPrint;
 false
+
+# Check package can be recompiled and removed
+gap> InstallPackage("example");
+true
+gap> CompilePackage("example");
+true
+gap> RemovePackage("example", false);
+true
+
+# PKGMAN_CompileDir error: no shell
+gap> InstallPackage("example");
+true
+gap> InstallPackage("example");  # latest version already installed
+true
+gap> progs := GAPInfo.DirectoriesPrograms;;
+gap> GAPInfo.DirectoriesPrograms := [];;  # terrible vandalism
+gap> dir := PKGMAN_UserPackageInfo("example")[1].InstallationPath;;
+gap> PKGMAN_CompileDir(dir);
+#I  No shell available called "sh"
+#I  Compilation failed for package 'Example'
+#I  (package may still be usable)
+false
+gap> GAPInfo.DirectoriesPrograms := progs;;
+gap> RemovePackage("example", false);
+true
+
+# PKGMAN_CompileDir error: no etc/BuildPackages.sh
+gap> InstallPackage("example", false);
+true
+gap> sysinfo_scr := PKGMAN_Sysinfo;;
+gap> PKGMAN_Sysinfo := fail;;
+gap> dir := PKGMAN_UserPackageInfo("example")[1].InstallationPath;;
+gap> PKGMAN_CompileDir(dir);
+#I  No sysinfo.gap found
+false
+gap> PKGMAN_Sysinfo := sysinfo_scr;;
+gap> RemovePackage("example", false);
+true
+
+# PKGMAN_CompileDir error: missing source
+gap> InstallPackage("example");
+true
+gap> dir := PKGMAN_UserPackageInfo("example")[1].InstallationPath;;
+gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
+true
+gap> PKGMAN_CompileDir(dir);
+#I  Compilation failed for package 'Example'
+#I  (package may still be usable)
+false
+gap> RemovePackage("example", false);
+true
+
+# Install a package from a git repository, and modify it
+gap> InstallPackage("https://github.com/gap-packages/Example.git");
+true
+gap> dir := First(DirectoryContents(PKGMAN_PackageDir()),
+>                 f -> StartsWith(f, "Example"));;
+gap> dir := Filename(Directory(PKGMAN_PackageDir()), dir);;
+gap> dir <> fail;
+true
+gap> readme := Filename(Directory(dir), "README.md");;
+gap> FileString(readme, "Some change I've made", true);;  # edit file
+gap> UpdatePackage("example");
+#I  Uncommitted changes in git repository
+false
+gap> RemovePackage("example", false);
+true
