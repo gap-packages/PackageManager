@@ -33,7 +33,7 @@ gap> UpdatePackage("transgrp", false);  # also removes old version
 #I  Package already installed at target location
 #I  Appending '.old' to old version directory
 true
-gap> newinfo := PackageInfo("transgrp")[1];;
+gap> newinfo := PKGMAN_UserPackageInfo("transgrp")[1];;
 gap> CompareVersionNumbers(newinfo.Version, ">=3.6.5");
 true
 gap> RemovePackage("transgrp", false);

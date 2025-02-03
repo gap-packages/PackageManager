@@ -29,7 +29,7 @@ gap> InstallPackage("example");  # latest version already installed
 true
 gap> progs := GAPInfo.DirectoriesPrograms;;
 gap> GAPInfo.DirectoriesPrograms := [];;  # terrible vandalism
-gap> dir := PackageInfo("example")[1].InstallationPath;;
+gap> dir := PKGMAN_UserPackageInfo("example")[1].InstallationPath;;
 gap> PKGMAN_CompileDir(dir);
 #I  No shell available called "sh"
 #I  Compilation failed for package 'Example'
@@ -42,7 +42,7 @@ gap> InstallPackage("example", false);
 true
 gap> sysinfo_scr := PKGMAN_Sysinfo;;
 gap> PKGMAN_Sysinfo := fail;;
-gap> dir := PackageInfo("example")[1].InstallationPath;;
+gap> dir := PKGMAN_UserPackageInfo("example")[1].InstallationPath;;
 gap> PKGMAN_CompileDir(dir);
 #I  No sysinfo.gap found
 false
@@ -51,7 +51,7 @@ gap> PKGMAN_Sysinfo := sysinfo_scr;;
 # PKGMAN_CompileDir error: missing source
 gap> InstallPackage("example");
 true
-gap> dir := PackageInfo("example")[1].InstallationPath;;
+gap> dir := PKGMAN_UserPackageInfo("example")[1].InstallationPath;;
 gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
 true
 gap> PKGMAN_CompileDir(dir);
