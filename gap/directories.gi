@@ -56,9 +56,9 @@ function(pkgpath)
 
   if IsBound(ExtendPackageDirectories) then
     # GAP 4.14 or newer
-    parent:= Directory(pkgpath);
+    parent := Directory(pkgpath);
     if not parent in GAPInfo.PackageDirectories then
-      GAPInfo.PackageDirectories:= Concatenation([parent], GAPInfo.PackageDirectories);
+      GAPInfo.PackageDirectories := Concatenation([parent], GAPInfo.PackageDirectories);
     fi;
     if IsBound(GAPInfo.PackagesInfoInitialized) and GAPInfo.PackagesInfoInitialized then
       GAPInfo.PackagesInfoInitialized := false;
