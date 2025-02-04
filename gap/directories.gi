@@ -55,7 +55,7 @@ function(pkgpath)
   local parent;
 
   if IsBound(ExtendPackageDirectories) then
-    # GAP 4.14 or newer
+    # GAP 4.15 or newer
     parent := Directory(pkgpath);
     if not parent in GAPInfo.PackageDirectories then
       GAPInfo.PackageDirectories := Concatenation([parent], GAPInfo.PackageDirectories);
@@ -67,7 +67,7 @@ function(pkgpath)
     return;
   fi;
 
-  # The following code deals with GAP 4.13 or older.
+  # The following code deals with GAP 4.14 or older.
   # Locate the parent directory
   if EndsWith(pkgpath, "/pkg") then
     parent := pkgpath{[1 .. Length(pkgpath) - 3]};
