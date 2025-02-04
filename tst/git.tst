@@ -26,14 +26,16 @@ gap> InstallPackageFromGit("https://github.com/a/b.git", true, "master", "lol");
 Error, requires 1, 2 or 3 arguments (not 4)
 
 # Install a package from a git repository not ending in .git
-gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo", false);
+gap> InstallPackageFromGit("https://github.com/gap-packages/MathInTheMiddle", false);
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
->           f -> StartsWith(f, "RegisterPackageTNUMDemo"));
+>           f -> StartsWith(f, "MathInTheMiddle"));
 true
-gap> InstallPackageFromGit("https://github.com/gap-packages/RegisterPackageTNUMDemo", false);
+gap> InstallPackageFromGit("https://github.com/gap-packages/MathInTheMiddle", false);
 #I  Package already installed at target location
 false
+gap> RemovePackage("MathInTheMiddle", false);
+true
 
 # Repositories that don't contain GAP packages
 gap> InstallPackageFromGit("https://github.com/mtorpey/planets.git", true);

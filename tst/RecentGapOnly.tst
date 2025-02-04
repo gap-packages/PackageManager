@@ -4,11 +4,14 @@ true
 gap> LoadPackage("autodoc", false);
 true
 
-# Fail to build doc but completes installation (assumes GAP is located at ../../..)
+# Fail to build doc and compile but completes installation
+# (assumes GAP is located at ../../..)
 # Prints lots of #E messages in GAP 4.13 and earlier
 gap> InstallPackage("https://github.com/gap-packages/grape.git");
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
+#I  Compilation failed for package 'GRAPE'
+#I  (package may still be usable)
 true
 
 # Interactive tests (via hacking in/out streams)
@@ -219,4 +222,31 @@ gap> UpdatePackage("example");
 #I  Uncommitted changes in git repository
 false
 gap> RemovePackage("example", false);
+true
+
+# Checking package: always compile even when another version is already installed
+gap> InstallPackage("orb");
+true
+gap> InstallPackage("https://github.com/gap-packages/orb.git");
+Extracting manual examples for orb package ...
+11 chapters detected
+Chapter 1 : no examples 
+Chapter 2 : no examples 
+Chapter 3 : extracted 2 examples
+Chapter 4 : no examples 
+Chapter 5 : no examples 
+Chapter 6 : no examples 
+Chapter 7 : extracted 1 examples
+Chapter 8 : no examples 
+Chapter 9 : no examples 
+Chapter 10 : no examples 
+Chapter 11 : no examples 
+true
+gap> git_pkginfo := First(PackageInfo("orb"), p -> EndsWith(p.InstallationPath, "orb/"));;
+gap> "bin" in DirectoryContents(git_pkginfo.InstallationPath);  # check if it has been compiled
+true
+gap> RemoveDirectoryRecursively(git_pkginfo.InstallationPath);  # delete git version
+true
+gap> PKGMAN_RefreshPackageInfo();
+gap> RemovePackage("orb", false);  # delete release version
 true

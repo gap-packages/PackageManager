@@ -228,11 +228,10 @@ function(dir)
     Info(InfoPackageManager, 1, "There may be problems with the package");
   fi;
 
-  # Compile if needed
-  PKGMAN_RefreshPackageInfo();
-  if TestPackageAvailability(info.PackageName, info.Version) = fail then
-    PKGMAN_CompileDir(dir);
-  fi;
+  # Attempt to compile.
+  # This will often be unnecessary, but it's hard to tell whether compilation
+  # has already been done, and recompiling is usually cheap.
+  PKGMAN_CompileDir(dir);
 
   # Redo dependencies if needed
   if TestPackageAvailability(info.PackageName, info.Version) = fail then
