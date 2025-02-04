@@ -51,7 +51,7 @@ function(dir)
 
   # Call the script
   Info(InfoPackageManager, 3, "Running compilation script on ", dir, " ...");
-  exec := PKGMAN_Exec(pkg_dir, PKGMAN_BuildPackagesScript, gap_root, dir);
+  exec := PKGMAN_Exec(".", PKGMAN_BuildPackagesScript, gap_root, dir);
   if exec = fail or exec.code <> 0 or PositionSublist(exec.output, "Failed to build") <> fail then
     Info(InfoPackageManager, 1, "Compilation failed for package '", info.PackageName, "'");
     Info(InfoPackageManager, 1, "(package may still be usable)");
