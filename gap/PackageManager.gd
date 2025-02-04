@@ -20,8 +20,9 @@
 #!   successful, or if this package is already installed,
 #!   <K>true</K> is returned; otherwise, <K>false</K> is returned.
 #!
-#!   By default, packages will be installed in the `pkg` subdirectory of the
-#!   user's home directory, see <Ref BookName="ref" Func="UserHomeExpand"/>.
+#!   By default, packages will be installed in the `pkg` subdirectory of
+#!   <C>GAPInfo.UserGapRoot</C>,
+#!   see <Ref BookName="ref" Sect="GAP Root Directories"/>,
 #!   Note that this location is not the default user pkg location
 #!   on Mac OSX, but it will be created on any system if not already present.
 #!   Note also that starting &GAP; with the `-r` flag will cause all packages in

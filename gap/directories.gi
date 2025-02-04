@@ -18,9 +18,6 @@ end);
 
 InstallGlobalFunction(PKGMAN_SetCustomPackageDir,
 function(dir)
-  if not (EndsWith(dir, "/pkg") or EndsWith(dir, "/pkg/")) then
-    return fail;
-  fi;
   # Set the variable
   PKGMAN_CustomPackageDir := dir;
   # Create the directory if necessary
@@ -56,6 +53,21 @@ end);
 InstallGlobalFunction(PKGMAN_InsertPackageDirectory,
 function(pkgpath)
   local parent;
+
+  if IsBound(ExtendPackageDirectories) then
+    # GAP 4.14 or newer
+    parent:= Directory(pkgpath);
+    if not parent in GAPInfo.PackageDirectories then
+      GAPInfo.PackageDirectories:= Concatenation([parent], GAPInfo.PackageDirectories);
+    fi;
+    if IsBound(GAPInfo.PackagesInfoInitialized) and GAPInfo.PackagesInfoInitialized then
+      GAPInfo.PackagesInfoInitialized := false;
+      InitializePackagesInfoRecords();
+    fi;
+    return;
+  fi;
+
+  # The following code deals with GAP 4.13 or older.
   # Locate the parent directory
   if EndsWith(pkgpath, "/pkg") then
     parent := pkgpath{[1 .. Length(pkgpath) - 3]};

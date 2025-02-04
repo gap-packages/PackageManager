@@ -24,7 +24,3 @@ gap> PKGMAN_CustomPackageDir := "";;
 gap> EndsWith(PKGMAN_PackageDir(), "/.gap/pkg");
 true
 gap> PKGMAN_CustomPackageDir := olddir;;
-gap> PKGMAN_SetCustomPackageDir("/home");  # not ending in pkg
-fail
-gap> PKGMAN_InsertPackageDirectory("/home");  # not ending in pkg
-fail
