@@ -1,17 +1,17 @@
 name: PackageManager
-version: "1.6"
+version: "1.6.1"
 license: "GPL-2.0-or-later"
-date: 2024-09-19
+date: 2025-02-05
 description: |
     Easily download and install GAP packages
 
 authors:
     - name: Michael Young
-      url: https://mct25.host.cs.st-andrews.ac.uk/
+      url: https://myoung.uk/work
 
 maintainers:
     - name: Michael Young
-      url: https://mct25.host.cs.st-andrews.ac.uk/
+      url: https://myoung.uk/work
     - name: The GAP Team
       url: mailto:support@gap-system.org
 
@@ -34,7 +34,7 @@ packageinfo: https://gap-packages.github.io/PackageManager/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/PackageManager/releases/download/v1.6/PackageManager-1.6.tar.gz
+      url: https://github.com/gap-packages/PackageManager/releases/download/v1.6.1/PackageManager-1.6.1.tar.gz
 
 abstract: |
     <span class="pkgname">PackageManager</span> is a basic collection of    simple functions for installing and removing    <span class="pkgname">GAP</span> packages, with the eventual aim of    becoming a full pip-style package manager for the    <span class="pkgname">GAP</span> system.
@@ -44,10 +44,10 @@ doc-html: doc/chap0_mj.html
 doc-pdf: doc/manual.pdf
 citeas: |
     <p class='BibEntry'>
-    [<span class='BibKey'>YT24</span>]   <b class='BibAuthor'>Young, M. and GAP Team, T.</b>,
+    [<span class='BibKey'>YT25</span>]   <b class='BibAuthor'>Young, M. and GAP Team, T.</b>,
      <i class='BibTitle'>PackageManager, Easily download and install GAP packages,
-             Version 1.6</i>
-     (<span class='BibYear'>2024</span>)<br />
+             Version 1.6.1</i>
+     (<span class='BibYear'>2025</span>)<br />
     (<span class='BibNote'>GAP package</span>),
     <span class='BibHowpublished'><a href="https://gap-packages.github.io/PackageManager/">https://gap-packages.github.io/PackageManager/</a></span>.
     </p>
@@ -56,14 +56,14 @@ citeas: |
 bibtex: |
     @misc{ PackageManager,
       author =           {Young, M. and GAP Team, T.},
-      title =            {{PackageManager},  Easily  download  and  install  GAP
-                          packages, {V}ersion 1.6},
-      month =            {Sep},
-      year =             {2024},
+      title =            {{PackageManager},  {Easily  download  and  install GAP
+                          packages}, {V}ersion 1.6.1},
+      month =            {Feb},
+      year =             {2025},
       note =             {GAP package},
       howpublished =     {\href {https://gap-packages.github.io/PackageManager/}
                           {\texttt{https://gap\texttt{\symbol{45}}packages.github.io/}\discretionary
                           {}{}{}\texttt{PackageManager/}}},
-      printedkey =       {YT24}
+      printedkey =       {YT25}
     }
 

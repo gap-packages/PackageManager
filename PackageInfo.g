@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "1.6",
-Date := "19/09/2024",  # dd/mm/yyyy format
+Version := "1.6.1",
+Date := "05/02/2025",  # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -20,7 +20,7 @@ Persons := [
     IsMaintainer := true,
     FirstNames := "Michael",
     LastName := "Young",
-    WWWHome := "https://mct25.host.cs.st-andrews.ac.uk/",
+    WWWHome := "https://myoung.uk/work",
     Email := "mct25@st-andrews.ac.uk",
     PostalAddress := Concatenation(
                "School of Computer Science\n",
@@ -95,9 +95,7 @@ Extensions := [
          filename := "gap/Julia.g" ),
 ],
 
-AvailabilityTest := function()
-        return true;
-    end,
+AvailabilityTest := ReturnTrue,
 
 # This is a limited test suite that doesn't try to build docs,
 # since the GAP Docker images don't have texlive installed.

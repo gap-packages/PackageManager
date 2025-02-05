@@ -26,10 +26,10 @@
   this  package  is  already  installed, [9Xtrue[109X is returned; otherwise, [9Xfalse[109X is
   returned.[133X
   
-  [33X[0;0YBy default, packages will be installed in the [10Xpkg[110X subdirectory of the user's
-  home  directory,  see  [2XUserHomeExpand[102X ([14XReference: UserHomeExpand[114X). Note that
-  this  location  is not the default user pkg location on Mac OSX, but it will
-  be created on any system if not already present. Note also that starting [5XGAP[105X
+  [33X[0;0YBy   default,  packages  will  be  installed  in  the  [10Xpkg[110X  subdirectory  of
+  [10XGAPInfo.UserGapRoot[110X  (see [14X'Reference: GAP Root Directories'[114X). Note that this
+  location  is  not  the  default user pkg location on Mac OSX, but it will be
+  created  on  any  system if not already present. Note also that starting [5XGAP[105X
   with the [10X-r[110X flag will cause all packages in this directory to be ignored.[133X
   
   [33X[0;0YCertain  decisions,  such  as installing newer versions of packages, will be
