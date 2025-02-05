@@ -20,7 +20,7 @@ Persons := [
     IsMaintainer := true,
     FirstNames := "Michael",
     LastName := "Young",
-    WWWHome := "https://mct25.host.cs.st-andrews.ac.uk/",
+    WWWHome := "https://myoung.uk/work",
     Email := "mct25@st-andrews.ac.uk",
     PostalAddress := Concatenation(
                "School of Computer Science\n",
