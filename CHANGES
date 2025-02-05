@@ -1,5 +1,10 @@
 This file describes changes in the PackageManager package.
 
+1.6.1 (2025-02-05)
+  - Handle GAP 4.15's new --packagedirs option
+  - Compile newly installed packages more liberally
+  - Minor improvements to code quality
+
 1.6 (2024-09-19)
   - Deprecate functions beginning "InstallPackageFrom", instead preferring
     InstallPackage as a single entry point.
