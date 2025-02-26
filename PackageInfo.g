@@ -82,7 +82,7 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">= 4.12",
+  GAP := ">= 4.13",
   NeededOtherPackages := [],
   SuggestedOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ],
                               [ "AutoDoc", ">= 2023.06.19" ],
