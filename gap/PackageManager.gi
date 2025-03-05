@@ -314,7 +314,7 @@ end);
 InstallGlobalFunction(PKGMAN_InfoWithIndent,
 function(infoLevel, message, indentLevel)
   local indent, line;
-  indent := RepeatedString(" ", indentLevel);
+  indent := ListWithIdenticalEntries(indentLevel, ' ');
   for line in SplitString(message, "\n") do
     Info(InfoPackageManager, infoLevel, indent, line);
   od;
