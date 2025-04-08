@@ -1,5 +1,8 @@
 This file describes changes in the PackageManager package.
 
+1.6.2 (2025-04-08)
+  - Revert accidental dependence on GAPDoc
+
 1.6.1 (2025-02-05)
   - Handle GAP 4.15's new --packagedirs option
   - Compile newly installed packages more liberally
