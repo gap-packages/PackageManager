@@ -1,7 +1,7 @@
 name: PackageManager
-version: "1.6.1"
+version: "1.6.2"
 license: "GPL-2.0-or-later"
-date: 2025-02-05
+date: 2025-04-08
 description: |
     Easily download and install GAP packages
 
@@ -26,7 +26,6 @@ suggested-pkgs:
       url: "https://gap-packages.github.io/AutoDoc"
     - name: "curlInterface"
       version: ">= 2.1.0"
-      url: "https://gap-packages.github.io/curlInterface/"
 
 www: https://gap-packages.github.io/PackageManager/
 readme: README.md
@@ -34,7 +33,7 @@ packageinfo: https://gap-packages.github.io/PackageManager/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/PackageManager/releases/download/v1.6.1/PackageManager-1.6.1.tar.gz
+      url: https://github.com/gap-packages/PackageManager/releases/download/v1.6.2/PackageManager-1.6.2.tar.gz
 
 abstract: |
     <span class="pkgname">PackageManager</span> is a basic collection of    simple functions for installing and removing    <span class="pkgname">GAP</span> packages, with the eventual aim of    becoming a full pip-style package manager for the    <span class="pkgname">GAP</span> system.
@@ -46,7 +45,7 @@ citeas: |
     <p class='BibEntry'>
     [<span class='BibKey'>YT25</span>]   <b class='BibAuthor'>Young, M. and GAP Team, T.</b>,
      <i class='BibTitle'>PackageManager, Easily download and install GAP packages,
-             Version 1.6.1</i>
+             Version 1.6.2</i>
      (<span class='BibYear'>2025</span>)<br />
     (<span class='BibNote'>GAP package</span>),
     <span class='BibHowpublished'><a href="https://gap-packages.github.io/PackageManager/">https://gap-packages.github.io/PackageManager/</a></span>.
@@ -57,8 +56,8 @@ bibtex: |
     @misc{ PackageManager,
       author =           {Young, M. and GAP Team, T.},
       title =            {{PackageManager},  {Easily  download  and  install GAP
-                          packages}, {V}ersion 1.6.1},
-      month =            {Feb},
+                          packages}, {V}ersion 1.6.2},
+      month =            {Apr},
       year =             {2025},
       note =             {GAP package},
       howpublished =     {\href {https://gap-packages.github.io/PackageManager/}
