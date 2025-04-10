@@ -27,15 +27,12 @@
 DeclareGlobalFunction("InstallRequiredPackages");
 
 DeclareGlobalFunction("InstallPackageFromName");
-DeclareGlobalFunction("GetPackageURLs");
-DeclareGlobalFunction("PKGMAN_InstallDependencies");
-DeclareGlobalFunction("PKGMAN_GetPackageDistroJson");
+DeclareGlobalFunction("RefreshPackageMetadata");
+
+DeclareGlobalFunction("PKGMAN_DependencyGraph");
 
 # Source of latest package releases
-PKGMAN_PackageInfoURLList :=
-  "https://github.com/gap-system/PackageDistro/releases/download/latest/pkglist.csv";
-PKGMAN_PackageDistroJsonUrl :=
+PKGMAN_PackageMetadataUrl :=
   "https://github.com/gap-system/PackageDistro/releases/download/latest/package-infos.json.gz";
-
-PKGMAN_InstallQueue := [];      # Queue of dependencies to install
-PKGMAN_MarkedForInstall := [];  # Packages currently halfway through installing
+PKGMAN_PackageMetadataCache := fail;
+DeclareGlobalFunction("PKGMAN_PackageMetadata");
