@@ -89,108 +89,6 @@ function(name, interactive...)
   return false;
 end);
 
-InstallGlobalFunction(UpdatePackage,
-function(name, interactive...)
-  local info, dirs, vc, repo, dir, status, pull, line, urls, newest, old,
-        oldVer, olddir, q;
-
-  # Check input
-  if not IsString(name) then
-    ErrorNoReturn("<name> must be a string");
-  elif Length(interactive) > 1 then
-    ErrorNoReturn("requires 1 or 2 arguments (not ", Length(interactive) + 1, ")");
-  elif Length(interactive) = 1 then
-    if interactive[1] = true or interactive[1] = false then
-      interactive := interactive[1];
-    else
-      ErrorNoReturn("<interactive> must be true or false");
-    fi;
-  else
-    interactive := true;
-  fi;
-
-  # Package names should be case-insensitive
-  name := LowercaseString(name);
-
-  # Locate the package
-  info := PKGMAN_UserPackageInfo(name : warnIfNone);
-
-  # Package not installed
-  if Length(info) = 0 then
-    if interactive and PKGMAN_AskYesNoQuestion("Would you like to install ",
-                                               name, "?" : default := true) then
-      return InstallPackageFromName(name);
-    fi;
-    return false;
-  fi;
-
-  # Look for VC repos
-  dirs := List(info, i -> ShallowCopy(i.InstallationPath));
-  for vc in [rec(cmd := "git", stflags := "-s", pullflags := "--ff-only"),
-             rec(cmd := "hg", stflags := "", pullflags := "-uy")] do
-    repo := Filename(List(dirs, Directory), Concatenation(".", vc.cmd));
-    if repo <> fail then
-      dir := repo{[1 .. Length(repo) - Length("/.") - Length(vc.cmd)]};
-      status := PKGMAN_Exec(dir, vc.cmd, "status", vc.stflags);
-      if status = fail then
-        return false;
-      elif status.code = 0 and status.output = "" then
-        Info(InfoPackageManager, 3, "Pulling from ", vc.cmd, " repository...");
-        pull := PKGMAN_Exec(dir, vc.cmd, "pull", vc.pullflags);
-        for line in SplitString(pull.output, "\n") do
-          Info(InfoPackageManager, 3, vc.cmd, ": ", line);
-        od;
-        if pull.code = 0 then
-          PKGMAN_CompileDir(dir);
-          return true;
-        else
-          return false;
-        fi;
-      else
-        Info(InfoPackageManager, 1,
-             "Uncommitted changes in ", vc.cmd, " repository");
-        Info(InfoPackageManager, 2, "(at ", dir, ")");
-        return false;
-      fi;
-    fi;
-  od;
-
-  # Installed only by archive
-  urls := GetPackageURLs();
-  if urls.success = false then
-    # An info message has already been printed.
-    return false;
-  fi;
-  newest  := PKGMAN_DownloadPackageInfo(urls.(name));
-  old := info[1];  # Highest-priority version in user pkg directory
-  oldVer := old.Version;
-  if CompareVersionNumbers(newest.Version, oldVer, "equal") then
-    Info(InfoPackageManager, 2,
-         "The newest version of package \"", name, "\" is already installed");
-    return PKGMAN_CheckPackage(old.InstallationPath);
-  elif CompareVersionNumbers(newest.Version, oldVer) then
-    Info(InfoPackageManager, 2, name, " version ", newest.Version,
-         " will be installed, replacing ", oldVer);
-    if InstallPackageFromInfo(newest) <> true then
-      return false;
-    fi;
-
-    # Remove old version (which might have changed its name)
-    info := PKGMAN_UserPackageInfo(name);
-    old := First(info, x -> x.Version = oldVer);
-    olddir := old.InstallationPath;
-    q := Concatenation("Remove old version of ", name, " at ", olddir, " ?");
-    if interactive = false or PKGMAN_AskYesNoQuestion(q : default := false) then
-      PKGMAN_RemoveDir(olddir);
-    fi;
-    return true;
-  else
-    Info(InfoPackageManager, 2, "The installed version of package \"", name,
-         "\" is newer than the latest available version!");
-    return PKGMAN_CheckPackage(old.InstallationPath);
-  fi;
-end);
-
 InstallGlobalFunction(PKGMAN_CheckPackage,
 function(dir)
   local info, fname, html;
@@ -234,11 +132,11 @@ function(dir)
   PKGMAN_CompileDir(dir);
 
   # Redo dependencies if needed
-  if TestPackageAvailability(info.PackageName, info.Version) = fail then
-    if not PKGMAN_InstallDependencies(dir) then
-      Info(InfoPackageManager, 1, "Dependencies not satisfied");
-    fi;
-  fi;
+  #if TestPackageAvailability(info.PackageName, info.Version) = fail then
+  #  if not PKGMAN_InstallDependencies(dir) then
+  #    Info(InfoPackageManager, 1, "Dependencies not satisfied");
+  #  fi;
+  #fi;
 
   # Ensure package is available
   PKGMAN_RefreshPackageInfo();

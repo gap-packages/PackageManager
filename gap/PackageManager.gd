@@ -70,42 +70,6 @@
 DeclareGlobalFunction("InstallPackage");
 
 #! @Description
-#!   Attempts to update an installed package to the latest version.  The first
-#!   argument <A>name</A> should be a string specifying the name of a package
-#!   installed in the user &GAP; root (for example, one installed using <Ref
-#!   Func="InstallPackage" />),
-#!   see <Ref BookName="ref" Sect="GAP Root Directories"/>.
-#!   The second argument <A>interactive</A> is optional,
-#!   and should be a boolean specifying whether to confirm interactively before
-#!   any directories are deleted (default value <K>true</K>).
-#!
-#!   If the package was installed via archive, the new version will be installed
-#!   in a new directory, and the old version will be deleted.  If installed via
-#!   git, it will be updated using `git pull`, so
-#!   long as there are no outstanding changes.  If no newer version is
-#!   available, no changes will be made.
-#!
-#!   This process will also attempt to fix the package if it is broken, for
-#!   example if it needs to be recompiled or if one of its dependencies is
-#!   missing or broken.
-#!
-#!   Returns <K>true</K> if a newer version was installed successfully, or if no
-#!   newer version is available.  Returns <K>false</K> otherwise.
-#!
-#! @BeginExample
-#! gap> UpdatePackage("io");
-#! #I  io version 4.6.0 will be installed, replacing 4.5.4
-#! #I  Saved archive to /tmp/tm7r5Ug7/io-4.6.0.tar.gz
-#! Remove old version of io at /home/user/.gap/pkg/io-4.5.4 ? [y/N] y
-#! true
-#! @EndExample
-#!
-#! @Arguments name[, interactive]
-#! @Returns
-#!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("UpdatePackage");
-
-#! @Description
 #!   Attempts to remove an installed package using its name.  The first argument
 #!   <A>name</A> should be a string specifying the name of a package installed
 #!   in the user &GAP; root,
