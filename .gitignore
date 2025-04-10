@@ -63,3 +63,5 @@ src/*.lo
 /gh-pages/
 
 notebooks/.ipynb_checkpoints/
+
+*.svg

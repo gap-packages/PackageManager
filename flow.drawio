@@ -1,0 +1,149 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
+  <diagram name="Page-1" id="e7e014a7-5840-1c2e-5031-d8a46d1fe8dd">
+    <mxGraphModel dx="1444" dy="710" grid="0" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MDlYPjo-sw63t9GN8OPD-42" value="&lt;div&gt;InstallPackage&lt;/div&gt;" style="ellipse;html=1;shape=startState;spacingBottom=0;verticalAlign=bottom;labelPosition=center;verticalLabelPosition=top;align=center;fillColor=#660000;" parent="1" vertex="1">
+          <mxGeometry x="210" y="270" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MDlYPjo-sw63t9GN8OPD-43" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="MDlYPjo-sw63t9GN8OPD-42" target="MDlYPjo-sw63t9GN8OPD-45" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="225" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MDlYPjo-sw63t9GN8OPD-45" value="kind of input" style="rhombus;fillColor=#666600;" parent="1" vertex="1">
+          <mxGeometry x="173" y="332" width="104" height="57" as="geometry" />
+        </mxCell>
+        <mxCell id="MDlYPjo-sw63t9GN8OPD-47" value="VC repo" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="MDlYPjo-sw63t9GN8OPD-45" target="NLQq590V32pVitROKgjB-42" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="380" y="360" as="targetPoint" />
+            <mxPoint x="310" y="359.5" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MDlYPjo-sw63t9GN8OPD-48" value="package name" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=top;endArrow=open;endSize=8;rounded=0;" parent="1" source="MDlYPjo-sw63t9GN8OPD-45" target="NLQq590V32pVitROKgjB-1" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="225" y="440" as="targetPoint" />
+            <mxPoint x="224.74" y="413" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MDlYPjo-sw63t9GN8OPD-49" value="&lt;div&gt;packageinfo/archive url&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;align=right;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;labelPosition=left;verticalLabelPosition=top;" parent="1" source="MDlYPjo-sw63t9GN8OPD-45" target="NLQq590V32pVitROKgjB-34" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="60" y="360" as="targetPoint" />
+            <mxPoint x="235" y="390" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-1" value="Compute dependency graph" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;" parent="1" vertex="1">
+          <mxGeometry x="165" y="440" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-7" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-1" target="NLQq590V32pVitROKgjB-24" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="224.5" y="550" as="targetPoint" />
+            <mxPoint x="224.5" y="490" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-22" value="Download and unpack marked" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;" parent="1" vertex="1">
+          <mxGeometry x="335" y="680" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-23" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-22" target="NLQq590V32pVitROKgjB-31" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="395" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-24" value="Mark unsatisfied requirements" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;" parent="1" vertex="1">
+          <mxGeometry x="165" y="520" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-25" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-24" target="NLQq590V32pVitROKgjB-28" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="225" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-26" value="Mark available upgrades" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;" parent="1" vertex="1">
+          <mxGeometry x="165" y="680" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-27" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-26" target="NLQq590V32pVitROKgjB-22" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="225" y="820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-28" value="opt getLatest" style="rhombus;whiteSpace=wrap;html=1;fillStyle=solid;fillColor=#666600;" parent="1" vertex="1">
+          <mxGeometry x="175" y="590" width="99" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-29" value="no" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-28" target="NLQq590V32pVitROKgjB-22" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="365" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-30" value="yes" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=top;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-28" target="NLQq590V32pVitROKgjB-26" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="225" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-31" value="Compile all in graph" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;" parent="1" vertex="1">
+          <mxGeometry x="493" y="680" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-32" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-31" target="NLQq590V32pVitROKgjB-33" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="395" y="830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-33" value="" style="ellipse;html=1;shape=endState;fillColor=#660000;" parent="1" vertex="1">
+          <mxGeometry x="643" y="685" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-34" value="Download and unpack" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;" parent="1" vertex="1">
+          <mxGeometry x="-60" y="340" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-35" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-34" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-36" value="Inspect dependencies" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;" parent="1" vertex="1">
+          <mxGeometry x="-60" y="440" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-37" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-36" target="NLQq590V32pVitROKgjB-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-40" value="" style="shape=line;html=1;strokeWidth=6;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="370" y="420" width="100" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-41" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-40" target="NLQq590V32pVitROKgjB-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="440" y="500" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="400" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-42" value="Clone or pull" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;" parent="1" vertex="1">
+          <mxGeometry x="360" y="340" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-43" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-42" target="NLQq590V32pVitROKgjB-40" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="420" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-47" value="Make doc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;" parent="1" vertex="1">
+          <mxGeometry x="380" y="498" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-48" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" source="NLQq590V32pVitROKgjB-47" target="NLQq590V32pVitROKgjB-33" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="440" y="560" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="440" y="595" />
+              <mxPoint x="658" y="595" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NLQq590V32pVitROKgjB-50" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;rounded=0;" parent="1" target="NLQq590V32pVitROKgjB-47" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="439.5" y="470" as="targetPoint" />
+            <mxPoint x="439.5" y="430" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
