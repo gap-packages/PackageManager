@@ -1,7 +1,7 @@
 InstallGlobalFunction(InstallPackageFromName,
 function(name, opts)
   local graph, unsatisfied, upgradable, marked, print_upgrade;
-  graph       := PKGMAN_DependencyGraph(name, opts);
+  graph       := PKGMAN_DependencyGraph([[name, PKGMAN_Option("version", opts)]], opts);
   name        := graph[1].name;  # standard capitalisation
   unsatisfied := Filtered(graph, p -> p.unsatisfied);
   upgradable  := Filtered(graph, p -> p.upgradable);
@@ -29,33 +29,29 @@ function(name, opts)
     fi;
   fi;
 
-  # Do something with the graph
+  # Print planned upgrades
   print_upgrade := function(p)
-    
     PrintFormatted("{name}\n\t", p);
     if p.current <> fail then
       Print(p.current, " ");
     fi;
     PrintFormatted("-> {newest}\n", p);
-    #p.name
-    #p.current
-    #dependencies
-    #newest
-    #unsatisfied
-    #upgradable
   end;
   Perform(marked, print_upgrade);
+  
+  
   return graph;
 end);
 
 InstallGlobalFunction(PKGMAN_DependencyGraph,
-function(name, opts)
-  local metadata, queue, next, graph, info, installed, current, upgradable,
-        dependencies, suggested, d, package, i, required;
+function(requirements, opts)
+  local metadata, queue, next, graph, name, info, installed, current,
+        upgradable, dependencies, suggested, d, package, i, required;
   metadata := PKGMAN_PackageMetadata();
+  suggested := PKGMAN_Option("suggested", opts, "Do you want to include suggested packages?");
   
   # Breadth-first search through dependencies, starting from input package
-  queue := [LowercaseString(name)];  # TODO: allow multiple names
+  queue := List(requirements, r -> LowercaseString(r[1]));
   next := 1;
   graph := [];
   while next <= Length(queue) do
@@ -65,7 +61,8 @@ function(name, opts)
 
     # Find metadata for that package
     if not IsBound(metadata.(name)) then
-      Error("missing dep ", name);
+      Info(InfoPackageManager, 1, name, " package not available from package distribution");
+      Info(InfoPackageManager, 3, "You can install it by calling InstallPackage with a URL to the package archive");
       continue;
     fi;
     info := metadata.(name);
@@ -82,13 +79,8 @@ function(name, opts)
 
     # Add any new dependencies to the queue
     dependencies := StructuralCopy(info.Dependencies.NeededOtherPackages);
-    if not IsEmpty(info.Dependencies.SuggestedOtherPackages) then
-      if not IsBound(suggested) then
-        suggested := PKGMAN_Option("suggested", opts, "Do you want to include suggested packages?");
-      fi;
-      if suggested then
-        Append(dependencies, StructuralCopy(info.Dependencies.SuggestedOtherPackages));
-      fi;
+    if suggested then
+      Append(dependencies, StructuralCopy(info.Dependencies.SuggestedOtherPackages));
     fi;
     for d in dependencies do
       if not LowercaseString(d[1]) in queue then
@@ -97,12 +89,13 @@ function(name, opts)
     od;
 
     # Add discovered data to queue
-    Add(graph, rec(name := info.PackageName,
-                   newest := info.Version,
-                   current := current,
+    Add(graph, rec(name         := info.PackageName,
+                   newest       := info.Version,
+                   current      := current,
                    dependencies := dependencies,
-                   upgradable := upgradable,
-                   unsatisfied := false,  # overwrite shortly
+                   url          := info.ArchiveURL,
+                   upgradable   := upgradable,
+                   unsatisfied  := false,
                   ));
   od;
   
@@ -116,7 +109,8 @@ function(name, opts)
   od;
   
   # Mark any unsatisfied requirements
-  queue := [[1, PKGMAN_Option("version", opts)]];  # entries of the form [index, requiredVersion]
+  queue := List([1 .. Length(requirements)], 
+                i -> [i, requirements[i][2]]);  # entries of the form [index, requiredVersion]
   while not IsEmpty(queue) do
     # Get next requirement to check
     next := Remove(queue);
