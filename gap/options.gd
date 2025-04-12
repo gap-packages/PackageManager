@@ -3,7 +3,7 @@ DeclareOperation("PKGMAN_Option", [IsString, IsRecord]);
 
 PKGMAN_GlobalOptions := rec(
   distro    := "latest",
-  suggested := "ask",
+  suggested := false,
   upgrade   := "ask",
   version   := "",
 );
