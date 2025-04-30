@@ -1,63 +1,100 @@
 InstallGlobalFunction(InstallPackageFromName,
 function(name, opts)
-  local graph, unsatisfied, upgradable, marked, print_upgrade;
-  graph       := PKGMAN_DependencyGraph([[name, PKGMAN_Option("version", opts)]], opts);
-  name        := graph[1].name;  # standard capitalisation
-  unsatisfied := Filtered(graph, p -> p.unsatisfied);
-  upgradable  := Filtered(graph, p -> p.upgradable);
+  local required, requirements, upgrade_graph, upgrade_plan,
+        no_upgrade_graph, no_upgrade_plan, plan, print_upgrade;
 
-  # Determine packages to install
-  marked := unsatisfied;
-  if graph[1].upgradable then
-    if graph[1].current <> fail then
-      Info(InfoPackageManager, 2, name, " ", graph[1].current, " is installed, but ", graph[1].newest, " is available");
-      if PKGMAN_Option("upgrade", opts, "Do you want to upgrade the package and its dependencies?") then
-        marked := upgradable;
-      fi;
+  required := PKGMAN_Option("version", opts);
+
+  # Get all-upgrades installation list
+  requirements  := [[name, required]];
+  upgrade_graph := PKGMAN_DependencyGraph(requirements, opts);
+  upgrade_plan  := PKGMAN_InstallationPlan(upgrade_graph, true); # Sorted(Filtered(upgrade_graph, p -> p.marked));
+
+  # Get no-upgrade installation list
+  requirements     := PKGMAN_UnsatisfiedRequirements(name, required);
+  no_upgrade_graph := PKGMAN_DependencyGraph(requirements, opts);
+  no_upgrade_plan  := PKGMAN_InstallationPlan(no_upgrade_graph, false);
+  
+  # Figure out which plan to follow
+  if no_upgrade_plan = fail then
+    if upgrade_plan = fail then
+      # no valid plan
+      Info(InfoPackageManager, 1, "No valid installation plan for ", name, " and its dependencies");
+      return false;
+    elif PKGMAN_Option("upgrade", opts, "Some packages will need to be upgraded. Okay?") then
+      # must follow upgrade plan (if we get permission)
+      plan := upgrade_plan;
     else
-      Info(InfoPackageManager, 2, name, " ", graph[1].newest, " is available");
-      if Length(upgradable) > Length(unsatisfied) and
-         PKGMAN_Option("upgrade", opts, "Do you want to upgrade all the package's dependencies?") then
-        marked := upgradable;
-      fi;
+      # must follow upgrade plan, but options don't allow upgrades
+      Info(InfoPackageManager, 1, "Some package upgrades are required, but are not allowed");
+      return false;
     fi;
+  elif upgrade_plan = fail then
+    # must follow no-upgrade plan (is this possible?)
+    plan := no_upgrade_plan;
+  elif Set(upgrade_plan) = Set(no_upgrade_plan) then
+    # both plans are the same
+    plan := no_upgrade_plan;
+  elif PKGMAN_Option("upgrade", opts, "Upgrade related packages to the latest versions?") then
+    # user prefers the upgrade plan
+    plan := upgrade_plan;
   else
-    Info(InfoPackageManager, 2, name, " ", graph[1].newest, " (latest) already installed");
-    if Length(upgradable) > Length(unsatisfied) and
-       PKGMAN_Option("upgrade", opts, "Do you want to upgrade the package's dependencies?") then
-      marked := upgradable;
-    fi;
+    # user prefers the no-upgrade plan
+    plan := no_upgrade_plan;
   fi;
 
   # Print planned upgrades
   print_upgrade := function(p)
     PrintFormatted("{name}\n\t", p);
     if p.current <> fail then
-      Print(p.current, " ");
+      Print(p.current, " -> ");
     fi;
-    PrintFormatted("-> {newest}\n", p);
+    PrintFormatted("{newest}\n", p);
   end;
-  Perform(marked, print_upgrade);
+  Perform(plan, print_upgrade);
   
+  # Confirm install
+  if not PKGMAN_Option("install", opts, "Continue?") then
+    Info(InfoPackageManager, 1, "Installation aborted");
+    return;
+  fi;
   
-  return graph;
+  # Install and extract packages
+  # Compile packages (in reverse order) # TODO: ordering instead of sorting?
+  return plan;
+end);
+
+InstallGlobalFunction(PKGMAN_UnsatisfiedRequirements,
+function(name, required)
+  local installed;
+  # TODO: this is recursive so it'll run forever if there are cyclic deps
+  installed := PKGMAN_UserPackageInfo(name);
+  if IsEmpty(installed) or not CompareVersionNumbers(installed[1].Version, required) then
+    return [[name, required]];
+  fi;
+  return Concatenation(List(installed[1].Dependencies.NeededOtherPackages,
+                            dep -> PKGMAN_UnsatisfiedRequirements(dep[1], dep[2])));
 end);
 
 InstallGlobalFunction(PKGMAN_DependencyGraph,
 function(requirements, opts)
-  local metadata, queue, next, graph, name, info, installed, current,
-        upgradable, dependencies, suggested, d, package, i, required;
+  # requirements: a list of pairs of the form [package_name, required_version]
+  local metadata, queue, next, graph, name, required, info, installed, current,
+        upgradable, dependencies, suggested, d, pos, package, i, graphPackage,
+        required_version;
   metadata := PKGMAN_PackageMetadata();
-  suggested := PKGMAN_Option("suggested", opts, "Do you want to include suggested packages?");
+  suggested := PKGMAN_Option("suggested", opts, "Include all suggested packages?");
   
   # Breadth-first search through dependencies, starting from input package
-  queue := List(requirements, r -> LowercaseString(r[1]));
-  next := 1;
+  Print(requirements, "\n");
+  
+  queue := List(requirements, r -> [LowercaseString(r[1]), [r[2]]]);
+  i := 0;
   graph := [];
-  while next <= Length(queue) do
+  while i < Length(queue) do
     # Go to next package
-    name := queue[next];
-    next := next + 1;
+    i := i + 1;
+    name := queue[i][1];
 
     # Find metadata for that package
     if not IsBound(metadata.(name)) then
@@ -79,14 +116,18 @@ function(requirements, opts)
 
     # Add any new dependencies to the queue
     dependencies := StructuralCopy(info.Dependencies.NeededOtherPackages);
-    if suggested then
+    if suggested and i <= Length(requirements) then
       Append(dependencies, StructuralCopy(info.Dependencies.SuggestedOtherPackages));
     fi;
     for d in dependencies do
-      if not LowercaseString(d[1]) in queue then
-        Add(queue, LowercaseString(d[1]));
+      pos := PositionProperty(queue, r -> r[1] = LowercaseString(d[1]));
+      if pos = fail then # add to queue if not present
+        Add(queue, [LowercaseString(d[1]), []]);
+        pos := Length(queue);
       fi;
+      Add(queue[pos][2], d[2]); # record the required version
     od;
+    Print(queue, "\n");
 
     # Add discovered data to queue
     Add(graph, rec(name         := info.PackageName,
@@ -95,7 +136,6 @@ function(requirements, opts)
                    dependencies := dependencies,
                    url          := info.ArchiveURL,
                    upgradable   := upgradable,
-                   unsatisfied  := false,
                   ));
   od;
   
@@ -108,30 +148,39 @@ function(requirements, opts)
     od;
   od;
   
-  # Mark any unsatisfied requirements
-  queue := List([1 .. Length(requirements)], 
-                i -> [i, requirements[i][2]]);  # entries of the form [index, requiredVersion]
-  while not IsEmpty(queue) do
-    # Get next requirement to check
-    next := Remove(queue);
-    package := graph[next[1]];
-    required := next[2];
-    
-    # Have we already marked this as unsatisfied?
-    if package.unsatisfied then
-      continue;
+  # For each package, check whether an upgrade is needed
+  for package in queue do
+    name := package[1];
+    required := package[2];
+    graphPackage := First(graph, p -> LowercaseString(p.name) = name);
+    graphPackage.upgradeNeeded := false;
+    for required_version in required do
+      Print(graphPackage.name, " ", required_version, " needed, ", graphPackage.current, " installed, ", graphPackage.newest, " available\n");
+      if graphPackage.current = fail or not CompareVersionNumbers(graphPackage.current, required_version) then
+        graphPackage.upgradeNeeded := true;
+      fi;
+      if not CompareVersionNumbers(graphPackage.newest, required_version) then
+        Info(InfoPackageManager, 1, "Could not satisfy");
+      fi;
+    od;
+  od;
+  
+  return graph;
+end);
+
+InstallGlobalFunction(PKGMAN_InstallationPlan,
+function(graph, allow_upgrades)
+  local plan, package;
+  plan := [];
+  for package in graph do
+    if package.upgradeNeeded and package.current <> fail and not allow_upgrades then
+      return fail;
     fi;
-    
-    # Does this package require an upgrade?
-    if package.current = fail or 
-       not CompareVersionNumbers(package.current, required) then
-      package.unsatisfied := true;
-      
-      # Add this package's dependencies to the queue
-      Append(queue, package.dependencies);
+    if package.upgradable and (package.current = fail or allow_upgrades) then
+      Add(plan, rec(name := package.name, current := package.current, newest := package.newest));
     fi;
   od;
-  return graph;
+  return plan;
 end);
 
 InstallGlobalFunction(InstallRequiredPackages,
