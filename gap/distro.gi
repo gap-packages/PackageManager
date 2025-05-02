@@ -1,19 +1,28 @@
 InstallGlobalFunction(InstallPackageFromName,
 function(name, opts)
-  local required, requirements, upgrade_graph, upgrade_plan,
-        no_upgrade_graph, no_upgrade_plan, plan, print_upgrade;
+  local required, upgrade, requirements, graph, upgrade_plan,
+        no_upgrade_plan, plan;
 
   required := PKGMAN_Option("version", opts);
+  upgrade := PKGMAN_Option("upgrade", opts); # might be "ask"
 
-  # Get all-upgrades installation list
-  requirements  := [[name, required]];
-  upgrade_graph := PKGMAN_DependencyGraph(requirements, opts);
-  upgrade_plan  := PKGMAN_InstallationPlan(upgrade_graph, true); # Sorted(Filtered(upgrade_graph, p -> p.marked));
+  # Get all-upgrades installation plan
+  if upgrade in [true, "ask"] then
+    requirements := [[name, required]];
+    graph        := PKGMAN_DependencyGraph(requirements, opts);
+    upgrade_plan := PKGMAN_InstallationPlan(graph, true);
+  else
+    upgrade_plan := fail;
+  fi;
 
-  # Get no-upgrade installation list
-  requirements     := PKGMAN_UnsatisfiedRequirements(name, required);
-  no_upgrade_graph := PKGMAN_DependencyGraph(requirements, opts);
-  no_upgrade_plan  := PKGMAN_InstallationPlan(no_upgrade_graph, false);
+  # Get no-upgrade installation plan
+  if upgrade in [false, "ask"] then
+    requirements    := PKGMAN_UnsatisfiedRequirements(name, required);
+    graph           := PKGMAN_DependencyGraph(requirements, opts);
+    no_upgrade_plan := PKGMAN_InstallationPlan(graph, false);
+  else
+    no_upgrade_plan := fail;
+  fi;
   
   # Figure out which plan to follow
   if no_upgrade_plan = fail then
@@ -24,6 +33,7 @@ function(name, opts)
     elif PKGMAN_Option("upgrade", opts, "Some packages will need to be upgraded. Okay?") then
       # must follow upgrade plan (if we get permission)
       plan := upgrade_plan;
+      PKGMAN_ShowInstallationPlan(plan, []);
     else
       # must follow upgrade plan, but options don't allow upgrades
       Info(InfoPackageManager, 1, "Some package upgrades are required, but are not allowed");
@@ -32,31 +42,34 @@ function(name, opts)
   elif upgrade_plan = fail then
     # must follow no-upgrade plan (is this possible?)
     plan := no_upgrade_plan;
+    PKGMAN_ShowInstallationPlan(plan, []);
   elif Set(upgrade_plan) = Set(no_upgrade_plan) then
     # both plans are the same
     plan := no_upgrade_plan;
-  elif PKGMAN_Option("upgrade", opts, "Upgrade related packages to the latest versions?") then
-    # user prefers the upgrade plan
-    plan := upgrade_plan;
+    PKGMAN_ShowInstallationPlan(plan, []);
   else
-    # user prefers the no-upgrade plan
-    plan := no_upgrade_plan;
+    Assert(1, IsSubset(upgrade_plan, no_upgrade_plan));
+    PKGMAN_ShowInstallationPlan(no_upgrade_plan, Difference(upgrade_plan, no_upgrade_plan));
+    if PKGMAN_Option("upgrade", opts, "Include optional upgrades?") then
+      # user prefers the upgrade plan
+      plan := upgrade_plan;
+    else
+      # user prefers the no-upgrade plan
+      Info(InfoPackageManager, 3, "Optional upgrades will not be installed");
+      plan := no_upgrade_plan;
+    fi;
+  fi;
+  
+  # Nothing to do?
+  if IsEmpty(plan) then
+    Info(InfoPackageManager, 3, "All requirements are satisfied");
+    return true;
   fi;
 
-  # Print planned upgrades
-  print_upgrade := function(p)
-    PrintFormatted("{name}\n\t", p);
-    if p.current <> fail then
-      Print(p.current, " -> ");
-    fi;
-    PrintFormatted("{newest}\n", p);
-  end;
-  Perform(plan, print_upgrade);
-  
   # Confirm install
   if not PKGMAN_Option("install", opts, "Continue?") then
     Info(InfoPackageManager, 1, "Installation aborted");
-    return;
+    return true; # TODO: appropriate return value?
   fi;
   
   # Install and extract packages
@@ -82,11 +95,14 @@ function(requirements, opts)
   local metadata, queue, next, graph, name, required, info, installed, current,
         upgradable, dependencies, suggested, d, pos, package, i, graphPackage,
         required_version;
+  if IsEmpty(requirements) then
+    return [];
+  fi;
+
   metadata := PKGMAN_PackageMetadata();
   suggested := PKGMAN_Option("suggested", opts, "Include all suggested packages?");
   
   # Breadth-first search through dependencies, starting from input package
-  Print(requirements, "\n");
   
   queue := List(requirements, r -> [LowercaseString(r[1]), [r[2]]]);
   i := 0;
@@ -127,7 +143,6 @@ function(requirements, opts)
       fi;
       Add(queue[pos][2], d[2]); # record the required version
     od;
-    Print(queue, "\n");
 
     # Add discovered data to queue
     Add(graph, rec(name         := info.PackageName,
@@ -155,7 +170,7 @@ function(requirements, opts)
     graphPackage := First(graph, p -> LowercaseString(p.name) = name);
     graphPackage.upgradeNeeded := false;
     for required_version in required do
-      Print(graphPackage.name, " ", required_version, " needed, ", graphPackage.current, " installed, ", graphPackage.newest, " available\n");
+      #Print(graphPackage.name, "\t", required_version, " needed,\t", graphPackage.current, " installed,\t", graphPackage.newest, " available\n");
       if graphPackage.current = fail or not CompareVersionNumbers(graphPackage.current, required_version) then
         graphPackage.upgradeNeeded := true;
       fi;
@@ -181,6 +196,45 @@ function(graph, allow_upgrades)
     fi;
   od;
   return plan;
+end);
+
+InstallGlobalFunction(PKGMAN_ShowInstallationPlan,
+function(needed, optional)
+  local show_package, indent, p;
+  
+  # Show a single line describing one package, with version number indented
+  show_package := function(p, indent)
+    local space, message;
+    space := ListWithIdenticalEntries(indent - Length(p.name), ' ');
+    message := Concatenation("  ", p.name, space);
+    if p.current <> fail then
+      message := Concatenation(message, p.current, " -> ");
+    fi;
+    message := Concatenation(message, p.newest);
+    Info(InfoPackageManager, 3, message);
+  end;
+
+  # Skip if nothing is here
+  if IsEmpty(needed) and IsEmpty(optional) then
+    return;
+  fi;
+  
+  # Column to align version numbers
+  indent := Maximum(List(Concatenation(needed, optional), p -> Length(p.name))) + 2;
+  
+  # Show required installs followed by optional upgrades
+  if not IsEmpty(needed) then
+    Info(InfoPackageManager, 3, "The following packages will be installed:");
+    for p in needed do
+      show_package(p, indent);
+    od;
+  fi;
+  if not IsEmpty(optional) then
+    Info(InfoPackageManager, 3, "The following optional upgrades are available:");
+    for p in optional do
+      show_package(p, indent);
+    od;
+  fi;
 end);
 
 InstallGlobalFunction(InstallRequiredPackages,
