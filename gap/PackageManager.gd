@@ -67,7 +67,8 @@
 #! @Arguments string[, version][, interactive]
 #! @Returns
 #!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("InstallPackage");
+DeclareOperation("InstallPackage", [IsString]);
+DeclareOperation("InstallPackage", [IsString, IsRecord]);
 
 #! @Description
 #!   Attempts to remove an installed package using its name.  The first argument
