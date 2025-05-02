@@ -11,30 +11,15 @@ if not IsBound(ChangeDirectoryCurrent) then
   end;
 fi;
 
-InstallGlobalFunction(InstallPackage,
-function(string, args...)
-  local version, interactive;
+InstallMethod(InstallPackage,
+"for a string",
+[IsString],
+string -> InstallPackage(string, rec()));
 
-  # Check input
-  version := true;
-  interactive := true;
-  if not IsString(string) then
-    ErrorNoReturn("<string> must be a string");
-  elif Length(args) > 2 then
-    ErrorNoReturn("requires 1 to 3 arguments (not ", Length(args) + 1, ")");
-  elif Length(args) = 1 then
-    if IsString(args[1]) then
-      version := args[1];
-    elif args[1] = true or args[1] = false then
-      interactive := args[1];
-    else
-      ErrorNoReturn("2nd argument must be true or false or a version string");
-    fi;
-  elif Length(args) = 2 then
-    version := args[1];
-    interactive := args[2];
-  fi;
-
+InstallMethod(InstallPackage,
+"for a string and a record",
+[IsString, IsRecord],
+function(string, opts)
   # Tidy up the string
   NormalizeWhitespace(string);
 
@@ -42,13 +27,13 @@ function(string, args...)
   if ForAny(PKGMAN_ArchiveFormats, ext -> EndsWith(string, ext)) then
     return InstallPackageFromArchive(string);
   elif EndsWith(string, ".git") then
-    return InstallPackageFromGit(string, interactive);
+    return InstallPackageFromGit(string, opts);
   elif EndsWith(string, ".hg") then
-    return InstallPackageFromHg(string, interactive);
+    return InstallPackageFromHg(string, opts);
   elif EndsWith(string, "PackageInfo.g") then
     return InstallPackageFromInfo(string);
   fi;
-  return InstallPackageFromName(string, version, interactive);
+  return InstallPackageFromName(string, opts);
 end);
 
 InstallGlobalFunction(RemovePackage,
