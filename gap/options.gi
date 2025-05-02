@@ -17,7 +17,7 @@ function(name, local_options, question)
   local value;
   value := PKGMAN_Option(name, local_options);
   if value = "ask" then
-    value := PKGMAN_AskYesNoQuestion(question);
+    value := PKGMAN_AskYesNoQuestion(question : default := true);
   fi;
   return value;
 end);
