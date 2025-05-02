@@ -32,6 +32,7 @@ DeclareGlobalFunction("RefreshPackageMetadata");
 DeclareGlobalFunction("PKGMAN_UnsatisfiedRequirements");
 DeclareGlobalFunction("PKGMAN_DependencyGraph");
 DeclareGlobalFunction("PKGMAN_InstallationPlan");
+DeclareGlobalFunction("PKGMAN_ShowInstallationPlan");
 
 # Source of latest package releases
 PKGMAN_PackageMetadataUrl :=
