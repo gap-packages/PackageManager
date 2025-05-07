@@ -29,9 +29,11 @@ DeclareGlobalFunction("InstallRequiredPackages");
 DeclareGlobalFunction("InstallPackageFromName");
 DeclareGlobalFunction("RefreshPackageMetadata");
 
+DeclareGlobalFunction("PKGMAN_InstallRequirements");
+DeclareGlobalFunction("PKGMAN_InstallationPlan");
 DeclareGlobalFunction("PKGMAN_UnsatisfiedRequirements");
 DeclareGlobalFunction("PKGMAN_DependencyGraph");
-DeclareGlobalFunction("PKGMAN_InstallationPlan");
+DeclareGlobalFunction("PKGMAN_PlanFromGraph");
 DeclareGlobalFunction("PKGMAN_ShowInstallationPlan");
 
 # Source of latest package releases
