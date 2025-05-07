@@ -1,25 +1,61 @@
 InstallGlobalFunction(InstallPackageFromName,
 function(name, opts)
-  local required, upgrade, requirements, graph, upgrade_plan,
-        no_upgrade_plan, plan;
+  local requirements;
+  requirements := [[name, PKGMAN_Option("version", opts)]];
+  return PKGMAN_InstallRequirements(requirements, opts);
+end);
 
-  required := PKGMAN_Option("version", opts);
-  upgrade := PKGMAN_Option("upgrade", opts); # might be "ask"
+InstallGlobalFunction(PKGMAN_InstallRequirements,
+function(requirements, opts)
+  # requirements: list of [name, version] pairs
+  local plan;
+
+  plan := PKGMAN_InstallationPlan(requirements, opts);
+  
+  # Nothing to do?
+  if IsEmpty(plan) then
+    Info(InfoPackageManager, 3, "All requirements are satisfied");
+    return true;
+  fi;
+
+  # Confirm install
+  if not PKGMAN_Option("install", opts, "Continue?") then
+    Info(InfoPackageManager, 1, "Installation aborted");
+    return true; # TODO: appropriate return value?
+  fi;
+  
+  # Install and extract packages
+  # Compile packages (in reverse order) # TODO: ordering instead of sorting?
+  return plan;
+end);
+
+InstallGlobalFunction(PKGMAN_InstallationPlan,
+function(requirements, opts)
+  local upgrade, graph, upgrade_plan, no_upgrade_plan, plan;
+  #
+  # Turns a set of requirements into an installation plan that includes all
+  # missing dependencies.
+  #
+  # We proceed by finding two different installation plans: one that includes
+  # all available upgrades to the requirements and their dependencies; and one
+  # that refuses to upgrade any packages that are already installed. We choose
+  # a plan by consulting user options and if necessary interactive prompts.
+  #
+  upgrade  := PKGMAN_Option("upgrade", opts); # might be "ask"
 
   # Get all-upgrades installation plan
   if upgrade in [true, "ask"] then
-    requirements := [[name, required]];
     graph        := PKGMAN_DependencyGraph(requirements, opts);
-    upgrade_plan := PKGMAN_InstallationPlan(graph, true);
+    upgrade_plan := PKGMAN_PlanFromGraph(graph, true);
   else
     upgrade_plan := fail;
   fi;
 
   # Get no-upgrade installation plan
   if upgrade in [false, "ask"] then
-    requirements    := PKGMAN_UnsatisfiedRequirements(name, required);
+    requirements    := PKGMAN_UnsatisfiedRequirements(requirements, opts);
     graph           := PKGMAN_DependencyGraph(requirements, opts);
-    no_upgrade_plan := PKGMAN_InstallationPlan(graph, false);
+    no_upgrade_plan := PKGMAN_PlanFromGraph(graph, false);
   else
     no_upgrade_plan := fail;
   fi;
@@ -28,7 +64,7 @@ function(name, opts)
   if no_upgrade_plan = fail then
     if upgrade_plan = fail then
       # no valid plan
-      Info(InfoPackageManager, 1, "No valid installation plan for ", name, " and its dependencies");
+      Info(InfoPackageManager, 1, "No valid installation plan for the required packages");
       return false;
     elif PKGMAN_Option("upgrade", opts, "Some packages will need to be upgraded. Okay?") then
       # must follow upgrade plan (if we get permission)
@@ -59,39 +95,48 @@ function(name, opts)
       plan := no_upgrade_plan;
     fi;
   fi;
-  
-  # Nothing to do?
-  if IsEmpty(plan) then
-    Info(InfoPackageManager, 3, "All requirements are satisfied");
-    return true;
-  fi;
-
-  # Confirm install
-  if not PKGMAN_Option("install", opts, "Continue?") then
-    Info(InfoPackageManager, 1, "Installation aborted");
-    return true; # TODO: appropriate return value?
-  fi;
-  
-  # Install and extract packages
-  # Compile packages (in reverse order) # TODO: ordering instead of sorting?
   return plan;
 end);
 
 InstallGlobalFunction(PKGMAN_UnsatisfiedRequirements,
-function(name, required)
-  local installed;
-  # TODO: this is recursive so it'll run forever if there are cyclic deps
-  installed := PKGMAN_UserPackageInfo(name);
-  if IsEmpty(installed) or not CompareVersionNumbers(installed[1].Version, required) then
-    return [[name, required]];
-  fi;
-  return Concatenation(List(installed[1].Dependencies.NeededOtherPackages,
-                            dep -> PKGMAN_UnsatisfiedRequirements(dep[1], dep[2])));
+function(requirements, opts)
+  local queue, i, unsatisfied, suggested, name, required, installed, dependencies, r;
+  queue := StructuralCopy(requirements);
+  i := 0;
+  unsatisfied := [];
+  suggested := PKGMAN_Option("suggested", opts, "Include all suggested packages?");
+  while i < Length(queue) do
+    # Go to next requirement
+    i := i + 1;
+    name := queue[i][1];
+    required := queue[i][2];
+
+    # Find any currently installed version
+    installed := PKGMAN_UserPackageInfo(name);
+    if IsEmpty(installed) or not CompareVersionNumbers(installed[1].Version, required) then
+      # Not satisfied: add to output list
+      Add(unsatisfied, queue[i]);
+    else
+      # Satisfied: consider dependencies
+      dependencies := StructuralCopy(installed[1].Dependencies.NeededOtherPackages);
+      if suggested and i <= Length(requirements) then
+        Append(dependencies, StructuralCopy(installed[1].Dependencies.SuggestedOtherPackages));
+      fi;
+      for r in dependencies do
+        if not ForAny(queue, q -> LowercaseString(q[1]) = LowercaseString(r[1])
+                                  and CompareVersionNumbers(q[2], r[2])) then
+          # New dependency: add to queue
+          Add(queue, r);
+        fi;
+      od;
+    fi;
+  od;
+  return unsatisfied;
 end);
 
 InstallGlobalFunction(PKGMAN_DependencyGraph,
 function(requirements, opts)
-  # requirements: a list of pairs of the form [package_name, required_version]
+  # requirements: a list [name, version] pairs
   local metadata, queue, next, graph, name, required, info, installed, current,
         upgradable, dependencies, suggested, d, pos, package, i, graphPackage,
         required_version;
@@ -103,7 +148,6 @@ function(requirements, opts)
   suggested := PKGMAN_Option("suggested", opts, "Include all suggested packages?");
   
   # Breadth-first search through dependencies, starting from input package
-  
   queue := List(requirements, r -> [LowercaseString(r[1]), [r[2]]]);
   i := 0;
   graph := [];
@@ -116,6 +160,7 @@ function(requirements, opts)
     if not IsBound(metadata.(name)) then
       Info(InfoPackageManager, 1, name, " package not available from package distribution");
       Info(InfoPackageManager, 3, "You can install it by calling InstallPackage with a URL to the package archive");
+      Unbind(queue[i]);
       continue;
     fi;
     info := metadata.(name);
@@ -183,7 +228,7 @@ function(requirements, opts)
   return graph;
 end);
 
-InstallGlobalFunction(PKGMAN_InstallationPlan,
+InstallGlobalFunction(PKGMAN_PlanFromGraph,
 function(graph, allow_upgrades)
   local plan, package;
   plan := [];
