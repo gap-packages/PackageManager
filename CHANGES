@@ -1,5 +1,8 @@
 This file describes changes in the PackageManager package.
 
+1.6.3 (2025-05-14)
+  - Alter tests for compatibility with AutoDoc 2025.05.09
+
 1.6.2 (2025-04-08)
   - Revert accidental dependence on GAPDoc
 
