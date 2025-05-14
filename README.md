@@ -16,7 +16,7 @@ Example invocations:
 
     gap> InstallPackage("https://github.com/gap-packages/Semigroups.git");
 
-    gap> InstallPackage("https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/mapclass-1.2.tar.gz");
+    gap> InstallPackage("https://github.com/gap-packages/design/releases/download/v1.8.2/design-1.8.2.tar.gz");
 
     gap> RemovePackage("semigroups");
 
