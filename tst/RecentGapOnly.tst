@@ -228,19 +228,6 @@ true
 gap> InstallPackage("orb");
 true
 gap> InstallPackage("https://github.com/gap-packages/orb.git");
-Extracting manual examples for orb package ...
-11 chapters detected
-Chapter 1 : no examples 
-Chapter 2 : no examples 
-Chapter 3 : extracted 2 examples
-Chapter 4 : no examples 
-Chapter 5 : no examples 
-Chapter 6 : no examples 
-Chapter 7 : extracted 1 examples
-Chapter 8 : no examples 
-Chapter 9 : no examples 
-Chapter 10 : no examples 
-Chapter 11 : no examples 
 true
 gap> git_pkginfo := First(PackageInfo("orb"), p -> EndsWith(p.InstallationPath, "orb/"));;
 gap> "bin" in DirectoryContents(git_pkginfo.InstallationPath);  # check if it has been compiled

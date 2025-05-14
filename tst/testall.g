@@ -8,6 +8,7 @@ LoadPackage("PackageManager");
 
 # Info levels
 SetInfoLevel(InfoPackageManager, 1);
+SetInfoLevel(InfoAutoDoc, 0);
 
 # Use a temporary directory for packages
 PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg"));
