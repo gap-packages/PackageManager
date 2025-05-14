@@ -3,6 +3,7 @@ gap> InstallPackage("autodoc");
 true
 gap> LoadPackage("autodoc", false);
 true
+gap> SetInfoLevel(InfoAutoDoc, 0);
 
 # Fail to build doc and compile but completes installation
 # (assumes GAP is located at ../../..)
