@@ -10,7 +10,6 @@ function(url)
   url_parts := SplitString(url, "/");
   filename := url_parts[Length(url_parts)];
   path := Filename(DirectoryTemporary(), filename);
-  path := Concatenation(path, ".pkgman");  # TEMP: hack till GAP #4110 is merged
   FileString(path, get.result);
   Info(InfoPackageManager, 2, "Saved archive to ", path);
   return path;
