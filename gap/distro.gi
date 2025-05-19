@@ -7,14 +7,19 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallRequirements,
 function(requirements, opts)
+  local plan, urls, dirs;
   # requirements: list of [name, version] pairs
-  local plan;
 
   plan := PKGMAN_InstallationPlan(requirements, opts);
   
+  # No successful plan?
+  if plan = fail then
+    return false;
+  fi;
+  
   # Nothing to do?
   if IsEmpty(plan) then
-    Info(InfoPackageManager, 3, "All requirements are satisfied");
+    Info(InfoPackageManager, 3, "Nothing to install");
     return true;
   fi;
 
@@ -25,8 +30,11 @@ function(requirements, opts)
   fi;
   
   # Install and extract packages
+  urls := List(plan, r -> PKGMAN_UrlFromInfo(PKGMAN_PackageMetadata().(LowercaseString(r.name))));
+  dirs := List(urls, InstallPackageFromArchive);
+  
   # Compile packages (in reverse order) # TODO: ordering instead of sorting?
-  return plan;
+  return List(Reversed(dirs), PKGMAN_CompileDir);
 end);
 
 InstallGlobalFunction(PKGMAN_InstallationPlan,
@@ -65,7 +73,7 @@ function(requirements, opts)
     if upgrade_plan = fail then
       # no valid plan
       Info(InfoPackageManager, 1, "No valid installation plan for the required packages");
-      return false;
+      return fail;
     elif PKGMAN_Option("upgrade", opts, "Some packages will need to be upgraded. Okay?") then
       # must follow upgrade plan (if we get permission)
       plan := upgrade_plan;
@@ -73,7 +81,7 @@ function(requirements, opts)
     else
       # must follow upgrade plan, but options don't allow upgrades
       Info(InfoPackageManager, 1, "Some package upgrades are required, but are not allowed");
-      return false;
+      return fail;
     fi;
   elif upgrade_plan = fail then
     # must follow no-upgrade plan (is this possible?)
@@ -199,15 +207,6 @@ function(requirements, opts)
                   ));
   od;
   
-  # Replace dependency names with pointers to graph indices
-  for package in graph do
-    for d in package.dependencies do
-      i := PositionProperty(graph, p -> LowercaseString(p.name) = LowercaseString(d[1]));
-      Assert(1, i <> fail);
-      d[1] := i;
-    od;
-  od;
-  
   # For each package, check whether an upgrade is needed
   for package in queue do
     name := package[1];
@@ -237,7 +236,10 @@ function(graph, allow_upgrades)
       return fail;
     fi;
     if package.upgradable and (package.current = fail or allow_upgrades) then
-      Add(plan, rec(name := package.name, current := package.current, newest := package.newest));
+      Add(plan, rec(name    := package.name, 
+                    current := package.current,
+                    newest  := package.newest,
+                    url     := package.url));
     fi;
   od;
   return plan;

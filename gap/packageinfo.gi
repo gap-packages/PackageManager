@@ -31,17 +31,27 @@ function(info, version...)
   fi;
 
   # Read the information we want from it
+  url := PKGMAN_UrlFromInfo(info);
+  if url = fail then
+    return false;
+  fi;
+
+  # Download the archive
+  return InstallPackageFromArchive(url);
+end);
+
+InstallGlobalFunction(PKGMAN_UrlFromInfo,
+function(info)
+  local formats, format;
+  # Read the information we want from it
   formats := SplitString(info.ArchiveFormats, "", ", \n\r\t");
   format := First(PKGMAN_ArchiveFormats, f -> f in formats);
   if format = fail then
     Info(InfoPackageManager, 1, "No supported archive formats available, so could not install");
     Info(InfoPackageManager, 1, "Only ", formats, " available");
-    return false;
+    return fail;
   fi;
-  url := Concatenation(info.ArchiveURL, format);
-
-  # Download the archive
-  return InstallPackageFromArchive(url);
+  return Concatenation(info.ArchiveURL, format);
 end);
 
 InstallGlobalFunction(PKGMAN_GetPackageInfo,

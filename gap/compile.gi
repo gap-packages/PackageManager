@@ -60,8 +60,7 @@ function(dir)
     fi;
     return false;
   else
-    PKGMAN_InfoWithIndent(3, exec.output, 2);
+    PKGMAN_InfoWithIndent(4, exec.output, 2);
   fi;
-  Info(InfoPackageManager, 4, "Compilation was successful");
   return true;
 end);

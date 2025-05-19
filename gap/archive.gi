@@ -10,21 +10,14 @@ function(url)
   dir := PKGMAN_ExtractArchive(archive_path, PKGMAN_PackageDir());
   if dir = fail then return false; fi;
 
-  # Install dependencies
-  if PKGMAN_InstallDependencies(dir) <> true then
-    Info(InfoPackageManager, 1, "Dependencies not satisfied for ", PKGMAN_TarTopDirectory(archive_path));
-    PKGMAN_RemoveDirOptional(dir);
-    return false;
-  fi;
-
-  # Check validity
-  if PKGMAN_CheckPackage(dir) = false then
-    PKGMAN_RemoveDirOptional(dir);
-    return false;
-  fi;
+  ## Check validity
+  #if PKGMAN_CheckPackage(dir) = false then
+  #  PKGMAN_RemoveDirOptional(dir);
+  #  return false;
+  #fi;
 
   PKGMAN_RefreshPackageInfo();
-  return true;
+  return dir;
 end);
 
 InstallGlobalFunction(PKGMAN_ExtractArchive,
