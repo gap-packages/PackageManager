@@ -105,7 +105,7 @@ DeclareGlobalFunction("RemovePackage");
 #!           versions and installation directories
 #!     * 3 - Progress: also shows step-by-step progress of operations
 #!     * 4 - All: includes extra information such as whether curlInterface is
-#!           being used, and package info validation
+#!           being used, package info validation and compilation output
 #!
 #!   Set this using, for example `SetInfoLevel(InfoPackageManager, 1)`.
 #!   Default value is 3.

@@ -1,5 +1,6 @@
 DeclareGlobalFunction("InstallPackageFromInfo");
 
+DeclareGlobalFunction("PKGMAN_UrlFromInfo");
 DeclareGlobalFunction("PKGMAN_GetPackageInfo");
 DeclareGlobalFunction("PKGMAN_RefreshPackageInfo");
 DeclareGlobalFunction("PKGMAN_ValidatePackageInfo");
