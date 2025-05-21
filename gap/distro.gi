@@ -7,7 +7,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallRequirements,
 function(requirements, opts)
-  local plan, urls, dirs;
+  local plan, urls, package, url, dirs;
   # requirements: list of [name, version] pairs
 
   plan := PKGMAN_InstallationPlan(requirements, opts);
@@ -26,20 +26,43 @@ function(requirements, opts)
   # Confirm install
   if not PKGMAN_Option("install", opts, "Continue?") then
     Info(InfoPackageManager, 1, "Installation aborted");
-    return true; # TODO: appropriate return value?
+    return false; # TODO: appropriate return value?
   fi;
-  
-  # Install and extract packages
-  urls := List(plan, r -> PKGMAN_UrlFromInfo(PKGMAN_PackageMetadata().(LowercaseString(r.name))));
-  dirs := List(urls, InstallPackageFromArchive);
-  
+
+  # Install packages
+  dirs := List(plan, PKGMAN_PullOrExtractPackage);
+
   # Compile packages (in reverse order) # TODO: ordering instead of sorting?
   return List(Reversed(dirs), PKGMAN_CompileDir);
 end);
 
+InstallGlobalFunction(PKGMAN_PullOrExtractPackage,
+function(package)
+  # Run git pull on this package (if applicable) to try to get the newest
+  # version. If this doesn't work, then download and extract the newest version
+  # of this package by archive.
+  # package: record from installation plan
+  local repo, best, url;
+  
+  # Try pulling any git repos first
+  for repo in package.repos do
+    Info(InfoPackageManager, 3, "Found git repo at ", repo);
+    PKGMAN_GitPullDirectory(repo); # TODO: use return value?
+    PKGMAN_RefreshPackageInfo();
+  od;
+  best := PKGMAN_UserPackageInfo(package.name)[1];
+  if CompareVersionNumbers(best.Version, package.newest) then
+    return best.InstallationPath;
+  fi;
+  
+  # Pulling didn't work: install via archive URL instead
+  url := PKGMAN_UrlFromInfo(PKGMAN_PackageMetadata().(LowercaseString(package.name)));
+  return InstallPackageFromArchive(url);
+end);
+
 InstallGlobalFunction(PKGMAN_InstallationPlan,
 function(requirements, opts)
-  local upgrade, graph, upgrade_plan, no_upgrade_plan, plan;
+  local upgrade, graph, upgrade_plan, no_upgrade_plan, gitpull, plan, package;
   #
   # Turns a set of requirements into an installation plan that includes all
   # missing dependencies.
@@ -49,7 +72,7 @@ function(requirements, opts)
   # that refuses to upgrade any packages that are already installed. We choose
   # a plan by consulting user options and if necessary interactive prompts.
   #
-  upgrade  := PKGMAN_Option("upgrade", opts); # might be "ask"
+  upgrade := PKGMAN_Option("upgrade", opts); # might be "ask"
 
   # Get all-upgrades installation plan
   if upgrade in [true, "ask"] then
@@ -68,6 +91,11 @@ function(requirements, opts)
     no_upgrade_plan := fail;
   fi;
   
+  # Use git pull?
+  gitpull := upgrade_plan <> fail
+             and ForAny(upgrade_plan, p -> not IsEmpty(p.repos)) 
+             and PKGMAN_Option("gitpull", opts, "Allow upgrading via git pull?");
+  
   # Figure out which plan to follow
   if no_upgrade_plan = fail then
     if upgrade_plan = fail then
@@ -75,9 +103,9 @@ function(requirements, opts)
       Info(InfoPackageManager, 1, "No valid installation plan for the required packages");
       return fail;
     elif PKGMAN_Option("upgrade", opts, "Some packages will need to be upgraded. Okay?") then
-      # must follow upgrade plan (if we get permission)
+      # must follow upgrade plan (and we have permission)
       plan := upgrade_plan;
-      PKGMAN_ShowInstallationPlan(plan, []);
+      PKGMAN_ShowInstallationPlan(plan, [], gitpull);
     else
       # must follow upgrade plan, but options don't allow upgrades
       Info(InfoPackageManager, 1, "Some package upgrades are required, but are not allowed");
@@ -86,14 +114,14 @@ function(requirements, opts)
   elif upgrade_plan = fail then
     # must follow no-upgrade plan (is this possible?)
     plan := no_upgrade_plan;
-    PKGMAN_ShowInstallationPlan(plan, []);
+    PKGMAN_ShowInstallationPlan(plan, [], gitpull);
   elif Set(upgrade_plan) = Set(no_upgrade_plan) then
     # both plans are the same
     plan := no_upgrade_plan;
-    PKGMAN_ShowInstallationPlan(plan, []);
+    PKGMAN_ShowInstallationPlan(plan, [], gitpull);
   else
     Assert(1, IsSubset(upgrade_plan, no_upgrade_plan));
-    PKGMAN_ShowInstallationPlan(no_upgrade_plan, Difference(upgrade_plan, no_upgrade_plan));
+    PKGMAN_ShowInstallationPlan(no_upgrade_plan, Difference(upgrade_plan, no_upgrade_plan), gitpull);
     if PKGMAN_Option("upgrade", opts, "Include optional upgrades?") then
       # user prefers the upgrade plan
       plan := upgrade_plan;
@@ -103,13 +131,22 @@ function(requirements, opts)
       plan := no_upgrade_plan;
     fi;
   fi;
+  
+  # Disable git pulling if appropriate
+  if not gitpull then
+    plan := Filtered(plan, p -> p.upgradable);
+    for package in plan do
+      package.repos := [];
+    od;
+  fi;
+  
   return plan;
 end);
 
 InstallGlobalFunction(PKGMAN_UnsatisfiedRequirements,
 function(requirements, opts)
   local queue, i, unsatisfied, suggested, name, required, installed, dependencies, r;
-  queue := StructuralCopy(requirements);
+  queue := ShallowCopy(requirements);
   i := 0;
   unsatisfied := [];
   suggested := PKGMAN_Option("suggested", opts, "Include all suggested packages?");
@@ -146,8 +183,8 @@ InstallGlobalFunction(PKGMAN_DependencyGraph,
 function(requirements, opts)
   # requirements: a list [name, version] pairs
   local metadata, queue, next, graph, name, required, info, installed, current,
-        upgradable, dependencies, suggested, d, pos, package, i, graphPackage,
-        required_version;
+        upgradable, repos, dependencies, suggested, d, pos, package, i,
+        graphPackage, required_version;
   if IsEmpty(requirements) then
     return [];
   fi;
@@ -182,6 +219,9 @@ function(requirements, opts)
       current := installed[1].Version;
       upgradable := not CompareVersionNumbers(current, info.Version);
     fi;
+    
+    # Note any git repos that could be pulled
+    repos := PKGMAN_UserPackageGitRepoPaths(name);
 
     # Add any new dependencies to the queue
     dependencies := StructuralCopy(info.Dependencies.NeededOtherPackages);
@@ -204,6 +244,7 @@ function(requirements, opts)
                    dependencies := dependencies,
                    url          := info.ArchiveURL,
                    upgradable   := upgradable,
+                   repos        := repos,
                   ));
   od;
   
@@ -235,18 +276,18 @@ function(graph, allow_upgrades)
     if package.upgradeNeeded and package.current <> fail and not allow_upgrades then
       return fail;
     fi;
-    if package.upgradable and (package.current = fail or allow_upgrades) then
-      Add(plan, rec(name    := package.name, 
-                    current := package.current,
-                    newest  := package.newest,
-                    url     := package.url));
+    if (package.upgradable or not IsEmpty(package.repos))
+       and (package.current = fail or allow_upgrades) then
+      # TODO: just Add(plan, package)?
+      Add(plan, package);
     fi;
   od;
   return plan;
 end);
 
 InstallGlobalFunction(PKGMAN_ShowInstallationPlan,
-function(needed, optional)
+function(needed, optional, gitpull)
+  # Print info messages explaining what is going to be installed
   local show_package, indent, p;
   
   # Show a single line describing one package, with version number indented
@@ -258,6 +299,9 @@ function(needed, optional)
       message := Concatenation(message, p.current, " -> ");
     fi;
     message := Concatenation(message, p.newest);
+    if gitpull and not IsEmpty(p.repos) then
+      message := Concatenation(message, " or newer (git)");
+    fi;
     Info(InfoPackageManager, 3, message);
   end;
 
@@ -284,8 +328,11 @@ function(needed, optional)
   fi;
 end);
 
-InstallGlobalFunction(InstallRequiredPackages,
-{} -> ForAll(GAPInfo.Dependencies.NeededOtherPackages, p -> InstallPackageFromName(p[1])));
+InstallMethod(InstallRequiredPackages, "with no arguments", [],
+{} -> InstallRequiredPackages(rec()));
+
+InstallMethod(InstallRequiredPackages, "for a record", [IsRecord],
+opts -> PKGMAN_InstallRequirements(GAPInfo.Dependencies.NeededOtherPackages, opts));
 
 InstallGlobalFunction(RefreshPackageMetadata,
 function()

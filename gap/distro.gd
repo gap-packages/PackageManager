@@ -24,13 +24,15 @@
 #! @Arguments
 #! @Returns
 #!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("InstallRequiredPackages");
+DeclareOperation("InstallRequiredPackages", []);
+DeclareOperation("InstallRequiredPackages", [IsRecord]);
 
 DeclareGlobalFunction("InstallPackageFromName");
 DeclareGlobalFunction("RefreshPackageMetadata");
 
 DeclareGlobalFunction("PKGMAN_InstallRequirements");
 DeclareGlobalFunction("PKGMAN_InstallationPlan");
+DeclareGlobalFunction("PKGMAN_PullOrExtractPackage");
 DeclareGlobalFunction("PKGMAN_UnsatisfiedRequirements");
 DeclareGlobalFunction("PKGMAN_DependencyGraph");
 DeclareGlobalFunction("PKGMAN_PlanFromGraph");

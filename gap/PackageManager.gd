@@ -16,8 +16,8 @@
 #!
 #!   The package will then be downloaded and installed, along with any
 #!   additional packages that are required in order for it to be loaded.  Its
-#!   documentation will also be built if necessary.  If this installation is
-#!   successful, or if this package is already installed,
+#!   documentation will also be built if necessary.  If the installation is
+#!   completed successfully, or if this package is already installed,
 #!   <K>true</K> is returned; otherwise, <K>false</K> is returned.
 #!
 #!   By default, packages will be installed in the `pkg` subdirectory of
