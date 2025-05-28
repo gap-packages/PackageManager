@@ -24,7 +24,7 @@ function(requirements, opts)
   fi;
 
   # Confirm install
-  if not PKGMAN_Option("install", opts, "Continue?") then
+  if not PKGMAN_Option("proceed", opts, "Continue?") then
     Info(InfoPackageManager, 1, "Installation aborted");
     return false; # TODO: appropriate return value?
   fi;
@@ -335,9 +335,11 @@ InstallMethod(InstallRequiredPackages, "for a record", [IsRecord],
 opts -> PKGMAN_InstallRequirements(GAPInfo.Dependencies.NeededOtherPackages, opts));
 
 InstallGlobalFunction(RefreshPackageMetadata,
-function()
-  local download, instream, out, json;
-  download := PKGMAN_DownloadURL(PKGMAN_PackageMetadataUrl);
+function(opts)
+  local url, download, instream, out, json;
+  url := StringFormatted(PKGMAN_Option(opts, "distroLocation"), 
+                         PKGMAN_Option(opts, "distroVersion"));
+  download := PKGMAN_DownloadURL(url);
   # TODO: check download.success
   instream := InputTextString(download.result);;
   out := PKGMAN_Exec(".", "gunzip" : instream := instream);;
@@ -347,9 +349,9 @@ function()
 end);
 
 InstallGlobalFunction(PKGMAN_PackageMetadata,
-function()
+function(opts)
   if PKGMAN_PackageMetadataCache = fail then
-    RefreshPackageMetadata();
+    RefreshPackageMetadata(opts);
   fi;
-  return PKGMAN_PackageMetadataCache;
+  return PKGMAN_PackageMetadataCache;  # TODO: store multiple caches based on options
 end);
