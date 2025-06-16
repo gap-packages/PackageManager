@@ -37,7 +37,7 @@ function(requirements, opts)
 end);
 
 InstallGlobalFunction(PKGMAN_PullOrExtractPackage,
-function(package)
+function(package, opts)
   # Run git pull on this package (if applicable) to try to get the newest
   # version. If this doesn't work, then download and extract the newest version
   # of this package by archive.
@@ -56,7 +56,7 @@ function(package)
   fi;
   
   # Pulling didn't work: install via archive URL instead
-  url := PKGMAN_UrlFromInfo(PKGMAN_PackageMetadata().(LowercaseString(package.name)));
+  url := PKGMAN_UrlFromInfo(PKGMAN_PackageMetadata(opts).(LowercaseString(package.name)));
   return InstallPackageFromArchive(url);
 end);
 
@@ -94,7 +94,15 @@ function(requirements, opts)
   # Use git pull?
   gitpull := upgrade_plan <> fail
              and ForAny(upgrade_plan, p -> not IsEmpty(p.repos)) 
-             and PKGMAN_Option("gitpull", opts, "Allow upgrading via git pull?");
+             and PKGMAN_Option("git", opts, "Allow upgrading via git pull?");
+  
+  # Disable git pull upgrades if appropriate
+  if upgrade_plan <> fail and not gitpull then
+    upgrade_plan := Filtered(upgrade_plan, p -> p.upgradable);
+    for package in upgrade_plan do
+      package.repos := [];
+    od;
+  fi;
   
   # Figure out which plan to follow
   if no_upgrade_plan = fail then
@@ -130,14 +138,6 @@ function(requirements, opts)
       Info(InfoPackageManager, 3, "Optional upgrades will not be installed");
       plan := no_upgrade_plan;
     fi;
-  fi;
-  
-  # Disable git pulling if appropriate
-  if not gitpull then
-    plan := Filtered(plan, p -> p.upgradable);
-    for package in plan do
-      package.repos := [];
-    od;
   fi;
   
   return plan;
@@ -189,7 +189,7 @@ function(requirements, opts)
     return [];
   fi;
 
-  metadata := PKGMAN_PackageMetadata();
+  metadata := PKGMAN_PackageMetadata(opts);
   suggested := PKGMAN_Option("suggested", opts, "Include all suggested packages?");
   
   # Breadth-first search through dependencies, starting from input package
@@ -278,7 +278,6 @@ function(graph, allow_upgrades)
     fi;
     if (package.upgradable or not IsEmpty(package.repos))
        and (package.current = fail or allow_upgrades) then
-      # TODO: just Add(plan, package)?
       Add(plan, package);
     fi;
   od;
@@ -334,24 +333,32 @@ InstallMethod(InstallRequiredPackages, "with no arguments", [],
 InstallMethod(InstallRequiredPackages, "for a record", [IsRecord],
 opts -> PKGMAN_InstallRequirements(GAPInfo.Dependencies.NeededOtherPackages, opts));
 
-InstallGlobalFunction(RefreshPackageMetadata,
+InstallMethod(RefreshPackageMetadata, "with no arguments", [],
+{} -> RefreshPackageMetadata(rec()));
+
+InstallMethod(RefreshPackageMetadata, "for a record", [IsRecord],
 function(opts)
   local url, download, instream, out, json;
-  url := StringFormatted(PKGMAN_Option(opts, "distroLocation"), 
-                         PKGMAN_Option(opts, "distroVersion"));
+  url := PKGMAN_MetadataUrl(opts);
   download := PKGMAN_DownloadURL(url);
   # TODO: check download.success
   instream := InputTextString(download.result);;
   out := PKGMAN_Exec(".", "gunzip" : instream := instream);;
   # TODO: check out.code
   json := out.output;
-  PKGMAN_PackageMetadataCache := PKGMAN_JsonToGap(json);
+  PKGMAN_PackageMetadataCache.(url) := PKGMAN_JsonToGap(json);
 end);
 
 InstallGlobalFunction(PKGMAN_PackageMetadata,
 function(opts)
-  if PKGMAN_PackageMetadataCache = fail then
+  local url;
+  url := PKGMAN_MetadataUrl(opts);
+  if not IsBound(PKGMAN_PackageMetadataCache.(url)) then
     RefreshPackageMetadata(opts);
   fi;
-  return PKGMAN_PackageMetadataCache;  # TODO: store multiple caches based on options
+  return PKGMAN_PackageMetadataCache.(url);
 end);
+
+InstallGlobalFunction(PKGMAN_MetadataUrl,
+opts -> StringFormatted(PKGMAN_Option("distroLocation", opts), 
+                        PKGMAN_Option("distroVersion", opts)));

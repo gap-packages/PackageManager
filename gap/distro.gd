@@ -27,8 +27,10 @@
 DeclareOperation("InstallRequiredPackages", []);
 DeclareOperation("InstallRequiredPackages", [IsRecord]);
 
+DeclareOperation("RefreshPackageMetadata", []);
+DeclareOperation("RefreshPackageMetadata", [IsRecord]);
+
 DeclareGlobalFunction("InstallPackageFromName");
-DeclareGlobalFunction("RefreshPackageMetadata");
 
 DeclareGlobalFunction("PKGMAN_InstallRequirements");
 DeclareGlobalFunction("PKGMAN_InstallationPlan");
@@ -39,7 +41,6 @@ DeclareGlobalFunction("PKGMAN_PlanFromGraph");
 DeclareGlobalFunction("PKGMAN_ShowInstallationPlan");
 
 # Source of latest package releases
-PKGMAN_PackageMetadataUrl :=
-  "https://github.com/gap-system/PackageDistro/releases/download/latest/package-infos.json.gz";
-PKGMAN_PackageMetadataCache := fail;
-DeclareGlobalFunction("PKGMAN_PackageMetadata");
+PKGMAN_PackageMetadataCache := rec();  # TODO: change name
+DeclareGlobalFunction("PKGMAN_PackageMetadata");  # TODO: change name
+DeclareGlobalFunction("PKGMAN_MetadataUrl");

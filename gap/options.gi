@@ -4,10 +4,8 @@ InstallMethod(PKGMAN_Option,
 function(name, local_options)
   if name in RecNames(local_options) then
     return local_options.(name);
-  elif name in RecNames(PKGMAN_GlobalOptions) then
-    return PKGMAN_GlobalOptions.(name);
   fi;
-  Error("'", name, "' is not a supported option");
+  return UserPreference("PackageManager", name);
 end);
 
 InstallMethod(PKGMAN_Option,
