@@ -15,5 +15,5 @@ ReadPackage("PackageManager", "gap/git.gi");
 #ReadPackage("PackageManager", "gap/hg.gi");
 ReadPackage("PackageManager", "gap/interactive.gi");
 ReadPackage("PackageManager", "gap/json.gi");
-ReadPackage("PackageManager", "gap/options.gi");
 ReadPackage("PackageManager", "gap/packageinfo.gi");
+ReadPackage("PackageManager", "gap/prefs.gi");
