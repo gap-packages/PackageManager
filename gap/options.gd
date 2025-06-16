@@ -1,5 +1,5 @@
-DeclareOperation("PKGMAN_Option", [IsString, IsRecord, IsString]);
-DeclareOperation("PKGMAN_Option", [IsString, IsRecord]);
+DeclareOperation("PKGMAN_Pref", [IsString, IsRecord, IsString]);
+DeclareOperation("PKGMAN_Pref", [IsString, IsRecord]);
 
 DeclareUserPreference(rec(
   name        := "dependencies",

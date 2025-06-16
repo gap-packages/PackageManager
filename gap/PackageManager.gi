@@ -19,7 +19,7 @@ string -> InstallPackage(string, rec()));
 InstallMethod(InstallPackage,
 "for a string and a record",
 [IsString, IsRecord],
-function(string, opts)
+function(string, prefs)
   # Tidy up the string
   NormalizeWhitespace(string);
 
@@ -27,13 +27,13 @@ function(string, opts)
   if ForAny(PKGMAN_ArchiveFormats, ext -> EndsWith(string, ext)) then
     return InstallPackageFromArchive(string);
   elif EndsWith(string, ".git") then
-    return InstallPackageFromGit(string, opts);
+    return InstallPackageFromGit(string, prefs);
   elif EndsWith(string, ".hg") then
-    return InstallPackageFromHg(string, opts);
+    return InstallPackageFromHg(string, prefs);
   elif EndsWith(string, "PackageInfo.g") then
     return InstallPackageFromInfo(string);
   fi;
-  return InstallPackageFromName(string, opts);
+  return InstallPackageFromName(string, prefs);
 end);
 
 InstallGlobalFunction(RemovePackage,
