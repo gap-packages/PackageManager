@@ -28,8 +28,6 @@ function(string, prefs)
     return InstallPackageFromArchive(string);
   elif EndsWith(string, ".git") then
     return InstallPackageFromGit(string, prefs);
-  elif EndsWith(string, ".hg") then
-    return InstallPackageFromHg(string, prefs);
   elif EndsWith(string, "PackageInfo.g") then
     return InstallPackageFromInfo(string);
   fi;

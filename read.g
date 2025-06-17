@@ -12,7 +12,6 @@ ReadPackage("PackageManager", "gap/distro.gi");
 #ReadPackage("PackageManager", "gap/doc.gi");
 ReadPackage("PackageManager", "gap/download.gi");
 ReadPackage("PackageManager", "gap/git.gi");
-#ReadPackage("PackageManager", "gap/hg.gi");
 ReadPackage("PackageManager", "gap/interactive.gi");
 ReadPackage("PackageManager", "gap/json.gi");
 ReadPackage("PackageManager", "gap/packageinfo.gi");
