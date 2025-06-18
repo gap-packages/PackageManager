@@ -1,4 +1,4 @@
-InstallGlobalFunction(InstallPackageFromName,
+InstallGlobalFunction(PKGMAN_InstallFromName,
 function(name, prefs)
   local requirements;
   requirements := [[name, PKGMAN_Pref("version", prefs)]];
@@ -57,7 +57,7 @@ function(package, prefs)
   
   # Pulling didn't work: install via archive URL instead
   url := PKGMAN_UrlFromInfo(PKGMAN_PackageMetadata(prefs).(LowercaseString(package.name)));
-  return InstallPackageFromArchive(url);
+  return PKGMAN_InstallFromArchive(url);
 end);
 
 InstallGlobalFunction(PKGMAN_InstallationPlan,

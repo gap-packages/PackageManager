@@ -1,4 +1,4 @@
-DeclareGlobalFunction("InstallPackageFromInfo");
+DeclareGlobalFunction("PKGMAN_InstallFromInfo");
 
 DeclareGlobalFunction("PKGMAN_UrlFromInfo");
 DeclareGlobalFunction("PKGMAN_GetPackageInfo");

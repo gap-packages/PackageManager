@@ -1,4 +1,4 @@
-InstallGlobalFunction(InstallPackageFromInfo,
+InstallGlobalFunction(PKGMAN_InstallFromInfo,
 function(info, version...)
   local equal, formats, format, url;
 
@@ -37,7 +37,7 @@ function(info, version...)
   fi;
 
   # Download the archive
-  return InstallPackageFromArchive(url);
+  return PKGMAN_InstallFromArchive(url);
 end);
 
 InstallGlobalFunction(PKGMAN_UrlFromInfo,

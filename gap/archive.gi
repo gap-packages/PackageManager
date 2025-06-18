@@ -1,4 +1,4 @@
-InstallGlobalFunction(InstallPackageFromArchive,
+InstallGlobalFunction(PKGMAN_InstallFromArchive,
 function(url)
   local archive_path, dir;
   

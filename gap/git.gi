@@ -1,4 +1,4 @@
-# InstallGlobalFunction(InstallPackageFromGit,
+# InstallGlobalFunction(PKGMAN_InstallFromGit,
 # function(url, args...)
 #   local interactive, branch, name, dir, info, dirs, repo, q, exec;
 

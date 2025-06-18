@@ -30,7 +30,7 @@ DeclareOperation("InstallRequiredPackages", [IsRecord]);
 DeclareOperation("RefreshPackageMetadata", []);
 DeclareOperation("RefreshPackageMetadata", [IsRecord]);
 
-DeclareGlobalFunction("InstallPackageFromName");
+DeclareGlobalFunction("PKGMAN_InstallFromName");
 
 DeclareGlobalFunction("PKGMAN_InstallRequirements");
 DeclareGlobalFunction("PKGMAN_InstallationPlan");

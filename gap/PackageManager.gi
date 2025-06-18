@@ -25,13 +25,13 @@ function(string, prefs)
 
   # Call the appropriate function
   if ForAny(PKGMAN_ArchiveFormats, ext -> EndsWith(string, ext)) then
-    return InstallPackageFromArchive(string);
+    return PKGMAN_InstallFromArchive(string);
   elif EndsWith(string, ".git") then
-    return InstallPackageFromGit(string, prefs);
+    return PKGMAN_InstallFromGit(string, prefs);
   elif EndsWith(string, "PackageInfo.g") then
-    return InstallPackageFromInfo(string);
+    return PKGMAN_InstallFromInfo(string);
   fi;
-  return InstallPackageFromName(string, prefs);
+  return PKGMAN_InstallFromName(string, prefs);
 end);
 
 InstallMethod(RemovePackage,

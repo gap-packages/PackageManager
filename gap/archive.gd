@@ -1,4 +1,4 @@
-DeclareGlobalFunction("InstallPackageFromArchive");
+DeclareGlobalFunction("PKGMAN_InstallFromArchive");
 
 DeclareGlobalFunction("PKGMAN_ExtractArchive");
 DeclareGlobalFunction("PKGMAN_TarTopDirectory");
