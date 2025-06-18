@@ -91,7 +91,8 @@ DeclareOperation("InstallPackage", [IsString, IsRecord]);
 #! @Arguments name[, interactive]
 #! @Returns
 #!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("RemovePackage");
+DeclareOperation("RemovePackage", [IsString]);
+DeclareOperation("RemovePackage", [IsString, IsRecord]);
 
 #! @Section Info warnings
 

@@ -34,42 +34,39 @@ function(string, prefs)
   return InstallPackageFromName(string, prefs);
 end);
 
-InstallGlobalFunction(RemovePackage,
-function(name, interactive...)
-  local info, dir, q;
+InstallMethod(RemovePackage,
+"for a string",
+[IsString],
+name -> RemovePackage(name, rec()));
 
-  # Check input
-  if not IsString(name) then
-    ErrorNoReturn("<name> must be a string");
-  elif Length(interactive) > 1 then
-    ErrorNoReturn("requires 1 or 2 arguments (not ", Length(interactive) + 1, ")");
-  elif Length(interactive) = 1 then
-    if interactive[1] = true or interactive[1] = false then
-      interactive := interactive[1];
-    else
-      ErrorNoReturn("<interactive> must be true or false");
-    fi;
-  else
-    interactive := true;
-  fi;
-
+InstallMethod(RemovePackage,
+"for a string and a record",
+[IsString, IsRecord],
+function(name, prefs)
+  local infos, info, dir, question;
+  
   # Locate the package
-  info := PKGMAN_UserPackageInfo(name : warnIfNone, warnIfMultiple);
+  infos := PKGMAN_UserPackageInfo(name : warnIfNone);
 
-  # Need precisely one version
-  if Length(info) <> 1 then
-    return false;
+  # Warn if multiple versions were found
+  if Length(infos) > 1 then
+    Info(InfoPackageManager, 2, "Installations of ", name, " found at multiple locations: ");
+    for info in infos do
+      PKGMAN_InfoWithIndent(2, info.InstallationPath, 2);
+    od;
   fi;
-
-  # Remove directory carefully
-  dir := ShallowCopy(info[1].InstallationPath);
-  q := Concatenation("Really delete directory ", dir, " ?");
-  if interactive = false or PKGMAN_AskYesNoQuestion(q : default := false) then
-    PKGMAN_RemoveDir(dir);
-    return true;
-  fi;
-  Info(InfoPackageManager, 3, "Directory not deleted");
-  return false;
+  
+  # Offer to remove each directory carefully
+  for info in infos do
+    dir := ShallowCopy(info.InstallationPath);
+    question := Concatenation("Delete directory ", dir, " ?");
+    if PKGMAN_Pref("proceed", prefs, question) then
+      PKGMAN_RemoveDir(dir);
+    else
+      Info(InfoPackageManager, 3, "Directory not deleted");
+    fi;
+  od;
+  return true;
 end);
 
 InstallGlobalFunction(PKGMAN_CheckPackage,
