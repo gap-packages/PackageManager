@@ -1,7 +1,7 @@
 The GAP 4 package "PackageManager"
 ==================================
 
-[![Build Status](https://github.com/gap-packages/PackageManager/workflows/CI/badge.svg?branch=master)](https://github.com/gap-packages/PackageManager/actions?query=workflow%3ACI+branch%3Amaster)
+[![CI](https://github.com/gap-packages/PackageManager/actions/workflows/CI.yml/badge.svg)](https://github.com/gap-packages/PackageManager/actions/workflows/CI.yml)
 [![Code Coverage](https://codecov.io/github/gap-packages/PackageManager/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/PackageManager)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gap-packages/PackageManager/master?filepath=PackageManager-demo.ipynb)
 
