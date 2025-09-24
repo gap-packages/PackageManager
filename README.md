@@ -53,7 +53,7 @@ brew install git autoconf automake curl GMP graphviz libtool
 Now, to install GAP and PackageManager, open a terminal window and enter the following:
 ```bash
 cd ~
-git clone git@github.com:gap-system/gap.git
+git clone https://github.com/gap-system/gap
 cd gap
 ./autogen.sh
 ./configure
@@ -63,7 +63,7 @@ mkdir .gap
 cd .gap
 mkdir pkg
 cd pkg
-git clone git@github.com:gap-packages/PackageManager.git
+git clone https://github.com/gap-packages/PackageManager
 cd ~/gap
 ./gap --bare
 ```
