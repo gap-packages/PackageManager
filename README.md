@@ -50,8 +50,25 @@ On a Mac, you can get the required software by installing Homebrew, and running:
 brew install git autoconf automake curl GMP graphviz libtool
 ```
 
-Now, to install GAP and PackageManager, open a terminal window and enter the following:
+Now, to install GAP and PackageManager, open a terminal window and enter the following, choosing either the SSH or HTTPS git links:
 ```bash
+#SSH links
+cd ~
+git clone git@github.com:gap-system/gap.git
+cd gap
+./autogen.sh
+./configure
+make
+cd ~/
+mkdir .gap
+cd .gap
+mkdir pkg
+cd pkg
+git clone git@github.com:gap-packages/PackageManager.git
+cd ~/gap
+./gap --bare
+
+#HTTPS links
 cd ~
 git clone https://github.com/gap-system/gap
 cd gap
@@ -67,6 +84,7 @@ git clone https://github.com/gap-packages/PackageManager
 cd ~/gap
 ./gap --bare
 ```
+
 
 In the GAP window that opens, enter the following:
 ```gap
