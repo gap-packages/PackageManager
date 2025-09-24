@@ -67,7 +67,9 @@ cd pkg
 git clone git@github.com:gap-packages/PackageManager.git
 cd ~/gap
 ./gap --bare
+```
 
+```bash
 #HTTPS links
 cd ~
 git clone https://github.com/gap-system/gap
