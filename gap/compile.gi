@@ -8,7 +8,7 @@ function(name)
   fi;
 
   # Locate the package
-  info := PKGMAN_UserPackageInfo(name : warnIfNone, warnIfMultiple);
+  info := PKGMAN_UserPackageInfo(name);
 
   # Package not installed
   if Length(info) = 0 then

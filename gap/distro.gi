@@ -7,7 +7,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallRequirements,
 function(requirements, prefs)
-  local plan, urls, package, url, dirs;
+  local plan, dirs, graph;
   # requirements: list of [name, version] pairs
 
   plan := PKGMAN_InstallationPlan(requirements, prefs);
@@ -30,10 +30,25 @@ function(requirements, prefs)
   fi;
 
   # Install packages
-  dirs := List(plan, PKGMAN_PullOrExtractPackage);
+  dirs := List(plan, pkg -> PKGMAN_PullOrExtractPackage(pkg, prefs));
+  
+  PKGMAN_RefreshPackageInfo();
 
   # Compile packages (in reverse order) # TODO: ordering instead of sorting?
-  return List(Reversed(dirs), PKGMAN_CompileDir);
+  if PKGMAN_Pref("compile", prefs, "Compile packages?") then
+    if PKGMAN_Pref("compileDeps", prefs, "Recompile all dependencies?") then
+      # Compile all packages in dependency graph
+      graph := PKGMAN_DependencyGraph(requirements, rec(suggested := true));
+      graph := Reversed(graph);
+      Print(List(graph, pkg -> pkg.name), "\n");
+      return List(graph, pkg -> CompilePackage(pkg.name));
+    else
+      # Compile newly updated packages
+      return List(Reversed(dirs), PKGMAN_CompileDir);
+    fi;
+  fi;
+  
+  return true; # TODO: appropriate return value?
 end);
 
 InstallGlobalFunction(PKGMAN_PullOrExtractPackage,
@@ -181,10 +196,11 @@ end);
 
 InstallGlobalFunction(PKGMAN_DependencyGraph,
 function(requirements, prefs)
-  # requirements: a list [name, version] pairs
+  # requirements: a list of [name, version] pairs
   local metadata, queue, next, graph, name, required, info, installed, current,
         upgradable, repos, dependencies, suggested, d, pos, package, i,
         graphPackage, required_version;
+  Print(requirements, "\n");
   if IsEmpty(requirements) then
     return [];
   fi;

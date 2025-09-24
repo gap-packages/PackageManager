@@ -42,6 +42,22 @@ DeclareUserPreference(rec(
 ));
 
 DeclareUserPreference(rec(
+  name        := "compile",
+  description := "",
+  default     := true,
+  values      := [true, false, "ask"],
+  multi       := false
+));
+
+DeclareUserPreference(rec(
+  name        := "compileDeps", # TODO: implement
+  description := "",
+  default     := true,
+  values      := [true, false, "ask"],
+  multi       := false
+));
+
+DeclareUserPreference(rec(
   name        := "interactive",
   description := "",
   default     := true,
