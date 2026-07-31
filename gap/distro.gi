@@ -111,6 +111,8 @@ function()
   urls := rec(success := false);
   if not get.success then
     Info(InfoPackageManager, 1, "Could not contact server");
+    Info(InfoPackageManager, 2, "Tried to download ", PKGMAN_PackageInfoURLList);
+    PKGMAN_InfoDownloadError(get);
     return urls;
   fi;
   for line in SplitString(get.result, "\n") do

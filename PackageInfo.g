@@ -87,6 +87,7 @@ Dependencies := rec(
   SuggestedOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ],
                               [ "AutoDoc", ">= 2025.05.09" ],
                               [ "curlInterface", ">= 2.1.0" ] ],
+  TestPackages := [ [ "io", ">= 4.7.0" ] ],
   ExternalConditions := [ ],
 ),
 
