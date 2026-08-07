@@ -1,40 +1,47 @@
 This file describes changes in the PackageManager package.
 
-unreleased
-  - Report the underlying error when a download fails (at InfoPackageManager
+## unreleased
+
+  - Report the underlying error when a download fails (at `InfoPackageManager`
     level 2)
-  - Test the GetPackageURLs failure paths against a local HTTP server instead
+  - Test the `GetPackageURLs` failure paths against a local HTTP server instead
     of a live website, which was a frequent source of spurious test failures
   - Test updating a package installed in a directory without a version number
     against the same local server, instead of downloading transgrp twice
 
-1.6.3 (2025-05-14)
+## 1.6.3 (2025-05-14)
+
   - Alter tests for compatibility with AutoDoc 2025.05.09
 
-1.6.2 (2025-04-08)
+## 1.6.2 (2025-04-08)
+
   - Revert accidental dependence on GAPDoc
 
-1.6.1 (2025-02-05)
-  - Handle GAP 4.15's new --packagedirs option
+## 1.6.1 (2025-02-05)
+
+  - Handle GAP 4.15's new `--packagedirs` option
   - Compile newly installed packages more liberally
   - Minor improvements to code quality
 
-1.6 (2024-09-19)
-  - Deprecate functions beginning "InstallPackageFrom", instead preferring
-    InstallPackage as a single entry point.
-  - Make version ranges for InstallPackage more consistent
+## 1.6 (2024-09-19)
+
+  - Deprecate functions beginning `InstallPackageFrom`, instead preferring
+    `InstallPackage` as a single entry point.
+  - Make version ranges for `InstallPackage` more consistent
   - Improve Julia code for downloading files
   - Widespread restructuring of code to aid maintainability
 
-1.5 (2024-08-30)
-  - Add 'keepDirectory' option to avoid deleting directories on failure
+## 1.5 (2024-08-30)
+
+  - Add `keepDirectory` option to avoid deleting directories on failure
   - Require GAP version 4.12 or later
   - Allow package installation to continue even when compilation or
     documentation fails
   - Deprecate Mercurial support, which is now hard to test
   - Print less unnecessary output during installation
 
-1.4.4 (2024-07-29)
+## 1.4.4 (2024-07-29)
+
   - Fix code changing the current directory (fixes an issue when installing
     the `recog` package from directly its source code repository)
   - Allow switching off interactive mode in `InstallPackage` also when
@@ -43,91 +50,111 @@ unreleased
     and the current directory contains a file with a name like `git` matching
     that of a program PackageManager needs to execute.
 
-1.4.3 (2024-01-12)
+## 1.4.3 (2024-01-12)
+
   - Janitorial changes (adjust tests to pass with package validation
     in GAP 4.13 making the `License` field mandatory)
 
-1.4.2 (2023-12-20)
-  - Add 'debug' option which preserves directories resulting from
+## 1.4.2 (2023-12-20)
+
+  - Add `debug` option which preserves directories resulting from
     failed package installations
   - Simplify bundled `BuildPackages.sh` script (should not affect users)
 
-1.4.1 (2023-03-20)
+## 1.4.1 (2023-03-20)
+
   - Switch to new GAP package distribution
   - Add custom download code for when PackageManager is used within Julia
 
-1.4.0 (2023-02-04)
-  - Revise how packages needing compilation are built, by using a bundled
-    script instead of relying on GAP's BuildPackages.sh
+## 1.4.0 (2023-02-04)
 
-1.3.2 (2022-10-06)
+  - Revise how packages needing compilation are built, by using a bundled
+    script instead of relying on GAP's `BuildPackages.sh`
+
+## 1.3.2 (2022-10-06)
+
   - More informative error output
 
-1.3.1 (2022-10-02)
+## 1.3.1 (2022-10-02)
+
   - Handle different versions of tar
   - Make info warnings less verbose at level 3
-  - Remove dummy variable for DownloadURL
+  - Remove dummy variable for `DownloadURL`
 
-1.3 (2022-08-18)
+## 1.3 (2022-08-18)
+
   - Require GAP >= 4.10
-  - Install packages in GAPInfo.UserGapRoot, rather than hard-wire .gap
+  - Install packages in `GAPInfo.UserGapRoot`, rather than hard-wire `.gap`
   - Improve the package documentation
   - Improve internal error handling
 
-1.2 (2021-10-02)
-  - InstallPackage now supports a required minimum version argument
+## 1.2 (2021-10-02)
+
+  - `InstallPackage` now supports a required minimum version argument
   - Compatibility changes to re-enable support for GAP 4.9
 
-1.1 (2020-10-14)
-  - Introduce CompilePackage for forcing a recompile
-  - Fixes to support newer BuildPackages.sh scripts
+## 1.1 (2020-10-14)
+
+  - Introduce `CompilePackage` for forcing a recompile
+  - Fixes to support newer `BuildPackages.sh` scripts
   - Fix to work around double-compression issue (see GAP issue #4110)
 
-1.0 (2020-02-04)
+## 1.0 (2020-02-04)
+
   - Interactive demo notebook
   - Adjust test suite for use with Docker
   - Major version number indicating a mature project
 
-0.5.1 (2019-07-18)
+## 0.5.1 (2019-07-18)
+
   - Fix a broken test and an outdated error message
 
-0.5 (2019-07-12)
+## 0.5 (2019-07-12)
+
   - Build package documentation on install, if not already present
   - Check and fix existing package if Install or Update is called on it
-  - Run prerequisites.sh on install if it exists (mainly for Semigroups)
+  - Run `prerequisites.sh` on install if it exists (mainly for Semigroups)
   - Install dependencies in leaf-to-root order, rather than root-to-leaf
   - Handle circular dependencies correctly
   - Change this package's doc to use backticks instead of XML-style tags
 
-0.4 (2019-05-10)
-  - Introduce UpdatePackage
-  - Change behaviour of InstallPackage to allow interactive updates
+## 0.4 (2019-05-10)
+
+  - Introduce `UpdatePackage`
+  - Change behaviour of `InstallPackage` to allow interactive updates
   - Check availability and recompile if needed after an attempted install/update
 
-0.3 (2019-03-26)
-  - Introduce InstallRequiredPackages to install the packages required by GAP
-  - Allow a branch name to be declared in InstallPackageFromGit/Hg
-  - Support .tar.bz2 archives
+## 0.3 (2019-03-26)
+
+  - Introduce `InstallRequiredPackages` to install the packages required by GAP
+  - Allow a branch name to be declared in `InstallPackageFromGit`/`Hg`
+  - Support `.tar.bz2` archives
   - Add an abstract
 
-0.2.3 (2019-02-22)
+## 0.2.3 (2019-02-22)
+
   - Adjust tests to allow for more loaded packages
 
-0.2.2 (2019-02-15)
+## 0.2.2 (2019-02-15)
+
   - Minor fixes
 
-0.2.1 (2018-10-04)
+## 0.2.1 (2018-10-04)
+
   - Update documentation
   - Handle dependencies better for cloned repositories
   - Remove packages after failed installation
 
-0.2.0 (2018-10-03)
+## 0.2.0 (2018-10-03)
+
   - Automatically install required dependencies when installing a package
   - Check whether a newer version of a given package is already installed
   - Refuse to overwrite an existing package
   - Log output of failed shell commands such as tar or compilation script
-  - Print more info to the screen (InfoPackageManager is now 3 by default)
+  - Print more info to the screen (`InfoPackageManager` is now 3 by default)
   - Various bug fixes and minor improvements
 
-0.1.0 (2018-09-21)
-  - Initial release with InstallPackage, InstallPackageFrom*, and RemovePackage
+## 0.1.0 (2018-09-21)
+
+  - Initial release with `InstallPackage`, `InstallPackageFrom*`, and
+    `RemovePackage`
