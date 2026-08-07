@@ -1,5 +1,13 @@
 This file describes changes in the PackageManager package.
 
+unreleased
+  - Report the underlying error when a download fails (at InfoPackageManager
+    level 2)
+  - Test the GetPackageURLs failure paths against a local HTTP server instead
+    of a live website, which was a frequent source of spurious test failures
+  - Test updating a package installed in a directory without a version number
+    against the same local server, instead of downloading transgrp twice
+
 1.6.3 (2025-05-14)
   - Alter tests for compatibility with AutoDoc 2025.05.09
 
