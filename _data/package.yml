@@ -1,69 +1,76 @@
-name: PackageManager
-version: "1.6.3"
-license: "GPL-2.0-or-later"
-date: 2025-05-14
+name: GitHubPagesForGAP
+version: "0.2"
+license: "0BSD"
+date: 2017-02-04
 description: |
-    Easily download and install GAP packages
+    A GitHub Pages generator for GAP packages
 
 authors:
-    - name: Michael Young
-      url: https://myoung.uk/work
+    - name: Max Horn
+      url: http://www.quendi.de/math
+    - name: A. U. Thor
 
 maintainers:
-    - name: Michael Young
-      url: https://myoung.uk/work
-    - name: The GAP Team
-      url: mailto:support@gap-system.org
+    - name: Max Horn
+      url: http://www.quendi.de/math
+    - name: Jan Itor
 
-GAP: ">= 4.12"
+GAP: ">=4.8.1"
+
+needed-pkgs:
+    - name: "GAPDoc"
+      version: ">= 1.2"
+      url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
+    - name: "IO"
+      version: ">= 4.1"
+      url: "https://gap-packages.github.io/io"
 
 suggested-pkgs:
-    - name: "GAPDoc"
-      version: ">= 1.6.1"
-      url: "https://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
-    - name: "AutoDoc"
-      version: ">= 2025.05.09"
-      url: "https://gap-packages.github.io/AutoDoc"
-    - name: "curlInterface"
-      version: ">= 2.1.0"
-      url: "https://gap-packages.github.io/curlInterface/"
+    - name: "orb"
+      version: ">= 4.2"
+      url: "https://gap-packages.github.io/orb"
 
-www: https://gap-packages.github.io/PackageManager/
+www: https://gap-system.github.io/GitHubPagesForGAP/
 readme: README.md
-packageinfo: https://gap-packages.github.io/PackageManager/PackageInfo.g
+packageinfo: https://gap-system.github.io/GitHubPagesForGAP/PackageInfo.g
+github: https://github.com/gap-system/GitHubPagesForGAP
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/PackageManager/releases/download/v1.6.3/PackageManager-1.6.3.tar.gz
+      url: https://github.com/gap-system/GitHubPagesForGAP/releases/download/v0.2/GitHubPagesForGAP-0.2.tar.gz
+    - name: .tar.bz2
+      url: https://github.com/gap-system/GitHubPagesForGAP/releases/download/v0.2/GitHubPagesForGAP-0.2.tar.bz2
 
 abstract: |
-    <span class="pkgname">PackageManager</span> is a basic collection of    simple functions for installing and removing    <span class="pkgname">GAP</span> packages, with the eventual aim of    becoming a full pip-style package manager for the    <span class="pkgname">GAP</span> system.
+    This is a pseudo package that contains no actual  <span class="pkgname">GAP</span> code. Instead, it is a template for other  GAP packages that allows to quickly setup GitHub Pages.
 
-status: deposited
-doc-html: doc/chap0_mj.html
+status: other
+doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
+keywords: |
+    GitHub Pages, GAP.
 citeas: |
     <p class='BibEntry'>
-    [<span class='BibKey'>YT25</span>]   <b class='BibAuthor'>Young, M. and GAP Team, T.</b>,
-     <i class='BibTitle'>PackageManager, Easily download and install GAP packages,
-             Version 1.6.3</i>
-     (<span class='BibYear'>2025</span>)<br />
+    [<span class='BibKey'>HTI17</span>]   <b class='BibAuthor'>Horn, M., Thor, A. U. and Itor, J.</b>,
+     <i class='BibTitle'>GitHubPagesForGAP, A GitHub Pages generator for GAP packages,
+             Version 0.2</i>
+     (<span class='BibYear'>2017</span>)<br />
     (<span class='BibNote'>GAP package</span>),
-    <span class='BibHowpublished'><a href="https://gap-packages.github.io/PackageManager/">https://gap-packages.github.io/PackageManager/</a></span>.
+    <span class='BibHowpublished'><a href="https://gap-system.github.io/GitHubPagesForGAP/">https://gap-system.github.io/GitHubPagesForGAP/</a></span>.
     </p>
     
 
 bibtex: |
-    @misc{ PackageManager,
-      author =           {Young, M. and GAP Team, T.},
-      title =            {{PackageManager},  {Easily  download  and  install GAP
-                          packages}, {V}ersion 1.6.3},
-      month =            {May},
-      year =             {2025},
+    @misc{ GitHubPagesForGAP0.2,
+      author =           {Horn, M. and Thor, A. U. and Itor, J.},
+      title =            {{GitHubPagesForGAP}, A GitHub Pages generator for GAP packages, {V}ersion 0.2},
+      month =            {Feb},
+      year =             {2017},
       note =             {GAP package},
-      howpublished =     {\href {https://gap-packages.github.io/PackageManager/}
-                          {\texttt{https://gap\texttt{\symbol{45}}packages.github.io/}\discretionary
-                          {}{}{}\texttt{PackageManager/}}},
-      printedkey =       {YT25}
+      howpublished =     {\href                              {https://gap-system.github.io/GitHubPagesForGAP/}
+                          {\texttt{https://gap-system.github.io/}\discretionary
+                          {}{}{}\texttt{GitHubPagesForGAP/}}},
+      keywords =         {GitHub Pages; GAP},
+      printedkey =       {HTI17}
     }
 
