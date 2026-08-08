@@ -1,6 +1,6 @@
 This file describes changes in the PackageManager package.
 
-## unreleased
+## 1.6.4 (2026-08-08)
 
   - Report the underlying error when a download fails (at `InfoPackageManager`
     level 2)
