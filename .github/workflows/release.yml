@@ -38,3 +38,5 @@ jobs:
           force: ${{ inputs.force }}
       - uses: gap-actions/update-gh-pages@v1
         if: ${{ !inputs.dry-run }}
+        with:
+          clean: false  # must preserve the dummy/ dir in gh-pages
