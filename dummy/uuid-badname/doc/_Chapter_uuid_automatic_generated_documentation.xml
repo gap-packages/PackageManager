@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is an automatically generated file. -->
+<Chapter Label="Chapter_uuid_automatic_generated_documentation">
+<Heading>uuid automatic generated documentation</Heading>
+
+<Section Label="Chapter_uuid_automatic_generated_documentation_Section_uuid_automatic_generated_documentation_of_global_functions">
+<Heading>uuid automatic generated documentation of global functions</Heading>
+
+<ManSection>
+  <Func Arg="arg" Name="RandomUUID" />
+ <Description>
+Generate a random UUID
+ </Description>
+</ManSection>
+
+
+<ManSection>
+  <Func Arg="arg" Name="StringUUID" />
+ <Description>
+<P/>
+ </Description>
+</ManSection>
+
+
+<ManSection>
+  <Func Arg="arg" Name="HexStringUUID" />
+ <Description>
+<P/>
+ </Description>
+</ManSection>
+
+
+</Section>
+
+
+</Chapter>
+

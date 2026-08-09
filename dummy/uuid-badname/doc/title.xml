@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is an automatically generated file. -->
+<TitlePage>
+  <Title>
+    uuid
+  </Title>
+  <Subtitle>
+    RFC 4122 UUIDs
+  </Subtitle>
+  <Version>
+    0.6
+  </Version>
+  <Author>
+    Markus Pfeiffer<Alt Only="LaTeX"><Br/></Alt>
+<Address>
+School of Computer ScienceJack Cole BuildingNorth HaughSt AndrewsFifeKY16 9SSScotland<Br/>
+</Address>
+<Email>markus.pfeiffer@morphism.de</Email>
+<Homepage>http://www.morphism.de/~markusp/</Homepage>
+
+  </Author>
+  <Date>
+    22 September 2018
+  </Date>
+  </TitlePage>
