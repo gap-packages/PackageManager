@@ -7,9 +7,9 @@
 #
 InstallGlobalFunction(PKGMAN_JsonToGap,
 function(string)
-  local eat, parseExpectedCharacters, skipAllWhitespace, parseSomething, 
-        parseObject, parseList, parseString, parseEscapeCharacter, parseBoolean,
-        pos;
+  local eat, parseExpectedCharacters, skipAllWhitespace, parseSomething,
+        parseObject, parseList, parseString, parseInt, parseEscapeCharacter,
+        parseBoolean, pos;
   
   eat := function(expected)
     parseExpectedCharacters(expected);
@@ -43,6 +43,8 @@ function(string)
       return parseString();
     elif next in "tfn" then
       return parseBoolean();
+    elif next in DIGITS then
+      return parseInt();
     fi;
     ErrorNoReturn("could not parse entity starting with '", next, "'");
   end;
@@ -99,6 +101,15 @@ function(string)
     return Encode(Unicode(codepoints));
   end;
   
+  parseInt := function()
+    local start;
+    start := pos + 1;
+    while string[pos + 1] in DIGITS do
+      pos := pos + 1;
+    od;
+    return Int(string{[start .. pos]});
+  end;
+
   parseEscapeCharacter := function()
     local char;
     if string[pos + 2] = 'n' then
