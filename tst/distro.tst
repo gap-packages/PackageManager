@@ -76,18 +76,30 @@ gap> InstallRequiredPackages();
 false
 gap> GAPInfo.Dependencies := rec(NeededOtherPackages := backup);;
 
-# GetPackageURLs failure
+# GetPackageURLs failures.  These use a local HTTP server rather than any
+# remote one, since otherwise a transient network problem makes the "server
+# unreachable" case indistinguishable from the "bad content" case.
+gap> LoadPackage("io", false);
+true
+gap> ReadPackage("PackageManager", "tst/http-server.g");
+true
+gap> server := PKGMAN_StartHTTPTestServer(PKGMAN_PrepareTestData());;
 gap> default_url := PKGMAN_PackageInfoURLList;;
-gap> PKGMAN_PackageInfoURLList := "http://www.nothing.rubbish/abc.txt";;
+
+# The server cannot be contacted (nothing is listening on that port)
+gap> PKGMAN_PackageInfoURLList := PKGMAN_UnusedURL();;
 gap> GetPackageURLs();
 #I  Could not contact server
 rec( success := false )
-gap> PKGMAN_PackageInfoURLList := "https://www.gap-system.org";;
+
+# The server answers, but with something that is not a package URLs list
+gap> PKGMAN_PackageInfoURLList := Concatenation(server.url, "/badurls.txt");;
 gap> GetPackageURLs();
 #I  Bad line in package URLs list:
 #I  <!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta...
 rec( success := false )
 gap> PKGMAN_PackageInfoURLList := default_url;;
+gap> PKGMAN_StopHTTPTestServer(server);
 
 # InstallPackageFromName failure
 gap> InstallPackage("sillypackage");

@@ -1,7 +1,7 @@
 The GAP 4 package "PackageManager"
 ==================================
 
-[![Build Status](https://github.com/gap-packages/PackageManager/workflows/CI/badge.svg?branch=master)](https://github.com/gap-packages/PackageManager/actions?query=workflow%3ACI+branch%3Amaster)
+[![CI](https://github.com/gap-packages/PackageManager/actions/workflows/CI.yml/badge.svg)](https://github.com/gap-packages/PackageManager/actions/workflows/CI.yml)
 [![Code Coverage](https://codecov.io/github/gap-packages/PackageManager/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/PackageManager)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gap-packages/PackageManager/master?filepath=PackageManager-demo.ipynb)
 
@@ -50,8 +50,9 @@ On a Mac, you can get the required software by installing Homebrew, and running:
 brew install git autoconf automake curl GMP graphviz libtool
 ```
 
-Now, to install GAP and PackageManager, open a terminal window and enter the following:
+Now, to install GAP and PackageManager, open a terminal window and enter the following, choosing either the SSH or HTTPS git links:
 ```bash
+#SSH links
 cd ~
 git clone git@github.com:gap-system/gap.git
 cd gap
@@ -67,6 +68,25 @@ git clone git@github.com:gap-packages/PackageManager.git
 cd ~/gap
 ./gap --bare
 ```
+
+```bash
+#HTTPS links
+cd ~
+git clone https://github.com/gap-system/gap
+cd gap
+./autogen.sh
+./configure
+make
+cd ~/
+mkdir .gap
+cd .gap
+mkdir pkg
+cd pkg
+git clone https://github.com/gap-packages/PackageManager
+cd ~/gap
+./gap --bare
+```
+
 
 In the GAP window that opens, enter the following:
 ```gap

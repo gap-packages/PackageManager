@@ -9,7 +9,6 @@ InstallGlobalFunction(PKGMAN_InstallRequirements,
 function(requirements, prefs)
   local plan, dirs, graph;
   # requirements: list of [name, version] pairs
-
   plan := PKGMAN_InstallationPlan(requirements, prefs);
   
   # No successful plan?
@@ -357,7 +356,11 @@ function(prefs)
   local url, download, instream, out, json;
   url := PKGMAN_MetadataUrl(prefs);
   download := PKGMAN_DownloadURL(url);
-  # TODO: check download.success
+  if not download.success then
+    Info(InfoPackageManager, 1, "Could not contact server");
+    Info(InfoPackageManager, 2, "Tried to download ", url);
+    PKGMAN_InfoDownloadError(download);
+  fi;
   instream := InputTextString(download.result);;
   out := PKGMAN_Exec(".", "gunzip" : instream := instream);;
   # TODO: check out.code

@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "PackageManager",
 Subtitle := "Easily download and install GAP packages",
-Version := "1.6.3",
-Date := "14/05/2025",  # dd/mm/yyyy format
+Version := "1.6.4",
+Date := "08/08/2026",  # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -87,6 +87,7 @@ Dependencies := rec(
   SuggestedOtherPackages := [ [ "GAPDoc", ">= 1.6.1" ],
                               [ "AutoDoc", ">= 2025.05.09" ],
                               [ "curlInterface", ">= 2.1.0" ] ],
+  TestPackages := [ [ "io", ">= 4.7.0" ] ],
   ExternalConditions := [ ],
 ),
 

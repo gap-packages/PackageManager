@@ -1,0 +1,42 @@
+# This workflow is responsible for making releases of this GAP package,
+# and updating its website afterwards. For usage instructions, see
+# <https://github.com/gap-actions/release-pkg/>.
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Dry run: only create an archive containing the release instead of publishing it on GitHub"
+        type: boolean
+        required: false
+        default: false
+      force:
+        description: "Force: allow overwriting an existing release, or making a release with an incorrect date"
+        type: boolean
+        required: false
+        default: false
+
+permissions: write-all
+
+jobs:
+  release:
+    name: "Release the GAP package"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: gap-actions/setup-gap@v3
+        with:
+          gap-version: 'devel'
+      - uses: gap-actions/build-pkg-docs@v2
+        with:
+          use-latex: true
+      - uses: gap-actions/release-pkg@v1
+        with:
+          dry-run: ${{ inputs.dry-run }}
+          force: ${{ inputs.force }}
+      - uses: gap-actions/update-gh-pages@v1
+        if: ${{ !inputs.dry-run }}
+        with:
+          clean: false  # must preserve the dummy/ dir in gh-pages
