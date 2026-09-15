@@ -102,9 +102,12 @@ function(name)
   local info, dirs, repos;
   info := PKGMAN_UserPackageInfo(name);
   dirs := List(info, i -> i.InstallationPath);
-  repos := Filtered(dirs, dir -> IsDirectoryPath(Concatenation(dir, ".git/")));
+  repos := Filtered(dirs, PKGMAN_IsGitRepoDir);
   return repos;
 end);
+
+InstallGlobalFunction(PKGMAN_IsGitRepoDir,
+dir -> IsDirectoryPath(Concatenation(dir, ".git/")));
 
 InstallGlobalFunction(PKGMAN_GitPullDirectory,
 function(dir)
