@@ -1,6 +1,6 @@
 InstallGlobalFunction(CompilePackage,
 function(name)
-  local info;
+  local info, repos, dirs;
 
   # Check input
   if not IsString(name) then
@@ -9,14 +9,16 @@ function(name)
 
   # Locate the package
   info := PKGMAN_UserPackageInfo(name);
+  repos := PKGMAN_UserPackageGitRepoPaths(name);
 
   # Package not installed
   if Length(info) = 0 then
     return false;
   fi;
 
-  # Compile all installations that were found
-  return ForAll(info, i -> PKGMAN_CompileDir(i.InstallationPath));
+  # Compile the most up-to-date installation, and any git ones
+  dirs := Union([info[1].InstallationPath], repos);
+  return ForAll(dirs, dir -> PKGMAN_CompileDir(dir));
 end);
 
 InstallGlobalFunction(PKGMAN_CompileDir,
