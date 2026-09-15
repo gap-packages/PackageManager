@@ -56,7 +56,7 @@ function(package, prefs)
   # version. If this doesn't work, then download and extract the newest version
   # of this package by archive.
   # package: record from installation plan
-  local repo, best, url;
+  local repo, infos, best, url;
   
   # Try pulling any git repos first
   for repo in package.repos do
@@ -64,9 +64,14 @@ function(package, prefs)
     PKGMAN_GitPullDirectory(repo); # TODO: use return value?
     PKGMAN_RefreshPackageInfo();
   od;
-  best := PKGMAN_UserPackageInfo(package.name)[1];
-  if CompareVersionNumbers(best.Version, package.newest) then
-    return best.InstallationPath;
+
+  # Check if what we've now got is sufficient
+  infos := PKGMAN_UserPackageInfo(package.name);
+  if not IsEmpty(infos) then
+    best := infos[1];
+    if CompareVersionNumbers(best.Version, package.newest) then
+      return best.InstallationPath;
+    fi;
   fi;
   
   # Pulling didn't work: install via archive URL instead
