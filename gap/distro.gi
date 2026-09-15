@@ -7,7 +7,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallRequirements,
 function(requirements, prefs)
-  local plan, dirs, graph;
+  local plan, dirs, compile_results, graph;
   # requirements: list of [name, version] pairs
   plan := PKGMAN_InstallationPlan(requirements, prefs);
   
@@ -25,7 +25,7 @@ function(requirements, prefs)
   # Confirm install
   if not PKGMAN_Pref("proceed", prefs, "Continue?") then
     Info(InfoPackageManager, 1, "Installation aborted");
-    return false; # TODO: appropriate return value?
+    return false;
   fi;
 
   # Install packages
@@ -34,20 +34,20 @@ function(requirements, prefs)
   PKGMAN_RefreshPackageInfo();
 
   # Compile packages (in reverse order) # TODO: ordering instead of sorting?
+  compile_results := [];
   if PKGMAN_Pref("compile", prefs, "Compile packages?") then
     if PKGMAN_Pref("compileDeps", prefs, "Recompile all dependencies?") then
       # Compile all packages in dependency graph
       graph := PKGMAN_DependencyGraph(requirements, rec(suggested := true));
       graph := Reversed(graph);
-      Print(List(graph, pkg -> pkg.name), "\n");
-      return List(graph, pkg -> CompilePackage(pkg.name));
+      compile_results := List(graph, pkg -> CompilePackage(pkg.name));
     else
       # Compile newly updated packages
-      return List(Reversed(dirs), PKGMAN_CompileDir);
+      compile_results := List(Reversed(dirs), PKGMAN_CompileDir);
     fi;
   fi;
   
-  return true; # TODO: appropriate return value?
+  return (not fail in dirs) and (not false in compile_results);
 end);
 
 InstallGlobalFunction(PKGMAN_PullOrExtractPackage,
@@ -56,6 +56,7 @@ function(package, prefs)
   # version. If this doesn't work, then download and extract the newest version
   # of this package by archive.
   # package: record from installation plan
+  # returns install path if successful, or fail if unsuccessful
   local repo, infos, best, url;
   
   # Try pulling any git repos first
@@ -204,7 +205,6 @@ function(requirements, prefs)
   local metadata, queue, next, graph, name, required, info, installed, current,
         upgradable, repos, dependencies, suggested, d, pos, package, i,
         graphPackage, required_version;
-  Print(requirements, "\n");
   if IsEmpty(requirements) then
     return [];
   fi;
@@ -275,7 +275,6 @@ function(requirements, prefs)
     graphPackage := First(graph, p -> LowercaseString(p.name) = name);
     graphPackage.upgradeNeeded := false;
     for required_version in required do
-      #Print(graphPackage.name, "\t", required_version, " needed,\t", graphPackage.current, " installed,\t", graphPackage.newest, " available\n");
       if graphPackage.current = fail or not CompareVersionNumbers(graphPackage.current, required_version) then
         graphPackage.upgradeNeeded := true;
       fi;
