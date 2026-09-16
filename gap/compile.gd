@@ -27,8 +27,10 @@
 #! @Arguments name
 #! @Returns
 #!   <K>true</K> or <K>false</K>
-DeclareGlobalFunction("CompilePackage");
+DeclareOperation("CompilePackage", [IsString]);
+DeclareOperation("CompilePackage", [IsString, IsRecord]);
 
+DeclareGlobalFunction("PKGMAN_CompilePackageByName");
 DeclareGlobalFunction("PKGMAN_CompileDir");
 
 PKGMAN_BuildPackagesScript :=

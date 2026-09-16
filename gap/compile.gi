@@ -1,11 +1,39 @@
-InstallGlobalFunction(CompilePackage,
-function(name)
-  local info, repos, dirs;
+InstallMethod(CompilePackage,
+"for a string",
+[IsString],
+string -> CompilePackage(string, rec()));
 
+InstallMethod(CompilePackage,
+"for a string and a record",
+[IsString, IsRecord],
+function(name, prefs)
+  local names;
+  
   # Check input
-  if not IsString(name) then
-    ErrorNoReturn("<name> must be a string");
+  if IsEmpty(PackageInfo(name)) then
+    Info(InfoPackageManager, 1, "No package named \"", name, "\" is installed");
+    return false;
+  elif IsEmpty(PKGMAN_UserPackageInfo(name)) then
+    Info(InfoPackageManager, 1, "The ", name, " package is installed, but not in the user package directory");
+    Info(InfoPackageManager, 1, "You can install a user-managed version with InstallPackage(\"", name, "\")");
+    return false;
   fi;
+  
+  # Compile all dependencies or just this package?
+  if PKGMAN_Pref("compileDeps", prefs, "Compile package dependencies as well?") then
+    names := List(PKGMAN_DependencyGraph([[name, ""]], prefs), pkg -> pkg.name);
+  else
+    names := [name];
+  fi;
+  return ForAll(names, PKGMAN_CompilePackageByName);
+end);
+
+InstallGlobalFunction(PKGMAN_CompilePackageByName,
+function(name)
+  # Compile just the package with this name.
+  # If multiple copies exist, compile the most recent one and any git ones.
+  # return true if all compilations are successful or not needed
+  local info, repos, dirs;
 
   # Locate the package
   info := PKGMAN_UserPackageInfo(name);
