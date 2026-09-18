@@ -40,7 +40,7 @@ function(requirements, prefs)
       # Compile all packages in dependency graph
       graph := PKGMAN_DependencyGraph(requirements, rec(suggested := true));
       graph := Reversed(graph);
-      compile_results := List(graph, pkg -> CompilePackage(pkg.name));
+      compile_results := List(graph, pkg -> PKGMAN_CompilePackageByName(pkg.name));
     else
       # Compile newly updated packages
       compile_results := List(Reversed(dirs), PKGMAN_CompileDir);

@@ -21,7 +21,7 @@ function(name, prefs)
   
   # Compile all dependencies or just this package?
   if PKGMAN_Pref("compileDeps", prefs, "Compile package dependencies as well?") then
-    names := List(PKGMAN_DependencyGraph([[name, ""]], prefs), pkg -> pkg.name);
+    names := Reversed(List(PKGMAN_DependencyGraph([[name, ""]], prefs), pkg -> pkg.name));
   else
     names := [name];
   fi;
