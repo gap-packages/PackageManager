@@ -86,9 +86,10 @@ InstallGlobalFunction(PKGMAN_UserPackageInfo,
 function(name)
   local user_pkg_dir, allinfo, userinfo;
 
-  user_pkg_dir := PKGMAN_PackageDir();
+  user_pkg_dir := PKGMAN_RealPath(PKGMAN_PackageDir());
   allinfo := PackageInfo(name);
-  userinfo := Filtered(allinfo, i -> StartsWith(i.InstallationPath, user_pkg_dir));
+  userinfo := Filtered(allinfo,
+                       i -> StartsWith(PKGMAN_RealPath(i.InstallationPath), user_pkg_dir));
 
   # Package not found
   if ValueOption("warnIfNone") = true and Length(userinfo) = 0 then

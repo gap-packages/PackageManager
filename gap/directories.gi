@@ -16,6 +16,22 @@ function()
   return dir;
 end);
 
+# Resolve symlinks in <path> where GAP supports it (4.15 or newer), else
+# return <path> unchanged. GAP 4.17 and newer store root and package
+# directories with symlinks resolved (gap-system/gap#5930), so paths must be
+# compared in this form (e.g. /var is /private/var on macOS).
+InstallGlobalFunction(PKGMAN_RealPath,
+function(path)
+  local res;
+  if IsBound(GAP_realpath) then
+    res := GAP_realpath(path);
+    if res <> fail then
+      return res;
+    fi;
+  fi;
+  return path;
+end);
+
 InstallGlobalFunction(PKGMAN_SetCustomPackageDir,
 function(dir)
   # Set the variable
@@ -120,8 +136,11 @@ end);
 
 InstallGlobalFunction(PKGMAN_RemoveDir,
 function(dir)
+  local realdir, pkgdir;
+  realdir := PKGMAN_RealPath(dir);
+  pkgdir := PKGMAN_RealPath(PKGMAN_PackageDir());
   # this 'if' statement is a paranoid check - it should always be true
-  if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
+  if StartsWith(realdir, pkgdir) and realdir <> pkgdir then
     RemoveDirectoryRecursively(dir);
     Info(InfoPackageManager, 2, "Removed directory ", dir);
     PKGMAN_RefreshPackageInfo();

@@ -1,4 +1,5 @@
 DeclareGlobalFunction("PKGMAN_PackageDir");
+DeclareGlobalFunction("PKGMAN_RealPath");
 DeclareGlobalFunction("PKGMAN_SetCustomPackageDir");
 DeclareGlobalFunction("PKGMAN_CreateDirRecursively");
 DeclareGlobalFunction("PKGMAN_InsertPackageDirectory");
