@@ -10,12 +10,12 @@ function(requirements, prefs)
   local plan, dirs, compile_results, graph;
   # requirements: list of [name, version] pairs
   plan := PKGMAN_InstallationPlan(requirements, prefs);
-  
+
   # No successful plan?
   if plan = fail then
     return false;
   fi;
-  
+
   # Nothing to do?
   if IsEmpty(plan) then
     Info(InfoPackageManager, 3, "Nothing to install");
@@ -30,7 +30,7 @@ function(requirements, prefs)
 
   # Install packages
   dirs := List(plan, pkg -> PKGMAN_PullOrExtractPackage(pkg, prefs));
-  
+
   PKGMAN_RefreshPackageInfo();
 
   # Compile packages (in reverse order) # TODO: ordering instead of sorting?
@@ -46,7 +46,7 @@ function(requirements, prefs)
       compile_results := List(Reversed(dirs), PKGMAN_CompileDir);
     fi;
   fi;
-  
+
   Info(InfoPackageManager, 4, "Installed into directories: ", dirs);
   Info(InfoPackageManager, 4, "Compilation results: ", compile_results);
 
@@ -61,7 +61,7 @@ function(package, prefs)
   # package: record from installation plan
   # returns install path if successful, or fail if unsuccessful
   local repo, infos, best, url;
-  
+
   # Try pulling any git repos first
   for repo in package.repos do
     Info(InfoPackageManager, 3, "Found git repo at ", repo);
@@ -77,7 +77,7 @@ function(package, prefs)
       return best.InstallationPath;
     fi;
   fi;
-  
+
   # Pulling didn't work: install via archive URL instead
   url := PKGMAN_UrlFromInfo(PKGMAN_PackageMetadata(prefs).(LowercaseString(package.name)));
   return PKGMAN_InstallFromArchive(url);
@@ -113,12 +113,12 @@ function(requirements, prefs)
   else
     no_upgrade_plan := fail;
   fi;
-  
+
   # Use git pull?
   gitpull := upgrade_plan <> fail
-             and ForAny(upgrade_plan, p -> not IsEmpty(p.repos)) 
+             and ForAny(upgrade_plan, p -> not IsEmpty(p.repos))
              and PKGMAN_Pref("git", prefs, "Allow upgrading via git pull?");
-  
+
   # Disable git pull upgrades if appropriate
   if upgrade_plan <> fail and not gitpull then
     upgrade_plan := Filtered(upgrade_plan, p -> p.upgradable);
@@ -126,7 +126,7 @@ function(requirements, prefs)
       package.repos := [];
     od;
   fi;
-  
+
   # Figure out which plan to follow
   if no_upgrade_plan = fail then
     if upgrade_plan = fail then
@@ -162,7 +162,7 @@ function(requirements, prefs)
       plan := no_upgrade_plan;
     fi;
   fi;
-  
+
   return plan;
 end);
 
@@ -214,7 +214,7 @@ function(requirements, prefs)
 
   metadata := PKGMAN_PackageMetadata(prefs);
   suggested := PKGMAN_Pref("suggested", prefs, "Include all suggested packages?");
-  
+
   # Breadth-first search through dependencies, starting from input package
   queue := List(requirements, r -> [LowercaseString(r[1]), [r[2]]]);
   i := 0;
@@ -242,7 +242,7 @@ function(requirements, prefs)
       current := installed[1].Version;
       upgradable := not CompareVersionNumbers(current, info.Version);
     fi;
-    
+
     # Note any git repos that could be pulled
     repos := PKGMAN_UserPackageGitRepoPaths(name);
 
@@ -270,7 +270,7 @@ function(requirements, prefs)
                    repos        := repos,
                   ));
   od;
-  
+
   # For each package, check whether an upgrade is needed
   for package in queue do
     name := package[1];
@@ -286,7 +286,7 @@ function(requirements, prefs)
       fi;
     od;
   od;
-  
+
   return graph;
 end);
 
@@ -310,7 +310,7 @@ InstallGlobalFunction(PKGMAN_ShowInstallationPlan,
 function(needed, optional, gitpull)
   # Print info messages explaining what is going to be installed
   local show_package, indent, p;
-  
+
   # Show a single line describing one package, with version number indented
   show_package := function(p, indent)
     local space, message;
@@ -330,10 +330,10 @@ function(needed, optional, gitpull)
   if IsEmpty(needed) and IsEmpty(optional) then
     return;
   fi;
-  
+
   # Column to align version numbers
   indent := Maximum(List(Concatenation(needed, optional), p -> Length(p.name))) + 2;
-  
+
   # Show required installs followed by optional upgrades
   if not IsEmpty(needed) then
     Info(InfoPackageManager, 3, "The following packages will be installed:");
@@ -386,5 +386,5 @@ function(prefs)
 end);
 
 InstallGlobalFunction(PKGMAN_MetadataUrl,
-prefs -> StringFormatted(PKGMAN_Pref("distroLocation", prefs), 
+prefs -> StringFormatted(PKGMAN_Pref("distroLocation", prefs),
                          PKGMAN_Pref("distroVersion", prefs)));

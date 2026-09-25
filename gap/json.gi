@@ -10,7 +10,7 @@ function(string)
   local encode, eat, parseExpectedCharacters, skipAllWhitespace, parseSomething,
         parseObject, parseList, parseString, parseInt, parseEscapeCharacter,
         parseBoolean, pos;
-  
+
   # Turn a list of codepoints into a string.
   encode := function(codepoints)
     local u, e, ascii, i;
@@ -49,13 +49,13 @@ function(string)
       ErrorNoReturn("expected \"", expected, "\" but found \"", string{[pos + 1 .. pos + len]}, "\"");
     fi;
   end;
-  
+
   skipAllWhitespace := function()
     while pos < Length(string) and string[pos + 1] in PKGMAN_WHITESPACE do
       pos := pos + 1;
     od;
   end;
-  
+
   parseSomething := function()
     local next;
     next := string[pos + 1];
@@ -91,7 +91,7 @@ function(string)
     eat("}");
     return r;
   end;
-  
+
   parseList := function()
     local l, element;
     l := [];
@@ -108,7 +108,7 @@ function(string)
     eat("]");
     return l;
   end;
-  
+
   parseString := function()
     local codepoints;
     parseExpectedCharacters("\"");
@@ -124,7 +124,7 @@ function(string)
     eat("\"");
     return encode(codepoints);
   end;
-  
+
   parseInt := function()
     local start;
     start := pos + 1;
@@ -171,7 +171,7 @@ function(string)
       return fail;
     fi;
   end;
-  
+
   pos := 0;
   skipAllWhitespace();
   return parseSomething();
