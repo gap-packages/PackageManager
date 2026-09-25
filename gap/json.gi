@@ -7,10 +7,34 @@
 #
 InstallGlobalFunction(PKGMAN_JsonToGap,
 function(string)
-  local eat, parseExpectedCharacters, skipAllWhitespace, parseSomething,
+  local encode, eat, parseExpectedCharacters, skipAllWhitespace, parseSomething,
         parseObject, parseList, parseString, parseInt, parseEscapeCharacter,
         parseBoolean, pos;
   
+  # Turn a list of codepoints into a string.
+  encode := function(codepoints)
+    local u, e, ascii, i;
+
+    # Use GAPDoc Unicode support if available, fall back to ASCII if not
+    if IsBoundGlobal("Unicode") and IsBoundGlobal("Encode") then
+      # GAPDoc is completely loaded
+      u := ValueGlobal("Unicode");
+      e := ValueGlobal("Encode");
+      return e(u(codepoints));
+    else
+      # GAPDoc is unavailable
+      ascii := EmptyPlist(Length(codepoints));
+      for i in [1 .. Length(codepoints)] do
+        if codepoints[i] < 256 then
+          ascii[i] := CharInt(codepoints[i]);
+        else
+          ascii[i] := 'X';
+        fi;
+      od;
+      return ascii;
+    fi;
+  end;
+
   eat := function(expected)
     parseExpectedCharacters(expected);
     skipAllWhitespace();
@@ -43,7 +67,7 @@ function(string)
       return parseString();
     elif next in "tfn" then
       return parseBoolean();
-    elif next in DIGITS then
+    elif next in "0123456789" then
       return parseInt();
     fi;
     ErrorNoReturn("could not parse entity starting with '", next, "'");
@@ -98,13 +122,13 @@ function(string)
       fi;
     od;
     eat("\"");
-    return Encode(Unicode(codepoints));
+    return encode(codepoints);
   end;
   
   parseInt := function()
     local start;
     start := pos + 1;
-    while string[pos + 1] in DIGITS do
+    while string[pos + 1] in "0123456789" do
       pos := pos + 1;
     od;
     return Int(string{[start .. pos]});
