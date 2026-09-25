@@ -38,7 +38,7 @@ function(requirements, prefs)
   if PKGMAN_Pref("compile", prefs, "Compile packages?") then
     if PKGMAN_Pref("compileDeps", prefs, "Recompile all dependencies?") then
       # Compile all packages in dependency graph
-      graph := PKGMAN_DependencyGraph(requirements, rec(suggested := true));
+      graph := PKGMAN_DependencyGraph(requirements, prefs);
       graph := Reversed(graph);
       compile_results := List(graph, pkg -> PKGMAN_CompilePackageByName(pkg.name));
     else
@@ -47,6 +47,9 @@ function(requirements, prefs)
     fi;
   fi;
   
+  Info(InfoPackageManager, 4, "Installed into directories: ", dirs);
+  Info(InfoPackageManager, 4, "Compilation results: ", compile_results);
+
   return (not fail in dirs) and (not false in compile_results);
 end);
 
