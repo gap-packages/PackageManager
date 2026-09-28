@@ -12,8 +12,11 @@
 #! @Description
 #!   Attempts to download and install the latest versions of all packages
 #!   required for &GAP; to run.  Currently these packages are
-#!   <Package>GAPDoc</Package>, <Package>primgrp</Package>,
-#!   <Package>SmallGrp</Package>, and <Package>transgrp</Package>.
+#!   <Package>GAPDoc</Package>,
+#!   <Package>PerfGrp</Package>,
+#!   <Package>PrimGrp</Package>,
+#!   <Package>SmallGrp</Package>, and
+#!   <Package>TransGrp</Package>.
 #!   Returns <K>false</K> if something went wrong, and
 #!   <K>true</K> otherwise.
 #!
