@@ -1,100 +1,94 @@
-# InstallGlobalFunction(PKGMAN_InstallFromGit,
-# function(url, args...)
-#   local interactive, branch, name, dir, info, dirs, repo, q, exec;
+InstallGlobalFunction(PKGMAN_InstallFromGit,
+function(url, prefs)
+  local branch, name, repos, success, repo, result, dir, exec, info, 
+        requirements;
+  branch := fail; # TODO: support branch option
+  
+  # Get package name
+  name := PKGMAN_NameOfGitRepo(url);
+  if name = fail then
+    Info(InfoPackageManager, 1, "Could not find repository name (bad URL?)");
+    return false;
+  fi;
 
-#   # Process args
-#   interactive := true;
-#   branch := fail;
-#   if Length(args) = 1 then
-#     if args[1] in [true, false] then
-#       interactive := args[1];
-#     elif IsString(args[1]) then
-#       branch := args[1];
-#     else
-#       ErrorNoReturn("2nd argument should be true, false, or a string");
-#     fi;
-#   elif Length(args) = 2 then
-#     interactive := args[1];
-#     branch := args[2];
-#     if not interactive in [true, false] then
-#       ErrorNoReturn("<interactive> should be true or false");
-#     elif not IsString(branch) then
-#       ErrorNoReturn("<branch> should be a string");
-#     fi;
-#   elif Length(args) > 2 then
-#     ErrorNoReturn("requires 1, 2 or 3 arguments (not ", Length(args) + 1, ")");
-#   fi;
+  # Check for existing repository
+  repos := PKGMAN_UserPackageGitRepoPaths(name);
+  success := true;
+  for repo in repos do
+    Info(InfoPackageManager, 1, "Existing git repository for ", name, " found");
+    Info(InfoPackageManager, 2, "at ", repo);
+    if PKGMAN_Pref("git", prefs, "Upgrade via git pull?") then
+      result := PKGMAN_GitPullDirectory(repo);
+      if result = true then
+        dir := repo;
+      else
+        success := false;
+      fi;
+    fi;
+  od;
+  
+  # No existing repository: clone!
+  if IsEmpty(repos) then
+    # Check for a valid location
+    dir := Filename(Directory(PKGMAN_PackageDir()), name);
+    if not PKGMAN_IsValidTargetDir(dir) then
+      return false;
+    fi;
 
-#   name := PKGMAN_NameOfGitRepo(url);
-#   if name = fail then
-#     Info(InfoPackageManager, 1, "Could not find repository name (bad URL?)");
-#     return false;
-#   fi;
-#   dir := Filename(Directory(PKGMAN_PackageDir()), name);
+    # Do the cloning
+    Info(InfoPackageManager, 2, "Cloning to ", dir, " ...");
+    if branch = fail then
+      exec := PKGMAN_Exec(".", "git", "clone", url, dir);
+    else
+      exec := PKGMAN_Exec(".", "git", "clone", url, dir, "-b", branch);
+    fi;
 
-#   # Check for existing repository
-#   info := PKGMAN_UserPackageInfo(name);
-#   dirs := List(info, i -> ShallowCopy(i.InstallationPath));
-#   repo := Filename(List(dirs, Directory), ".git");
-#   if repo <> fail then  # TODO: check it's the same remote?
-#     q := Concatenation("Package \"", name, "\" already installed via git. Update it?");
-#     if interactive and PKGMAN_AskYesNoQuestion(q : default := false) then
-#       return UpdatePackage(name, interactive);
-#     fi;
-#   fi;
+    # Was the download successful?
+    if exec.code <> 0 then
+      Info(InfoPackageManager, 1, "Cloning unsuccessful");
+      return false;
+    fi;
+    Info(InfoPackageManager, 3, "Package cloned successfully");
+    PKGMAN_RefreshPackageInfo();
 
-#   # Check for a valid location
-#   if not PKGMAN_IsValidTargetDir(dir) then
-#     return false;
-#   fi;
+    # Check for PackageInfo.g
+    info := Filename(Directory(dir), "PackageInfo.g");
+    if not IsReadableFile(info) then
+      Info(InfoPackageManager, 1, "Could not find PackageInfo.g");
+      return false;
+    fi;
+  fi;
+  
+  # Dependencies
+  if PKGMAN_Pref("dependencies", prefs, "Install dependencies?") then
+    info := PKGMAN_GetPackageInfo(dir);
+    requirements := ShallowCopy(info.Dependencies.NeededOtherPackages);
+    if not IsEmpty(info.Dependencies.SuggestedOtherPackages) 
+           and PKGMAN_Pref("suggested", prefs, "Include all suggested packages?") then
+      Append(requirements, info.Dependencies.SuggestedOtherPackages);
+    fi;
+    result := PKGMAN_InstallRequirements(requirements, prefs);
+    success := success and result;
+  fi;
+  
+  # Compile and make doc
+  result := PKGMAN_CheckPackage(dir);
+  success := success and result;
+  return success;
+ end);
 
-#   # Do the cloning
-#   Info(InfoPackageManager, 2, "Cloning to ", dir, " ...");
-#   if branch = fail then
-#     exec := PKGMAN_Exec(".", "git", "clone", url, dir);
-#   else
-#     exec := PKGMAN_Exec(".", "git", "clone", url, dir, "-b", branch);
-#   fi;
-
-#   # Was the download successful?
-#   if exec.code <> 0 then
-#     Info(InfoPackageManager, 1, "Cloning unsuccessful");
-#     return false;
-#   fi;
-#   Info(InfoPackageManager, 3, "Package cloned successfully");
-#   PKGMAN_RefreshPackageInfo();
-
-#   # Check for PackageInfo.g
-#   info := Filename(Directory(dir), "PackageInfo.g");
-#   if not IsReadableFile(info) then
-#     Info(InfoPackageManager, 1, "Could not find PackageInfo.g");
-#     PKGMAN_RemoveDirOptional(dir);
-#     return false;
-#   fi;
-
-#   # Install dependencies
-#   if PKGMAN_InstallDependencies(dir) <> true then
-#     Info(InfoPackageManager, 1, "Dependencies not satisfied for ", name);
-#     PKGMAN_RemoveDirOptional(dir);
-#     return false;
-#   fi;
-
-#   # Compile, make doc, and check
-#   return PKGMAN_CheckPackage(dir);
-# end);
-
-# InstallGlobalFunction(PKGMAN_NameOfGitRepo,
-# function(url)
-#   local parts, n;
-#   parts := SplitString(url, "", "/:. \n\t\r");
-#   n := Length(parts);
-#   if n > 0 and parts[n] <> "git" then
-#     return parts[n];
-#   elif n > 1 and parts[n] = "git" then
-#     return parts[n - 1];
-#   fi;
-#   return fail;
-# end);
+InstallGlobalFunction(PKGMAN_NameOfGitRepo,
+function(url)
+  local parts, n;
+  parts := SplitString(url, "", "/:. \n\t\r");
+  n := Length(parts);
+  if n > 0 and parts[n] <> "git" then
+    return parts[n];
+  elif n > 1 and parts[n] = "git" then
+    return parts[n - 1];
+  fi;
+  return fail;
+end);
 
 InstallGlobalFunction(PKGMAN_UserPackageGitRepoPaths,
 function(name)
