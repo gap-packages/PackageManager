@@ -1,5 +1,5 @@
 # Get AutoDoc (for testing)
-gap> InstallPackage("autodoc");
+gap> InstallPackage("autodoc", false);
 true
 gap> LoadPackage("autodoc", false);
 true
@@ -159,7 +159,7 @@ gap> Print = newPrint;
 false
 
 # Check package can be recompiled and removed
-gap> InstallPackage("example");
+gap> InstallPackage("example", false);
 true
 gap> CompilePackage("example");
 true
@@ -167,9 +167,9 @@ gap> RemovePackage("example", false);
 true
 
 # PKGMAN_CompileDir error: no shell
-gap> InstallPackage("example");
+gap> InstallPackage("example", false);
 true
-gap> InstallPackage("example");  # latest version already installed
+gap> InstallPackage("example", false);  # latest version already installed
 true
 gap> progs := GAPInfo.DirectoriesPrograms;;
 gap> GAPInfo.DirectoriesPrograms := [];;  # terrible vandalism
@@ -197,7 +197,7 @@ gap> RemovePackage("example", false);
 true
 
 # PKGMAN_CompileDir error: missing source
-gap> InstallPackage("example");
+gap> InstallPackage("example", false);
 true
 gap> dir := PKGMAN_UserPackageInfo("example")[1].InstallationPath;;
 gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
@@ -219,16 +219,16 @@ gap> dir <> fail;
 true
 gap> readme := Filename(Directory(dir), "README.md");;
 gap> FileString(readme, "Some change I've made", true);;  # edit file
-gap> UpdatePackage("example");
+gap> UpdatePackage("example", false);
 #I  Uncommitted changes in git repository
 false
 gap> RemovePackage("example", false);
 true
 
 # Checking package: always compile even when another version is already installed
-gap> InstallPackage("orb");
+gap> InstallPackage("orb", false);
 true
-gap> InstallPackage("https://github.com/gap-packages/orb.git");
+gap> InstallPackage("https://github.com/gap-packages/orb.git", false);
 true
 gap> git_pkginfo := First(PackageInfo("orb"), p -> EndsWith(p.InstallationPath, "orb/"));;
 gap> "bin" in DirectoryContents(git_pkginfo.InstallationPath);  # check if it has been compiled

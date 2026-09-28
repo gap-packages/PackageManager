@@ -25,7 +25,7 @@ function(string, prefs)
 
   # Call the appropriate function
   if ForAny(PKGMAN_ArchiveFormats, ext -> EndsWith(string, ext)) then
-    return PKGMAN_InstallFromArchive(string);
+    return PKGMAN_InstallFromArchive(string) <> fail;
   elif EndsWith(string, ".git") then
     return PKGMAN_InstallFromGit(string, prefs);
   elif EndsWith(string, "PackageInfo.g") then
