@@ -7,6 +7,7 @@
 ReadPackage("PackageManager", "gap/PackageManager.gd");
 ReadPackage("PackageManager", "gap/archive.gd");
 ReadPackage("PackageManager", "gap/compile.gd");
+ReadPackage("PackageManager", "gap/deprecated.gd");
 ReadPackage("PackageManager", "gap/directories.gd");
 ReadPackage("PackageManager", "gap/distro.gd");
 ReadPackage("PackageManager", "gap/doc.gd");
