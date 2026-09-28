@@ -80,13 +80,6 @@ DeclareUserPreference(rec(
 ));
 
 DeclareUserPreference(rec(
-  name        := "pkgDirectory",
-  description := "",
-  default     := Concatenation(GAPInfo.UserGapRoot, "/pkg"),
-  check       := IsString
-));
-
-DeclareUserPreference(rec(
   name        := "version",
   description := "",
   default     := "",
