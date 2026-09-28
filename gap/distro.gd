@@ -8,6 +8,7 @@
 #! @Chapter Commands
 #! @Section Main commands
 
+#! @Label with no required arguments
 #! @Description
 #!   Attempts to download and install the latest versions of all packages
 #!   required for &GAP; to run.  Currently these packages are
@@ -25,7 +26,8 @@
 #!   This command's behaviour is affected by the user preferences that have been
 #!   set for the PackageManager package. These can be set globally, or
 #!   overridden for this command using the optional <A>prefs</A> argument, in
-#!   the same way as for the <Ref Oper="InstallPackage"/> command.
+#!   the same way as for the <Ref Oper="InstallPackage" Label="for a string" />
+#!   command.
 #!
 #! @Arguments
 #! @Returns

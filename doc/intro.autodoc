@@ -3,7 +3,7 @@
 @Section What does the <Package>PackageManager</Package> package do?
 
 This package provides the ability to install or remove a package using a single
-command: <Ref Func="InstallPackage" /> or <Ref Func="RemovePackage" />.  The
+command: <Ref Oper="InstallPackage" Label="for a string" /> or <Ref Oper="RemovePackage" Label="for a string" />.  The
 user can specify a package to install using its name, or using a URL to an
 archive, a repository, or a <C>PackageInfo.g</C> file.  When installing,
 <Package>PackageManager</Package> also attempts to compile the package, build its documentation if
@@ -15,7 +15,7 @@ PackageManager 2.0 introduced a range of new features, including the ability to
 download the structured info for the whole package distribution, and plan
 dependency trees in advance before installation begins. It also introduced a
 range of user preferences, which are described under the <Ref
-Oper="InstallPackage"/> command below.
+Oper="InstallPackage" Label="for a string" /> command below.
 
 @Section What does the <Package>PackageManager</Package> package not do?
 

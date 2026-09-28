@@ -6,6 +6,7 @@
 #! @Chapter Commands
 #! @Section Main commands
 
+#! @Label for a string
 #! @Description
 #!   Attempts to download and install a package.  The argument <A>string</A>
 #!   should be a string containing one of the following:
@@ -69,8 +70,8 @@
 #!   afterwards notices that the version condition is still not satisfied.)
 #!
 #!   If installation fails, then any new directories that were created will be
-#!   preserved. To remove them, the <Ref Oper="RemovePackage"/> operation can
-#!   be used.
+#!   preserved. To remove them, the
+#!   <Ref Oper="RemovePackage" Label="for a string" /> operation can be used.
 #!
 #! @BeginExample
 #! gap> InstallPackage("digraphs");
@@ -80,7 +81,9 @@
 #! #I    datastructures  0.4.3
 #! Continue? [Y/n] y
 #! true
-#! gap> InstallPackage("profiling", rec(interactive := false, suggested := true, compileDeps := false));
+#! gap> InstallPackage("profiling", rec(interactive := false,
+#! >                                    suggested := true,
+#! >                                    compileDeps := false));
 #! #I  The following packages will be installed:
 #! #I    profiling  2.6.3
 #! true
@@ -92,6 +95,7 @@
 DeclareOperation("InstallPackage", [IsString]);
 DeclareOperation("InstallPackage", [IsString, IsRecord]);
 
+#! @Label for a string
 #! @Description
 #!   Attempts to remove an installed package using its name.  The first argument
 #!   <A>name</A> should be a string specifying the name of a package installed
@@ -101,7 +105,8 @@ DeclareOperation("InstallPackage", [IsString, IsRecord]);
 #!   This command's behaviour is affected by the user preferences that have been
 #!   set for the PackageManager package. These can be set globally, or
 #!   overridden for this command using the optional <A>prefs</A> argument, in
-#!   the same way as for the <Ref Oper="InstallPackage"/> command.
+#!   the same way as for the
+#!   <Ref Oper="InstallPackage" Label="for a string" /> command.
 #!
 #!   Returns <K>true</K> if the removal was successful, and <K>false</K>
 #!   otherwise.
