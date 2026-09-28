@@ -1,5 +1,19 @@
 This file describes changes in the PackageManager package.
 
+## 2.0.0-beta.1 (2026-09-28)
+
+  - Use structured package data from gap-system/PackageDistro
+  - Make installation plan with dependencies before downloading packages
+  - Introduce 11 user preferences to customise behaviour
+  - Introduce `prefs` optional argument to override user preferences
+  - Handle suggested dependencies
+  - Allow recompiling dependencies even if not upgraded
+  - Allow dry-runs via `proceed:=false`
+  - Deprecate `UpdatePackage` (as synonym for `InstallPackage`)
+  - Deprecate optional `interactive` argument
+  - Remove `InstallPackageFrom(Name|Archive|Info|Git)` functions
+    (users can just use `InstallPackage` for everything)
+
 ## 1.6.4 (2026-08-08)
 
   - Report the underlying error when a download fails (at `InfoPackageManager`

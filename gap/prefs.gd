@@ -1,6 +1,7 @@
 DeclareOperation("PKGMAN_Pref", [IsString, IsRecord, IsString]);
 DeclareOperation("PKGMAN_Pref", [IsString, IsRecord]);
 
+# TODO: add descriptions for these. They are currently documented under InstallPackage.
 DeclareUserPreference(rec(
   name        := "dependencies",
   description := "",
