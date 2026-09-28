@@ -21,6 +21,12 @@
 #!   installs the packages in the `~/.gap/pkg` directory, so that they can be
 #!   managed by <Package>PackageManager</Package> in the future, and are
 #!   available for other &GAP; installations on the machine.
+#!
+#!   This command's behaviour is affected by the user preferences that have been
+#!   set for the PackageManager package. These can be set globally, or
+#!   overridden for this command using the optional <A>prefs</A> argument, in
+#!   the same way as for the <Ref Oper="InstallPackage"/> command.
+#!
 #! @Arguments
 #! @Returns
 #!   <K>true</K> or <K>false</K>

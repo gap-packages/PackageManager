@@ -50,7 +50,7 @@ DeclareUserPreference(rec(
 ));
 
 DeclareUserPreference(rec(
-  name        := "compileDeps", # TODO: implement
+  name        := "compileDeps",
   description := "",
   default     := true,
   values      := [true, false, "ask"],

@@ -28,17 +28,32 @@
 #!   Note also that starting &GAP; with the `-r` flag will cause all packages in
 #!   this directory to be ignored.
 #!
-#!   Certain decisions, such as installing newer versions of packages, will be
-#!   confirmed by the user via an interactive shell &ndash; to avoid this
-#!   interactivity and use sane defaults instead, the optional argument
-#!   <A>interactive</A> can be set to <K>false</K>.
+#!   This command's behaviour is affected by the user preferences that have been
+#!   set for the PackageManager package. These can be updated using, for
+#!   example, <C>SetUserPreference("PackageManager", "compile", true);</C> but
+#!   these can also be overridden for this call by passing a record to this
+#!   function, for example <C>InstallPackage(name, rec(compile := false));</C>
 #!
-#!   To see more information about this process while it is ongoing, see
+#!   The available preferences are as follows:
+#!     * <C>dependencies</C> - whether to install the package's dependencies as well
+#!     * <C>suggested</C> - whether to include suggested as well as required dependencies
+#!     * <C>compile</C> - whether to attempt to compile newly installed packages
+#!     * <C>compileDeps</C> - whether to attempt to compile the dependencies of newly installed packages
+#!     * <C>upgrade</C> - whether to upgrade already installed packages if an upgrade is available
+#!     * <C>git</C> - whether to attempt to pull from Git repos when upgrading
+#!     * <C>proceed</C> - whether to proceed with the installation at all (after printing the installation plan)
+#!     * <C>interactive</C> - set this to <C>false</C> to disable all interactive prompting (preferences set to "ask" are instead treated as <C>true</C>)
+#!     * <C>distroLocation</C> - the URL to download the GAP package distribution info from
+#!     * <C>distroVersion</C> - the version of the package distribution info to use (choose a version of GAP, or just "latest")
+#!     * <C>version</C> - the version of a particular package to attempt to install
+#!
+#!   All boolean preferences above (those described as "whether to...") can be set to <C>true</C>, <C>false</C>, or "ask" which will prompt the user interactively. This is the default setting for many of them.
+#!
+#!   To see more information about the install process while it is ongoing, see
 #!   <Ref InfoClass="InfoPackageManager"/>.
 #!
-#!   If <A>string</A> is the name of the package in question then one can specify
-#!   a required package version via a string as value of the optional argument
-#!   <A>version</A>, which is interpreted as described in Section
+#!   If the <C>version</C> preference is specified, then it is interpreted as
+#!   described in Section
 #!   <Ref Sect="Version Numbers" BookName="ref"/>.
 #!   In particular, if <A>version</A> starts with `=` then the
 #!   function will try to install exactly the given version, and otherwise
@@ -54,17 +69,24 @@
 #!   afterwards notices that the version condition is still not satisfied.)
 #!
 #!   If installation fails, then any new directories that were created will be
-#!   removed.  To override this behaviour, the option <K>keepDirectory</K> can
-#!   be set to <K>true</K> using, for example,
-#!   <C>InstallPackage("example" : keepDirectory)</C>,
-#!   in which case such directories will be preserved for debugging.
+#!   preserved. To remove them, the <Ref Oper="RemovePackage"/> operation can
+#!   be used.
 #!
 #! @BeginExample
 #! gap> InstallPackage("digraphs");
+#! #I  The following packages will be installed:
+#! #I    Digraphs        1.15.0
+#! #I    orb             5.1.0
+#! #I    datastructures  0.4.3
+#! Continue? [Y/n] y
+#! true
+#! gap> InstallPackage("profiling", rec(interactive := false, suggested := true, compileDeps := false));
+#! #I  The following packages will be installed:
+#! #I    profiling  2.6.3
 #! true
 #! @EndExample
 #!
-#! @Arguments string[, version][, interactive]
+#! @Arguments string[, prefs]
 #! @Returns
 #!   <K>true</K> or <K>false</K>
 DeclareOperation("InstallPackage", [IsString]);
@@ -75,9 +97,11 @@ DeclareOperation("InstallPackage", [IsString, IsRecord]);
 #!   <A>name</A> should be a string specifying the name of a package installed
 #!   in the user &GAP; root,
 #!   see <Ref BookName="ref" Sect="GAP Root Directories"/>.
-#!   The second argument <A>interactive</A> is optional, and should
-#!   be a boolean specifying whether to confirm certain decisions interactively
-#!   (default value <K>true</K>).
+#!
+#!   This command's behaviour is affected by the user preferences that have been
+#!   set for the PackageManager package. These can be set globally, or
+#!   overridden for this command using the optional <A>prefs</A> argument, in
+#!   the same way as for the <Ref Oper="InstallPackage"/> command.
 #!
 #!   Returns <K>true</K> if the removal was successful, and <K>false</K>
 #!   otherwise.
@@ -88,7 +112,7 @@ DeclareOperation("InstallPackage", [IsString, IsRecord]);
 #! true
 #! @EndExample
 #!
-#! @Arguments name[, interactive]
+#! @Arguments name[, prefs]
 #! @Returns
 #!   <K>true</K> or <K>false</K>
 DeclareOperation("RemovePackage", [IsString]);

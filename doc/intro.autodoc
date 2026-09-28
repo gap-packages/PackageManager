@@ -9,10 +9,18 @@ archive, a repository, or a <C>PackageInfo.g</C> file.  When installing,
 <Package>PackageManager</Package> also attempts to compile the package, build its documentation if
 necessary, and ensure that its dependencies are also installed.
 
+@Section Changes in version 2.0
+
+PackageManager 2.0 introduced a range of new features, including the ability to
+download the structured info for the whole package distribution, and plan
+dependency trees in advance before installation begins. It also introduced a
+range of user preferences, which are described under the <Ref
+Oper="InstallPackage"/> command below.
+
 @Section What does the <Package>PackageManager</Package> package not do?
 
-At present, <Package>PackageManager</Package> is fairly basic, without many of the advanced
-features available in package managers such as pip or apt.  For instance, the
+At present, <Package>PackageManager</Package> is not as complete as package
+managers such as pip or apt.  For instance, the
 user cannot update all packages in one command.  Removing a package
 will not remove any of its dependencies, since we do not track how packages were
 installed.  When a package is installed, no tests are run to ensure that it is
