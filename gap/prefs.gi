@@ -12,10 +12,15 @@ InstallMethod(PKGMAN_Pref,
 "for a string, a record and a string",
 [IsString, IsRecord, IsString],
 function(name, prefs, question)
-  local value;
+  local value, interactive;
   value := PKGMAN_Pref(name, prefs);
+  interactive := PKGMAN_Pref("interactive", prefs);
   if value = "ask" then
-    value := PKGMAN_AskYesNoQuestion(question : default := true);
+    if interactive = false then
+      value := true;
+    else
+      value := PKGMAN_AskYesNoQuestion(question : default := true);
+    fi;
   fi;
   return value;
 end);
