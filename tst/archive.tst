@@ -39,7 +39,7 @@ gap> PositionSublist(oldinfo.InstallationPath, "1.0");  # version number not in 
 fail
 gap> urllist := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList := Concatenation(server.url, "/pkglist.csv");;
-gap> UpdatePackage("pmdummy", false);  # also removes old version
+gap> InstallPackage("pmdummy", false);  # also moves old version
 #I  Package already installed at target location
 #I  Appending '.old' to old version directory
 true

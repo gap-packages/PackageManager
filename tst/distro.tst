@@ -40,8 +40,6 @@ gap> InstallPackage("format");
 true
 gap> InstallPackage("format");
 true
-gap> UpdatePackage("format");
-true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "format"));
 true
@@ -175,9 +173,9 @@ true
 gap> urllist := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList :=
 > "https://gap-packages.github.io/PackageManager/dummy/badurls.txt";;
-gap> UpdatePackage("GAPDoc", false);  # Installed version is newer than online
+gap> InstallPackage("GAPDoc", false);  # Installed version is newer than online
 true
-gap> UpdatePackage("uuid", false);  # Newer version, but fails to install
+gap> InstallPackage("uuid", false);  # Newer version, but fails to install
 #I  Could not inspect tarball contents
 false
 gap> RemovePackage("uuid", false);

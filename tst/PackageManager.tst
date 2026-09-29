@@ -5,11 +5,6 @@ true
 gap> IsEmpty(PackageInfo("io"));
 false
 
-# UpdatePackage for non-user packages
-gap> UpdatePackage("GAPDoc", false);
-#I  Package "gapdoc" not installed in user package directory
-false
-
 # RemovePackage failure
 gap> RemovePackage(3);
 Error, <name> must be a string
@@ -23,14 +18,6 @@ gap> RemovePackage("PackageManager", true, false);
 Error, requires 1 or 2 arguments (not 3)
 gap> RemovePackage("PackageManager", "please default to yes");
 Error, <interactive> must be true or false
-
-# UpdatePackage bad inputs
-gap> UpdatePackage(3);
-Error, <name> must be a string
-gap> UpdatePackage("io", "yes");
-Error, <interactive> must be true or false
-gap> UpdatePackage("io", true, "master", "hello", Group(()), fail, []);
-Error, requires 1 or 2 arguments (not 7)
 
 # Installing multiple versions
 gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6.4/grpconst-2.6.4.tar.gz");

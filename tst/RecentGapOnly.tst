@@ -103,7 +103,7 @@ true
 gap> InputTextUser := {} -> InputTextString("y");;
 gap> out := "";;
 gap> Print := newPrint;;
-gap> res := UpdatePackage("uuid");;
+gap> res := InstallPackage("uuid");;
 gap> Print := oldPrint;;
 gap> res;
 true
@@ -120,7 +120,7 @@ true
 gap> InputTextUser := {} -> InputTextString("y\n");;
 gap> out := "";;
 gap> Print := newPrint;;
-gap> res := UpdatePackage("uuid");;
+gap> res := InstallPackage("uuid");;
 gap> Print := oldPrint;;
 gap> res;
 true
@@ -219,7 +219,7 @@ gap> dir <> fail;
 true
 gap> readme := Filename(Directory(dir), "README.md");;
 gap> FileString(readme, "Some change I've made", true);;  # edit file
-gap> UpdatePackage("example", false);
+gap> InstallPackage("example", false);
 #I  Uncommitted changes in git repository
 false
 gap> RemovePackage("example", false);
