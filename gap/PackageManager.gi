@@ -51,14 +51,11 @@ function(name, prefs)
   local infos, info, dir, question;
   
   # Locate the package
-  infos := PKGMAN_UserPackageInfo(name : warnIfNone);
+  infos := PKGMAN_UserPackageInfo(name : warnIfNone, warnIfMultiple);
 
-  # Warn if multiple versions were found
-  if Length(infos) > 1 then
-    Info(InfoPackageManager, 2, "Installations of ", name, " found at multiple locations: ");
-    for info in infos do
-      PKGMAN_InfoWithIndent(2, info.InstallationPath, 2);
-    od;
+  if Length(infos) = 0 then
+    # Removal was not successful
+    return false;
   fi;
   
   # Offer to remove each directory carefully

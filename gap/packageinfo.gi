@@ -95,7 +95,7 @@ end);
 # Use warnIfNone and warnIfMultiple options to print info warnings.
 InstallGlobalFunction(PKGMAN_UserPackageInfo,
 function(name)
-  local user_pkg_dir, allinfo, userinfo;
+  local user_pkg_dir, allinfo, userinfo, info;
 
   user_pkg_dir := PKGMAN_PackageDir();
   allinfo := PackageInfo(name);
@@ -113,7 +113,9 @@ function(name)
   # Multiple versions found
   if ValueOption("warnIfMultiple") = true and Length(userinfo) > 1 then
     Info(InfoPackageManager, 1, "Multiple versions of package ", name, " installed");
-    Info(InfoPackageManager, 2, "at ", List(userinfo, i -> i.InstallationPath));
+    for info in userinfo do
+      PKGMAN_InfoWithIndent(2, info.InstallationPath, 2);
+    od;
   fi;
 
   return userinfo;
