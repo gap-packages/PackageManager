@@ -41,7 +41,7 @@ gap> urllist := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList := Concatenation(server.url, "/pkglist.csv");;
 gap> InstallPackage("pmdummy", false);  # also moves old version
 #I  Package already installed at target location
-#I  Appending '.old' to old version directory
+#I  Appending '.old.1' to old version directory
 true
 gap> PKGMAN_PackageInfoURLList := urllist;;
 gap> newinfo := PKGMAN_UserPackageInfo("pmdummy")[1];;

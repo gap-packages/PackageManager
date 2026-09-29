@@ -21,7 +21,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_ExtractArchive,
 function(archive_path, target_path)
-  local topdir, dir, movedname, exec;
+  local topdir, dir, i, movedname, exec;
   # Find the name of the directory in the archive
   topdir := PKGMAN_TarTopDirectory(archive_path);
   if topdir = fail then
@@ -33,8 +33,13 @@ function(archive_path, target_path)
   if not PKGMAN_IsValidTargetDir(dir) then
     if IsDirectoryPath(dir) and IsWritableFile(dir) and IsReadableFile(dir) then
       # old version installed with the same name: change dir name
-      movedname := Concatenation(dir, ".old");
-      Info(InfoPackageManager, 1, "Appending '.old' to old version directory");
+      for i in PositiveIntegers do
+        movedname := Concatenation(dir, ".old.", String(i));
+        if not IsExistingFile(movedname) then
+          break;
+        fi;
+      od;
+      Info(InfoPackageManager, 1, "Appending '.old.", i, "' to old version directory");
       exec := PKGMAN_Exec(".", "mv", dir, movedname);
       PKGMAN_RefreshPackageInfo();
       if exec.code <> 0 then
