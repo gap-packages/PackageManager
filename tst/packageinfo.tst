@@ -7,11 +7,7 @@ true
 gap> RemovePackage("autpgrp", false);
 true
 
-# InstallPackageFromInfo input failure
-gap> InstallPackageFromInfo(42);
-Error, <info> should be a rec or URL
-
-# InstallPackageFromInfo failure
+# InstallPackage from info: failure
 gap> InstallPackage("http://www.nothing.rubbish/PackageInfo.g");
 #I  Unable to download from http://www.nothing.rubbish/PackageInfo.g
 false

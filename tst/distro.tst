@@ -101,7 +101,7 @@ rec( success := false )
 gap> PKGMAN_PackageInfoURLList := default_url;;
 gap> PKGMAN_StopHTTPTestServer(server);
 
-# InstallPackageFromName failure
+# InstallPackage from name: failure
 gap> InstallPackage("sillypackage");
 #I  Package "sillypackage" not found in package list
 false
@@ -162,7 +162,7 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-ba
 #I  Required package madeuppackage unknown
 #I  Dependencies not satisfied for uuid-badname
 false
-gap> InstallPackageFromGit("https://github.com/mtorpey/uuid.git", false);
+gap> InstallPackage("https://github.com/mtorpey/uuid.git", false);
 #I  Required package MadeUpPackage unknown
 #I  Dependencies not satisfied for uuid
 false

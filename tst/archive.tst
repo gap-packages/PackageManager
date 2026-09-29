@@ -7,7 +7,7 @@ true
 gap> RemovePackage("example", false);
 true
 
-# InstallPackageFromArchive failure
+# InstallPackage from archive: failure
 gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
 #I  Could not download from www.gap.rubbish/somepackage.tar.gz
 false
