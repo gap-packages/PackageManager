@@ -1,6 +1,6 @@
 InstallGlobalFunction(PKGMAN_InstallFromInfo,
 function(info, version...)
-  local equal, formats, format, url;
+  local equal, url, result;
 
   # Check input
   if not (IsString(info) or IsRecord(info)) then
@@ -37,7 +37,8 @@ function(info, version...)
   fi;
 
   # Download the archive
-  return PKGMAN_InstallFromArchive(url);
+  result := PKGMAN_InstallFromArchive(url);
+  return result <> fail;
 end);
 
 InstallGlobalFunction(PKGMAN_UrlFromInfo,
