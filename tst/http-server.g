@@ -153,20 +153,12 @@ PKGMAN_PrepareTestData := function()
   data := Filename(DirectoriesPackageLibrary("PackageManager", "tst"), "data");
   root := Filename(DirectoryTemporary(), "");
 
-  for name in ["badurls.txt", "pkglist.csv"] do
+  for name in ["badurls.txt", "pkglist.csv", "new/pmdummy/PackageInfo.g"] do
     exec := PKGMAN_Exec(".", "cp", Filename(Directory(data), name), root);
     if exec.code <> 0 then
       Error("cannot copy the test data");
     fi;
   od;
-
-  # The PackageInfo.g of the newest version, as the distribution serves it
-  exec := PKGMAN_Exec(".", "cp",
-                      Filename(Directory(data), "new/pmdummy/PackageInfo.g"),
-                      root);
-  if exec.code <> 0 then
-    Error("cannot copy the test data");
-  fi;
 
   # Both tarballs unpack into a directory "pmdummy" without a version number
   for name in [["old", "1.0"], ["new", "2.0"]] do
