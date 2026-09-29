@@ -7,11 +7,11 @@ true
 # Install a package from a git repository by branch
 gap> InstallPackage("https://github.com/gap-packages/MathInTheMiddle.git", false, "master");
 true
-gap> RemovePackage("MathInTheMiddle", false);
+gap> RemovePackage("MathInTheMiddle");
 true
 gap> InstallPackage("https://github.com/gap-packages/MathInTheMiddle.git", "master");
 true
-gap> RemovePackage("MathInTheMiddle", false);
+gap> RemovePackage("MathInTheMiddle");
 true
 gap> InstallPackage("https://github.com/gap-packages/orb.git", false, "fiaenfq");
 #I  Cloning unsuccessful
@@ -26,15 +26,15 @@ gap> InstallPackage("https://github.com/a/b.git", true, "master", "lol");
 Error, requires 1, 2 or 3 arguments (not 4)
 
 # Install a package from a git repository not ending in .git
-gap> InstallPackage("https://github.com/gap-packages/MathInTheMiddle", false);
+gap> InstallPackage("https://github.com/gap-packages/MathInTheMiddle");
 true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "MathInTheMiddle"));
 true
-gap> InstallPackage("https://github.com/gap-packages/MathInTheMiddle", false);
+gap> InstallPackage("https://github.com/gap-packages/MathInTheMiddle");
 #I  Package already installed at target location
 false
-gap> RemovePackage("MathInTheMiddle", false);
+gap> RemovePackage("MathInTheMiddle");
 true
 
 # Repositories that don't contain GAP packages

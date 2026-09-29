@@ -4,7 +4,7 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(LowercaseString(f), "example"));
 true
-gap> RemovePackage("example", false);
+gap> RemovePackage("example");
 true
 
 # InstallPackage from archive: failure
@@ -39,7 +39,7 @@ gap> PositionSublist(oldinfo.InstallationPath, "1.0");  # version number not in 
 fail
 gap> urllist := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList := Concatenation(server.url, "/pkglist.csv");;
-gap> InstallPackage("pmdummy", false);  # also moves old version
+gap> InstallPackage("pmdummy");  # also moves old version
 #I  Package already installed at target location
 #I  Appending '.old.1' to old version directory
 true
@@ -47,7 +47,7 @@ gap> PKGMAN_PackageInfoURLList := urllist;;
 gap> newinfo := PKGMAN_UserPackageInfo("pmdummy")[1];;
 gap> newinfo.Version;
 "2.0"
-gap> RemovePackage("pmdummy", false);
+gap> RemovePackage("pmdummy");
 true
 gap> PKGMAN_StopHTTPTestServer(server);
 
@@ -56,5 +56,5 @@ gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.5"));
 true
 gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.9.5/Toric-1.9.5.tar.gz");
 true
-gap> RemovePackage("toric", false);
+gap> RemovePackage("toric");
 true

@@ -4,7 +4,7 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "autpgrp"));
 true
-gap> RemovePackage("autpgrp", false);
+gap> RemovePackage("autpgrp");
 true
 
 # InstallPackage from info: failure

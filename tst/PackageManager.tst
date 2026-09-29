@@ -24,7 +24,7 @@ gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/
 true
 gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6.3/grpconst-2.6.3.tar.gz");
 true
-gap> RemovePackage("grpconst", false);
+gap> RemovePackage("grpconst");
 #I  Multiple versions of package grpconst installed
 true
 

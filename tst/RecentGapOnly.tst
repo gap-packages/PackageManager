@@ -1,5 +1,5 @@
 # Get AutoDoc (for testing)
-gap> InstallPackage("autodoc", false);
+gap> InstallPackage("autodoc");
 true
 gap> LoadPackage("autodoc", false);
 true
@@ -23,7 +23,7 @@ gap> InstallPackage(uuid_0_5);
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
 true
-gap> InstallPackage("uuid", false);  # older version already installed
+gap> InstallPackage("uuid");  # older version already installed
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
 true
@@ -64,7 +64,7 @@ gap> PositionSublist(out, exp1) <> fail;
 true
 gap> PositionSublist(out, exp2) <> fail;
 true
-gap> RemovePackage("uuid", false);
+gap> RemovePackage("uuid");
 true
 gap> InstallPackage(uuid_0_5);
 #I  PackageInfo.g validation failed
@@ -84,7 +84,7 @@ gap> PositionSublist(out,
 >                                  " ? [y/N] y\n")) <> fail;
 true
 gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()), f -> StartsWith(f, "io")) then
->   RemovePackage("io", false);;
+>   RemovePackage("io");;
 > fi;
 gap> InstallPackage("https://github.com/gap-packages/io.git");
 true
@@ -98,7 +98,7 @@ true
 gap> exp := "Package \"io\" already installed via git. Update it? [y/N] y\n";;
 gap> PositionSublist(out, exp) <> fail;
 true
-gap> RemovePackage("io", false);
+gap> RemovePackage("io");
 true
 gap> InputTextUser := {} -> InputTextString("y");;
 gap> out := "";;
@@ -111,7 +111,7 @@ gap> exp := "#I  Package \"uuid\" not installed in user package directory\n";;
 gap> Append(exp, "Would you like to install uuid? [Y/n] y\n");
 gap> PositionSublist(out, exp) <> fail;
 true
-gap> RemovePackage("uuid", false);
+gap> RemovePackage("uuid");
 true
 gap> InstallPackage(uuid_0_5);
 #I  PackageInfo.g validation failed
@@ -129,7 +129,7 @@ gap> exp := Concatenation("Remove old version of uuid at ",
 >                         " ? [y/N] y\n");;
 gap> PositionSublist(out, exp) <> fail;
 true
-gap> RemovePackage("uuid", false);
+gap> RemovePackage("uuid");
 true
 gap> InstallPackage("https://github.com/gap-packages/uuid.git");
 true
@@ -144,7 +144,7 @@ gap> exp := Concatenation("Package \"uuid\" already installed via git. ",
 >                         "Update it? [y/N] y\n");;
 gap> PositionSublist(out, exp) <> fail;
 true
-gap> RemovePackage("uuid", false);
+gap> RemovePackage("uuid");
 true
 gap> InputTextUser := f_in;;
 gap> MakeReadOnlyGlobal("InputTextUser");
@@ -159,17 +159,17 @@ gap> Print = newPrint;
 false
 
 # Check package can be recompiled and removed
-gap> InstallPackage("example", false);
+gap> InstallPackage("example");
 true
 gap> CompilePackage("example");
 true
-gap> RemovePackage("example", false);
+gap> RemovePackage("example");
 true
 
 # PKGMAN_CompileDir error: no shell
-gap> InstallPackage("example", false);
+gap> InstallPackage("example");
 true
-gap> InstallPackage("example", false);  # latest version already installed
+gap> InstallPackage("example");  # latest version already installed
 true
 gap> progs := GAPInfo.DirectoriesPrograms;;
 gap> GAPInfo.DirectoriesPrograms := [];;  # terrible vandalism
@@ -180,11 +180,11 @@ gap> PKGMAN_CompileDir(dir);
 #I  (package may still be usable)
 false
 gap> GAPInfo.DirectoriesPrograms := progs;;
-gap> RemovePackage("example", false);
+gap> RemovePackage("example");
 true
 
 # PKGMAN_CompileDir error: no etc/BuildPackages.sh
-gap> InstallPackage("example", false);
+gap> InstallPackage("example");
 true
 gap> sysinfo_scr := PKGMAN_Sysinfo;;
 gap> PKGMAN_Sysinfo := fail;;
@@ -193,11 +193,11 @@ gap> PKGMAN_CompileDir(dir);
 #I  No sysinfo.gap found
 false
 gap> PKGMAN_Sysinfo := sysinfo_scr;;
-gap> RemovePackage("example", false);
+gap> RemovePackage("example");
 true
 
 # PKGMAN_CompileDir error: missing source
-gap> InstallPackage("example", false);
+gap> InstallPackage("example");
 true
 gap> dir := PKGMAN_UserPackageInfo("example")[1].InstallationPath;;
 gap> RemoveFile(Filename(Directory(dir), "src/hello.c"));
@@ -206,7 +206,7 @@ gap> PKGMAN_CompileDir(dir);
 #I  Compilation failed for package 'Example'
 #I  (package may still be usable)
 false
-gap> RemovePackage("example", false);
+gap> RemovePackage("example");
 true
 
 # Install a package from a git repository, and modify it
@@ -219,16 +219,16 @@ gap> dir <> fail;
 true
 gap> readme := Filename(Directory(dir), "README.md");;
 gap> FileString(readme, "Some change I've made", true);;  # edit file
-gap> InstallPackage("example", false);
+gap> InstallPackage("example");
 #I  Uncommitted changes in git repository
 false
-gap> RemovePackage("example", false);
+gap> RemovePackage("example");
 true
 
 # Checking package: always compile even when another version is already installed
-gap> InstallPackage("orb", false);
+gap> InstallPackage("orb");
 true
-gap> InstallPackage("https://github.com/gap-packages/orb.git", false);
+gap> InstallPackage("https://github.com/gap-packages/orb.git");
 true
 gap> git_pkginfo := First(PackageInfo("orb"), p -> EndsWith(p.InstallationPath, "orb/"));;
 gap> "bin" in DirectoryContents(git_pkginfo.InstallationPath);  # check if it has been compiled
@@ -236,5 +236,5 @@ true
 gap> RemoveDirectoryRecursively(git_pkginfo.InstallationPath);  # delete git version
 true
 gap> PKGMAN_RefreshPackageInfo();
-gap> RemovePackage("orb", false);  # delete release version
+gap> RemovePackage("orb");  # delete release version
 true

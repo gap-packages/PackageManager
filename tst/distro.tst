@@ -26,13 +26,13 @@ gap> ForAny(conts, f -> StartsWith(f, "transgrp"));
 true
 gap> ForAny(conts, f -> StartsWith(f, "GAPDoc"));
 true
-gap> RemovePackage("primgrp", false);
+gap> RemovePackage("primgrp");
 true
-gap> RemovePackage("SmallGrp", false);
+gap> RemovePackage("SmallGrp");
 true
-gap> RemovePackage("transgrp", false);
+gap> RemovePackage("transgrp");
 true
-gap> RemovePackage("GAPDoc", false);
+gap> RemovePackage("GAPDoc");
 true
 
 # Install and remove a package by name
@@ -43,7 +43,7 @@ true
 gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
 >           f -> StartsWith(f, "format"));
 true
-gap> RemovePackage("format", false);
+gap> RemovePackage("format");
 true
 gap> RemovePackage("format");
 #I  Package "format" not installed in user package directory
@@ -52,11 +52,11 @@ false
 # Install using a required package number
 gap> InstallPackage("format", ">=0.5");
 true
-gap> RemovePackage("format", false);
+gap> RemovePackage("format");
 true
-gap> InstallPackage("format", "0.5", false);
+gap> InstallPackage("format", "0.5");
 true
-gap> RemovePackage("format", false);
+gap> RemovePackage("format");
 true
 
 # Required package number too high
@@ -160,7 +160,7 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-ba
 #I  Required package madeuppackage unknown
 #I  Dependencies not satisfied for uuid-badname
 false
-gap> InstallPackage("https://github.com/mtorpey/uuid.git", false);
+gap> InstallPackage("https://github.com/mtorpey/uuid.git");
 #I  Required package MadeUpPackage unknown
 #I  Dependencies not satisfied for uuid
 false
@@ -173,12 +173,12 @@ true
 gap> urllist := PKGMAN_PackageInfoURLList;;
 gap> PKGMAN_PackageInfoURLList :=
 > "https://gap-packages.github.io/PackageManager/dummy/badurls.txt";;
-gap> InstallPackage("GAPDoc", false);  # Installed version is newer than online
+gap> InstallPackage("GAPDoc");  # Installed version is newer than online
 true
-gap> InstallPackage("uuid", false);  # Newer version, but fails to install
+gap> InstallPackage("uuid");  # Newer version, but fails to install
 #I  Could not inspect tarball contents
 false
-gap> RemovePackage("uuid", false);
+gap> RemovePackage("uuid");
 true
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-too-new.tar.gz");
 #I  Package GAPDoc = 999.0 unavailable: only version 0.2 was found

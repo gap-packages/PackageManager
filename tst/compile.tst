@@ -27,5 +27,5 @@ gap> CompilePackage("toric");
 #I  Compilation script not found
 false
 gap> PKGMAN_BuildPackagesScript := temp;;
-gap> RemovePackage("toric", false);
+gap> RemovePackage("toric");
 true

@@ -12,6 +12,9 @@ SetInfoLevel(InfoPackageManager, 1);
 # Use a temporary directory for packages
 PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg"));
 
+# Disable interactivity (for most tests)
+SetUserPreference("PackageManager", "interactive", false);
+
 # Any files to exclude?
 if not IsBound(PKGMAN_ExcludeTestFiles) then
   PKGMAN_ExcludeTestFiles := [];

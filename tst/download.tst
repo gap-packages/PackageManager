@@ -3,7 +3,7 @@ gap> ver := PKGMAN_CurlIntReqVer;;
 gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
 gap> InstallPackage("https://gap-packages.github.io/Memoisation/PackageInfo.g");
 true
-gap> RemovePackage("Memoisation", false);
+gap> RemovePackage("Memoisation");
 true
 gap> PKGMAN_CurlIntReqVer := ver;;
 
@@ -25,7 +25,7 @@ gap> PKGMAN_DownloadCmds[1][1];
 "curl"
 gap> InstallPackage("uuid");
 true
-gap> RemovePackage("uuid", false);
+gap> RemovePackage("uuid");
 true
 gap> PKGMAN_CurlIntReqVer := ver;;
 
