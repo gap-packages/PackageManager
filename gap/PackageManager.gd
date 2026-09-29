@@ -142,7 +142,8 @@ DeclareOperation("RemovePackage", [IsString, IsRecord]);
 DeclareInfoClass("InfoPackageManager");
 SetInfoLevel(InfoPackageManager, 3);
 
-DeclareGlobalFunction("PKGMAN_CheckPackage");
+DeclareGlobalFunction("PKGMAN_CheckPackageBasic");
+DeclareGlobalFunction("PKGMAN_FinishPackageSetup");
 DeclareGlobalFunction("PKGMAN_Exec");
 DeclareGlobalFunction("PKGMAN_InfoWithIndent");
 DeclareGlobalFunction("PKGMAN_PathSystemProgram");

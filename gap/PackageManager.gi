@@ -20,12 +20,17 @@ InstallMethod(InstallPackage,
 "for a string and a record",
 [IsString, IsRecord],
 function(string, prefs)
+  local dir;
   # Tidy up the string
   NormalizeWhitespace(string);
 
   # Call the appropriate function
   if ForAny(PKGMAN_ArchiveFormats, ext -> EndsWith(string, ext)) then
-    return PKGMAN_InstallFromArchive(string) <> fail;
+    dir := PKGMAN_InstallFromArchive(string);
+    if dir = fail then
+      return false;
+    fi;
+    return PKGMAN_FinishPackageSetup(dir, prefs);
   elif EndsWith(string, ".git") then
     return PKGMAN_InstallFromGit(string, prefs);
   elif EndsWith(string, "PackageInfo.g") then
@@ -69,9 +74,9 @@ function(name, prefs)
   return true;
 end);
 
-InstallGlobalFunction(PKGMAN_CheckPackage,
+InstallGlobalFunction(PKGMAN_CheckPackageBasic,
 function(dir)
-  local info, fname, html;
+  local info, fname, badfile, contents;
 
   # Get PackageInfo
   info := PKGMAN_GetPackageInfo(dir);
@@ -84,10 +89,24 @@ function(dir)
     if not IsBound(info.(fname)) then
       Info(InfoPackageManager, 1, "PackageInfo.g lacks ", fname, " field");
       Info(InfoPackageManager, 2, "(in ", dir, ")");
+      # Leaving the bad PackageInfo.g file can make GAP unloadable
+      badfile := Filename(Directory(dir), "PackageInfo.g");
+      contents := StringFile(badfile);
+      FileString(Filename(Directory(dir), "bad-PackageInfo.g"), contents);
+      RemoveFile(badfile);
+      Info(InfoPackageManager, 2, "Renamed to bad-PackageInfo.g");
       return false;
     fi;
   od;
+  
+  return true;
+end);
 
+InstallGlobalFunction(PKGMAN_FinishPackageSetup,
+function(dir, prefs)
+  local info, html;
+  info := PKGMAN_GetPackageInfo(dir);
+  
   # Make doc if needed
   if IsRecord(info.PackageDoc) then
     html := info.PackageDoc.HTMLStart;
@@ -107,16 +126,14 @@ function(dir)
   fi;
 
   # Attempt to compile.
-  # This will often be unnecessary, but it's hard to tell whether compilation
-  # has already been done, and recompiling is usually cheap.
-  PKGMAN_CompileDir(dir);
+  if PKGMAN_Pref("compile", prefs, "Compile package?") then
+    PKGMAN_CompileDir(dir);
+  fi;
 
   # Redo dependencies if needed
-  #if TestPackageAvailability(info.PackageName, info.Version) = fail then
-  #  if not PKGMAN_InstallDependencies(dir) then
-  #    Info(InfoPackageManager, 1, "Dependencies not satisfied");
-  #  fi;
-  #fi;
+  if TestPackageAvailability(info.PackageName, info.Version) = fail then
+    PKGMAN_InstallDependencies(dir, prefs);
+  fi;
 
   # Ensure package is available
   PKGMAN_RefreshPackageInfo();

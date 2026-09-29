@@ -349,6 +349,22 @@ function(needed, optional, gitpull)
   fi;
 end);
 
+InstallGlobalFunction(PKGMAN_InstallDependencies,
+function(dir, prefs)
+  local info, requirements, result;
+  if PKGMAN_Pref("dependencies", prefs, "Install dependencies?") then
+    info := PKGMAN_GetPackageInfo(dir);
+    requirements := ShallowCopy(info.Dependencies.NeededOtherPackages);
+    if not IsEmpty(info.Dependencies.SuggestedOtherPackages) 
+           and PKGMAN_Pref("suggested", prefs, "Include all suggested packages?") then
+      Append(requirements, info.Dependencies.SuggestedOtherPackages);
+    fi;
+    result := PKGMAN_InstallRequirements(requirements, prefs);
+    return result;
+  fi;
+  return true;
+end);
+
 InstallMethod(InstallRequiredPackages, "with no arguments", [],
 {} -> InstallRequiredPackages(rec()));
 

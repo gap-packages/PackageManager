@@ -50,6 +50,7 @@ DeclareGlobalFunction("PKGMAN_UnsatisfiedRequirements");
 DeclareGlobalFunction("PKGMAN_DependencyGraph");
 DeclareGlobalFunction("PKGMAN_PlanFromGraph");
 DeclareGlobalFunction("PKGMAN_ShowInstallationPlan");
+DeclareGlobalFunction("PKGMAN_InstallDependencies");
 
 # Source of latest package releases
 PKGMAN_PackageMetadataCache := rec();  # TODO: change name

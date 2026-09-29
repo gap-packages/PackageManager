@@ -1,7 +1,6 @@
 InstallGlobalFunction(PKGMAN_InstallFromGit,
 function(url, prefs)
-  local branch, name, repos, success, repo, result, dir, exec, info, 
-        requirements;
+  local branch, name, repos, success, repo, result, dir, exec, info;
   branch := fail; # TODO: support branch option
   
   # Get package name
@@ -59,21 +58,8 @@ function(url, prefs)
     fi;
   fi;
   
-  # Dependencies
-  if PKGMAN_Pref("dependencies", prefs, "Install dependencies?") then
-    info := PKGMAN_GetPackageInfo(dir);
-    requirements := ShallowCopy(info.Dependencies.NeededOtherPackages);
-    if not IsEmpty(info.Dependencies.SuggestedOtherPackages) 
-           and PKGMAN_Pref("suggested", prefs, "Include all suggested packages?") then
-      Append(requirements, info.Dependencies.SuggestedOtherPackages);
-    fi;
-    result := PKGMAN_InstallRequirements(requirements, prefs);
-    success := success and result;
-  fi;
-  
-  # Compile and make doc
-  result := PKGMAN_CheckPackage(dir);
-  success := success and result;
+  # Compile, dependencies and make doc
+  success := success and PKGMAN_CheckPackageBasic(dir) and PKGMAN_FinishPackageSetup(dir, prefs);
   return success;
  end);
 

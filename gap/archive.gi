@@ -11,10 +11,9 @@ function(url)
   dir := PKGMAN_ExtractArchive(archive_path, PKGMAN_PackageDir());
 
   ## Check validity
-  #if PKGMAN_CheckPackage(dir) = false then
-  #  PKGMAN_RemoveDirOptional(dir);
-  #  return false;
-  #fi;
+  if PKGMAN_CheckPackageBasic(dir) = false then
+    return fail;
+  fi;
 
   PKGMAN_RefreshPackageInfo();
   return dir;
