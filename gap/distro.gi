@@ -65,7 +65,7 @@ function(package, prefs)
   # Try pulling any git repos first
   for repo in package.repos do
     Info(InfoPackageManager, 3, "Found git repo at ", repo);
-    PKGMAN_GitPullDirectory(repo); # TODO: use return value?
+    PKGMAN_GitPullDirectory(repo);
     PKGMAN_RefreshPackageInfo();
   od;
 

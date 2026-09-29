@@ -23,10 +23,7 @@ gap> InstallPackage(uuid_0_5);
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
 true
-gap> InstallPackage("uuid");  # older version already installed
-#I  PackageInfo.g validation failed
-#I  There may be problems with the package
-true
+gap> SetUserPreference("PackageManager", "interactive", true);
 gap> out := "";;
 gap> f_in := InputTextUser;;
 gap> oldPrint := Print;;
@@ -35,116 +32,64 @@ gap> newPrint := function(args...)
 > end;;
 gap> MakeReadWriteGlobal("InputTextUser");
 gap> MakeReadWriteGlobal("Print");
-gap> InputTextUser := {} -> InputTextString("n");;
-gap> Print := newPrint;;
-gap> res := RemovePackage("uuid");;
-gap> Print := oldPrint;;
-gap> res;
-false
-gap> PositionSublist(out,
->                    Concatenation("Really delete directory ",
->                                  Filename(Directory(PKGMAN_PackageDir()),
->                                           "uuid-0.5/"),
->                                  " ? [y/N] n\n")) <> fail;
-true
-gap> InputTextUser := {} -> InputTextString("y\ny\n");;
+gap> InputTextUser := {} -> InputTextString("yy");;
 gap> out := "";;
 gap> Print := newPrint;;
-gap> res := InstallPackage("uuid", true);;
+gap> res := InstallPackage("uuid");;
 gap> Print := oldPrint;;
 gap> res;
 true
-gap> exp1 := Concatenation("Package \"uuid\" version 0.5 is installed, but ",
->                          PKGMAN_DownloadPackageInfo(GetPackageURLs().uuid).Version,
->                          " is available. Install it? [y/N] y\n");;
-gap> exp2 := Concatenation("Remove old version of uuid at ",
->                          Filename(Directory(PKGMAN_PackageDir()), "uuid-0.5/"),
->                          " ? [y/N] y\n");;
+gap> exp1 := "Include optional upgrades? [Y/n] y";;
+gap> exp2 := "Continue? [Y/n] y";;
 gap> PositionSublist(out, exp1) <> fail;
 true
 gap> PositionSublist(out, exp2) <> fail;
 true
-gap> RemovePackage("uuid");
+gap> InputTextUser := {} -> InputTextString("yy");;
+gap> Print := newPrint;;
+gap> res := RemovePackage("uuid");; # removes both versions
+gap> Print := oldPrint;;
+gap> res;
 true
-gap> InstallPackage(uuid_0_5);
+gap> PositionSublist(out,
+>                    Concatenation("Delete directory ",
+>                                  Filename(Directory(PKGMAN_PackageDir()),
+>                                           "uuid-0.5/"),
+>                                  " ? [Y/n] y\n")) <> fail;
+true
+gap> InstallPackage(uuid_0_5, rec(proceed := true));
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
 true
 gap> InputTextUser := {} -> InputTextString("y");;
 gap> out := "";;
 gap> Print := newPrint;;
-gap> res := RemovePackage("uuid", true);;
+gap> res := RemovePackage("uuid");; # rempve one version
 gap> Print := oldPrint;;
 gap> res;
 true
 gap> PositionSublist(out,
->                    Concatenation("Really delete directory ",
+>                    Concatenation("Delete directory ",
 >                                  Filename(Directory(PKGMAN_PackageDir()),
 >                                           "uuid-0.5/"),
->                                  " ? [y/N] y\n")) <> fail;
+>                                  " ? [Y/n] y\n")) <> fail;
 true
 gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()), f -> StartsWith(f, "io")) then
->   RemovePackage("io");;
+>   RemovePackage("io", rec(interactive := false));;
 > fi;
-gap> InstallPackage("https://github.com/gap-packages/io.git");
+gap> InstallPackage("https://github.com/gap-packages/io.git", rec(interactive := false));
 true
-gap> InputTextUser := {} -> InputTextString("y");;
+gap> InputTextUser := {} -> InputTextString("yyy");;
 gap> out := "";;
 gap> Print := newPrint;;
 gap> res := InstallPackage("io");;
 gap> Print := oldPrint;;
 gap> res;
 true
-gap> exp := "Package \"io\" already installed via git. Update it? [y/N] y\n";;
+gap> exp := "Allow upgrading via git pull? [Y/n] y";;
 gap> PositionSublist(out, exp) <> fail;
 true
-gap> RemovePackage("io");
-true
-gap> InputTextUser := {} -> InputTextString("y");;
-gap> out := "";;
-gap> Print := newPrint;;
-gap> res := InstallPackage("uuid");;
-gap> Print := oldPrint;;
-gap> res;
-true
-gap> exp := "#I  Package \"uuid\" not installed in user package directory\n";;
-gap> Append(exp, "Would you like to install uuid? [Y/n] y\n");
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> RemovePackage("uuid");
-true
-gap> InstallPackage(uuid_0_5);
-#I  PackageInfo.g validation failed
-#I  There may be problems with the package
-true
-gap> InputTextUser := {} -> InputTextString("y\n");;
-gap> out := "";;
-gap> Print := newPrint;;
-gap> res := InstallPackage("uuid");;
-gap> Print := oldPrint;;
-gap> res;
-true
-gap> exp := Concatenation("Remove old version of uuid at ",
->                         Filename(Directory(PKGMAN_PackageDir()), "uuid-0.5/"),
->                         " ? [y/N] y\n");;
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> RemovePackage("uuid");
-true
-gap> InstallPackage("https://github.com/gap-packages/uuid.git");
-true
-gap> InputTextUser := {} -> InputTextString("y\n");;
-gap> out := "";;
-gap> Print := newPrint;;
-gap> res := InstallPackage("https://github.com/gap-packages/uuid.git");;
-gap> Print := oldPrint;;
-gap> res;
-true
-gap> exp := Concatenation("Package \"uuid\" already installed via git. ",
->                         "Update it? [y/N] y\n");;
-gap> PositionSublist(out, exp) <> fail;
-true
-gap> RemovePackage("uuid");
+gap> RemovePackage("io", rec(interactive := false));
 true
 gap> InputTextUser := f_in;;
 gap> MakeReadOnlyGlobal("InputTextUser");
@@ -157,6 +102,7 @@ gap> Print = oldPrint;
 true
 gap> Print = newPrint;
 false
+gap> SetUserPreference("PackageManager", "interactive", false);
 
 # Check package can be recompiled and removed
 gap> InstallPackage("example");
@@ -221,7 +167,8 @@ gap> readme := Filename(Directory(dir), "README.md");;
 gap> FileString(readme, "Some change I've made", true);;  # edit file
 gap> InstallPackage("example");
 #I  Uncommitted changes in git repository
-false
+#I  There may be upstream changes that haven't been merged
+true
 gap> RemovePackage("example");
 true
 

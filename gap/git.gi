@@ -106,6 +106,7 @@ function(dir)
   else
     Info(InfoPackageManager, 1, "Uncommitted changes in git repository");
     Info(InfoPackageManager, 2, "(at ", dir, ")");
+    Info(InfoPackageManager, 1, "There may be upstream changes that haven't been merged");
     return false;
   fi;
 end);
