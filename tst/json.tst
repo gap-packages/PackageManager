@@ -27,6 +27,8 @@ gap> PKGMAN_JsonToGap("[\"a\", \"b\", \"hello\"]");
 [ "a", "b", "hello" ]
 gap> PKGMAN_JsonToGap("[\"a\", \"b\", \"hello\", ]");
 [ "a", "b", "hello" ]
+gap> PKGMAN_JsonToGap("[2, 3, 4, 82000]");
+[ 2, 3, 4, 82000 ]
 
 # Booleans
 gap> PKGMAN_JsonToGap("true");
