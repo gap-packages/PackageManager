@@ -7,7 +7,8 @@ false
 
 # RemovePackage failure
 gap> RemovePackage(3);
-Error, <name> must be a string
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RemovePackage' on 1 arguments
 gap> RemovePackage("xyz");
 #I  Package "xyz" not installed in user package directory
 false
@@ -15,9 +16,11 @@ gap> RemovePackage("PackageManager");
 #I  Package "PackageManager" not installed in user package directory
 false
 gap> RemovePackage("PackageManager", true, false);
-Error, requires 1 or 2 arguments (not 3)
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RemovePackage' on 3 arguments
 gap> RemovePackage("PackageManager", "please default to yes");
-Error, <interactive> must be true or false
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RemovePackage' on 2 arguments
 
 # Installing multiple versions
 gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.6.4/grpconst-2.6.4.tar.gz");
@@ -30,23 +33,27 @@ true
 
 # InstallPackage input failure
 gap> InstallPackage(3);
-Error, <string> must be a string
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `InstallPackage' on 1 arguments
 gap> InstallPackage("semigroups", 'y');
-Error, 2nd argument must be true or false or a version string
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `InstallPackage' on 2 arguments
 gap> InstallPackage("semigroups", "yes", "actually no");
-Error, if specified, <interactive> must be true or false
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `InstallPackage' on 3 arguments
 gap> InstallPackage("semigroups", ">=3.0", true, "i dont know");
-Error, requires 1 to 3 arguments (not 4)
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `InstallPackage' on 4 arguments
 
 # Check a bad package directory
 gap> baddir := Filename(Directory(PKGMAN_PackageDir()), "badpkg");;
 gap> CreateDir(baddir);;
-gap> PKGMAN_CheckPackage(baddir);
+gap> PKGMAN_CheckPackageBasic(baddir);
 #I  Could not find PackageInfo.g file
 false
 gap> FileString(Filename(Directory(baddir), "PackageInfo.g"),
 >               "SetPackageInfo(rec());");;
-gap> PKGMAN_CheckPackage(baddir);
+gap> PKGMAN_CheckPackageBasic(baddir);
 #I  PackageInfo.g lacks PackageName field
 false
 gap> RemoveDirectoryRecursively(baddir);;
