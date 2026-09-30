@@ -1,18 +1,21 @@
 # Try to compile IO (which should be installed but not in the user pkg dir)
 gap> CompilePackage("io");
-#I  Package "io" not installed in user package directory
+#I  The io package is installed, but not in the user package directory
+#I  You can install a user-managed version with InstallPackage("io")
 false
 
 # Try to compile something that's not there at all
 gap> CompilePackage("madeUpPackage");
-#I  Package "madeUpPackage" not installed in user package directory
+#I  No package named "madeUpPackage" is installed
 false
 
 # CompilePackage bad input
 gap> CompilePackage(3);
-Error, <name> must be a string
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `CompilePackage' on 1 arguments
 gap> CompilePackage(true);
-Error, <name> must be a string
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `CompilePackage' on 1 arguments
 
 # Compile already compiled
 gap> InstallPackage("toric");

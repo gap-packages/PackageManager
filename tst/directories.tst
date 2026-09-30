@@ -1,5 +1,7 @@
 # Fail to extract due to permissions
 gap> dir := Filename(Directory(PKGMAN_PackageDir()), "badpackage");;
+gap> RemoveDirectoryRecursively(dir);
+true
 gap> CreateDir(dir);
 true
 gap> PKGMAN_Exec(".", "chmod", "000", dir);
