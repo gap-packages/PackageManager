@@ -5,26 +5,36 @@ true
 gap> IsEmpty(PackageInfo("io"));
 false
 
+# Expect no required packages
+gap> RemovePackage("GAPDoc");
+true
+
 # Install GAP's required packages
-gap> conts := DirectoryContents(PKGMAN_PackageDir());;
+gap> conts := List(DirectoryContents(PKGMAN_PackageDir()), LowercaseString);;
+gap> ForAny(conts, f -> StartsWith(f, "perfgrp"));
+false
 gap> ForAny(conts, f -> StartsWith(f, "primgrp"));
 false
-gap> ForAny(conts, f -> StartsWith(f, "SmallGrp"));
+gap> ForAny(conts, f -> StartsWith(f, "smallgrp"));
 false
 gap> ForAny(conts, f -> StartsWith(f, "transgrp"));
 false
-gap> ForAny(conts, f -> StartsWith(f, "GAPDoc"));
+gap> ForAny(conts, f -> StartsWith(f, "gapdoc"));
 false
 gap> InstallRequiredPackages();
 true
-gap> conts := DirectoryContents(PKGMAN_PackageDir());;
+gap> conts := List(DirectoryContents(PKGMAN_PackageDir()), LowercaseString);;
+gap> ForAny(conts, f -> StartsWith(f, "perfgrp"));
+true
 gap> ForAny(conts, f -> StartsWith(f, "primgrp"));
 true
-gap> ForAny(conts, f -> StartsWith(f, "SmallGrp"));
+gap> ForAny(conts, f -> StartsWith(f, "smallgrp"));
 true
 gap> ForAny(conts, f -> StartsWith(f, "transgrp"));
 true
-gap> ForAny(conts, f -> StartsWith(f, "GAPDoc"));
+gap> ForAny(conts, f -> StartsWith(f, "gapdoc"));
+true
+gap> RemovePackage("perfgrp");
 true
 gap> RemovePackage("primgrp");
 true
@@ -50,17 +60,17 @@ gap> RemovePackage("format");
 false
 
 # Install using a required package number
-gap> InstallPackage("format", ">=0.5");
+gap> InstallPackage("format", rec(version := ">=0.5"));
 true
 gap> RemovePackage("format");
 true
-gap> InstallPackage("format", "0.5");
+gap> InstallPackage("format", rec(version := "0.5"));
 true
 gap> RemovePackage("format");
 true
 
 # Required package number too high
-gap> InstallPackage("format", "9999.0");
+gap> InstallPackage("format", rec(version := "9999.0"));
 #I  Version 9999.0 of package 'FORMAT' cannot be satisfied
 false
 
