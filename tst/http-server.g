@@ -21,8 +21,47 @@
 PKGMAN_HTTPTestRoot := fail;
 PKGMAN_HTTPTestAddress := fail;
 
+# Assemble a document root for the test server in a temporary directory: the
+# plain files of tst/data, plus a tarball of each dummy package version.  Note
+# that the tarballs are built here rather than checked in, so that their
+# contents stay reviewable.
+PKGMAN_PrepareTestData := function(server_url)
+  local data, root, json, out, name, exec;
+
+  data := Filename(DirectoriesPackageLibrary("PackageManager", "tst"), "data");
+  root := Filename(DirectoryTemporary(), "");
+  
+  # Prepare package-infos.json
+  json := StringFile(Filename(Directory(data), "package-infos.json"));
+  json := ReplacedString(json, "@SERVER@", server_url);
+  out := OutputGzipFile(Filename(Directory(root), "package-infos.json.gz"), false);
+  AppendTo(out, json);
+  CloseStream(out);
+  
+  # Prepare other files
+  for name in ["badurls.txt", "new/pmdummy/PackageInfo.g"] do
+    exec := PKGMAN_Exec(".", "cp", Filename(Directory(data), name), root);
+    if exec.code <> 0 then
+      Error("cannot copy the test data");
+    fi;
+  od;
+  
+  # Both tarballs unpack into a directory "pmdummy" without a version number
+  for name in [["old", "1.0"], ["new", "2.0"]] do
+    exec := PKGMAN_Exec(".", "tar", "-czf",
+                        Filename(Directory(root),
+                                 Concatenation("pmdummy-", name[2], ".tar.gz")),
+                        "-C", Filename(Directory(data), name[1]), "pmdummy");
+    if exec.code <> 0 then
+      Error("cannot build the dummy package tarballs");
+    fi;
+  od;
+
+  return root;
+end;
+
 PKGMAN_HandleHTTPTestRequest := function(listener, socket)
-  local connection, line, parts, name, pos, body, status;
+  local connection, line, parts, name, pos, body, old, new, status;
 
   IO_close(listener);
   connection := IO_WrapFD(socket, IO.DefaultBufSize, IO.DefaultBufSize);
@@ -50,7 +89,12 @@ PKGMAN_HandleHTTPTestRequest := function(listener, socket)
   if name = "" or '/' in name or name = ".." then
     body := fail;
   else
-    body := StringFile(Filename(Directory(PKGMAN_HTTPTestRoot), name));
+    # Rename the file first so that we don't unzip it before sending
+    old := Filename(Directory(PKGMAN_HTTPTestRoot), name);
+    new := Filename(Directory(PKGMAN_HTTPTestRoot), "to-serve");
+    IO_rename(old, new);
+    body := StringFile(new);
+    IO_rename(new, old);
   fi;
 
   if body = fail then
@@ -77,8 +121,8 @@ end;
 # Start the server in a forked process, serving the files in the directory
 # <root> on an ephemeral port of the loopback interface.  Returns a record
 # with components 'pid' and 'url', the latter being the base URL.
-PKGMAN_StartHTTPTestServer := function(root)
-  local listener, address, port, pid, socket, handler;
+PKGMAN_StartHTTPTestServer := function()
+  local listener, address, port, url, pid, socket, handler;
 
   listener := IO_socket(IO.PF_INET, IO.SOCK_STREAM, "tcp");
   if listener = fail or
@@ -89,8 +133,8 @@ PKGMAN_StartHTTPTestServer := function(root)
   address := IO_getsockname(listener);
   port := 256 * INT_CHAR(address[3]) + INT_CHAR(address[4]);
 
-  PKGMAN_HTTPTestRoot := root;
   PKGMAN_HTTPTestAddress := Concatenation("127.0.0.1:", String(port));
+  PKGMAN_HTTPTestRoot := PKGMAN_PrepareTestData(PKGMAN_HTTPTestAddress);
 
   pid := IO_fork();
   if pid = 0 then
@@ -117,7 +161,7 @@ PKGMAN_StartHTTPTestServer := function(root)
 
   IO_close(listener);
   return rec(pid := pid,
-             url := Concatenation("http://", PKGMAN_HTTPTestAddress));
+             url := PKGMAN_HTTPTestAddress);
 end;
 
 PKGMAN_StopHTTPTestServer := function(server)
@@ -141,35 +185,4 @@ PKGMAN_UnusedURL := function()
   port := 256 * INT_CHAR(address[3]) + INT_CHAR(address[4]);
   IO_close(socket);
   return Concatenation("http://127.0.0.1:", String(port));
-end;
-
-# Assemble a document root for the test server in a temporary directory: the
-# plain files of tst/data, plus a tarball of each dummy package version.  Note
-# that the tarballs are built here rather than checked in, so that their
-# contents stay reviewable.
-PKGMAN_PrepareTestData := function()
-  local data, root, name, exec;
-
-  data := Filename(DirectoriesPackageLibrary("PackageManager", "tst"), "data");
-  root := Filename(DirectoryTemporary(), "");
-
-  for name in ["badurls.txt", "pkglist.csv", "new/pmdummy/PackageInfo.g"] do
-    exec := PKGMAN_Exec(".", "cp", Filename(Directory(data), name), root);
-    if exec.code <> 0 then
-      Error("cannot copy the test data");
-    fi;
-  od;
-
-  # Both tarballs unpack into a directory "pmdummy" without a version number
-  for name in [["old", "1.0"], ["new", "2.0"]] do
-    exec := PKGMAN_Exec(".", "tar", "-czf",
-                        Filename(Directory(root),
-                                 Concatenation("pmdummy-", name[2], ".tar.gz")),
-                        "-C", Filename(Directory(data), name[1]), "pmdummy");
-    if exec.code <> 0 then
-      Error("cannot build the dummy package tarballs");
-    fi;
-  od;
-
-  return root;
 end;

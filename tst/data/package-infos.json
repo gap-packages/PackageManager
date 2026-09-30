@@ -1,0 +1,42 @@
+{
+   "pmdummy" : {
+      "AbstractHTML" : "A dummy package for the PackageManager tests",
+      "ArchiveFormats" : ".tar.gz",
+      "ArchiveURL" : "http://@SERVER@/pmdummy-2.0",
+      "AvailabilityTest" : null,
+      "Date" : "01/01/2020",
+      "Dependencies" : {
+         "ExternalConditions" : [],
+         "GAP" : ">= 4.12",
+         "NeededOtherPackages" : [],
+         "SuggestedOtherPackages" : []
+      },
+      "License" : "GPL-2.0-or-later",
+      "PackageDoc" : {
+         "ArchiveURLSubset" : [
+            "doc"
+         ],
+         "BookName" : "pmdummy",
+         "HTMLStart" : "doc/chap0.html",
+         "LongTitle" : "A dummy package for the PackageManager tests",
+         "PDFFile" : "doc/manual.pdf",
+         "SixFile" : "doc/manual.six"
+      },
+      "PackageInfoURL" : "http://@SERVER@/PackageInfo.g",
+      "PackageName" : "pmdummy",
+      "PackageWWWHome" : "http://@SERVER@/",
+      "Persons" : [
+         {
+            "Email" : "support@gap-system.org",
+            "FirstNames" : "The GAP",
+            "IsAuthor" : true,
+            "IsMaintainer" : true,
+            "LastName" : "Team"
+         }
+      ],
+      "README_URL" : "http://@SERVER@/README.md",
+      "Status" : "other",
+      "Subtitle" : "A dummy package for the PackageManager tests",
+      "Version" : "2.0"
+   }
+}

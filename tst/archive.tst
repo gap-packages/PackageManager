@@ -29,7 +29,7 @@ gap> LoadPackage("io", false);
 true
 gap> ReadPackage("PackageManager", "tst/http-server.g");
 true
-gap> server := PKGMAN_StartHTTPTestServer(PKGMAN_PrepareTestData());;
+gap> server := PKGMAN_StartHTTPTestServer();;
 gap> InstallPackage(Concatenation(server.url, "/pmdummy-1.0.tar.gz"));
 true
 gap> oldinfo := First(PackageInfo("pmdummy"), x -> x.Version = "1.0");;
@@ -37,17 +37,19 @@ gap> oldinfo <> fail;
 true
 gap> PositionSublist(oldinfo.InstallationPath, "1.0");  # version number not in dir name
 fail
-gap> urllist := PKGMAN_PackageInfoURLList;;
-gap> PKGMAN_PackageInfoURLList := Concatenation(server.url, "/pkglist.csv");;
+gap> package_infos_location := UserPreference("PackageManager", "distroLocation");;
+gap> SetUserPreference("PackageManager", "distroLocation",
+>                      Concatenation(server.url, "/package-infos.json.gz"));
 gap> InstallPackage("pmdummy");  # also moves old version
 #I  Package already installed at target location
 #I  Appending '.old.1' to old version directory
 true
-gap> PKGMAN_PackageInfoURLList := urllist;;
+gap> SetUserPreference("PackageManager", "distroLocation", package_infos_location);
 gap> newinfo := PKGMAN_UserPackageInfo("pmdummy")[1];;
 gap> newinfo.Version;
 "2.0"
 gap> RemovePackage("pmdummy");
+#I  Multiple versions of package pmdummy installed
 true
 gap> PKGMAN_StopHTTPTestServer(server);
 

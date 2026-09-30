@@ -9,6 +9,7 @@ function(url)
   
   # Extract the archive
   dir := PKGMAN_ExtractArchive(archive_path, PKGMAN_PackageDir());
+  if dir = fail then return fail; fi;
 
   ## Check validity
   if PKGMAN_CheckPackageBasic(dir) = false then
