@@ -170,7 +170,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InstallRequiredPackages</code>(  )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code></p>
 
-<p>Attempts to download and install the latest versions of all packages required for <strong class="pkg">GAP</strong> to run. Currently these packages are <strong class="pkg">GAPDoc</strong>, <strong class="pkg">primgrp</strong>, <strong class="pkg">SmallGrp</strong>, and <strong class="pkg">transgrp</strong>. Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
+<p>Attempts to download and install the latest versions of all packages required for <strong class="pkg">GAP</strong> to run. Currently these packages are <strong class="pkg">GAPDoc</strong>, <strong class="pkg">PerfGrp</strong>, <strong class="pkg">PrimGrp</strong>, <strong class="pkg">SmallGrp</strong>, and <strong class="pkg">TransGrp</strong>. Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
 
 <p>Clearly, since these packages are required for <strong class="pkg">GAP</strong> to run, they must be loaded before this function can be executed. However, this function installs the packages in the <code class="code">~/.gap/pkg</code> directory, so that they can be managed by <strong class="pkg">PackageManager</strong> in the future, and are available for other <strong class="pkg">GAP</strong> installations on the machine.</p>
 
