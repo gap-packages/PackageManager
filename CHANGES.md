@@ -1,5 +1,12 @@
 This file describes changes in the PackageManager package.
 
+## 2.0.0-beta.2 (2026-10-02)
+
+  - Reintroduce git clone support
+  - Reintroduce more package checks for archives
+  - Fix about half the test suite for 2.0 behaviour
+  - Minor fixes and tweaks
+
 ## 2.0.0-beta.1 (2026-09-28)
 
   - Use structured package data from gap-system/PackageDistro
