@@ -26,6 +26,9 @@ fi;
 if not CompareVersionNumbers(version, ">=4.14") then
   Add(PKGMAN_ExcludeTestFiles, "RecentGapOnly.tst");
 fi;
+if not CompareVersionNumbers(version, ">=4.15") then
+  Add(PKGMAN_ExcludeTestFiles, "symlink.tst");  # needs GAP_realpath
+fi;
 
 # Run tests
 TestDirectory(DirectoriesPackageLibrary("PackageManager", "tst"),
