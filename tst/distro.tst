@@ -91,22 +91,22 @@ gap> LoadPackage("io", false);
 true
 gap> ReadPackage("PackageManager", "tst/http-server.g");
 true
-gap> server := PKGMAN_StartHTTPTestServer(PKGMAN_PrepareTestData());;
-gap> default_url := PKGMAN_PackageInfoURLList;;
+gap> server := PKGMAN_StartHTTPTestServer();;
+gap> package_infos_location := UserPreference("PackageManager", "distroLocation");;
 
 # The server cannot be contacted (nothing is listening on that port)
-gap> PKGMAN_PackageInfoURLList := PKGMAN_UnusedURL();;
-gap> GetPackageURLs();
+gap> SetUserPreference("PackageManager", "distroLocation", PKGMAN_UnusedURL());
+gap> RefreshPackageMetadata();
 #I  Could not contact server
-rec( success := false )
+false
 
-# The server answers, but with something that is not a package URLs list
-gap> PKGMAN_PackageInfoURLList := Concatenation(server.url, "/badurls.txt");;
-gap> GetPackageURLs();
-#I  Bad line in package URLs list:
-#I  <!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta...
-rec( success := false )
-gap> PKGMAN_PackageInfoURLList := default_url;;
+# The server answers, but with something that is not in gz format
+gap> SetUserPreference("PackageManager", "distroLocation",
+>                      Concatenation(server.url, "/badurls.txt"));
+gap> RefreshPackageMetadata();
+#I  Problem extracting package metadata
+false
+gap> SetUserPreference("PackageManager", "distroLocation", package_infos_location);
 gap> PKGMAN_StopHTTPTestServer(server);
 
 # InstallPackage from name: failure
