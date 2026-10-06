@@ -32,7 +32,7 @@
 #!   the same way as for the <Ref Oper="InstallPackage" Label="for a string" />
 #!   command.
 #!
-#! @Arguments
+#! @Arguments [prefs]
 #! @Returns
 #!   <K>true</K> or <K>false</K>
 DeclareOperation("InstallRequiredPackages", []);
