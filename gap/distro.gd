@@ -17,8 +17,7 @@
 #!   <Package>PrimGrp</Package>,
 #!   <Package>SmallGrp</Package>, and
 #!   <Package>TransGrp</Package>.
-#!   Returns <K>false</K> if something went wrong, and
-#!   <K>true</K> otherwise.
+#!   Returns <K>false</K> if something went wrong, and <K>true</K> otherwise.
 #!
 #!   Clearly, since these packages are required for &GAP; to run, they must be
 #!   loaded before this function can be executed.  However, this function
@@ -38,6 +37,28 @@
 DeclareOperation("InstallRequiredPackages", []);
 DeclareOperation("InstallRequiredPackages", [IsRecord]);
 
+#! @Label with no required arguments
+#! @Description
+#!   Attempts to download metadata for all available packages from the GAP
+#!   package distribution.
+#!
+#!   Calling this function is not usually necessary, since the metadata is
+#!   downloaded automatically the first time
+#!   <Ref Oper="InstallPackage" Label="for a string" /> is called, and the
+#!   result is cached for the rest of the GAP session. However, this function
+#!   can be called to force the download and retrieve any updated information.
+#!
+#!   Returns <K>false</K> if something went wrong, and <K>true</K> otherwise.
+#!
+#!   This command's behaviour is affected by the user preferences that have been
+#!   set for the PackageManager package. These can be set globally, or
+#!   overridden for this command using the optional <A>prefs</A> argument, in
+#!   the same way as for the <Ref Oper="InstallPackage" Label="for a string" />
+#!   command.
+#!
+#! @Arguments [prefs]
+#! @Returns
+#!   <K>true</K> or <K>false</K>
 DeclareOperation("RefreshPackageMetadata", []);
 DeclareOperation("RefreshPackageMetadata", [IsRecord]);
 

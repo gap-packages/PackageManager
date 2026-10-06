@@ -21,6 +21,7 @@ function(requirements, prefs)
       Info(InfoPackageManager, 1, name, " package not available from package distribution");
       abort := true;
     elif not CompareVersionNumbers(metadata.(lower_name).Version, required_version) then
+      name := metadata.(lower_name).PackageName;
       Info(InfoPackageManager, 1, name, " package version ", required_version, " not available from package distribution");
       if not IsEmpty(PKGMAN_UserPackageGitRepoPaths(lower_name)) then
         Info(InfoPackageManager, 3, "(It may be possible to upgrade to it via Git)");
@@ -410,12 +411,17 @@ function(prefs)
     Info(InfoPackageManager, 1, "Could not contact server");
     Info(InfoPackageManager, 2, "Tried to download ", url);
     PKGMAN_InfoDownloadError(download);
+    return false;
   fi;
   instream := InputTextString(download.result);;
   out := PKGMAN_Exec(".", "gunzip" : instream := instream);;
-  # TODO: check out.code
+  if out.code <> 0 then
+    Info(InfoPackageManager, 1, "Package metadata could not be extracted");
+    return false;
+  fi;
   json := out.output;
   PKGMAN_PackageMetadataCache.(url) := PKGMAN_JsonToGap(json);
+  return true;
 end);
 
 InstallGlobalFunction(PKGMAN_PackageMetadata,
