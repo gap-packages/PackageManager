@@ -7,7 +7,33 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallRequirements,
 function(requirements, prefs)
-  local plan, dirs, compile_results, graph;
+  local metadata, abort, req, name, lower_name, required_version, plan, dirs, 
+        compile_results, graph;
+  
+  # First check whether these requirements are even possible to satisfy
+  metadata := PKGMAN_PackageMetadata(prefs);
+  abort := false;
+  for req in requirements do
+    name := req[1];
+    lower_name := LowercaseString(name);
+    required_version := req[2];
+    if not lower_name in RecNames(metadata) then
+      Info(InfoPackageManager, 1, name, " package not available from package distribution");
+      abort := true;
+    elif not CompareVersionNumbers(metadata.(lower_name).Version, required_version) then
+      Info(InfoPackageManager, 1, name, " package version ", required_version, " not available from package distribution");
+      if not IsEmpty(PKGMAN_UserPackageGitRepoPaths(lower_name)) then
+        Info(InfoPackageManager, 3, "(It may be possible to upgrade to it via Git)");
+      else
+        Info(InfoPackageManager, 1, "(only version ", metadata.(lower_name).Version, " available)");
+        abort := true;
+      fi;
+    fi;
+  od;
+  if abort then
+    return false;
+  fi;
+  
   # requirements: list of [name, version] pairs
   plan := PKGMAN_InstallationPlan(requirements, prefs);
 
@@ -282,7 +308,8 @@ function(requirements, prefs)
         graphPackage.upgradeNeeded := true;
       fi;
       if not CompareVersionNumbers(graphPackage.newest, required_version) then
-        Info(InfoPackageManager, 1, "Could not satisfy");
+        Info(InfoPackageManager, 1, name, " package version ", required_version, " not available from package distribution");
+        Info(InfoPackageManager, 1, "(only version ", graphPackage.newest, " available)");
       fi;
     od;
   od;
