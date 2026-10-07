@@ -174,6 +174,8 @@ gap> InstallPackage("https://github.com/mtorpey/uuid.git");
 #I  Required package MadeUpPackage unknown
 #I  Dependencies not satisfied for uuid
 false
+gap> RemovePackage("uuid");
+true
 
 # Sabotaged PackageInfoURLList to produce some special errors
 gap> InstallPackage("GAPDoc");

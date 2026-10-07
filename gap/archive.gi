@@ -11,10 +11,16 @@ function(url)
   dir := PKGMAN_ExtractArchive(archive_path, PKGMAN_PackageDir());
   if dir = fail then return fail; fi;
 
-  ## Check validity
+  # Check validity
   if PKGMAN_CheckPackageBasic(dir) = false then
     return fail;
   fi;
+  
+  # Make doc, compile, dependencies
+  # Note: it might be better just to do PKGMAN_InstallDependencies
+  #if PKGMAN_FinishPackageSetup(dir, prefs) = false then
+  #  return fail;
+  #fi;
 
   PKGMAN_RefreshPackageInfo();
   return dir;

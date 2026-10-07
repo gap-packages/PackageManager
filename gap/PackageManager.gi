@@ -73,6 +73,7 @@ end);
 
 InstallGlobalFunction(PKGMAN_CheckPackageBasic,
 function(dir)
+  # Checks that PackageInfo.g contains the basic things needed
   local info, fname, badfile, contents;
 
   # Get PackageInfo
@@ -128,9 +129,7 @@ function(dir, prefs)
   fi;
 
   # Redo dependencies if needed
-  if TestPackageAvailability(info.PackageName, info.Version) = fail then
-    PKGMAN_InstallDependencies(dir, prefs);
-  fi;
+  PKGMAN_InstallDependencies(dir, prefs);
 
   # Ensure package is available
   PKGMAN_RefreshPackageInfo();

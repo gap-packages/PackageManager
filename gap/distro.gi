@@ -18,7 +18,7 @@ function(requirements, prefs)
     lower_name := LowercaseString(name);
     required_version := req[2];
     if not lower_name in RecNames(metadata) then
-      Info(InfoPackageManager, 1, name, " package not available from package distribution");
+      Info(InfoPackageManager, 1, "Package \"", name, "\" not found in package distribution");
       abort := true;
     elif not CompareVersionNumbers(metadata.(lower_name).Version, required_version) then
       name := metadata.(lower_name).PackageName;
@@ -253,8 +253,8 @@ function(requirements, prefs)
 
     # Find metadata for that package
     if not IsBound(metadata.(name)) then
-      Info(InfoPackageManager, 1, name, " package not available from package distribution");
-      Info(InfoPackageManager, 3, "You can install it by calling InstallPackage with a URL to the package archive");
+      Info(InfoPackageManager, 1, "Package \"", name, "\" not found in package distribution");
+      Info(InfoPackageManager, 3, "You may be able to install it by calling InstallPackage with a URL to the package archive");
       Unbind(queue[i]);
       continue;
     fi;
