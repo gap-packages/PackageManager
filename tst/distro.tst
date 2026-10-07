@@ -71,7 +71,8 @@ true
 
 # Required package number too high
 gap> InstallPackage("format", rec(version := "9999.0"));
-#I  Version 9999.0 of package 'FORMAT' cannot be satisfied
+#I  FORMAT package version 9999.0 not available from package distribution
+#I  (only version 1.4.5 available)
 false
 
 # Fail to install a GAP required package
@@ -80,7 +81,7 @@ gap> needed := ShallowCopy(backup);;
 gap> Add(needed, ["packagethatgaptotallyneeds", ">= 2.0"], 1);
 gap> GAPInfo.Dependencies := rec(NeededOtherPackages := needed);;
 gap> InstallRequiredPackages();
-#I  Package "packagethatgaptotallyneeds" not found in package list
+#I  Package "packagethatgaptotallyneeds" not found in package distribution
 false
 gap> GAPInfo.Dependencies := rec(NeededOtherPackages := backup);;
 
@@ -104,14 +105,14 @@ false
 gap> SetUserPreference("PackageManager", "distroLocation",
 >                      Concatenation(server.url, "/badurls.txt"));
 gap> RefreshPackageMetadata();
-#I  Problem extracting package metadata
+#I  Package metadata could not be extracted
 false
 gap> SetUserPreference("PackageManager", "distroLocation", package_infos_location);
 gap> PKGMAN_StopHTTPTestServer(server);
 
 # InstallPackage from name: failure
 gap> InstallPackage("sillypackage");
-#I  Package "sillypackage" not found in package list
+#I  Package "sillypackage" not found in package distribution
 false
 
 # TODO: package that doesn't offer a ".tar.gz" archive
@@ -167,14 +168,15 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 
 # Dependency failure
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-badname.tar.gz");
-#I  Required package madeuppackage unknown
-#I  Dependencies not satisfied for uuid-badname
+#I  Package "madeuppackage" not found in package distribution
+#I  Package availability test failed
 false
 gap> InstallPackage("https://github.com/mtorpey/uuid.git");
-#I  Required package MadeUpPackage unknown
-#I  Dependencies not satisfied for uuid
+#I  Package "MadeUpPackage" not found in package distribution
+#I  Package availability test failed
 false
 gap> RemovePackage("uuid");
+#I  Multiple versions of package uuid installed
 true
 
 # Sabotaged PackageInfoURLList to produce some special errors
