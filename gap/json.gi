@@ -145,6 +145,9 @@ function(string)
     elif string[pos + 2] = '\\' then
       char := IntChar('\\');
       pos := pos + 2;
+    elif string[pos + 2] = '\n' then
+      char := IntChar('\n');
+      pos := pos + 2;
     elif string[pos + 2] = '"' then
       char := IntChar('"');
       pos := pos + 2;

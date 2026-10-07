@@ -179,14 +179,19 @@ gap> RemovePackage("uuid");
 #I  Multiple versions of package uuid installed
 true
 
-# Sabotaged PackageInfoURLList to produce some special errors
+# Sabotaged package distro to produce some special errors
 gap> InstallPackage("GAPDoc");
 true
 gap> InstallPackage("uuid");
 true
-gap> urllist := PKGMAN_PackageInfoURLList;;
-gap> PKGMAN_PackageInfoURLList :=
-> "https://gap-packages.github.io/PackageManager/dummy/badurls.txt";;
+gap> LoadPackage("io", false);
+true
+gap> ReadPackage("PackageManager", "tst/http-server.g");
+true
+gap> server := PKGMAN_StartHTTPTestServer();;
+gap> package_infos_location := UserPreference("PackageManager", "distroLocation");;
+gap> SetUserPreference("PackageManager", "distroLocation",
+>                      Concatenation(server.url, "/package-infos.json.gz"));
 gap> InstallPackage("GAPDoc");  # Installed version is newer than online
 true
 gap> InstallPackage("uuid");  # Newer version, but fails to install
@@ -198,4 +203,4 @@ gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-to
 #I  Package GAPDoc = 999.0 unavailable: only version 0.2 was found
 #I  Dependencies not satisfied for uuid-too-new
 false
-gap> PKGMAN_PackageInfoURLList := urllist;;
+gap> SetUserPreference("PackageManager", "distroLocation", package_infos_location);
