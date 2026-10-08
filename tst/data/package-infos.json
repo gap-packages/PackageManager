@@ -85,7 +85,7 @@
         "README_URL": "https://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/README.txt",
         "Subtitle": "A Meta Package for GAP Documentation",
         "TestFile": "tst/test.tst",
-        "Version": "0.1.0"
+        "Version": "0.2"
     },
     "uuid": {
         "AbstractHTML": "UUIDs for GAP",
@@ -97,12 +97,7 @@
         "Dependencies": {
             "ExternalConditions": [],
             "GAP": ">= 4.8",
-            "NeededOtherPackages": [
-                [
-                    "GAPDoc",
-                    ">= 1.5"
-                ]
-            ],
+            "NeededOtherPackages": [],
             "SuggestedOtherPackages": []
         },
         "IssueTrackerURL": "https://github.com/gap-packages/uuid/issues",

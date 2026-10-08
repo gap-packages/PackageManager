@@ -9,7 +9,7 @@ true
 
 # InstallPackage from archive: failure
 gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
-#I  Could not download from www.gap.rubbish/somepackage.tar.gz
+#I  Download failed from www.gap.rubbish/somepackage.tar.gz
 false
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/bad-tarball.tar.gz");
 #I  Could not inspect tarball contents

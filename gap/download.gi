@@ -14,7 +14,7 @@ function(url)
   Info(InfoPackageManager, 3, "Downloading archive from URL ", url, " ...");
   get := PKGMAN_DownloadURL(url);
   if get.success <> true then
-    Info(InfoPackageManager, 1, "Could not download from ", url);
+    Info(InfoPackageManager, 1, "Download failed from ", url);
     PKGMAN_InfoDownloadError(get);
     return fail;
   fi;

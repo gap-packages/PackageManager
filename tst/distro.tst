@@ -195,12 +195,16 @@ gap> SetUserPreference("PackageManager", "distroLocation",
 gap> InstallPackage("GAPDoc");  # Installed version is newer than online
 true
 gap> InstallPackage("uuid");  # Newer version, but fails to install
-#I  Could not inspect tarball contents
+#I  Download failed from https://github.com/BLAH-BLAH-BLAH/uuid/releases/downloa
+d/v999.0.0/uuid-999.0.0.tar.gz
 false
 gap> RemovePackage("uuid");
 true
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-too-new.tar.gz");
-#I  Package GAPDoc = 999.0 unavailable: only version 0.2 was found
-#I  Dependencies not satisfied for uuid-too-new
+#I  GAPDoc package version = 999.0 not available from package distribution
+#I  (only version 0.2 available)
+#I  Package availability test failed
 false
+gap> RemovePackage("uuid");
+true
 gap> SetUserPreference("PackageManager", "distroLocation", package_infos_location);
