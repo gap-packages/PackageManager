@@ -11,7 +11,7 @@ gap> PKGMAN_CurlIntReqVer := ver;;
 gap> ver := PKGMAN_CurlIntReqVer;;
 gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
 gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
-#I  Could not download from www.gap.rubbish/somepackage.tar.gz
+#I  Download failed from www.gap.rubbish/somepackage.tar.gz
 false
 gap> PKGMAN_CurlIntReqVer := ver;;
 
@@ -35,7 +35,7 @@ gap> PKGMAN_CurlIntReqVer := ">= 100.0";;
 gap> PKGMAN_DownloadCmds[1][1];
 "curl"
 gap> InstallPackage("www.gap.rubbish/somepackage.tar.gz");
-#I  Could not download from www.gap.rubbish/somepackage.tar.gz
+#I  Download failed from www.gap.rubbish/somepackage.tar.gz
 false
 gap> PKGMAN_CurlIntReqVer := ver;;
 
