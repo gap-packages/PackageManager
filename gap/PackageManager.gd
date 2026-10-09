@@ -47,6 +47,7 @@
 #!     * <C>distroLocation</C> - the URL to download the GAP package distribution info from
 #!     * <C>distroVersion</C> - the version of the package distribution info to use (choose a version of GAP, or just "latest")
 #!     * <C>version</C> - the version of a particular package to attempt to install
+#!     * <C>branch</C> - the name of the branch to attempt to install when using a Git repo (or <C>fail</C> for the default branch)
 #!
 #!   All boolean preferences above (those described as "whether to...") can be set to <C>true</C>, <C>false</C>, or "ask" which will prompt the user interactively. This is the default setting for many of them.
 #!

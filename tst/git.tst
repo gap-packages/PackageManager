@@ -16,14 +16,6 @@ true
 gap> InstallPackage("https://github.com/gap-packages/orb.git", false, "fiaenfq");
 #I  Cloning unsuccessful
 false
-gap> InstallPackage("https://github.com/gap-packages/orb.git", "master", true);
-Error, <interactive> should be true or false
-gap> InstallPackage("https://github.com/a/b.git", false, 3);
-Error, <branch> should be a string
-gap> InstallPackage("https://github.com/a/b.git", 3);
-Error, 2nd argument should be true, false, or a string
-gap> InstallPackage("https://github.com/a/b.git", true, "master", "lol");
-Error, requires 1, 2 or 3 arguments (not 4)
 
 # Install a package from a git repository not ending in .git
 gap> InstallPackage("https://github.com/gap-packages/MathInTheMiddle");

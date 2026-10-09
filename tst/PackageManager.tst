@@ -44,6 +44,18 @@ Error, no 1st choice method found for `InstallPackage' on 3 arguments
 gap> InstallPackage("semigroups", ">=3.0", true, "i dont know");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `InstallPackage' on 4 arguments
+gap> InstallPackage("https://github.com/gap-packages/orb.git", "master", true);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `InstallPackage' on 3 arguments
+gap> InstallPackage("https://github.com/a/b.git", false, 3);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `InstallPackage' on 3 arguments
+gap> InstallPackage("https://github.com/a/b.git", 3);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `InstallPackage' on 2 arguments
+gap> InstallPackage("https://github.com/a/b.git", true, "master", "lol");
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `InstallPackage' on 4 arguments
 
 # Check a bad package directory
 gap> baddir := Filename(Directory(PKGMAN_PackageDir()), "badpkg");;

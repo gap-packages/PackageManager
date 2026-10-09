@@ -3,13 +3,22 @@
 #
 
 # InstallPackage(string, interactive)
-# RemovePacakge(string, interactive)
+# RemovePackage(string, interactive)
 #
 # In newer versions we should set the "interactive" user preference or include
 #   interactive := true
 # in the prefs record.
 DeclareOperation("InstallPackage", [IsString, IsBool]);
 DeclareOperation("RemovePackage", [IsString, IsBool]);
+
+
+# InstallPackage(string, branch)
+# InstallPackage(string, interactive, branch)
+#
+# In newer versions we should set the "branch" user preference or include a
+# branch entry in the prefs record.
+DeclareOperation("InstallPackage", [IsString, IsString]);
+DeclareOperation("InstallPackage", [IsString, IsBool, IsString]);
 
 # UpdatePackage
 #

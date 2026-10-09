@@ -86,3 +86,10 @@ DeclareUserPreference(rec(
   default     := "",
   check       := IsString
 ));
+
+DeclareUserPreference(rec(
+  name        := "branch",
+  description := "",
+  default     := fail,
+  check       := pref -> pref = fail or IsString(pref)
+));

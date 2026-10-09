@@ -31,7 +31,7 @@ function(string, prefs)
       return false;
     fi;
     return PKGMAN_FinishPackageSetup(dir, prefs);
-  elif EndsWith(string, ".git") then
+  elif PKGMAN_IsGitUrl(string) then
     return PKGMAN_InstallFromGit(string, prefs);
   elif EndsWith(string, "PackageInfo.g") then
     return PKGMAN_InstallFromInfo(string);

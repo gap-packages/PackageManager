@@ -1,7 +1,6 @@
 InstallGlobalFunction(PKGMAN_InstallFromGit,
 function(url, prefs)
   local branch, name, repos, success, repo, result, dir, exec, info;
-  branch := fail; # TODO: support branch option
   
   # Get package name
   name := PKGMAN_NameOfGitRepo(url);
@@ -36,7 +35,8 @@ function(url, prefs)
 
     # Do the cloning
     Info(InfoPackageManager, 2, "Cloning to ", dir, " ...");
-    if branch = fail then
+    branch := PKGMAN_Pref("branch", prefs);
+    if branch = fail or branch = "" then
       exec := PKGMAN_Exec(".", "git", "clone", url, dir);
     else
       exec := PKGMAN_Exec(".", "git", "clone", url, dir, "-b", branch);
@@ -109,4 +109,24 @@ function(dir)
     Info(InfoPackageManager, 1, "There may be upstream changes that haven't been merged");
     return false;
   fi;
+end);
+
+InstallGlobalFunction(PKGMAN_IsGitUrl,
+function(string)
+  # Is this string a URL that's likely to point to a git repo that can be cloned?
+  # Currently quite restrictive, but could be expanded to other valid patterns
+  local parts;
+  
+  # *.git
+  if EndsWith(string, ".git") then
+    return true;
+  fi;
+  
+  # (anything)github.com[:/](something without dots)/(something without dots)
+  if PositionSublist(string, "github.com") <> fail then
+    parts := SplitString(string, "/:");
+    return ForAll([0, 1], i -> not '.' in parts[Length(parts) - i]);
+  fi;
+  
+  return false;
 end);
