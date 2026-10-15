@@ -26,7 +26,7 @@ function(requirements, prefs)
       if not IsEmpty(PKGMAN_UserPackageGitRepoPaths(lower_name)) then
         Info(InfoPackageManager, 3, "(It may be possible to upgrade to it via Git)");
       else
-        Info(InfoPackageManager, 1, "(only version ", metadata.(lower_name).Version, " available)");
+        Info(InfoPackageManager, 2, "(only version ", metadata.(lower_name).Version, " available)");
         abort := true;
       fi;
     fi;

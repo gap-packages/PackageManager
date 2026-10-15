@@ -73,7 +73,6 @@ true
 # Required package number too high
 gap> InstallPackage("format", rec(version := "9999.0"));
 #I  FORMAT package version 9999.0 not available from package distribution
-#I  (only version 1.4.5 available)
 false
 
 # Fail to install a GAP required package
@@ -205,7 +204,6 @@ gap> RemovePackage("uuid");
 true
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-too-new.tar.gz");
 #I  GAPDoc package version = 999.0 not available from package distribution
-#I  (only version 0.2 available)
 #I  Package availability test failed
 false
 gap> RemovePackage("uuid");
