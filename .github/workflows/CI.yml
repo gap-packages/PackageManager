@@ -6,6 +6,7 @@ on:
     branches:
       - master
       - main
+      - dev-2.0
   pull_request:
   workflow_dispatch:
 
