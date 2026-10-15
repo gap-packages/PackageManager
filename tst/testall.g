@@ -15,6 +15,12 @@ PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg"));
 # Disable interactivity (for most tests)
 SetUserPreference("PackageManager", "interactive", false);
 
+# Use the appropriate version of PackageDistro (or latest for dev versions)
+if PositionSublist(GAPInfo.Version, "dev") = fail then
+  SetUserPreference("PackageManager", "distroVersion",
+                    Concatenation("v", GAPInfo.Version));
+fi;
+
 # Any files to exclude?
 if not IsBound(PKGMAN_ExcludeTestFiles) then
   PKGMAN_ExcludeTestFiles := [];
