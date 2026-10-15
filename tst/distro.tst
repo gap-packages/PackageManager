@@ -10,6 +10,8 @@ gap> RemovePackage("GAPDoc");
 true
 
 # Install GAP's required packages
+gap> needs_perfgrp := ForAny(GAPInfo.Dependencies.NeededOtherPackages,
+>                            l -> l[1] = "perfgrp");;
 gap> conts := List(DirectoryContents(PKGMAN_PackageDir()), LowercaseString);;
 gap> ForAny(conts, f -> StartsWith(f, "perfgrp"));
 false
@@ -24,7 +26,7 @@ false
 gap> InstallRequiredPackages();
 true
 gap> conts := List(DirectoryContents(PKGMAN_PackageDir()), LowercaseString);;
-gap> ForAny(conts, f -> StartsWith(f, "perfgrp"));
+gap> ForAny(conts, f -> StartsWith(f, "perfgrp")) or not needs_perfgrp;
 true
 gap> ForAny(conts, f -> StartsWith(f, "primgrp"));
 true
@@ -34,8 +36,7 @@ gap> ForAny(conts, f -> StartsWith(f, "transgrp"));
 true
 gap> ForAny(conts, f -> StartsWith(f, "gapdoc"));
 true
-gap> RemovePackage("perfgrp");
-true
+gap> if needs_perfgrp then RemovePackage("perfgrp"); fi;
 gap> RemovePackage("primgrp");
 true
 gap> RemovePackage("SmallGrp");
@@ -167,6 +168,8 @@ gap> if IsBound(GAPInfo.PackagesInfoInitialized) and
 > fi;
 
 # Dependency failure
+gap> LoadPackage("autodoc", false);
+true
 gap> InstallPackage("https://gap-packages.github.io/PackageManager/dummy/uuid-badname.tar.gz");
 #I  Package "madeuppackage" not found in package distribution
 #I  Package availability test failed
