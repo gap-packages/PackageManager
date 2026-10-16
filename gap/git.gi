@@ -87,7 +87,7 @@ function(name)
 end);
 
 InstallGlobalFunction(PKGMAN_IsGitRepoDir,
-dir -> IsDirectoryPath(Concatenation(dir, ".git/")));
+dir -> IsDirectoryPath(Filename(Directory(dir), ".git/")));
 
 InstallGlobalFunction(PKGMAN_GitPullDirectory,
 function(dir)
