@@ -1,24 +1,25 @@
-@Chapter Introduction
+@Chapter PackageManager Documentation
 
-This package allows you to install or remove a package using a single command: <Ref Oper="InstallPackage" Label="for a string" /> or <Ref Oper="RemovePackage" Label="for a string" />.  The user can specify a package to install using its name, or using a URL to an archive, a repository, or a <C>PackageInfo.g</C> file.  When installing, <Package>PackageManager</Package> also attempts to compile the package, build its documentation if necessary, and ensure that its dependencies are also installed.
+<Package>PackageManager</Package> allows you to install and remove GAP packages on your system quickly and easily with a single command. The main functionality is provided by the following commands:
 
-@Section Changes in version 2.0
+- <Ref Oper="InstallPackage" Label="for a string" /> to install a package by its name, or by a URL to an archive, Git repository or package info file.
+- <Ref Oper="RemovePackage" Label="for a string" /> to remove a package by its name.
+- <Ref Oper="InstallRequiredPackages" Label="with no required arguments" /> to install all the packages that GAP needs in order to run.
 
-PackageManager 2.0 introduced a range of new features, including the ability to download the structured info for the whole package distribution, and plan dependency trees in advance before installation begins. It also introduced a range of user preferences, which are described under the <Ref Oper="InstallPackage" Label="for a string" /> command below.
+Compiling the package, building the documentation, and installing dependencies are all handled automatically.
 
-@Section What does the <Package>PackageManager</Package> package not do?
+The behaviour of <Package>PackageManager</Package> can be customised in various ways by setting appropriate user preferences, as described in Section <Ref Sect="Chapter_PackageManager_Documentation_Section_User_Preferences" />. These can also be overridden for a single call by adding an optional argument <A>prefs</A> to the appropriate function call, as described in the documentation for the <Ref Oper="InstallPackage" Label="for a string" /> command.
 
-At present, <Package>PackageManager</Package> is not as complete as package managers such as pip or apt.  For instance, the user cannot update all packages in one command.  Removing a package will not remove any of its dependencies, since we do not track how packages were installed.  When a package is installed, no tests are run to ensure that it is compatible with the installed version of GAP.  Any of these features might be added in the future.  Other feature requests can be posted on the issue tracker at <URL>https://github.com/gap-packages/PackageManager/issues</URL>.
+By default, packages will be installed in the `pkg` subdirectory of <C>GAPInfo.UserGapRoot</C> (see <Ref BookName="ref" Sect="GAP Root Directories"/>).  Note that this location is not the default user pkg location on Mac OSX, but it will be created on any system if not already present.  Note also that starting &GAP; with the `-r` flag will cause all packages in this directory to be ignored.
 
-@Section A quick example
 
-<Package>PackageManager</Package> is distributed with GAP, so it should already be available on your system.  To load the package, call:
+@Section Basic usage
+
+<Package>PackageManager</Package> is distributed with GAP, so it should already be available on your system.  If it is not already loaded, you can call it with:
 
 @BeginExample
 LoadPackage("PackageManager");
 @EndExample
-
-Note that you'll need to do this in each session when you want to use the package manager.
 
 To install the latest deposited version of the <Package>Digraphs</Package> package, use the following:
 
@@ -32,10 +33,36 @@ To uninstall it later, use the following:
 RemovePackage("digraphs");
 @EndExample
 
+You can also 
+
 <Package>PackageManager</Package> also supports version control repositories.  To install the latest version of the <URL Text="curlInterface package from GitHub">https://github.com/gap-packages/curlInterface.git</URL>, use the following:
 
 @BeginExample
 InstallPackage("https://github.com/gap-packages/curlInterface.git");
 @EndExample
 
-@Chapter Commands
+@Section Changes in version 2.0
+
+PackageManager 2.0 changed several ways that the introduced a range of new features, including the ability to download the structured info for the whole package distribution, and plan dependency trees in advance before installation begins. It also introduced a range of user preferences, which are described under the <Ref Oper="InstallPackage" Label="for a string" /> command below.
+
+@Section Commands
+
+@Section User Preferences
+
+<Package>PackageManager</Package> exposes several user preferences which can be set to customise the behaviour of the package globally. For example, calling
+
+@BeginExample
+SetUserPreference("PackageManager", "compile", false);
+@EndExample
+
+will make it so that new packages are not compiled automatically when <C>InstallPackage</C> is called for the rest of the session. You could instead specify this as a one-off by passing a record to the command, as follows:
+
+@BeginExample
+InstallPackage("digraphs", rec(compile := false));
+@EndExample
+
+You can make your preferences persist between sessions by calling  <Ref BookName="ref" Func="WriteGapIniFile"/> and finding the settings in your <C>gap.ini</C> file.
+
+A full list of user preferences recognised by the package is described in the documentation for <Ref Oper="InstallPackage" Label="for a string" />.
+
+@Section Info Warnings

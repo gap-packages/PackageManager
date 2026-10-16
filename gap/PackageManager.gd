@@ -3,8 +3,8 @@
 #
 # Declarations
 #
-#! @Chapter Commands
-#! @Section Main commands
+#! @Chapter PackageManager Documentation
+#! @Section Commands
 
 #! @Label for a string
 #! @Description
@@ -21,18 +21,20 @@
 #!   completed successfully, or if this package is already installed,
 #!   <K>true</K> is returned; otherwise, <K>false</K> is returned.
 #!
-#!   By default, packages will be installed in the `pkg` subdirectory of
-#!   <C>GAPInfo.UserGapRoot</C>
-#!   (see <Ref BookName="ref" Sect="GAP Root Directories"/>).
-#!   Note that this location is not the default user pkg location
-#!   on Mac OSX, but it will be created on any system if not already present.
-#!   Note also that starting &GAP; with the `-r` flag will cause all packages in
-#!   this directory to be ignored.
+#! @BeginExample
+#! gap> InstallPackage("digraphs");
+#! #I  The following packages will be installed:
+#! #I    Digraphs        1.15.0
+#! #I    orb             5.1.0
+#! #I    datastructures  0.4.3
+#! Continue? [Y/n] y
+#! true
+#! @EndExample
 #!
 #!   This command's behaviour is affected by the user preferences that have been
 #!   set for the PackageManager package. These can be updated using, for
 #!   example, <C>SetUserPreference("PackageManager", "compile", true);</C> but
-#!   these can also be overridden for this call by passing a record to this
+#!   these can also be overridden for this call by using the optional second argument <A>prefs</A> for this
 #!   function, for example <C>InstallPackage(name, rec(compile := false));</C>
 #!
 #!   The available preferences are as follows:
@@ -51,37 +53,7 @@
 #!
 #!   All boolean preferences above (those described as "whether to...") can be set to <C>true</C>, <C>false</C>, or "ask" which will prompt the user interactively. This is the default setting for many of them.
 #!
-#!   To see more information about the install process while it is ongoing, see
-#!   <Ref InfoClass="InfoPackageManager"/>.
-#!
-#!   If the <C>version</C> preference is specified, then it is interpreted as
-#!   described in Section
-#!   <Ref Sect="Version Numbers" BookName="ref"/>.
-#!   In particular, if <A>version</A> starts with `=` then the
-#!   function will try to install exactly the given version, and otherwise
-#!   it will try to install a version that is not smaller than the given one.
-#!   If an installed version satisfies the condition on the version then
-#!   <K>true</K> is returned without an attempt to upgrade the package.
-#!   If the package is not yet installed or if no installed version satisfies
-#!   the version condition then an upgrade is tried only if the package version
-#!   that is listed on the &GAP; webpages satisfies the condition.
-#!   (The function will not update a dev version of the package if a version
-#!   number is prescribed;
-#!   otherwise it could happen that one updates the installation and
-#!   afterwards notices that the version condition is still not satisfied.)
-#!
-#!   If installation fails, then any new directories that were created will be
-#!   preserved. To remove them, the
-#!   <Ref Oper="RemovePackage" Label="for a string" /> operation can be used.
-#!
 #! @BeginExample
-#! gap> InstallPackage("digraphs");
-#! #I  The following packages will be installed:
-#! #I    Digraphs        1.15.0
-#! #I    orb             5.1.0
-#! #I    datastructures  0.4.3
-#! Continue? [Y/n] y
-#! true
 #! gap> InstallPackage("profiling", rec(interactive := false,
 #! >                                    suggested := true,
 #! >                                    compileDeps := false));
@@ -89,6 +61,18 @@
 #! #I    profiling  2.6.3
 #! true
 #! @EndExample
+#!
+#!   To see more information about the install process while it is ongoing, see
+#!   <Ref InfoClass="InfoPackageManager"/>.
+#!
+#!   If the <C>version</C> preference is specified, then it is interpreted as
+#!   described in Section
+#!   <Ref Sect="Version Numbers" BookName="ref"/>.
+#!   In particular, the value will be treated as a minimum version number unless it starts with `=`.
+#!
+#!   If installation fails, then any new directories that were created will be
+#!   preserved. To remove them, the
+#!   <Ref Oper="RemovePackage" Label="for a string" /> operation can be used.
 #!
 #! @Arguments string[, prefs]
 #! @Returns
@@ -124,7 +108,7 @@ DeclareOperation("InstallPackage", [IsString, IsRecord]);
 DeclareOperation("RemovePackage", [IsString]);
 DeclareOperation("RemovePackage", [IsString, IsRecord]);
 
-#! @Section Info warnings
+#! @Section Info Warnings
 
 #! @Description
 #!   Info class for the <Package>PackageManager</Package> package.  Set this to
@@ -132,14 +116,14 @@ DeclareOperation("RemovePackage", [IsString, IsRecord]);
 #!     * 0 - No messages
 #!     * 1 - Problems only: messages describing what went wrong, with no
 #!           messages if an operation is successful
-#!     * 2 - Directories and versions: also displays informations about package
-#!           versions and installation directories
+#!     * 2 - Directories and versions: also displays information about 
+#!           installation directories and package versions
 #!     * 3 - Progress: also shows step-by-step progress of operations
 #!     * 4 - All: includes extra information such as whether curlInterface is
 #!           being used, package info validation and compilation output
 #!
 #!   Set this using, for example `SetInfoLevel(InfoPackageManager, 1)`.
-#!   Default value is 3.
+#!   The default value is 3.
 DeclareInfoClass("InfoPackageManager");
 SetInfoLevel(InfoPackageManager, 3);
 

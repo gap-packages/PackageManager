@@ -1,5 +1,5 @@
-#! @Chapter Commands
-#! @Section Manual compilation
+#! @Chapter PackageManager Documentation
+#! @Section Commands
 
 #! @Label for a string
 #! @Description
