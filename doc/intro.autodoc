@@ -1,37 +1,18 @@
 @Chapter Introduction
 
-@Section What does the <Package>PackageManager</Package> package do?
-
-This package provides the ability to install or remove a package using a single
-command: <Ref Oper="InstallPackage" Label="for a string" /> or <Ref Oper="RemovePackage" Label="for a string" />.  The
-user can specify a package to install using its name, or using a URL to an
-archive, a repository, or a <C>PackageInfo.g</C> file.  When installing,
-<Package>PackageManager</Package> also attempts to compile the package, build its documentation if
-necessary, and ensure that its dependencies are also installed.
+This package allows you to install or remove a package using a single command: <Ref Oper="InstallPackage" Label="for a string" /> or <Ref Oper="RemovePackage" Label="for a string" />.  The user can specify a package to install using its name, or using a URL to an archive, a repository, or a <C>PackageInfo.g</C> file.  When installing, <Package>PackageManager</Package> also attempts to compile the package, build its documentation if necessary, and ensure that its dependencies are also installed.
 
 @Section Changes in version 2.0
 
-PackageManager 2.0 introduced a range of new features, including the ability to
-download the structured info for the whole package distribution, and plan
-dependency trees in advance before installation begins. It also introduced a
-range of user preferences, which are described under the <Ref
-Oper="InstallPackage" Label="for a string" /> command below.
+PackageManager 2.0 introduced a range of new features, including the ability to download the structured info for the whole package distribution, and plan dependency trees in advance before installation begins. It also introduced a range of user preferences, which are described under the <Ref Oper="InstallPackage" Label="for a string" /> command below.
 
 @Section What does the <Package>PackageManager</Package> package not do?
 
-At present, <Package>PackageManager</Package> is not as complete as package
-managers such as pip or apt.  For instance, the
-user cannot update all packages in one command.  Removing a package
-will not remove any of its dependencies, since we do not track how packages were
-installed.  When a package is installed, no tests are run to ensure that it is
-compatible with the installed version of GAP.  Any of these features might be
-added in the future.  Other feature requests can be posted on the issue tracker
-at <URL>https://github.com/gap-packages/PackageManager/issues</URL>.
+At present, <Package>PackageManager</Package> is not as complete as package managers such as pip or apt.  For instance, the user cannot update all packages in one command.  Removing a package will not remove any of its dependencies, since we do not track how packages were installed.  When a package is installed, no tests are run to ensure that it is compatible with the installed version of GAP.  Any of these features might be added in the future.  Other feature requests can be posted on the issue tracker at <URL>https://github.com/gap-packages/PackageManager/issues</URL>.
 
 @Section A quick example
 
-<Package>PackageManager</Package> is distributed with GAP, so it should already
-be available on your system.  To load the package, call:
+<Package>PackageManager</Package> is distributed with GAP, so it should already be available on your system.  To load the package, call:
 
 @BeginExample
 LoadPackage("PackageManager");
@@ -39,8 +20,7 @@ LoadPackage("PackageManager");
 
 Note that you'll need to do this in each session when you want to use the package manager.
 
-To install the latest deposited version of the <Package>Digraphs</Package>
-package, use the following:
+To install the latest deposited version of the <Package>Digraphs</Package> package, use the following:
 
 @BeginExample
 InstallPackage("digraphs");
@@ -52,8 +32,7 @@ To uninstall it later, use the following:
 RemovePackage("digraphs");
 @EndExample
 
-<Package>PackageManager</Package> also supports version control repositories.  To install the
-latest version of the <URL Text="curlInterface package from GitHub">https://github.com/gap-packages/curlInterface.git</URL>, use the following:
+<Package>PackageManager</Package> also supports version control repositories.  To install the latest version of the <URL Text="curlInterface package from GitHub">https://github.com/gap-packages/curlInterface.git</URL>, use the following:
 
 @BeginExample
 InstallPackage("https://github.com/gap-packages/curlInterface.git");
