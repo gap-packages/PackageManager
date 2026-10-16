@@ -1,5 +1,13 @@
 This file describes changes in the PackageManager package.
 
+## 2.0.0-beta.3 (2026-10-16)
+
+  - Reintroduce git branch support
+  - Improve and update documentation
+  - Fix the whole test suite for 2.0 behaviour
+  - Improve package checking and availability testing
+  - Minor fixes and tweaks
+
 ## 2.0.0-beta.2 (2026-10-02)
 
   - Reintroduce git clone support
