@@ -1,171 +1,232 @@
 /* dark.css                                             Frank Luebeck */
 /* Initial dark theme contributed by kiryph in issue #75.            */
 
+/* This file is read *after* manual.css and only overwrites colors,
+   so the layout of a manual is the same in light and dark mode.
+   All colors are collected in the variables below, so that a derived
+   style only needs to change these.                                 */
+
+:root {
+  /* let the browser draw scrollbars, form controls, ... dark, too */
+  color-scheme: dark;
+
+  /* surfaces, from the page background upwards */
+  --gd-bg:        #16191d;  /* page background                      */
+  --gd-bg-raised: #1d222a;  /* examples                             */
+  --gd-bg-bar:    #262c35;  /* function definitions, navigation
+                               bars, table of contents pop ups      */
+  --gd-bg-hover:  #333c47;  /* hovered links                        */
+  --gd-border:    #39414b;
+
+  /* text */
+  --gd-fg:        #d7dde5;
+  --gd-fg-dim:    #97a1ad;
+
+  /* accents; all of these have a contrast ratio of at least 7:1
+     against --gd-bg and --gd-bg-raised                             */
+  --gd-link:      #79b8ff;
+  --gd-red:       #ff8a80;
+  --gd-orange:    #e0a458;
+  --gd-green:     #7ec699;
+  --gd-blue:      #79b8ff;
+}
+
 /* colors */
 body {
-  background: #121212;
-  color: #eee;
+  background: var(--gd-bg);
+  color: var(--gd-fg);
 }
 
 a:link {
-  color: #576cad;
+  color: var(--gd-link);
 }
 
 a:visited {
-  color: #576cad;
+  color: var(--gd-link);
 }
 
 a:active {
-  color: #eee;
+  color: var(--gd-fg);
 }
 
 a:hover {
-  background: #eee;
+  background: var(--gd-bg-hover);
+}
+
+::selection {
+  background: #2d5986;
+  color: #ffffff;
 }
 
 pre {
-  color: black;
+  color: var(--gd-fg);
 }
 
 tt, code {
-  color: #eee;
+  color: var(--gd-fg);
 }
 
 /* layout for the definitions of functions, variables, ... */
 div.func {
-  background: #909090;
+  background: var(--gd-bg-bar);
 }
 
 /* Example elements (for old converted manuals, now in div+pre */
 table.example {
-  background: #efefef;
+  background: var(--gd-bg-raised);
+  color: var(--gd-fg);
+  /* a dark code block needs a little help to stand out from the page */
+  border: 1px solid var(--gd-border);
+  border-radius: 4px;
 }
 
 /* becomes ... */
 div.example {
-  background: #efefef;
-  color: black;
+  background: var(--gd-bg-raised);
+  color: var(--gd-fg);
+  border: 1px solid var(--gd-border);
+  border-radius: 4px;
 }
 
 /* Links to chapters in all files at top and bottom. */
 div.chlinktop {
-  background: #22272e;
-  border-color: #3a414a;
-  color: #d7dde5;
+  background: var(--gd-bg-bar);
+  border-color: var(--gd-border);
+  color: var(--gd-fg);
 }
 
 div.chlinktop a:hover {
-  background: #2f3742;
+  background: var(--gd-bg-hover);
 }
 
 div.chlinkbot {
-  background: #22272e;
-  border-color: #3a414a;
-  color: #d7dde5;
+  background: var(--gd-bg-bar);
+  border-color: var(--gd-border);
+  color: var(--gd-fg);
+}
+
+div.chlinkbot a:hover {
+  background: var(--gd-bg-hover);
 }
 
 /* and this is for the "Top", "Prev", "Next" links */
 div.chlinkprevnexttop {
-  background: #22272e;
-  border-color: #3a414a;
-  color: #d7dde5;
+  background: var(--gd-bg-bar);
+  border-color: var(--gd-border);
+  color: var(--gd-fg);
 }
 
 div.chlinkprevnexttop a:hover {
-  background: #2f3742;
+  background: var(--gd-bg-hover);
 }
 
 div.chlinkprevnextbot {
-  background: #22272e;
-  border-color: #3a414a;
-  color: #d7dde5;
+  background: var(--gd-bg-bar);
+  border-color: var(--gd-border);
+  color: var(--gd-fg);
 }
 
 div.chlinkprevnextbot a:hover {
-  background: #2f3742;
+  background: var(--gd-bg-hover);
 }
 
+/* the pop up boxes with the subsections of a chapter */
 div.ContChap div.ContSect:hover div.ContSSBlock {
-  background: #eee;
-  border-color: #666;
-  color: #000;
+  background: var(--gd-bg-bar);
+  border-color: var(--gd-border);
+  color: var(--gd-fg);
 }
 
 div.ContSSBlock a:hover {
-  background: #fff;
+  background: var(--gd-bg-hover);
 }
 
 /* and here for the side menu of contents in the chapter files */
 div.ChapSects a:hover {
-  background: #eee;
-  color: #000;
+  background: var(--gd-bg-hover);
+  color: var(--gd-fg);
 }
 
 div.ChapSects div.ContSect:hover div.ContSSBlock {
-  background: #b5b5b5;
-  border-color: #666;
-  color: #000;
+  background: var(--gd-bg-bar);
+  border-color: var(--gd-border);
+  color: var(--gd-fg);
 }
 
 div.ChapSects div.ContSect:hover div.ContSSBlock a:hover {
-  background: #828282;
+  background: var(--gd-bg-hover);
+}
+
+/* the "toggless" style brings its own hover colors, and it is read
+   before this file, so they have to be adjusted here as well        */
+span.tocline a:hover, span.ContSS a:hover {
+  background: var(--gd-bg-hover);
+}
+
+span.toctoggle:hover {
+  background-color: var(--gd-bg-hover);
 }
 
 /* Table elements */
 table.GAPDocTable {
-  border-color: black;
+  border-color: var(--gd-border);
 }
 
 table.GAPDocTable td, table.GAPDocTable th {
-  border-color: #555;
+  border-color: var(--gd-border);
 }
 
 table.GAPDocTablenoborder td, table.GAPDocTable th {
-  border-color: #555;
+  border-color: var(--gd-border);
 }
 
 /* Colors and fonts can be overwritten for some types of elements. */
 /* Verb elements */
 pre.normal {
-  color: #eee;
+  color: var(--gd-fg);
 }
 
 /* Func-like elements and Ref to Func-like */
 code.func {
-  color: #eee;
+  color: var(--gd-fg);
 }
 
 /* K elements */
 code.keyw {
-  color: #983d3d;
+  color: var(--gd-red);
 }
 
 /* F elements */
 code.file {
-  color: #8e4510;
+  color: var(--gd-orange);
 }
 
 /* Arg elements */
 var.Arg {
-  color: #060;
+  color: var(--gd-green);
+}
+
+/* footnotes and similar secondary text */
+p.foot {
+  color: var(--gd-fg-dim);
 }
 
 /* colors for ColorPrompt like examples */
 span.GAPprompt {
-  color: #000097;
+  color: var(--gd-blue);
 }
 
 span.GAPbrkprompt {
-  color: #970000;
+  color: var(--gd-red);
 }
 
 span.GAPinput {
-  color: #970000;
+  color: var(--gd-red);
 }
 
 /* Bib entries */
 span.BibKey {
-  color: #052;
+  color: var(--gd-green);
 }
 
 /* for light and dark mode pictures */
