@@ -27,6 +27,7 @@ function(url, prefs)
   
   # No existing repository: clone!
   if IsEmpty(repos) then
+    Info(InfoPackageManager, 1, "No repo found, cloning a new one");
     # Check for a valid location
     dir := Filename(Directory(PKGMAN_PackageDir()), name);
     if not PKGMAN_IsValidTargetDir(dir) then
@@ -81,8 +82,11 @@ function(name)
   # Returns a list of paths to all user-installed git repos for this package
   local info, dirs, repos;
   info := PKGMAN_UserPackageInfo(name);
+  Info(InfoPackageManager, 1, "Found ", Length(info), " infos for package ", name);
   dirs := List(info, i -> i.InstallationPath);
+  Info(InfoPackageManager, 1, "at ", dirs);
   repos := Filtered(dirs, PKGMAN_IsGitRepoDir);
+  Info(InfoPackageManager, 1, "of which ", Length(repos), " are git repos");
   return repos;
 end);
 

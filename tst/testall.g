@@ -7,7 +7,7 @@
 LoadPackage("PackageManager");
 
 # Info levels
-SetInfoLevel(InfoPackageManager, 1);
+SetInfoLevel(InfoPackageManager, 4);
 
 # Use a temporary directory for packages
 PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg"));
@@ -23,7 +23,8 @@ fi;
 
 # Any files to exclude?
 if not IsBound(PKGMAN_ExcludeTestFiles) then
-  PKGMAN_ExcludeTestFiles := [];
+  # only git.tst
+  PKGMAN_ExcludeTestFiles := ["archive.tst", "compile.tst", "deprecated.tst", "directories.tst", "distro.tst", "doc.tst", "download.tst", "interactive.tst", "json.tst", "packageinfo.tst", "PackageManager.tst", "RecentGapOnly.tst"];
 fi;
 
 # For old GAP versions, exclude some cutting edge tests
