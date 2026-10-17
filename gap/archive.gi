@@ -72,13 +72,14 @@ function(path)
   # Check which version of tar we are using
   tar := PKGMAN_Exec(".", "tar", "--version");
   if StartsWith(tar.output, "tar (GNU tar)") then
-    options := "--warning=none";
+    options := ["--warning=none"];
   else
-    options := "";
+    options := [];
   fi;
 
   # Check contents
-  exec := PKGMAN_Exec(".", "tar", options, "-tf", path);
+  exec := CallFuncList(PKGMAN_Exec,
+                       Concatenation([".", "tar"], options, ["-tf", path]));
   if exec.code <> 0 then
     Info(InfoPackageManager, 1, "Could not inspect tarball contents");
     return fail;

@@ -70,6 +70,10 @@ Error, <cmd> should be a string
 gap> PKGMAN_Exec(".", "xyzabc");
 fail
 
+# PKGMAN_Exec passes arguments through verbatim, without a shell seeing them
+gap> PKGMAN_Exec(".", "printf", "[%s]", "a  b", "$(echo injected)", "").output;
+"[a  b][$(echo injected)][]"
+
 # FINAL TEST
 # (keep this at the end of the file)
 gap> PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg/"));

@@ -126,12 +126,13 @@ function(name, interactive...)
 
   # Look for VC repos
   dirs := List(info, i -> ShallowCopy(i.InstallationPath));
-  for vc in [rec(cmd := "git", stflags := "-s", pullflags := "--ff-only"),
-             rec(cmd := "hg", stflags := "", pullflags := "-uy")] do
+  for vc in [rec(cmd := "git", stflags := ["-s"], pullflags := "--ff-only"),
+             rec(cmd := "hg", stflags := [], pullflags := "-uy")] do
     repo := Filename(List(dirs, Directory), Concatenation(".", vc.cmd));
     if repo <> fail then
       dir := repo{[1 .. Length(repo) - Length("/.") - Length(vc.cmd)]};
-      status := PKGMAN_Exec(dir, vc.cmd, "status", vc.stflags);
+      status := CallFuncList(PKGMAN_Exec,
+                             Concatenation([dir, vc.cmd, "status"], vc.stflags));
       if status = fail then
         return false;
       elif status.code = 0 and status.output = "" then
@@ -292,13 +293,14 @@ function(dir, cmd, args...)
   out := "";
   outstream := OutputTextString(out, true);
 
-  # Execute the command (capture both stdout and stderr)
-  sh := PKGMAN_PathSystemProgram("sh");
-  args := JoinStringsWithSeparator(args, " ");
-  fullcmd := Concatenation(fullcmd, " ", args, " 2>&1");
+  # Execute the command (capture both stdout and stderr).  The shell only adds
+  # the redirection; it gets command and arguments as positional parameters,
+  # so it never parses them.
   # avoids temporary dir problems in stable-4.12
   ChangeDirectoryCurrent(".");
-  code := Process(dir, sh, instream, outstream, ["-c", fullcmd]);
+  code := Process(dir, sh, instream, outstream,
+                  Concatenation(["-c", "exec \"$0\" \"$@\" 2>&1", fullcmd],
+                                args));
   CloseStream(outstream);
 
   if code <> 0 then
