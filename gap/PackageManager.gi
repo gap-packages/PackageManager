@@ -186,13 +186,14 @@ function(dir, cmd, args...)
   out := "";
   outstream := OutputTextString(out, true);
 
-  # Execute the command (capture both stdout and stderr)
-  sh := PKGMAN_PathSystemProgram("sh");
-  args := JoinStringsWithSeparator(args, " ");
-  fullcmd := Concatenation(fullcmd, " ", args, " 2>&1");
+  # Execute the command (capture both stdout and stderr).  The shell only adds
+  # the redirection; it gets command and arguments as positional parameters,
+  # so it never parses them.
   # avoids temporary dir problems in stable-4.12
   ChangeDirectoryCurrent(".");
-  code := Process(dir, sh, instream, outstream, ["-c", fullcmd]);
+  code := Process(dir, sh, instream, outstream,
+                  Concatenation(["-c", "exec \"$0\" \"$@\" 2>&1", fullcmd],
+                                args));
   CloseStream(outstream);
 
   if code <> 0 then
