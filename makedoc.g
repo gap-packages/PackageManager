@@ -9,5 +9,5 @@ fi;
 
 AutoDoc(rec(
     scaffold := true,
-    autodoc := rec(files := ["doc/intro.autodoc"]),
+    autodoc := rec(files := ["doc/PackageManager.autodoc"]),
 ));
