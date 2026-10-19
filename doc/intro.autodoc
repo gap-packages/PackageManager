@@ -1,21 +1,21 @@
 @Chapter PackageManager Documentation
 
-<Package>PackageManager</Package> allows you to install and remove GAP packages on your system quickly and easily with a single command. The main functionality is provided by the following commands:
+<Package>PackageManager</Package> allows you to install and remove &GAP; packages on your system quickly and easily with a single command. The main functionality is provided by the following commands:
 
 - <Ref Oper="InstallPackage" Label="for a string" /> to install a package by its name, or by a URL to an archive, Git repository or package info file.
 - <Ref Oper="RemovePackage" Label="for a string" /> to remove a package by its name.
-- <Ref Oper="InstallRequiredPackages" Label="with no required arguments" /> to install all the packages that GAP needs in order to run.
+- <Ref Oper="InstallRequiredPackages" Label="with no required arguments" /> to install all the packages that &GAP; needs in order to run.
 
 Compiling the package, building the documentation, and installing dependencies are all handled automatically.
 
 The behaviour of <Package>PackageManager</Package> can be customised in various ways by setting appropriate user preferences, as described in Section <Ref Sect="Chapter_PackageManager_Documentation_Section_User_Preferences" />. These can also be overridden for a single call by adding an optional argument <A>prefs</A> to the appropriate function call, as described in the documentation for the <Ref Oper="InstallPackage" Label="for a string" /> command.
 
-By default, packages will be installed in the `pkg` subdirectory of <C>GAPInfo.UserGapRoot</C> (see <Ref BookName="ref" Sect="GAP Root Directories"/>).  Note that this location is not the default user pkg location on Mac OSX, but it will be created on any system if not already present.  Note also that starting &GAP; with the `-r` flag will cause all packages in this directory to be ignored.
+By default, packages will be installed in the `pkg` subdirectory of <C>GAPInfo.UserGapRoot</C> (see <Ref BookName="ref" Sect="GAP Root Directories"/>).  Note that this location is not the default user pkg location on MacOS, but it will be created on any system if not already present.  Note also that starting &GAP; with the `-r` flag will cause all packages in this directory to be ignored.
 
 
 @Section Basic usage
 
-<Package>PackageManager</Package> is distributed with GAP, so it should already be available on your system.  If it is not already loaded, you can call it with:
+<Package>PackageManager</Package> is distributed with &GAP;, so it should already be available on your system.  If it is not already loaded, you can call it with:
 
 @BeginExample
 LoadPackage("PackageManager");
@@ -33,8 +33,6 @@ To uninstall it later, use the following:
 RemovePackage("digraphs");
 @EndExample
 
-You can also 
-
 <Package>PackageManager</Package> also supports version control repositories.  To install the latest version of the <URL Text="curlInterface package from GitHub">https://github.com/gap-packages/curlInterface.git</URL>, use the following:
 
 @BeginExample
@@ -43,7 +41,13 @@ InstallPackage("https://github.com/gap-packages/curlInterface.git");
 
 @Section Changes in version 2.0
 
-PackageManager 2.0 changed several ways that the introduced a range of new features, including the ability to download the structured info for the whole package distribution, and plan dependency trees in advance before installation begins. It also introduced a range of user preferences, which are described under the <Ref Oper="InstallPackage" Label="for a string" /> command below.
+PackageManager 2.0  introduced a range of new features, including the ability to download the structured info for the whole package distribution, and plan dependency trees in advance before installation begins. It also introduced a range of user preferences, which are described under the <Ref Oper="InstallPackage" Label="for a string" /> command below.
+
+The following patterns are now deprecated, and may stop working in a future release:
+
+- <C>InstallPackage(name, "mybranch")</C> where the second argument is the name of a branch to check out from a Git repo. Instead you can use <C>InstallPackage(name, rec(branch := "mybranch"))</C> to specify a branch.
+- <C>InstallPackage(name, false)</C> where the second argument is a boolean that can be set to <C>false</C> to disable interactivity. Instead you can use <C>InstallPackage(name, rec(interactive := false))</C> to disable interactivity for this call, or set the behaviour globally with <C>SetUserPreference("PackageManager", "interactive", false)</C>.
+- <C>InstallPackage(name : keepDirectory)</C> where the <C>keepDirectory</C> option would prevent directories from being deleted if installation fails. This is now the default behaviour, so no option is needed.
 
 @Section Commands
 
@@ -61,7 +65,7 @@ will make it so that new packages are not compiled automatically when <C>Install
 InstallPackage("digraphs", rec(compile := false));
 @EndExample
 
-You can make your preferences persist between sessions by calling  <Ref BookName="ref" Func="WriteGapIniFile"/> and finding the settings in your <C>gap.ini</C> file.
+You can make these preferences persist between sessions by calling  <Ref BookName="ref" Func="WriteGapIniFile"/> and updating the settings in the <C>gap.ini</C> file that is produced.
 
 A full list of user preferences recognised by the package is described in the documentation for <Ref Oper="InstallPackage" Label="for a string" />.
 

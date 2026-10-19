@@ -19,11 +19,9 @@
 #!   <Package>TransGrp</Package>.
 #!   Returns <K>false</K> if something went wrong, and <K>true</K> otherwise.
 #!
-#!   Clearly, since these packages are required for &GAP; to run, they must be
-#!   loaded before this function can be executed.  However, this function
-#!   installs the packages in the `~/.gap/pkg` directory, so that they can be
-#!   managed by <Package>PackageManager</Package> in the future, and are
-#!   available for other &GAP; installations on the machine.
+#!   If these required packages are not currently installed, &GAP; can still be
+#!   loaded with the  `--bare` option, which is sufficient to allow
+#!   <Package>PackageManager</Package> to be loaded and this command to be run.
 #!
 #!   This command's behaviour is affected by the user preferences that have been
 #!   set for the PackageManager package. These can be set globally, or
@@ -39,14 +37,18 @@ DeclareOperation("InstallRequiredPackages", [IsRecord]);
 
 #! @Label with no required arguments
 #! @Description
-#!   Attempts to download metadata for all available packages from the GAP
+#!   Attempts to download metadata for all available packages from the &GAP;
 #!   package distribution.
 #!
 #!   Calling this function is not usually necessary, since the metadata is
 #!   downloaded automatically the first time
 #!   <Ref Oper="InstallPackage" Label="for a string" /> is called, and the
-#!   result is cached for the rest of the GAP session. However, this function
-#!   can be called to force the download and retrieve any updated information.
+#!   result is cached for the rest of the &GAP; session. However, this command
+#!   can be called to force the download and retrieve any updated information,
+#!   which may be useful, for example, if the `distroLocation` or
+#!   `distroVersion` user preferences have been changed, or if new package
+#!   versions may have been added to the distribution online since this &GAP; 
+#!   session started.
 #!
 #!   Returns <K>false</K> if something went wrong, and <K>true</K> otherwise.
 #!

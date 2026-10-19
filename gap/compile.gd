@@ -6,8 +6,9 @@
 #!   Attempts to compile an installed package.  Takes one argument <A>name</A>,
 #!   which should be a string specifying the name of a package installed in the
 #!   user &GAP; root (for example, one installed using
-#!   <Ref Oper="InstallPackage" Label="for a string" />), see
+#!   <Ref Oper="InstallPackage" Label="for a string" />). See
 #!   <Ref BookName="ref" Sect="GAP Root Directories"/>.
+#!
 #!   Compilation is done automatically when a package is
 #!   installed or updated, so in most cases this command is not needed.
 #!   However, it may sometimes be necessary to recompile some packages if you
@@ -30,11 +31,11 @@
 #! gap> CompilePackage("digraphs");
 #! #I  Running compilation script on /home/mtorpey/.gap/pkg/datastructures-0.4.3/ ...
 #! #I  Running compilation script on /home/mtorpey/.gap/pkg/orb-5.1.0/ ...
-#! #I  Running compilation script on /home/mtorpey/.gap/pkg/io-4.10.0/ ...
+#! #I  Running compilation script on /home/mtorpey/.gap/pkg/io-4.11.0/ ...
 #! #I  Running compilation script on /home/mtorpey/.gap/pkg/digraphs-1.15.0/ ...
 #! true
-#! gap> CompilePackage("profiling", rec(compileDeps := false));
-#! #I  Running compilation script on /home/mtorpey/.gap/pkg/profiling-2.6.3/ ...
+#! gap> CompilePackage("digraphs", rec(compileDeps := false));
+#! #I  Running compilation script on /home/mtorpey/.gap/pkg/digraphs-1.15.0/ ...
 #! true
 #! @EndExample
 #!

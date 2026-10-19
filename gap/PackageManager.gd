@@ -12,7 +12,7 @@
 #!   should be a string containing one of the following:
 #!     * the name of a package;
 #!     * the URL of a package archive, ending in `.tar.gz` or `.tar.bz2`;
-#!     * the URL of a git repository, ending in `.git`;
+#!     * the URL of a git repository, usually ending in `.git`;
 #!     * the URL of a valid `PackageInfo.g` file.
 #!
 #!   The package will then be downloaded and installed, along with any
@@ -25,6 +25,7 @@
 #! gap> InstallPackage("digraphs");
 #! #I  The following packages will be installed:
 #! #I    Digraphs        1.15.0
+#! #I    IO              4.11.0
 #! #I    orb             5.1.0
 #! #I    datastructures  0.4.3
 #! Continue? [Y/n] y
@@ -43,22 +44,27 @@
 #!     * <C>compile</C> - whether to attempt to compile newly installed packages
 #!     * <C>compileDeps</C> - whether to attempt to compile the dependencies of newly installed packages
 #!     * <C>upgrade</C> - whether to upgrade already installed packages if an upgrade is available
-#!     * <C>git</C> - whether to attempt to pull from Git repos when upgrading
+#!     * <C>git</C> - whether to attempt to pull any checked out Git repos when upgrading
 #!     * <C>proceed</C> - whether to proceed with the installation at all (after printing the installation plan)
 #!     * <C>interactive</C> - set this to <C>false</C> to disable all interactive prompting (preferences set to "ask" are instead treated as <C>true</C>)
-#!     * <C>distroLocation</C> - the URL to download the GAP package distribution info from
-#!     * <C>distroVersion</C> - the version of the package distribution info to use (choose a version of GAP, or just "latest")
+#!     * <C>distroLocation</C> - the URL to download the &GAP; package distribution info from
+#!     * <C>distroVersion</C> - the version of the package distribution info to use (choose a version of &GAP;, or just "latest")
 #!     * <C>version</C> - the version of a particular package to attempt to install
 #!     * <C>branch</C> - the name of the branch to attempt to install when using a Git repo (or <C>fail</C> for the default branch)
 #!
 #!   All boolean preferences above (those described as "whether to...") can be set to <C>true</C>, <C>false</C>, or "ask" which will prompt the user interactively. This is the default setting for many of them.
 #!
 #! @BeginExample
-#! gap> InstallPackage("profiling", rec(interactive := false,
-#! >                                    suggested := true,
-#! >                                    compileDeps := false));
+#! gap> InstallPackage("digraphs", rec(interactive := false,
+#! >                                   suggested := true,
+#! >                                   compileDeps := false));
 #! #I  The following packages will be installed:
-#! #I    profiling  2.6.3
+#! #I    Digraphs        1.15.0
+#! #I    IO              4.11.0
+#! #I    orb             5.1.0
+#! #I    datastructures  0.4.3
+#! #I    GRAPE           4.9.3
+#! #I    AutoDoc         2026.09.09
 #! true
 #! @EndExample
 #!
@@ -84,8 +90,8 @@ DeclareOperation("InstallPackage", [IsString, IsRecord]);
 #! @Description
 #!   Attempts to remove an installed package using its name.  The first argument
 #!   <A>name</A> should be a string specifying the name of a package installed
-#!   in the user &GAP; root,
-#!   see <Ref BookName="ref" Sect="GAP Root Directories"/>.
+#!   in the user &GAP; root
+#!   (see <Ref BookName="ref" Sect="GAP Root Directories"/>).
 #!
 #!   This command's behaviour is affected by the user preferences that have been
 #!   set for the PackageManager package. These can be set globally, or
@@ -98,7 +104,8 @@ DeclareOperation("InstallPackage", [IsString, IsRecord]);
 #!
 #! @BeginExample
 #! gap> RemovePackage("digraphs");
-#! Really delete directory /home/user/.gap/pkg/digraphs-0.13.0 ? [y/N] y
+#! Delete directory /home/mtorpey/.gap/pkg/digraphs-1.15.0/ ? [Y/n] y
+#! #I  Removed directory /home/mtorpey/.gap/pkg/digraphs-1.15.0/
 #! true
 #! @EndExample
 #!
