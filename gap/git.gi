@@ -28,7 +28,7 @@ function(url, prefs)
   # No existing repository: clone!
   if IsEmpty(repos) then
     # Check for a valid location
-    dir := Filename(Directory(PKGMAN_PackageDir()), name);
+    dir := Filename(PKGMAN_PackageDir(), name);
     if not PKGMAN_IsValidTargetDir(dir) then
       return false;
     fi;

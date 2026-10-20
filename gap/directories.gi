@@ -13,7 +13,7 @@ function()
     PKGMAN_CreateDirRecursively(dir);
     PKGMAN_InsertPackageDirectory(dir);
   fi;
-  return dir;
+  return Directory(dir);
 end);
 
 InstallGlobalFunction(PKGMAN_SetCustomPackageDir,
@@ -120,12 +120,15 @@ end);
 
 InstallGlobalFunction(PKGMAN_RemoveDir,
 function(dir)
-  # this 'if' statement is a paranoid check - it should always be true
-  if StartsWith(dir, PKGMAN_PackageDir()) and dir <> PKGMAN_PackageDir() then
-    RemoveDirectoryRecursively(dir);
-    Info(InfoPackageManager, 2, "Removed directory ", dir);
-    PKGMAN_RefreshPackageInfo();
+  local pkg_dir;
+  # Paranoid check - this should never happen.
+  pkg_dir := Filename(PKGMAN_PackageDir(), "");
+  if not StartsWith(dir, pkg_dir) or dir = pkg_dir then
+    ErrorNoReturn("Attempted to remove a directory not in the PackageManager directory");
   fi;
+  RemoveDirectoryRecursively(dir);
+  Info(InfoPackageManager, 2, "Removed directory ", dir);
+  PKGMAN_RefreshPackageInfo();
 end);
 
 InstallGlobalFunction(PKGMAN_GapRootDir,

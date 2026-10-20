@@ -97,7 +97,7 @@ InstallGlobalFunction(PKGMAN_UserPackageInfo,
 function(name)
   local user_pkg_dir, allinfo, userinfo, info;
 
-  user_pkg_dir := PKGMAN_PackageDir();
+  user_pkg_dir := Filename(PKGMAN_PackageDir(), "");
   allinfo := PackageInfo(name);
   userinfo := Filtered(allinfo, i -> StartsWith(i.InstallationPath, user_pkg_dir));
 

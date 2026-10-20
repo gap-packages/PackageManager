@@ -1,14 +1,15 @@
 InstallGlobalFunction(PKGMAN_InstallFromArchive,
 function(url)
   # returns install path if successful, or fail if unsuccessful
-  local archive_path, dir;
+  local archive_path, pkg_dir, dir;
   
   # Download the archive
   archive_path := PKGMAN_DownloadUrlToTempFile(url);
   if archive_path = fail then return fail; fi;
   
   # Extract the archive
-  dir := PKGMAN_ExtractArchive(archive_path, PKGMAN_PackageDir());
+  pkg_dir := Filename(PKGMAN_PackageDir(), "");
+  dir := PKGMAN_ExtractArchive(archive_path, pkg_dir);
   if dir = fail then return fail; fi;
 
   # Check validity

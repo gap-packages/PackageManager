@@ -127,7 +127,7 @@ gap> old_root_paths := GAPInfo.RootPaths;;
 gap> if IsBound(GAPInfo.PackageDirectories) then  # extra work for GAP 4.15 with --packagedirs support
 >   old_pkg_dirs := GAPInfo.PackageDirectories;
 > fi;
-gap> dir := PKGMAN_PackageDir();;
+gap> dir := Filename(PKGMAN_PackageDir(), "");;
 gap> dir := SplitString(dir, "/");;
 gap> Remove(dir) = "pkg";
 true
