@@ -80,6 +80,7 @@ function()
   GAPInfo.PackagesInfoInitialized := false;
   InitializePackagesInfoRecords();
   Info(InfoPackageManager, 4, "Reloaded all package info records");
+  return true;
 end);
 
 InstallGlobalFunction(PKGMAN_ValidatePackageInfo,
@@ -97,14 +98,14 @@ InstallGlobalFunction(PKGMAN_UserPackageInfo,
 function(name)
   local user_pkg_dir, allinfo, userinfo, info;
 
-  user_pkg_dir := Filename(PKGMAN_PackageDir(), "");
+  user_pkg_dir := Filename(DirectoryPackageManager(), "");
   allinfo := PackageInfo(name);
   userinfo := Filtered(allinfo, i -> StartsWith(i.InstallationPath, user_pkg_dir));
 
   # Package not found
   if ValueOption("warnIfNone") = true and Length(userinfo) = 0 then
     Info(InfoPackageManager, 1, "Package \"", name, "\" not installed in user package directory");
-    Info(InfoPackageManager, 2, "(currently set to ", PKGMAN_PackageDir(), ")");
+    Info(InfoPackageManager, 2, "(currently set to ", DirectoryPackageManager(), ")");
     if not IsEmpty(allinfo) then
       Info(InfoPackageManager, 2, "but installed at ", List(allinfo, i -> i.InstallationPath));
     fi;

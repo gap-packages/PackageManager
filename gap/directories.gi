@@ -1,4 +1,4 @@
-InstallGlobalFunction(PKGMAN_PackageDir,
+InstallGlobalFunction(DirectoryPackageManager,
 function()
   local dir;
   if PKGMAN_CustomPackageDir <> "" then
@@ -16,17 +16,25 @@ function()
   return Directory(dir);
 end);
 
-InstallGlobalFunction(PKGMAN_SetCustomPackageDir,
-function(dir)
+InstallGlobalFunction(ChangeDirectoryPackageManager,
+function(path)
+  local old, PKGMAN_CustomPackageDir;
+  old := PKGMAN_CustomPackageDir;
+  
   # Set the variable
-  PKGMAN_CustomPackageDir := dir;
-  # Create the directory if necessary
-  PKGMAN_PackageDir();
-  # Register as a pkg directory (with top priority)
-  PKGMAN_InsertPackageDirectory(dir);
-  # Get any packages already present there
-  PKGMAN_RefreshPackageInfo();
-  # No return value
+  PKGMAN_CustomPackageDir := path;
+  
+  # Do some operations and check for success
+  if DirectoryPackageManager() # Create the directory if necessary
+     and PKGMAN_InsertPackageDirectory(path) # Register as a pkg directory (with top priority)
+     and PKGMAN_RefreshPackageInfo() # Load in all the package infos
+  then
+    return true;
+  fi;
+  
+  # Failure! Try to recover
+  PKGMAN_CustomPackageDir := old;
+  return fail;
 end);
 
 InstallGlobalFunction(PKGMAN_CreateDirRecursively,
@@ -64,7 +72,7 @@ function(pkgpath)
       GAPInfo.PackagesInfoInitialized := false;
       InitializePackagesInfoRecords();
     fi;
-    return;
+    return true;
   fi;
 
   # The following code deals with GAP 4.14 or older.
@@ -93,7 +101,7 @@ end);
 InstallGlobalFunction(PKGMAN_IsValidTargetDir,
 function(dir)
   if not IsDirectoryPath(dir) then
-    return true;  # Assume parent directory is PKGMAN_PackageDir()
+    return true;  # Assume parent directory is DirectoryPackageManager()
   fi;
   if not IsWritableFile(dir) then
     Info(InfoPackageManager, 1, "Target location not writable");
@@ -122,7 +130,7 @@ InstallGlobalFunction(PKGMAN_RemoveDir,
 function(dir)
   local pkg_dir;
   # Paranoid check - this should never happen.
-  pkg_dir := Filename(PKGMAN_PackageDir(), "");
+  pkg_dir := Filename(DirectoryPackageManager(), "");
   if not StartsWith(dir, pkg_dir) or dir = pkg_dir then
     ErrorNoReturn("Attempted to remove a directory not in the PackageManager directory");
   fi;

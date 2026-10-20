@@ -12,7 +12,7 @@ true
 # Install GAP's required packages
 gap> needs_perfgrp := ForAny(GAPInfo.Dependencies.NeededOtherPackages,
 >                            l -> l[1] = "perfgrp");;
-gap> conts := List(DirectoryContents(PKGMAN_PackageDir()), LowercaseString);;
+gap> conts := List(DirectoryContents(DirectoryPackageManager()), LowercaseString);;
 gap> ForAny(conts, f -> StartsWith(f, "perfgrp"));
 false
 gap> ForAny(conts, f -> StartsWith(f, "primgrp"));
@@ -25,7 +25,7 @@ gap> ForAny(conts, f -> StartsWith(f, "gapdoc"));
 false
 gap> InstallRequiredPackages();
 true
-gap> conts := List(DirectoryContents(PKGMAN_PackageDir()), LowercaseString);;
+gap> conts := List(DirectoryContents(DirectoryPackageManager()), LowercaseString);;
 gap> ForAny(conts, f -> StartsWith(f, "perfgrp")) or not needs_perfgrp;
 true
 gap> ForAny(conts, f -> StartsWith(f, "primgrp"));
@@ -51,7 +51,7 @@ gap> InstallPackage("format");
 true
 gap> InstallPackage("format");
 true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+gap> ForAny(DirectoryContents(DirectoryPackageManager()),
 >           f -> StartsWith(f, "format"));
 true
 gap> RemovePackage("format");
@@ -127,7 +127,7 @@ gap> old_root_paths := GAPInfo.RootPaths;;
 gap> if IsBound(GAPInfo.PackageDirectories) then  # extra work for GAP 4.15 with --packagedirs support
 >   old_pkg_dirs := GAPInfo.PackageDirectories;
 > fi;
-gap> dir := Filename(PKGMAN_PackageDir(), "");;
+gap> dir := Filename(DirectoryPackageManager(), "");;
 gap> dir := SplitString(dir, "/");;
 gap> Remove(dir) = "pkg";
 true

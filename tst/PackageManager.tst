@@ -58,7 +58,7 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `InstallPackage' on 4 arguments
 
 # Check a bad package directory
-gap> baddir := Filename(Directory(PKGMAN_PackageDir()), "badpkg");;
+gap> baddir := Filename(Directory(DirectoryPackageManager()), "badpkg");;
 gap> CreateDir(baddir);;
 gap> PKGMAN_CheckPackageBasic(baddir);
 #I  Could not find PackageInfo.g file
@@ -78,4 +78,4 @@ fail
 
 # FINAL TEST
 # (keep this at the end of the file)
-gap> PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg/"));
+gap> ChangeDirectoryPackageManager(Filename(DirectoryTemporary(), "pkg/"));

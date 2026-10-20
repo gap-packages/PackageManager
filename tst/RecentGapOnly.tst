@@ -53,7 +53,7 @@ gap> res;
 true
 gap> PositionSublist(out,
 >                    Concatenation("Delete directory ",
->                                  Filename(Directory(PKGMAN_PackageDir()),
+>                                  Filename(Directory(DirectoryPackageManager()),
 >                                           "uuid-0.5/"),
 >                                  " ? [Y/n] y\n")) <> fail;
 true
@@ -70,11 +70,11 @@ gap> res;
 true
 gap> PositionSublist(out,
 >                    Concatenation("Delete directory ",
->                                  Filename(Directory(PKGMAN_PackageDir()),
+>                                  Filename(Directory(DirectoryPackageManager()),
 >                                           "uuid-0.5/"),
 >                                  " ? [Y/n] y\n")) <> fail;
 true
-gap> if ForAny(DirectoryContents(PKGMAN_PackageDir()), f -> StartsWith(f, "io")) then
+gap> if ForAny(DirectoryContents(DirectoryPackageManager()), f -> StartsWith(f, "io")) then
 >   RemovePackage("io", rec(interactive := false));;
 > fi;
 gap> InstallPackage("https://github.com/gap-packages/io.git", rec(interactive := false));
@@ -158,9 +158,9 @@ true
 # Install a package from a git repository, and modify it
 gap> InstallPackage("https://github.com/gap-packages/Example.git");
 true
-gap> dir := First(DirectoryContents(PKGMAN_PackageDir()),
+gap> dir := First(DirectoryContents(DirectoryPackageManager()),
 >                 f -> StartsWith(f, "Example"));;
-gap> dir := Filename(Directory(PKGMAN_PackageDir()), dir);;
+gap> dir := Filename(Directory(DirectoryPackageManager()), dir);;
 gap> dir <> fail;
 true
 gap> readme := Filename(Directory(dir), "README.md");;

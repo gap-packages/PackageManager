@@ -1,7 +1,7 @@
 # Install a package from a .tar.gz archive
 gap> InstallPackage("https://github.com/gap-packages/example/releases/download/v4.2.1/Example-4.2.1.tar.gz");
 true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+gap> ForAny(DirectoryContents(DirectoryPackageManager()),
 >           f -> StartsWith(LowercaseString(f), "example"));
 true
 gap> RemovePackage("example");
@@ -54,7 +54,7 @@ true
 gap> PKGMAN_StopHTTPTestServer(server);
 
 # Install to existing empty directory
-gap> CreateDir(Filename(Directory(PKGMAN_PackageDir()), "Toric-1.9.5"));
+gap> CreateDir(Filename(Directory(DirectoryPackageManager()), "Toric-1.9.5"));
 true
 gap> InstallPackage("https://github.com/gap-packages/toric/releases/download/v1.9.5/Toric-1.9.5.tar.gz");
 true

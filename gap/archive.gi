@@ -8,7 +8,7 @@ function(url)
   if archive_path = fail then return fail; fi;
   
   # Extract the archive
-  pkg_dir := Filename(PKGMAN_PackageDir(), "");
+  pkg_dir := Filename(DirectoryPackageManager(), "");
   dir := PKGMAN_ExtractArchive(archive_path, pkg_dir);
   if dir = fail then return fail; fi;
 

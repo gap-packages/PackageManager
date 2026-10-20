@@ -10,7 +10,7 @@ Compiling the package, building the documentation, and installing dependencies a
 
 The behaviour of <Package>PackageManager</Package> can be customised in various ways by setting appropriate user preferences, as described in Section <Ref Sect="Chapter_PackageManager_Documentation_Section_User_Preferences" />. These can also be overridden for a single call by adding an optional argument <A>prefs</A> to the appropriate function call, as described in the documentation for the <Ref Oper="InstallPackage" Label="for a string" /> command.
 
-By default, packages will be installed in the `pkg` subdirectory of <C>GAPInfo.UserGapRoot</C> (see <Ref BookName="ref" Sect="GAP Root Directories"/>).  Note that this location is not the default user pkg location on MacOS, but it will be created on any system if not already present.  Note also that starting &GAP; with the `-r` flag will cause all packages in this directory to be ignored.
+By default, packages will be installed in the `pkg` subdirectory of <C>GAPInfo.UserGapRoot</C>. To learn more, see Section <Ref Sect="Chapter_PackageManager_Documentation_Section_Directories" />.
 
 
 @Section Basic usage
@@ -49,7 +49,16 @@ The following patterns are now deprecated, and may stop working in a future rele
 - <C>InstallPackage(name, false)</C> where the second argument is a boolean that can be set to <C>false</C> to disable interactivity. Instead you can use <C>InstallPackage(name, rec(interactive := false))</C> to disable interactivity for this call, or set the behaviour globally with <C>SetUserPreference("PackageManager", "interactive", false)</C>.
 - <C>InstallPackage(name : keepDirectory)</C> where the <C>keepDirectory</C> option would prevent directories from being deleted if installation fails. This is now the default behaviour, so no option is needed.
 
+
 @Section Commands
+
+
+@Section Directories
+
+By default, packages will be installed in the `pkg` subdirectory of <C>GAPInfo.UserGapRoot</C> (see <Ref BookName="ref" Sect="GAP Root Directories"/>). Note that this location is not the default user pkg location on MacOS, but it will be created on any system if not already present.  Note also that starting &GAP; with the `-r` flag will cause all packages in this directory to be ignored.
+
+To manage a different directory, the following functions are available.
+
 
 @Section User Preferences
 
@@ -68,5 +77,6 @@ InstallPackage("digraphs", rec(compile := false));
 You can make these preferences persist between sessions by calling  <Ref BookName="ref" Func="WriteGapIniFile"/> and updating the settings in the <C>gap.ini</C> file that is produced.
 
 A full list of user preferences recognised by the package is described in the documentation for <Ref Oper="InstallPackage" Label="for a string" />.
+
 
 @Section Info Warnings

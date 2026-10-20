@@ -1,7 +1,7 @@
 # Install a package from a PackageInfo.g URL (includes redirect)
 gap> InstallPackage("https://gap-packages.github.io/autpgrp/PackageInfo.g");
 true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+gap> ForAny(DirectoryContents(DirectoryPackageManager()),
 >           f -> StartsWith(f, "autpgrp"));
 true
 gap> RemovePackage("autpgrp");

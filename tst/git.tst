@@ -16,13 +16,13 @@ true
 gap> InstallPackage("https://github.com/gap-packages/orb.git", false, "fiaenfq");
 #I  Cloning unsuccessful
 false
-gap> IsReadableFile(Filename(Directory(PKGMAN_PackageDir()), "orb"));
+gap> IsReadableFile(Filename(Directory(DirectoryPackageManager()), "orb"));
 false
 
 # Install a package from a git repository not ending in .git
 gap> InstallPackage("https://github.com/gap-packages/MathInTheMiddle");
 true
-gap> ForAny(DirectoryContents(PKGMAN_PackageDir()),
+gap> ForAny(DirectoryContents(DirectoryPackageManager()),
 >           f -> StartsWith(f, "MathInTheMiddle"));
 true
 gap> InstallPackage("https://github.com/gap-packages/MathInTheMiddle");
@@ -37,7 +37,7 @@ true
 gap> InstallPackage("https://github.com/mtorpey/planets.git", true);
 #I  Could not find PackageInfo.g
 false
-gap> IsReadableFile(Filename(Directory(PKGMAN_PackageDir()), "planets"));
+gap> IsReadableFile(Filename(Directory(DirectoryPackageManager()), "planets"));
 true
 
 # InstallPackage from git: failure

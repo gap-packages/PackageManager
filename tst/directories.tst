@@ -1,5 +1,5 @@
 # Fail to extract due to permissions
-gap> dir := Filename(PKGMAN_PackageDir(), "badpackage");;
+gap> dir := Filename(DirectoryPackageManager(), "badpackage");;
 gap> RemoveDirectoryRecursively(dir);
 true
 gap> CreateDir(dir);
@@ -23,6 +23,6 @@ rec( code := 0, output := "" )
 # PKGMAN_CustomPackageDir
 gap> olddir := PKGMAN_CustomPackageDir;;
 gap> PKGMAN_CustomPackageDir := "";;
-gap> EndsWith(Filename(PKGMAN_PackageDir(), ""), "/.gap/pkg/");
+gap> EndsWith(Filename(DirectoryPackageManager(), ""), "/.gap/pkg/");
 true
 gap> PKGMAN_CustomPackageDir := olddir;;

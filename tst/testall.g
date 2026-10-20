@@ -10,7 +10,7 @@ LoadPackage("PackageManager");
 SetInfoLevel(InfoPackageManager, 1);
 
 # Use a temporary directory for packages
-PKGMAN_SetCustomPackageDir(Filename(DirectoryTemporary(), "pkg"));
+ChangeDirectoryPackageManager(Filename(DirectoryTemporary(), "pkg"));
 
 # Disable interactivity (for most tests)
 SetUserPreference("PackageManager", "interactive", false);
