@@ -19,9 +19,12 @@ end);
 InstallGlobalFunction(ChangeDirectoryPackageManager,
 function(path)
   local old, PKGMAN_CustomPackageDir;
-  old := PKGMAN_CustomPackageDir;
-  
+  if not IsString(path) then
+    ErrorNoReturn("argument <path> must be a string");
+  fi;
+
   # Set the variable
+  old := PKGMAN_CustomPackageDir;
   PKGMAN_CustomPackageDir := path;
   
   # Do some operations and check for success
