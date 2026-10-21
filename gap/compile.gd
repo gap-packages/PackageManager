@@ -1,4 +1,4 @@
-#! @Chapter PackageManager Documentation
+#! @Chapter PackageManager
 #! @Section Commands
 
 #! @Label for a string

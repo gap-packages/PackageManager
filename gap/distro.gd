@@ -5,7 +5,7 @@
 # automatically installing dependencies.
 #
 
-#! @Chapter PackageManager Documentation
+#! @Chapter PackageManager
 #! @Section Commands
 
 #! @Label with no required arguments

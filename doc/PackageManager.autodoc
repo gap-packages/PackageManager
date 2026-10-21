@@ -1,4 +1,4 @@
-@Chapter PackageManager Documentation
+@Chapter PackageManager
 
 <Package>PackageManager</Package> allows you to install and remove &GAP; packages on your system quickly and easily with a single command. The main functionality is provided by the following commands:
 
@@ -8,9 +8,9 @@
 
 Compiling the package, building the documentation, and installing dependencies are all handled automatically.
 
-The behaviour of <Package>PackageManager</Package> can be customised in various ways by setting appropriate user preferences, as described in Section <Ref Sect="Chapter_PackageManager_Documentation_Section_User_Preferences" />. These can also be overridden for a single call by adding an optional argument <A>prefs</A> to the appropriate function call, as described in the documentation for the <Ref Oper="InstallPackage" Label="for a string" /> command.
+The behaviour of <Package>PackageManager</Package> can be customised in various ways by setting appropriate user preferences, as described in Section <Ref Sect="Chapter_PackageManager_Section_User_Preferences" />. These can also be overridden for a single call by adding an optional argument <A>prefs</A> to the appropriate function call, as described in the documentation for the <Ref Oper="InstallPackage" Label="for a string" /> command.
 
-By default, packages will be installed in the `pkg` subdirectory of <C>GAPInfo.UserGapRoot</C>. To learn more, see Section <Ref Sect="Chapter_PackageManager_Documentation_Section_Directories" />.
+By default, packages will be installed in the `pkg` subdirectory of <C>GAPInfo.UserGapRoot</C>. To learn more, see Section <Ref Sect="Chapter_PackageManager_Section_Directories" />.
 
 
 @Section Basic usage
