@@ -37,6 +37,27 @@ DeclareOperation("InstallRequiredPackages", [IsRecord]);
 
 #! @Label with no required arguments
 #! @Description
+#!   Attempts to upgrade all packages to their latest version.
+#!   Returns <K>false</K> if something went wrong, and <K>true</K> otherwise.
+#!
+#!   Only packages in the directory managed by <Package>PackageManager</Package>
+#!   will be considered. See Section
+#!   <Ref Sect="Chapter_PackageManager_Section_Directories" /> for more details.
+#!
+#!   This command's behaviour is affected by the user preferences that have been
+#!   set for the PackageManager package. These can be set globally, or
+#!   overridden for this command using the optional <A>prefs</A> argument, in
+#!   the same way as for the <Ref Oper="InstallPackage" Label="for a string" />
+#!   command.
+#!
+#! @Arguments [prefs]
+#! @Returns
+#!   <K>true</K> or <K>false</K>
+DeclareOperation("UpgradeAllPackages", []);
+DeclareOperation("UpgradeAllPackages", [IsRecord]);
+
+#! @Label with no required arguments
+#! @Description
 #!   Attempts to download metadata for all available packages from the &GAP;
 #!   package distribution.
 #!
