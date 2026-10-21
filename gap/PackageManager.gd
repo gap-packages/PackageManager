@@ -52,7 +52,7 @@
 #!     * <C>distroVersion</C> - the version of the package distribution info to use
 #!                              (choose a version of &GAP;, or just "latest")
 #!     * <C>version</C> - the version of a particular package to attempt to install
-#!     * <C>branch</C> - the name of the branch to attempt to install when using a Git repo
+#!     * <C>branch</C> - the name of the branch to attempt to install when cloning a Git repository
 #!                       (or <C>fail</C> for the default branch)
 #!
 #!   All boolean preferences above (those described as "whether to...") can be
