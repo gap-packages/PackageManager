@@ -3,7 +3,6 @@ The GAP 4 package "PackageManager"
 
 [![CI](https://github.com/gap-packages/PackageManager/actions/workflows/CI.yml/badge.svg)](https://github.com/gap-packages/PackageManager/actions/workflows/CI.yml)
 [![Code Coverage](https://codecov.io/github/gap-packages/PackageManager/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/PackageManager)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gap-packages/PackageManager/master?filepath=PackageManager-demo.ipynb)
 
 A basic collection of simple functions for installing and removing GAP packages,
 with the eventual aim of becoming a full package manager for the GAP system.
