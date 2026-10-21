@@ -63,7 +63,7 @@ function(string)
       return parseObject();
     elif next = '[' then
       return parseList();
-    elif next = '"' then  # Note: doesn't support single quotes
+    elif next = '\"' then  # Note: doesn't support single quotes
       return parseString();
     elif next in "tfn" then
       return parseBoolean();
@@ -113,7 +113,7 @@ function(string)
     local codepoints;
     parseExpectedCharacters("\"");
     codepoints := [];
-    while string[pos + 1] <> '"' do
+    while string[pos + 1] <> '\"' do
       if string[pos + 1] = '\\' then
         Add(codepoints, parseEscapeCharacter());
       else
@@ -148,8 +148,8 @@ function(string)
     elif string[pos + 2] = '\n' then
       char := IntChar('\n');
       pos := pos + 2;
-    elif string[pos + 2] = '"' then
-      char := IntChar('"');
+    elif string[pos + 2] = '\"' then
+      char := IntChar('\"');
       pos := pos + 2;
     elif string[pos + 2] = 'u' then
       char := IntHexString(string{[pos + 3 .. pos + 6]});

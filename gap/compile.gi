@@ -8,7 +8,7 @@ InstallMethod(CompilePackage,
 [IsString, IsRecord],
 function(name, prefs)
   local names;
-  
+
   # Check input
   if IsEmpty(PackageInfo(name)) then
     Info(InfoPackageManager, 1, "No package named \"", name, "\" is installed");
@@ -18,7 +18,7 @@ function(name, prefs)
     Info(InfoPackageManager, 1, "You can install a user-managed version with InstallPackage(\"", name, "\")");
     return false;
   fi;
-  
+
   # Compile all dependencies or just this package?
   if PKGMAN_Pref("compileDeps", prefs, "Compile package dependencies as well?") then
     names := Reversed(List(PKGMAN_DependencyGraph([[name, ""]], prefs), pkg -> pkg.name));
@@ -46,12 +46,12 @@ function(name)
 
   # Compile the most up-to-date installation, and any git ones
   dirs := Union([info[1].InstallationPath], repos);
-  return ForAll(dirs, dir -> PKGMAN_CompileDir(dir));
+  return ForAll(dirs, PKGMAN_CompileDir);
 end);
 
 InstallGlobalFunction(PKGMAN_CompileDir,
 function(dir)
-  local info, prerequisites, exec, pkg_dir, gap_root;
+  local info, prerequisites, exec, gap_root;
 
   info := PKGMAN_GetPackageInfo(dir);
   if info = fail then
@@ -67,7 +67,6 @@ function(dir)
   fi;
 
   # Check requirements, and prepare command
-  pkg_dir := Filename(Directory(dir), "..");
   gap_root := PKGMAN_GapRootDir();
   if gap_root = fail then
     return false;

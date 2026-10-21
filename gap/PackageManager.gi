@@ -49,7 +49,7 @@ InstallMethod(RemovePackage,
 [IsString, IsRecord],
 function(name, prefs)
   local infos, info, dir, question;
-  
+
   # Locate the package
   infos := PKGMAN_UserPackageInfo(name : warnIfNone, warnIfMultiple);
 
@@ -57,7 +57,7 @@ function(name, prefs)
     # Removal was not successful
     return false;
   fi;
-  
+
   # Offer to remove each directory carefully
   for info in infos do
     dir := ShallowCopy(info.InstallationPath);
@@ -96,7 +96,7 @@ function(dir)
       return false;
     fi;
   od;
-  
+
   return true;
 end);
 
@@ -104,7 +104,7 @@ InstallGlobalFunction(PKGMAN_FinishPackageSetup,
 function(dir, prefs)
   local info, html;
   info := PKGMAN_GetPackageInfo(dir);
-  
+
   # Make doc if needed
   if IsRecord(info.PackageDoc) then
     html := info.PackageDoc.HTMLStart;

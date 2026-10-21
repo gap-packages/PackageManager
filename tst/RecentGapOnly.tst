@@ -47,7 +47,7 @@ gap> PositionSublist(out, exp2) <> fail;
 true
 gap> InputTextUser := {} -> InputTextString("yy");;
 gap> Print := newPrint;;
-gap> res := RemovePackage("uuid");; # removes both versions
+gap> res := RemovePackage("uuid");;  # removes both versions
 gap> Print := oldPrint;;
 gap> res;
 true
@@ -64,7 +64,7 @@ true
 gap> InputTextUser := {} -> InputTextString("y");;
 gap> out := "";;
 gap> Print := newPrint;;
-gap> res := RemovePackage("uuid");; # rempve one version
+gap> res := RemovePackage("uuid");;  # remove one version
 gap> Print := oldPrint;;
 gap> res;
 true

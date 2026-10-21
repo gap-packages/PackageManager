@@ -30,14 +30,14 @@ PKGMAN_PrepareTestData := function(server_url)
 
   data := Filename(DirectoriesPackageLibrary("PackageManager", "tst"), "data");
   root := Filename(DirectoryTemporary(), "");
-  
+
   # Prepare package-infos.json
   json := StringFile(Filename(Directory(data), "package-infos.json"));
   json := ReplacedString(json, "@SERVER@", server_url);
   out := OutputGzipFile(Filename(Directory(root), "package-infos.json.gz"), false);
   AppendTo(out, json);
   CloseStream(out);
-  
+
   # Prepare other files
   for name in ["badurls.txt", "new/pmdummy/PackageInfo.g"] do
     exec := PKGMAN_Exec(".", "cp", Filename(Directory(data), name), root);
@@ -45,7 +45,7 @@ PKGMAN_PrepareTestData := function(server_url)
       Error("cannot copy the test data");
     fi;
   od;
-  
+
   # Both tarballs unpack into a directory "pmdummy" without a version number
   for name in [["old", "1.0"], ["new", "2.0"]] do
     exec := PKGMAN_Exec(".", "tar", "-czf",
@@ -122,12 +122,12 @@ end;
 # <root> on an ephemeral port of the loopback interface.  Returns a record
 # with components 'pid' and 'url', the latter being the base URL.
 PKGMAN_StartHTTPTestServer := function()
-  local listener, address, port, url, pid, socket, handler;
+  local listener, address, port, pid, socket, handler;
 
   listener := IO_socket(IO.PF_INET, IO.SOCK_STREAM, "tcp");
   if listener = fail or
-     IO_bind(listener, IO_MakeIPAddressPort("127.0.0.1", 0)) = fail or
-     IO_listen(listener, 8) <> true then
+      IO_bind(listener, IO_MakeIPAddressPort("127.0.0.1", 0)) = fail or
+      IO_listen(listener, 8) <> true then
     Error("cannot start the HTTP test server");
   fi;
   address := IO_getsockname(listener);
@@ -178,7 +178,7 @@ PKGMAN_UnusedURL := function()
 
   socket := IO_socket(IO.PF_INET, IO.SOCK_STREAM, "tcp");
   if socket = fail or
-     IO_bind(socket, IO_MakeIPAddressPort("127.0.0.1", 0)) = fail then
+      IO_bind(socket, IO_MakeIPAddressPort("127.0.0.1", 0)) = fail then
     Error("cannot find an unused port");
   fi;
   address := IO_getsockname(socket);

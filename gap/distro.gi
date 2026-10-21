@@ -7,15 +7,15 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallRequirements,
 function(requirements, prefs)
-  local metadata, abort, req, name, lower_name, required_version, plan, dirs, 
+  local metadata, abort, req, name, lower_name, required_version, plan, dirs,
         compile_results, graph;
-  
+
   # Are these requirements are already satisfied?
   if ForAll(requirements, r -> ForAny(PKGMAN_UserPackageInfo(r[1]), i -> CompareVersionNumbers(i.Version, r[2]))) then
     Info(InfoPackageManager, 3, "All requirements are already satisfied");
     # Try to avoid downloading metadata unless necessary
     if IsEmpty(RecNames(PKGMAN_PackageMetadataCache))
-       and not PKGMAN_Pref("upgrade", prefs, "Check for the package distribution for newer versions?") then
+        and not PKGMAN_Pref("upgrade", prefs, "Check for the package distribution for newer versions?") then
       return true;
     fi;
   fi;
@@ -32,7 +32,8 @@ function(requirements, prefs)
       abort := true;
     elif not CompareVersionNumbers(metadata.(lower_name).Version, required_version) then
       name := metadata.(lower_name).PackageName;
-      Info(InfoPackageManager, 1, name, " package version ", required_version, " not available from package distribution");
+      Info(InfoPackageManager, 1, name, " package version ", required_version,
+           " not available from package distribution");
       if not IsEmpty(PKGMAN_UserPackageGitRepoPaths(lower_name)) then
         Info(InfoPackageManager, 3, "(It may be possible to upgrade to it via Git)");
       else
@@ -44,7 +45,7 @@ function(requirements, prefs)
   if abort then
     return false;
   fi;
-  
+
   # requirements: list of [name, version] pairs
   plan := PKGMAN_InstallationPlan(requirements, prefs);
 
@@ -132,7 +133,7 @@ function(requirements, prefs)
   # that refuses to upgrade any packages that are already installed. We choose
   # a plan by consulting user preferences and if necessary interactive prompts.
   #
-  upgrade := PKGMAN_Pref("upgrade", prefs); # might be "ask"
+  upgrade := PKGMAN_Pref("upgrade", prefs);  # might be "ask"
 
   # Get all-upgrades installation plan
   if upgrade in [true, "ask"] then
@@ -264,7 +265,8 @@ function(requirements, prefs)
     # Find metadata for that package
     if not IsBound(metadata.(name)) then
       Info(InfoPackageManager, 1, "Package \"", name, "\" not found in package distribution");
-      Info(InfoPackageManager, 3, "You may be able to install it by calling InstallPackage with a URL to the package archive");
+      Info(InfoPackageManager, 3,
+           "You may be able to install it by calling InstallPackage with a URL to the package archive");
       Unbind(queue[i]);
       continue;
     fi;
@@ -290,11 +292,11 @@ function(requirements, prefs)
     fi;
     for d in dependencies do
       pos := PositionProperty(queue, r -> r[1] = LowercaseString(d[1]));
-      if pos = fail then # add to queue if not present
+      if pos = fail then  # add to queue if not present
         Add(queue, [LowercaseString(d[1]), []]);
         pos := Length(queue);
       fi;
-      Add(queue[pos][2], d[2]); # record the required version
+      Add(queue[pos][2], d[2]);  # record the required version
     od;
 
     # Add discovered data to queue
@@ -304,8 +306,7 @@ function(requirements, prefs)
                    dependencies := dependencies,
                    url          := info.ArchiveURL,
                    upgradable   := upgradable,
-                   repos        := repos,
-                  ));
+                   repos        := repos));
   od;
 
   # For each package, check whether an upgrade is needed
@@ -319,7 +320,8 @@ function(requirements, prefs)
         graphPackage.upgradeNeeded := true;
       fi;
       if not CompareVersionNumbers(graphPackage.newest, required_version) then
-        Info(InfoPackageManager, 1, name, " package version ", required_version, " not available from package distribution");
+        Info(InfoPackageManager, 1, name, " package version ", required_version,
+             " not available from package distribution");
         Info(InfoPackageManager, 1, "(only version ", graphPackage.newest, " available)");
       fi;
     od;
@@ -337,7 +339,7 @@ function(graph, allow_upgrades)
       return fail;
     fi;
     if (package.upgradable or not IsEmpty(package.repos))
-       and (package.current = fail or allow_upgrades) then
+        and (package.current = fail or allow_upgrades) then
       Add(plan, package);
     fi;
   od;
@@ -389,16 +391,15 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallDependencies,
 function(dir, prefs)
-  local info, requirements, result;
+  local info, requirements;
   if PKGMAN_Pref("dependencies", prefs, "Install dependencies?") then
     info := PKGMAN_GetPackageInfo(dir);
     requirements := ShallowCopy(info.Dependencies.NeededOtherPackages);
-    if not IsEmpty(info.Dependencies.SuggestedOtherPackages) 
+    if not IsEmpty(info.Dependencies.SuggestedOtherPackages)
            and PKGMAN_Pref("suggested", prefs, "Include all suggested packages?") then
       Append(requirements, info.Dependencies.SuggestedOtherPackages);
     fi;
-    result := PKGMAN_InstallRequirements(requirements, prefs);
-    return result;
+    return PKGMAN_InstallRequirements(requirements, prefs);
   fi;
   return true;
 end);
@@ -432,8 +433,8 @@ function(prefs)
     PKGMAN_InfoDownloadError(download);
     return false;
   fi;
-  instream := InputTextString(download.result);;
-  out := PKGMAN_Exec(".", "gunzip" : instream := instream);;
+  instream := InputTextString(download.result);
+  out := PKGMAN_Exec(".", "gunzip" : instream := instream);
   if out.code <> 0 then
     Info(InfoPackageManager, 1, "Package metadata could not be extracted");
     return false;

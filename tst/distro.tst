@@ -135,7 +135,7 @@ gap> dir := JoinStringsWithSeparator(dir, "/");;
 gap> dir := Concatenation(dir, "/");;
 gap> GAPInfo.RootPaths := Immutable([dir]);;
 gap> if IsBound(GAPInfo.PackageDirectories) then
->   GAPInfo.PackageDirectories := [ ];;
+>   GAPInfo.PackageDirectories := [];;
 > fi;
 gap> GAPInfo.DirectoriesLibrary := AtomicRecord(rec());;
 gap> if IsBound(GAPInfo.PackagesInfoInitialized) and

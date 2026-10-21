@@ -46,13 +46,18 @@
 #!     * <C>upgrade</C> - whether to upgrade already installed packages if an upgrade is available
 #!     * <C>git</C> - whether to attempt to pull any checked out Git repos when upgrading
 #!     * <C>proceed</C> - whether to proceed with the installation at all (after printing the installation plan)
-#!     * <C>interactive</C> - set this to <C>false</C> to disable all interactive prompting (preferences set to "ask" are instead treated as <C>true</C>)
+#!     * <C>interactive</C> - set this to <C>false</C> to disable all interactive prompting
+#!                            (preferences set to "ask" are instead treated as <C>true</C>)
 #!     * <C>distroLocation</C> - the URL to download the &GAP; package distribution info from
-#!     * <C>distroVersion</C> - the version of the package distribution info to use (choose a version of &GAP;, or just "latest")
+#!     * <C>distroVersion</C> - the version of the package distribution info to use
+#!                              (choose a version of &GAP;, or just "latest")
 #!     * <C>version</C> - the version of a particular package to attempt to install
-#!     * <C>branch</C> - the name of the branch to attempt to install when using a Git repo (or <C>fail</C> for the default branch)
+#!     * <C>branch</C> - the name of the branch to attempt to install when using a Git repo
+#!                       (or <C>fail</C> for the default branch)
 #!
-#!   All boolean preferences above (those described as "whether to...") can be set to <C>true</C>, <C>false</C>, or "ask" which will prompt the user interactively. This is the default setting for many of them.
+#!   All boolean preferences above (those described as "whether to...") can be
+#!   set to <C>true</C>, <C>false</C>, or "ask" which will prompt the user
+#!   interactively. This is the default setting for many of them.
 #!
 #! @BeginExample
 #! gap> InstallPackage("digraphs", rec(interactive := false,
@@ -123,7 +128,7 @@ DeclareOperation("RemovePackage", [IsString, IsRecord]);
 #!     * 0 - No messages
 #!     * 1 - Problems only: messages describing what went wrong, with no
 #!           messages if an operation is successful
-#!     * 2 - Directories and versions: also displays information about 
+#!     * 2 - Directories and versions: also displays information about
 #!           installation directories and package versions
 #!     * 3 - Progress: also shows step-by-step progress of operations
 #!     * 4 - All: includes extra information such as whether curlInterface is

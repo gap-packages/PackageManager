@@ -11,7 +11,6 @@
 DeclareOperation("InstallPackage", [IsString, IsBool]);
 DeclareOperation("RemovePackage", [IsString, IsBool]);
 
-
 # InstallPackage(string, branch)
 # InstallPackage(string, interactive, branch)
 #

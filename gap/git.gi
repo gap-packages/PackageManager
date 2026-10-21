@@ -1,7 +1,7 @@
 InstallGlobalFunction(PKGMAN_InstallFromGit,
 function(url, prefs)
   local branch, name, repos, success, repo, result, dir, exec, info;
-  
+
   # Get package name
   name := PKGMAN_NameOfGitRepo(url);
   if name = fail then
@@ -24,7 +24,7 @@ function(url, prefs)
       fi;
     fi;
   od;
-  
+
   # No existing repository: clone!
   if IsEmpty(repos) then
     # Check for a valid location
@@ -57,10 +57,9 @@ function(url, prefs)
       return false;
     fi;
   fi;
-  
+
   # Compile, dependencies and make doc
-  success := success and PKGMAN_CheckPackageBasic(dir) and PKGMAN_FinishPackageSetup(dir, prefs);
-  return success;
+  return success and PKGMAN_CheckPackageBasic(dir) and PKGMAN_FinishPackageSetup(dir, prefs);
  end);
 
 InstallGlobalFunction(PKGMAN_NameOfGitRepo,
@@ -79,11 +78,10 @@ end);
 InstallGlobalFunction(PKGMAN_UserPackageGitRepoPaths,
 function(name)
   # Returns a list of paths to all user-installed git repos for this package
-  local info, dirs, repos;
+  local info, dirs;
   info := PKGMAN_UserPackageInfo(name);
   dirs := List(info, i -> i.InstallationPath);
-  repos := Filtered(dirs, PKGMAN_IsGitRepoDir);
-  return repos;
+  return Filtered(dirs, PKGMAN_IsGitRepoDir);
 end);
 
 InstallGlobalFunction(PKGMAN_IsGitRepoDir,
@@ -116,17 +114,17 @@ function(string)
   # Is this string a URL that's likely to point to a git repo that can be cloned?
   # Currently quite restrictive, but could be expanded to other valid patterns
   local parts;
-  
+
   # *.git
   if EndsWith(string, ".git") then
     return true;
   fi;
-  
+
   # (anything)github.com[:/](something without dots)/(something without dots)
   if PositionSublist(string, "github.com") <> fail then
     parts := SplitString(string, "/:");
     return ForAll([0, 1], i -> not '.' in parts[Length(parts) - i]);
   fi;
-  
+
   return false;
 end);

@@ -26,15 +26,15 @@ function(path)
   # Set the variable
   old := PKGMAN_CustomPackageDir;
   PKGMAN_CustomPackageDir := path;
-  
+
   # Do some operations and check for success
-  DirectoryPackageManager(); # Create the directory if necessary
-  if PKGMAN_InsertPackageDirectory(path) = true # Register as a pkg directory (with top priority)
-     and PKGMAN_RefreshPackageInfo() = true # Load in all the package infos
-  then
+  DirectoryPackageManager();                     # Create the directory if necessary
+  if PKGMAN_InsertPackageDirectory(path) = true  # Register as a pkg directory (with top priority)
+      and PKGMAN_RefreshPackageInfo() = true     # Load in all the package infos
+      then
     return true;
   fi;
-  
+
   # Failure! Try to recover
   PKGMAN_CustomPackageDir := old;
   return fail;
