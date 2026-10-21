@@ -10,7 +10,17 @@ function(requirements, prefs)
   local metadata, abort, req, name, lower_name, required_version, plan, dirs, 
         compile_results, graph;
   
-  # First check whether these requirements are even possible to satisfy
+  # Are these requirements are already satisfied?
+  if ForAll(requirements, r -> ForAny(PKGMAN_UserPackageInfo(r[1]), i -> CompareVersionNumbers(i.Version, r[2]))) then
+    Info(InfoPackageManager, 3, "All requirements are already satisfied");
+    # Try to avoid downloading metadata unless necessary
+    if IsEmpty(RecNames(PKGMAN_PackageMetadataCache))
+       and not PKGMAN_Pref("upgrade", prefs, "Check for the package distribution for newer versions?") then
+      return true;
+    fi;
+  fi;
+
+  # Next check whether these requirements are even possible to satisfy
   metadata := PKGMAN_PackageMetadata(prefs);
   abort := false;
   for req in requirements do
