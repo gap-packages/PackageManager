@@ -79,3 +79,4 @@ fail
 # FINAL TEST
 # (keep this at the end of the file)
 gap> ChangeDirectoryPackageManager(Filename(DirectoryTemporary(), "pkg/"));
+true

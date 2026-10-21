@@ -182,6 +182,6 @@ gap> "bin" in DirectoryContents(git_pkginfo.InstallationPath);  # check if it ha
 true
 gap> RemoveDirectoryRecursively(git_pkginfo.InstallationPath);  # delete git version
 true
-gap> PKGMAN_RefreshPackageInfo();
+gap> PKGMAN_RefreshPackageInfo();;
 gap> RemovePackage("orb");  # delete release version
 true

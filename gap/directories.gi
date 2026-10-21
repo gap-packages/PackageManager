@@ -18,7 +18,7 @@ end);
 
 InstallGlobalFunction(ChangeDirectoryPackageManager,
 function(path)
-  local old, PKGMAN_CustomPackageDir;
+  local old;
   if not IsString(path) then
     ErrorNoReturn("argument <path> must be a string");
   fi;
@@ -28,9 +28,9 @@ function(path)
   PKGMAN_CustomPackageDir := path;
   
   # Do some operations and check for success
-  if DirectoryPackageManager() # Create the directory if necessary
-     and PKGMAN_InsertPackageDirectory(path) # Register as a pkg directory (with top priority)
-     and PKGMAN_RefreshPackageInfo() # Load in all the package infos
+  DirectoryPackageManager(); # Create the directory if necessary
+  if PKGMAN_InsertPackageDirectory(path) = true # Register as a pkg directory (with top priority)
+     and PKGMAN_RefreshPackageInfo() = true # Load in all the package infos
   then
     return true;
   fi;
