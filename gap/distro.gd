@@ -97,6 +97,6 @@ DeclareGlobalFunction("PKGMAN_ShowInstallationPlan");
 DeclareGlobalFunction("PKGMAN_InstallDependencies");
 
 # Source of latest package releases
-PKGMAN_PackageMetadataCache := rec();  # TODO: change name
-DeclareGlobalFunction("PKGMAN_PackageMetadata");  # TODO: change name
+PKGMAN_PackageMetadataCache := rec();
+DeclareGlobalFunction("PKGMAN_PackageMetadata");
 DeclareGlobalFunction("PKGMAN_MetadataUrl");

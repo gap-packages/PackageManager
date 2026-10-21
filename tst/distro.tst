@@ -115,8 +115,8 @@ gap> InstallPackage("sillypackage");
 #I  Package "sillypackage" not found in package distribution
 false
 
-# TODO: package that doesn't offer a ".tar.gz" archive
-# I'm not sure any such packages currently exist.
+# Note: we want to test with a package that doesn't offer a ".tar.gz" archive
+# but I'm not sure any such packages currently exist.
 #gap> InstallPackage("nilmat");
 ##I  No supported archive formats available, so could not install
 ##I  Only [ ".zip" ] available

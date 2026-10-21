@@ -70,7 +70,7 @@ function(requirements, prefs)
 
   PKGMAN_RefreshPackageInfo();
 
-  # Compile packages (in reverse order) # TODO: ordering instead of sorting?
+  # Compile packages (in reverse order)
   compile_results := [];
   if PKGMAN_Pref("compile", prefs, "Compile packages?") then
     if PKGMAN_Pref("compileDeps", prefs, "Recompile all dependencies?") then
