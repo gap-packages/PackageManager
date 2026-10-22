@@ -8,7 +8,7 @@
 <script type="text/javascript"
   src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-<title>GAP (PackageManager) - Chapter 1: PackageManager Documentation</title>
+<title>GAP (PackageManager) - Chapter 1: PackageManager</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="generator" content="GAPDoc2HTML" />
 <link rel="stylesheet" type="text/css" href="manual.css" />
@@ -23,8 +23,8 @@
 <div class="chlinkprevnexttop">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapInd_mj.html">[Next Chapter]</a>&nbsp;  </div>
 
 <p id="mathjaxlink" class="pcenter"><a href="chap1.html">[MathJax off]</a></p>
-<p><a id="X8095A178804A4B8B" name="X8095A178804A4B8B"></a></p>
-<div class="ChapSects"><a href="chap1_mj.html#X8095A178804A4B8B">1 <span class="Heading">PackageManager Documentation</span></a>
+<p><a id="X87DBBFD886901DFC" name="X87DBBFD886901DFC"></a></p>
+<div class="ChapSects"><a href="chap1_mj.html#X87DBBFD886901DFC">1 <span class="Heading">PackageManager</span></a>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1_mj.html#X826841C286E7A07E">1.1 <span class="Heading">Basic usage</span></a>
 </span>
 </div>
@@ -38,21 +38,28 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X7B828ADE7FBD3B37">1.3-2 RemovePackage</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X7C3900DC78A2E005">1.3-3 CompilePackage</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X78B4DD927EEEC08D">1.3-4 InstallRequiredPackages</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X79CE0A60847795BE">1.3-5 RefreshPackageMetadata</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X8396C1C1868BCB55">1.3-5 UpdateAllPackages</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X79CE0A60847795BE">1.3-6 RefreshPackageMetadata</a></span>
 </div></div>
-<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1_mj.html#X79C78FE1869C9004">1.4 <span class="Heading">User Preferences</span></a>
-</span>
-</div>
-<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1_mj.html#X7D64BEEB79C0168E">1.5 <span class="Heading">Info Warnings</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1_mj.html#X85030B35865A1080">1.4 <span class="Heading">Directories</span></a>
 </span>
 <div class="ContSSBlock">
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X847EF83681889E47">1.5-1 InfoPackageManager</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X7ABFDB937B9AB18D">1.4-1 DirectoryPackageManager</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X868E39238414F8D8">1.4-2 ChangeDirectoryPackageManager</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1_mj.html#X79C78FE1869C9004">1.5 <span class="Heading">User Preferences</span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1_mj.html#X7D64BEEB79C0168E">1.6 <span class="Heading">Info Warnings</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X847EF83681889E47">1.6-1 InfoPackageManager</a></span>
 </div></div>
 </div>
 
-<h3>1 <span class="Heading">PackageManager Documentation</span></h3>
+<h3>1 <span class="Heading">PackageManager</span></h3>
 
-<p><strong class="pkg">PackageManager</strong> allows you to install and remove GAP packages on your system quickly and easily with a single command. The main functionality is provided by the following commands:</p>
+<p><strong class="pkg">PackageManager</strong> allows you to install and remove <strong class="pkg">GAP</strong> packages on your system quickly and easily with a single command. The main functionality is provided by the following commands:</p>
 
 
 <ul>
@@ -62,21 +69,21 @@
 <li><p><code class="func">RemovePackage</code> (<a href="chap1_mj.html#X7B828ADE7FBD3B37"><span class="RefLink">1.3-2</span></a>) to remove a package by its name.</p>
 
 </li>
-<li><p><code class="func">InstallRequiredPackages</code> (<a href="chap1_mj.html#X78B4DD927EEEC08D"><span class="RefLink">1.3-4</span></a>) to install all the packages that GAP needs in order to run.</p>
+<li><p><code class="func">InstallRequiredPackages</code> (<a href="chap1_mj.html#X78B4DD927EEEC08D"><span class="RefLink">1.3-4</span></a>) to install all the packages that <strong class="pkg">GAP</strong> needs in order to run.</p>
 
 </li>
 </ul>
 <p>Compiling the package, building the documentation, and installing dependencies are all handled automatically.</p>
 
-<p>The behaviour of <strong class="pkg">PackageManager</strong> can be customised in various ways by setting appropriate user preferences, as described in Section <a href="chap1_mj.html#X79C78FE1869C9004"><span class="RefLink">1.4</span></a>. These can also be overridden for a single call by adding an optional argument <var class="Arg">prefs</var> to the appropriate function call, as described in the documentation for the <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) command.</p>
+<p>The behaviour of <strong class="pkg">PackageManager</strong> can be customised in various ways by setting appropriate user preferences, as described in Section <a href="chap1_mj.html#X79C78FE1869C9004"><span class="RefLink">1.5</span></a>. These can also be overridden for a single call by adding an optional argument <var class="Arg">prefs</var> to the appropriate function call, as described in the documentation for the <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) command.</p>
 
-<p>By default, packages will be installed in the <code class="code">pkg</code> subdirectory of <code class="code">GAPInfo.UserGapRoot</code> (see <a href="https://docs.gap-system.org/doc/ref/chap9_mj.html#X7A4973627A5DB27D"><span class="RefLink">Reference: GAP Root Directories</span></a>). Note that this location is not the default user pkg location on Mac OSX, but it will be created on any system if not already present. Note also that starting <strong class="pkg">GAP</strong> with the <code class="code">-r</code> flag will cause all packages in this directory to be ignored.</p>
+<p>By default, packages will be installed in the <code class="code">pkg</code> subdirectory of <code class="code">GAPInfo.UserGapRoot</code>. To learn more, see Section <a href="chap1_mj.html#X85030B35865A1080"><span class="RefLink">1.4</span></a>.</p>
 
 <p><a id="X826841C286E7A07E" name="X826841C286E7A07E"></a></p>
 
 <h4>1.1 <span class="Heading">Basic usage</span></h4>
 
-<p><strong class="pkg">PackageManager</strong> is distributed with GAP, so it should already be available on your system. If it is not already loaded, you can call it with:</p>
+<p><strong class="pkg">PackageManager</strong> is distributed with <strong class="pkg">GAP</strong>, so it should already be available on your system. If it is not already loaded, you can call it with:</p>
 
 
 <div class="example"><pre>
@@ -97,8 +104,6 @@
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RemovePackage("digraphs");</span>
 </pre></div>
 
-<p>You can also</p>
-
 <p><strong class="pkg">PackageManager</strong> also supports version control repositories. To install the latest version of the <span class="URL"><a href="https://github.com/gap-packages/curlInterface.git">curlInterface package from GitHub</a></span>, use the following:</p>
 
 
@@ -110,8 +115,22 @@
 
 <h4>1.2 <span class="Heading">Changes in version 2.0</span></h4>
 
-<p>PackageManager 2.0 changed several ways that the introduced a range of new features, including the ability to download the structured info for the whole package distribution, and plan dependency trees in advance before installation begins. It also introduced a range of user preferences, which are described under the <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) command below.</p>
+<p>PackageManager 2.0 introduced a range of new features, including the ability to download the structured info for the whole package distribution, and plan dependency trees in advance before installation begins. It also introduced a range of user preferences, which are described under the <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) command below.</p>
 
+<p>The following patterns are now deprecated, and may stop working in a future release:</p>
+
+
+<ul>
+<li><p><code class="code">InstallPackage(name, "mybranch")</code> where the second argument is the name of a branch to check out from a Git repo. Instead you can use <code class="code">InstallPackage(name, rec(branch := "mybranch"))</code> to specify a branch.</p>
+
+</li>
+<li><p><code class="code">InstallPackage(name, false)</code> where the second argument is a boolean that can be set to <code class="code">false</code> to disable interactivity. Instead you can use <code class="code">InstallPackage(name, rec(interactive := false))</code> to disable interactivity for this call, or set the behaviour globally with <code class="code">SetUserPreference("PackageManager", "interactive", false)</code>.</p>
+
+</li>
+<li><p><code class="code">InstallPackage(name : keepDirectory)</code> where the <code class="code">keepDirectory</code> option would prevent directories from being deleted if installation fails. This is now the default behaviour, so no option is needed.</p>
+
+</li>
+</ul>
 <p><a id="X845671BB7CE6C298" name="X845671BB7CE6C298"></a></p>
 
 <h4>1.3 <span class="Heading">Commands</span></h4>
@@ -133,7 +152,7 @@
 <li><p>the URL of a package archive, ending in <code class="code">.tar.gz</code> or <code class="code">.tar.bz2</code>;</p>
 
 </li>
-<li><p>the URL of a git repository, ending in <code class="code">.git</code>;</p>
+<li><p>the URL of a git repository, usually ending in <code class="code">.git</code>;</p>
 
 </li>
 <li><p>the URL of a valid <code class="code">PackageInfo.g</code> file.</p>
@@ -147,6 +166,7 @@
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InstallPackage("digraphs");</span>
 #I  The following packages will be installed:
 #I    Digraphs        1.15.0
+#I    IO              4.11.0
 #I    orb             5.1.0
 #I    datastructures  0.4.3
 Continue? [Y/n] y
@@ -174,7 +194,7 @@ true
 <li><p><code class="code">upgrade</code> - whether to upgrade already installed packages if an upgrade is available</p>
 
 </li>
-<li><p><code class="code">git</code> - whether to attempt to pull from Git repos when upgrading</p>
+<li><p><code class="code">git</code> - whether to attempt to pull any checked out Git repos when upgrading</p>
 
 </li>
 <li><p><code class="code">proceed</code> - whether to proceed with the installation at all (after printing the installation plan)</p>
@@ -183,16 +203,16 @@ true
 <li><p><code class="code">interactive</code> - set this to <code class="code">false</code> to disable all interactive prompting (preferences set to "ask" are instead treated as <code class="code">true</code>)</p>
 
 </li>
-<li><p><code class="code">distroLocation</code> - the URL to download the GAP package distribution info from</p>
+<li><p><code class="code">distroLocation</code> - the URL to download the <strong class="pkg">GAP</strong> package distribution info from</p>
 
 </li>
-<li><p><code class="code">distroVersion</code> - the version of the package distribution info to use (choose a version of GAP, or just "latest")</p>
+<li><p><code class="code">distroVersion</code> - the version of the package distribution info to use (choose a version of <strong class="pkg">GAP</strong>, or just "latest")</p>
 
 </li>
 <li><p><code class="code">version</code> - the version of a particular package to attempt to install</p>
 
 </li>
-<li><p><code class="code">branch</code> - the name of the branch to attempt to install when using a Git repo (or <code class="code">fail</code> for the default branch)</p>
+<li><p><code class="code">branch</code> - the name of the branch to attempt to install when cloning a Git repository (or <code class="code">fail</code> for the default branch)</p>
 
 </li>
 </ul>
@@ -200,15 +220,20 @@ true
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InstallPackage("profiling", rec(interactive := false,</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">                                   suggested := true,</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">                                   compileDeps := false));</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InstallPackage("digraphs", rec(interactive := false,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                                  suggested := true,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                                  compileDeps := false));</span>
 #I  The following packages will be installed:
-#I    profiling  2.6.3
+#I    Digraphs        1.15.0
+#I    IO              4.11.0
+#I    orb             5.1.0
+#I    datastructures  0.4.3
+#I    GRAPE           4.9.3
+#I    AutoDoc         2026.09.09
 true
 </pre></div>
 
-<p>To see more information about the install process while it is ongoing, see <code class="func">InfoPackageManager</code> (<a href="chap1_mj.html#X847EF83681889E47"><span class="RefLink">1.5-1</span></a>).</p>
+<p>To see more information about the install process while it is ongoing, see <code class="func">InfoPackageManager</code> (<a href="chap1_mj.html#X847EF83681889E47"><span class="RefLink">1.6-1</span></a>).</p>
 
 <p>If the <code class="code">version</code> preference is specified, then it is interpreted as described in Section <a href="https://docs.gap-system.org/doc/ref/chap76_mj.html#X8180BCDA82587F41"><span class="RefLink">Reference: Version Numbers</span></a>. In particular, the value will be treated as a minimum version number unless it starts with <code class="code">=</code>.</p>
 
@@ -221,7 +246,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; RemovePackage</code>( <var class="Arg">name</var>[, <var class="Arg">prefs</var>] )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code></p>
 
-<p>Attempts to remove an installed package using its name. The first argument <var class="Arg">name</var> should be a string specifying the name of a package installed in the user <strong class="pkg">GAP</strong> root, see <a href="https://docs.gap-system.org/doc/ref/chap9_mj.html#X7A4973627A5DB27D"><span class="RefLink">Reference: GAP Root Directories</span></a>.</p>
+<p>Attempts to remove an installed package using its name. The first argument <var class="Arg">name</var> should be a string specifying the name of a package installed in the user <strong class="pkg">GAP</strong> root (see <a href="https://docs.gap-system.org/doc/ref/chap9_mj.html#X7A4973627A5DB27D"><span class="RefLink">Reference: GAP Root Directories</span></a>).</p>
 
 <p>This command's behaviour is affected by the user preferences that have been set for the PackageManager package. These can be set globally, or overridden for this command using the optional <var class="Arg">prefs</var> argument, in the same way as for the <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) command.</p>
 
@@ -230,7 +255,8 @@ true
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RemovePackage("digraphs");</span>
-Really delete directory /home/user/.gap/pkg/digraphs-0.13.0 ? [y/N] y
+Delete directory /home/mtorpey/.gap/pkg/digraphs-1.15.0/ ? [Y/n] y
+#I  Removed directory /home/mtorpey/.gap/pkg/digraphs-1.15.0/
 true
 </pre></div>
 
@@ -241,7 +267,9 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CompilePackage</code>( <var class="Arg">name</var>[, <var class="Arg">prefs</var>] )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code></p>
 
-<p>Attempts to compile an installed package. Takes one argument <var class="Arg">name</var>, which should be a string specifying the name of a package installed in the user <strong class="pkg">GAP</strong> root (for example, one installed using <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>)), see <a href="https://docs.gap-system.org/doc/ref/chap9_mj.html#X7A4973627A5DB27D"><span class="RefLink">Reference: GAP Root Directories</span></a>. Compilation is done automatically when a package is installed or updated, so in most cases this command is not needed. However, it may sometimes be necessary to recompile some packages if you update or move your <strong class="pkg">GAP</strong> installation.</p>
+<p>Attempts to compile an installed package. Takes one argument <var class="Arg">name</var>, which should be a string specifying the name of a package installed in the user <strong class="pkg">GAP</strong> root (for example, one installed using <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>)). See <a href="https://docs.gap-system.org/doc/ref/chap9_mj.html#X7A4973627A5DB27D"><span class="RefLink">Reference: GAP Root Directories</span></a>.</p>
+
+<p>Compilation is done automatically when a package is installed or updated, so in most cases this command is not needed. However, it may sometimes be necessary to recompile some packages if you update or move your <strong class="pkg">GAP</strong> installation.</p>
 
 <p>Compilation is done using the <code class="code">etc/BuildPackages.sh</code> script bundled with <strong class="pkg">PackageManager</strong>. If the specified package does not have a compiled component, this function should have no effect.</p>
 
@@ -254,11 +282,11 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CompilePackage("digraphs");</span>
 #I  Running compilation script on /home/mtorpey/.gap/pkg/datastructures-0.4.3/ ...
 #I  Running compilation script on /home/mtorpey/.gap/pkg/orb-5.1.0/ ...
-#I  Running compilation script on /home/mtorpey/.gap/pkg/io-4.10.0/ ...
+#I  Running compilation script on /home/mtorpey/.gap/pkg/io-4.11.0/ ...
 #I  Running compilation script on /home/mtorpey/.gap/pkg/digraphs-1.15.0/ ...
 true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CompilePackage("profiling", rec(compileDeps := false));</span>
-#I  Running compilation script on /home/mtorpey/.gap/pkg/profiling-2.6.3/ ...
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CompilePackage("digraphs", rec(compileDeps := false));</span>
+#I  Running compilation script on /home/mtorpey/.gap/pkg/digraphs-1.15.0/ ...
 true
 </pre></div>
 
@@ -271,28 +299,71 @@ true
 
 <p>Attempts to download and install the latest versions of all packages required for <strong class="pkg">GAP</strong> to run. Currently these packages are <strong class="pkg">GAPDoc</strong>, <strong class="pkg">PerfGrp</strong>, <strong class="pkg">PrimGrp</strong>, <strong class="pkg">SmallGrp</strong>, and <strong class="pkg">TransGrp</strong>. Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
 
-<p>Clearly, since these packages are required for <strong class="pkg">GAP</strong> to run, they must be loaded before this function can be executed. However, this function installs the packages in the <code class="code">~/.gap/pkg</code> directory, so that they can be managed by <strong class="pkg">PackageManager</strong> in the future, and are available for other <strong class="pkg">GAP</strong> installations on the machine.</p>
+<p>If these required packages are not currently installed, <strong class="pkg">GAP</strong> can still be loaded with the <code class="code">--bare</code> option, which is sufficient to allow <strong class="pkg">PackageManager</strong> to be loaded and this command to be run.</p>
+
+<p>This command's behaviour is affected by the user preferences that have been set for the PackageManager package. These can be set globally, or overridden for this command using the optional <var class="Arg">prefs</var> argument, in the same way as for the <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) command.</p>
+
+<p><a id="X8396C1C1868BCB55" name="X8396C1C1868BCB55"></a></p>
+
+<h5>1.3-5 UpdateAllPackages</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; UpdateAllPackages</code>( [<var class="Arg">prefs</var>] )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code></p>
+
+<p>Attempts to upgrade all packages to their latest version. Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
+
+<p>Only packages in the directory managed by <strong class="pkg">PackageManager</strong> will be considered. See Section <a href="chap1_mj.html#X85030B35865A1080"><span class="RefLink">1.4</span></a> for more details.</p>
 
 <p>This command's behaviour is affected by the user preferences that have been set for the PackageManager package. These can be set globally, or overridden for this command using the optional <var class="Arg">prefs</var> argument, in the same way as for the <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) command.</p>
 
 <p><a id="X79CE0A60847795BE" name="X79CE0A60847795BE"></a></p>
 
-<h5>1.3-5 RefreshPackageMetadata</h5>
+<h5>1.3-6 RefreshPackageMetadata</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; RefreshPackageMetadata</code>( [<var class="Arg">prefs</var>] )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code></p>
 
-<p>Attempts to download metadata for all available packages from the GAP package distribution.</p>
+<p>Attempts to download metadata for all available packages from the <strong class="pkg">GAP</strong> package distribution.</p>
 
-<p>Calling this function is not usually necessary, since the metadata is downloaded automatically the first time <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) is called, and the result is cached for the rest of the GAP session. However, this function can be called to force the download and retrieve any updated information.</p>
+<p>Calling this function is not usually necessary, since the metadata is downloaded automatically the first time <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) is called, and the result is cached for the rest of the <strong class="pkg">GAP</strong> session. However, this command can be called to force the download and retrieve any updated information, which may be useful, for example, if the <code class="code">distroLocation</code> or <code class="code">distroVersion</code> user preferences have been changed, or if new package versions may have been added to the distribution online since this <strong class="pkg">GAP</strong> session started.</p>
 
 <p>Returns <code class="keyw">false</code> if something went wrong, and <code class="keyw">true</code> otherwise.</p>
 
 <p>This command's behaviour is affected by the user preferences that have been set for the PackageManager package. These can be set globally, or overridden for this command using the optional <var class="Arg">prefs</var> argument, in the same way as for the <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>) command.</p>
 
+<p><a id="X85030B35865A1080" name="X85030B35865A1080"></a></p>
+
+<h4>1.4 <span class="Heading">Directories</span></h4>
+
+<p>By default, packages will be installed in the <code class="code">pkg</code> subdirectory of <code class="code">GAPInfo.UserGapRoot</code> (see <a href="https://docs.gap-system.org/doc/ref/chap9_mj.html#X7A4973627A5DB27D"><span class="RefLink">Reference: GAP Root Directories</span></a>). Note that this location is not the default user pkg location on MacOS, but it will be created on any system if not already present. Note also that starting <strong class="pkg">GAP</strong> with the <code class="code">-r</code> flag will cause all packages in this directory to be ignored.</p>
+
+<p>To manage a different directory, the following functions are available.</p>
+
+<p><a id="X7ABFDB937B9AB18D" name="X7ABFDB937B9AB18D"></a></p>
+
+<h5>1.4-1 DirectoryPackageManager</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DirectoryPackageManager</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<p>Returns: a directory object</p>
+
+<p>Returns the directory that is currently being used by <strong class="pkg">PackageManager</strong> for installing and removing packages. This is the only directory in the file system where <strong class="pkg">PackageManager</strong> will add, delete or modify any files. It can be modified using <code class="func">ChangeDirectoryPackageManager</code> (<a href="chap1_mj.html#X868E39238414F8D8"><span class="RefLink">1.4-2</span></a>).</p>
+
+<p><a id="X868E39238414F8D8" name="X868E39238414F8D8"></a></p>
+
+<h5>1.4-2 ChangeDirectoryPackageManager</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ChangeDirectoryPackageManager</code>( <var class="Arg">path</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">fail</code></p>
+
+<p>Changes the directory used by <strong class="pkg">PackageManager</strong> for installing and removing packages. See <code class="func">DirectoryPackageManager</code> (<a href="chap1_mj.html#X7ABFDB937B9AB18D"><span class="RefLink">1.4-1</span></a>).</p>
+
+<p>The argument <var class="Arg">path</var> should be a string that represents a path to a directory. It will be created if it does not exist.</p>
+
+<p>Returns <code class="keyw">true</code> on success and <code class="keyw">fail</code> on failure.</p>
+
 <p><a id="X79C78FE1869C9004" name="X79C78FE1869C9004"></a></p>
 
-<h4>1.4 <span class="Heading">User Preferences</span></h4>
+<h4>1.5 <span class="Heading">User Preferences</span></h4>
 
 <p><strong class="pkg">PackageManager</strong> exposes several user preferences which can be set to customise the behaviour of the package globally. For example, calling</p>
 
@@ -308,17 +379,17 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InstallPackage("digraphs", rec(compile := false));</span>
 </pre></div>
 
-<p>You can make your preferences persist between sessions by calling <code class="func">WriteGapIniFile</code> (<a href="https://docs.gap-system.org/doc/ref/chap3_mj.html#X7B0AD104839B6C3C"><span class="RefLink">Reference: WriteGapIniFile</span></a>) and finding the settings in your <code class="code">gap.ini</code> file.</p>
+<p>You can make these preferences persist between sessions by calling <code class="func">WriteGapIniFile</code> (<a href="https://docs.gap-system.org/doc/ref/chap3_mj.html#X7B0AD104839B6C3C"><span class="RefLink">Reference: WriteGapIniFile</span></a>) and updating the settings in the <code class="code">gap.ini</code> file that is produced.</p>
 
 <p>A full list of user preferences recognised by the package is described in the documentation for <code class="func">InstallPackage</code> (<a href="chap1_mj.html#X7F747C4B84FD2CF3"><span class="RefLink">1.3-1</span></a>).</p>
 
 <p><a id="X7D64BEEB79C0168E" name="X7D64BEEB79C0168E"></a></p>
 
-<h4>1.5 <span class="Heading">Info Warnings</span></h4>
+<h4>1.6 <span class="Heading">Info Warnings</span></h4>
 
 <p><a id="X847EF83681889E47" name="X847EF83681889E47"></a></p>
 
-<h5>1.5-1 InfoPackageManager</h5>
+<h5>1.6-1 InfoPackageManager</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InfoPackageManager</code></td><td class="tdright">(&nbsp;info class&nbsp;)</td></tr></table></div>
 <p>Info class for the <strong class="pkg">PackageManager</strong> package. Set this to the following levels for different levels of information:</p>
