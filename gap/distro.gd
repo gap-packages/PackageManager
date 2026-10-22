@@ -53,8 +53,8 @@ DeclareOperation("InstallRequiredPackages", [IsRecord]);
 #! @Arguments [prefs]
 #! @Returns
 #!   <K>true</K> or <K>false</K>
-DeclareOperation("UpgradeAllPackages", []);
-DeclareOperation("UpgradeAllPackages", [IsRecord]);
+DeclareOperation("UpdateAllPackages", []);
+DeclareOperation("UpdateAllPackages", [IsRecord]);
 
 #! @Label with no required arguments
 #! @Description

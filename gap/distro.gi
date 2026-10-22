@@ -410,10 +410,10 @@ InstallMethod(InstallRequiredPackages, "with no arguments", [],
 InstallMethod(InstallRequiredPackages, "for a record", [IsRecord],
 prefs -> PKGMAN_InstallRequirements(GAPInfo.Dependencies.NeededOtherPackages, prefs));
 
-InstallMethod(UpgradeAllPackages, "with no arguments", [],
-{} -> UpgradeAllPackages(rec()));
+InstallMethod(UpdateAllPackages, "with no arguments", [],
+{} -> UpdateAllPackages(rec()));
 
-InstallMethod(UpgradeAllPackages, "for a record", [IsRecord],
+InstallMethod(UpdateAllPackages, "for a record", [IsRecord],
 prefs -> PKGMAN_InstallRequirements(Set(Flat(List(RecNames(GAPInfo.PackagesInfo),
                                                   PKGMAN_UserPackageInfo)),
                                         info -> [info.PackageName, ""]),
