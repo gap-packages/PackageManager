@@ -25,9 +25,11 @@ function(path)
   local res;
   if IsBound(GAP_realpath) then
     res := ValueGlobal("GAP_realpath")(path);
-    if res <> fail then
-      return res;
+    if res = fail then
+      Error("in realpath: ", LastSystemError().message,
+            " (", LastSystemError().number, ")\n");
     fi;
+    return res;
   fi;
   return path;
 end);
