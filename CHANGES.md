@@ -1,5 +1,14 @@
 This file describes changes in the PackageManager package.
 
+## 2.0.0-beta.4 (2026-10-22)
+
+  - Add UpdateAllPackages command.
+  - Add DirectoryPackageManager and ChangeDirectoryPackageManager to handle the
+    directory where packages should be installed and removed.
+  - Avoid downloading metadata in cases where it is not needed.
+  - Improve documentation.
+  - Minor fixes and tweaks.
+
 ## 2.0.0-beta.3 (2026-10-16)
 
   - Reintroduce git branch support
