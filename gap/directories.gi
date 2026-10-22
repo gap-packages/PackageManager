@@ -24,7 +24,7 @@ InstallGlobalFunction(PKGMAN_RealPath,
 function(path)
   local res;
   if IsBound(GAP_realpath) then
-    res := GAP_realpath(path);
+    res := ValueGlobal("GAP_realpath")(path);
     if res <> fail then
       return res;
     fi;
