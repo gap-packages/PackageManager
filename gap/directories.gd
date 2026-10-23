@@ -26,6 +26,7 @@ DeclareGlobalFunction("DirectoryPackageManager");
 #!   <K>true</K> or <K>fail</K>
 DeclareGlobalFunction("ChangeDirectoryPackageManager");
 
+DeclareGlobalFunction("PKGMAN_RealPath");
 DeclareGlobalFunction("PKGMAN_CreateDirRecursively");
 DeclareGlobalFunction("PKGMAN_InsertPackageDirectory");
 DeclareGlobalFunction("PKGMAN_IsValidTargetDir");
