@@ -22,5 +22,6 @@ function(name, prefs, question)
       value := PKGMAN_AskYesNoQuestion(question : default := true);
     fi;
   fi;
+  prefs.(name) := value;
   return value;
 end);

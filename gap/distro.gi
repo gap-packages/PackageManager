@@ -123,7 +123,8 @@ end);
 
 InstallGlobalFunction(PKGMAN_InstallationPlan,
 function(requirements, prefs)
-  local upgrade, graph, upgrade_plan, no_upgrade_plan, gitpull, plan, package;
+  local upgrade, get_dependencies, suggested, graph, upgrade_plan,
+        no_upgrade_plan, gitpull, plan, package;
   #
   # Turns a set of requirements into an installation plan that includes all
   # missing dependencies.
@@ -134,6 +135,8 @@ function(requirements, prefs)
   # a plan by consulting user preferences and if necessary interactive prompts.
   #
   upgrade := PKGMAN_Pref("upgrade", prefs);  # might be "ask"
+  get_dependencies := PKGMAN_Pref("dependencies", prefs, "Install package dependencies?");
+  suggested := get_dependencies and PKGMAN_Pref("suggested", prefs, "Include all suggested packages?");
 
   # Get all-upgrades installation plan
   if upgrade in [true, "ask"] then
@@ -206,11 +209,15 @@ end);
 
 InstallGlobalFunction(PKGMAN_UnsatisfiedRequirements,
 function(requirements, prefs)
-  local queue, i, unsatisfied, suggested, name, required, installed, dependencies, r;
+  local queue, i, unsatisfied, get_dependencies, suggested, name, required,
+        installed, dependencies, r;
   queue := ShallowCopy(requirements);
   i := 0;
   unsatisfied := [];
-  suggested := PKGMAN_Pref("suggested", prefs, "Include all suggested packages?");
+  get_dependencies := PKGMAN_Pref("dependencies", prefs, "Include package dependencies?");
+  if get_dependencies then
+    suggested := PKGMAN_Pref("suggested", prefs, "Include all suggested packages?");
+  fi;
   while i < Length(queue) do
     # Go to next requirement
     i := i + 1;
@@ -224,9 +231,13 @@ function(requirements, prefs)
       Add(unsatisfied, queue[i]);
     else
       # Satisfied: consider dependencies
-      dependencies := StructuralCopy(installed[1].Dependencies.NeededOtherPackages);
-      if suggested and i <= Length(requirements) then
-        Append(dependencies, StructuralCopy(installed[1].Dependencies.SuggestedOtherPackages));
+      if get_dependencies then
+        dependencies := StructuralCopy(installed[1].Dependencies.NeededOtherPackages);
+        if suggested and i <= Length(requirements) then
+          Append(dependencies, StructuralCopy(installed[1].Dependencies.SuggestedOtherPackages));
+        fi;
+      else
+        dependencies := [];
       fi;
       for r in dependencies do
         if not ForAny(queue, q -> LowercaseString(q[1]) = LowercaseString(r[1])
@@ -245,13 +256,16 @@ function(requirements, prefs)
   # requirements: a list of [name, version] pairs
   local metadata, queue, next, graph, name, required, info, installed, current,
         upgradable, repos, dependencies, suggested, d, pos, package, i,
-        graphPackage, required_version;
+        graphPackage, required_version, get_dependencies;
   if IsEmpty(requirements) then
     return [];
   fi;
 
   metadata := PKGMAN_PackageMetadata(prefs);
-  suggested := PKGMAN_Pref("suggested", prefs, "Include all suggested packages?");
+  get_dependencies := PKGMAN_Pref("dependencies", prefs, "Include package dependencies?");
+  if get_dependencies then
+    suggested := PKGMAN_Pref("suggested", prefs, "Include all suggested packages?");
+  fi;
 
   # Breadth-first search through dependencies, starting from input package
   queue := List(requirements, r -> [LowercaseString(r[1]), [r[2]]]);
@@ -286,9 +300,13 @@ function(requirements, prefs)
     repos := PKGMAN_UserPackageGitRepoPaths(name);
 
     # Add any new dependencies to the queue
-    dependencies := StructuralCopy(info.Dependencies.NeededOtherPackages);
-    if suggested and i <= Length(requirements) then
-      Append(dependencies, StructuralCopy(info.Dependencies.SuggestedOtherPackages));
+    if get_dependencies then
+      dependencies := StructuralCopy(info.Dependencies.NeededOtherPackages);
+      if suggested and i <= Length(requirements) then
+        Append(dependencies, StructuralCopy(info.Dependencies.SuggestedOtherPackages));
+      fi;
+    else
+      dependencies := [];
     fi;
     for d in dependencies do
       pos := PositionProperty(queue, r -> r[1] = LowercaseString(d[1]));

@@ -62,7 +62,7 @@ function(name, prefs)
   for info in infos do
     dir := ShallowCopy(info.InstallationPath);
     question := Concatenation("Delete directory ", dir, " ?");
-    if PKGMAN_Pref("proceed", prefs, question) then
+    if PKGMAN_Pref("proceed", ShallowCopy(prefs), question) then  # copy so that the answer is not remembered
       PKGMAN_RemoveDir(dir);
     else
       Info(InfoPackageManager, 3, "Directory not deleted");
