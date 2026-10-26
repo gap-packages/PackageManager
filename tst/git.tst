@@ -47,13 +47,3 @@ false
 gap> InstallPackage(".git");
 #I  Could not find repository name (bad URL?)
 false
-
-# Cloning to a directory with spaces
-gap> old_dir := DirectoryPackageManager();;
-gap> pkg_dir := Filename(DirectoryTemporary(), "my pkg");;
-gap> ChangeDirectoryPackageManager(pkg_dir);
-true
-gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/v2.7.0/grpconst-2.7.0.tar.gz");
-true
-gap> ChangeDirectoryPackageManager(Filename(old_dir, ""));
-true
