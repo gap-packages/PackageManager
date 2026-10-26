@@ -11,8 +11,6 @@ gap> SetInfoLevel(InfoAutoDoc, 0);
 gap> InstallPackage("https://github.com/gap-packages/grape.git");
 #I  PackageInfo.g validation failed
 #I  There may be problems with the package
-#I  Compilation failed for package 'GRAPE'
-#I  (package may still be usable)
 true
 
 # Interactive tests (via hacking in/out streams)
