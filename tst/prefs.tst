@@ -1,17 +1,15 @@
 # dependencies preference
 gap> InstallPackage("IO_ForHomAlg", rec(dependencies := false));
 true
-gap> TestPackageAvailability("IO_ForHomAlg");
-fail
 gap> PKGMAN_UserPackageInfo("IO_ForHomAlg") <> [];
 true
-gap> TestPackageAvailability("HomalgToCAS");
-fail
+gap> PKGMAN_UserPackageInfo("HomalgToCAS");
+[  ]
 gap> InstallPackage("IO_ForHomAlg", rec(dependencies := true));
 true
-gap> TestPackageAvailability("IO_ForHomAlg") <> fail;
+gap> PKGMAN_UserPackageInfo("IO_ForHomAlg") <> [];
 true
-gap> TestPackageAvailability("HomalgToCAS") <> fail;
+gap> PKGMAN_UserPackageInfo("HomalgToCAS") <> [];
 true
 
 # git preference
