@@ -56,8 +56,22 @@ gap> InstallPackage("LAGUNA", rec(suggested := true));
 true
 gap> Length(PKGMAN_UserPackageInfo("Sophus"));
 1
+gap> RemovePackage("LAGUNA");
+true
+gap> RemovePackage("Sophus");
+true
 
 # upgrade preference
+gap> InstallPackage("https://github.com/gap-packages/sophus/releases/download/v1.26/sophus-1.26.tar.gz");
+true
+gap> InstallPackage("LAGUNA", rec(suggested := true, upgrade := false));
+true
+gap> PKGMAN_UserPackageInfo("Sophus")[1].Version;
+"1.26"
+gap> InstallPackage("LAGUNA", rec(suggested := true, upgrade := true));
+true
+gap> CompareVersionNumbers(PKGMAN_UserPackageInfo("Sophus")[1].Version, ">=1.27");
+true
 
 # compile preference
 
