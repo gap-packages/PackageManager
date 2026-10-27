@@ -46,3 +46,5 @@ gap> PKGMAN_DownloadCmds[1][1] := "abababaxyz";;
 gap> InstallPackage("crypting");
 true
 gap> PKGMAN_CurlIntReqVer := ver;;
+gap> RemovePackage("crypting");
+true
