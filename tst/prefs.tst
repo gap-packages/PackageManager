@@ -13,7 +13,7 @@ gap> PKGMAN_UserPackageInfo("HomalgToCAS") <> [];
 true
 
 # git preference
-gap> InstallPackage("git@github.com:gap-packages/crypting.git");
+gap> InstallPackage("https://github.com/gap-packages/crypting.git");
 true
 gap> dir := PKGMAN_UserPackageInfo("crypting")[1].InstallationPath;;
 gap> PKGMAN_Exec(dir, "git", "reset", "--hard", "v0.10.6");
