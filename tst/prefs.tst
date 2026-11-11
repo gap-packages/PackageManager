@@ -74,6 +74,12 @@ gap> CompareVersionNumbers(PKGMAN_UserPackageInfo("Sophus")[1].Version, ">=1.27"
 true
 
 # compile preference
+gap> InstallPackage("grape", rec(compile := false));
+true
+gap> LoadPackage("grape", false);
+true
+gap> GRAPE_DREADNAUT_EXE;
+fail
 
 # compileDeps preference
 
@@ -86,3 +92,9 @@ true
 # version preference
 
 # branch preference
+gap> InstallPackage("https://github.com/mtorpey/uuid.git", rec(branch := "stable-3.1"));
+true
+gap> PackageInfo("uuid")[1].Version;
+"3.1"
+gap> RemovePackage("uuid");
+true
