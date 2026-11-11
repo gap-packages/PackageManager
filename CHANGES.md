@@ -1,5 +1,9 @@
 This file describes changes in the PackageManager package.
 
+## 1.6.5 (2026-11-11)
+  - Resolve symlinks more intelligently in recent versions of GAP
+  - Alter tests for compatibility with recent package releases
+
 ## 1.6.4 (2026-08-08)
 
   - Report the underlying error when a download fails (at `InfoPackageManager`
