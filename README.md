@@ -3,10 +3,14 @@ The GAP 4 package "PackageManager"
 
 [![CI](https://github.com/gap-packages/PackageManager/actions/workflows/CI.yml/badge.svg)](https://github.com/gap-packages/PackageManager/actions/workflows/CI.yml)
 [![Code Coverage](https://codecov.io/github/gap-packages/PackageManager/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/PackageManager)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gap-packages/PackageManager/master?filepath=PackageManager-demo.ipynb)
 
-A package manager for the GAP computer algebra system, allowing easy installation and removal of packages from inside GAP.
+A basic collection of simple functions for installing and removing GAP packages,
+with the eventual aim of becoming a full package manager for the GAP system.
 
 Example invocations:
+
+    gap> LoadPackage("PackageManager");
 
     gap> InstallPackage("digraphs");
 
@@ -47,20 +51,38 @@ brew install git autoconf automake curl GMP graphviz libtool
 ```
 
 Now, to install GAP and PackageManager, open a terminal window and enter the following, choosing either the SSH or HTTPS git links:
-
 ```bash
+#SSH links
 cd ~
-git clone https://github.com/gap-system/gap  # or git@github.com:gap-system/gap.git if you prefer ssh links
+git clone git@github.com:gap-system/gap.git
 cd gap
 ./autogen.sh
 ./configure
 make
-cd ..
+cd ~/
 mkdir .gap
 cd .gap
 mkdir pkg
 cd pkg
-git clone https://github.com/gap-packages/PackageManager  # or git@github.com:gap-packages/PackageManager.git if you prefer ssh links
+git clone git@github.com:gap-packages/PackageManager.git
+cd ~/gap
+./gap --bare
+```
+
+```bash
+#HTTPS links
+cd ~
+git clone https://github.com/gap-system/gap
+cd gap
+./autogen.sh
+./configure
+make
+cd ~/
+mkdir .gap
+cd .gap
+mkdir pkg
+cd pkg
+git clone https://github.com/gap-packages/PackageManager
 cd ~/gap
 ./gap --bare
 ```
@@ -84,10 +106,10 @@ you need them.
 
 Citing
 ------
-Please cite this package using the following format, filling in the numbers:
+Please cite this package using the following format:
 
 [YouXX]
-M. Young and the GAP team,
+M. Young,
 PackageManager (GAP package),
 Easily download and install GAP packages,
 Version X.Y.Z (20XX),
