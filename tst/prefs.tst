@@ -91,13 +91,19 @@ gap> Length(PKGMAN_UserPackageInfo("kbmag")); # kbmag is installed...
 gap> PackageInfo("kbmag")[1].AvailabilityTest(); # ...but has not been compiled
 false
 
-# interactive preference
-
-# distroLocation preference
-
 # distroVersion preference
-
-# version preference
+gap> InstallPackage("crypting", rec(distroVersion := "v4.15.0"));
+true
+gap> PackageInfo("crypting")[1].Version;
+"0.10.6"
+gap> RemovePackage("crypting");
+true
+gap> InstallPackage("crypting", rec(distroVersion := "latest"));
+true
+gap> CompareVersionNumbers(PackageInfo("crypting")[1].Version, ">=0.10.7");
+true
+gap> RemovePackage("crypting");
+true
 
 # branch preference
 gap> InstallPackage("https://github.com/mtorpey/uuid.git", rec(branch := "stable-3.1"));
