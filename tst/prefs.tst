@@ -88,11 +88,8 @@ gap> InstallPackage("kan", rec(compileDeps := false)); # requires kbmag
 true
 gap> Length(PKGMAN_UserPackageInfo("kbmag")); # kbmag is installed...
 1
-gap> InfoLevel(InfoPackageLoading);
-1
-gap> SetInfoLevel(InfoPackageLoading, 0);
-gap> PackageInfo("kbmag")[1].AvailabilityTest(); # ...but has not been compiled
-false
+gap> LoadPackage("kbmag", false); # ...but has not been compiled
+fail
 
 # distroVersion preference
 gap> InstallPackage("crypting", rec(distroVersion := "v4.15.0"));
