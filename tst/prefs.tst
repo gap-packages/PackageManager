@@ -24,11 +24,11 @@ gap> InstallPackage("crypting", rec(git := true));
 true
 gap> Length(PKGMAN_UserPackageInfo("crypting"));
 1
-gap> PKGMAN_Exec(dir, "git", "reset", "--hard", "v0.10.6").code;
+gap> PKGMAN_Exec(dir, "git", "reset", "--hard", "v0.9").code;
 0
 gap> PKGMAN_RefreshPackageInfo();
 true
-gap> InstallPackage("crypting", rec(git := false));
+gap> InstallPackage("crypting", rec(git := false, compile := false)); # might be hard to compile v0.9
 true
 gap> Length(PKGMAN_UserPackageInfo("crypting"));
 2
