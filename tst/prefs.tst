@@ -83,14 +83,6 @@ false
 gap> RemovePackage("edim");
 true
 
-# compileDeps preference
-gap> InstallPackage("kan", rec(compileDeps := false)); # requires kbmag
-true
-gap> Length(PKGMAN_UserPackageInfo("kbmag")); # kbmag is installed...
-1
-gap> LoadPackage("kbmag", false); # ...but has not been compiled
-fail
-
 # distroVersion preference
 gap> InstallPackage("crypting", rec(distroVersion := "v4.15.0"));
 true

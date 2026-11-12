@@ -193,3 +193,11 @@ gap> InstallPackage("https://github.com/gap-packages/grpconst/releases/download/
 true
 gap> ChangeDirectoryPackageManager(Filename(old_dir, ""));
 true
+
+# compileDeps preference
+gap> InstallPackage("kan", rec(compileDeps := false)); # requires kbmag
+true
+gap> Length(PKGMAN_UserPackageInfo("kbmag")); # kbmag is installed...
+1
+gap> LoadPackage("kbmag", false); # ...but has not been compiled
+fail
