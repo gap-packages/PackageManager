@@ -8,7 +8,7 @@ end);
 InstallGlobalFunction(PKGMAN_InstallRequirements,
 function(requirements, prefs)
   local metadata, abort, req, name, lower_name, required_version, plan, dirs,
-        compile_results, graph;
+        to_compile, compile_results, graph;
 
   # Are these requirements are already satisfied?
   if ForAll(requirements, r -> ForAny(PKGMAN_UserPackageInfo(r[1]), i -> CompareVersionNumbers(i.Version, r[2]))) then
@@ -73,16 +73,16 @@ function(requirements, prefs)
 
   # Compile packages (in reverse order)
   compile_results := [];
-  if PKGMAN_Pref("compile", prefs, "Compile packages?") then
-    if PKGMAN_Pref("compileDeps", prefs, "Recompile all dependencies?") then
+  if PKGMAN_Pref("compile", prefs, "Compile package?") then
+    if PKGMAN_Pref("compileDeps", prefs, "Compile dependencies?") then
       # Compile all packages in dependency graph
       graph := PKGMAN_DependencyGraph(requirements, prefs);
-      graph := Reversed(graph);
-      compile_results := List(graph, pkg -> PKGMAN_CompilePackageByName(pkg.name));
+      to_compile := List(Reversed(graph), pkg -> pkg.name);
     else
-      # Compile newly updated packages
-      compile_results := List(Reversed(dirs), PKGMAN_CompileDir);
+      # Compile only requested packages
+      to_compile := List(requirements, r -> r[1]);
     fi;
+    compile_results := List(to_compile, PKGMAN_CompilePackageByName);
   fi;
 
   Info(InfoPackageManager, 4, "Installed into directories: ", dirs);
