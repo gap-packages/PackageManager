@@ -94,13 +94,13 @@ fail
 # distroVersion preference
 gap> InstallPackage("crypting", rec(distroVersion := "v4.15.0"));
 true
-gap> PackageInfo("crypting")[1].Version;
+gap> PKGMAN_UserPackageInfo("crypting")[1].Version;
 "0.10.6"
 gap> RemovePackage("crypting");
 true
 gap> InstallPackage("crypting", rec(distroVersion := "latest"));
 true
-gap> CompareVersionNumbers(PackageInfo("crypting")[1].Version, ">=0.10.7");
+gap> CompareVersionNumbers(PKGMAN_UserPackageInfo("crypting")[1].Version, ">=0.10.7");
 true
 gap> RemovePackage("crypting");
 true
