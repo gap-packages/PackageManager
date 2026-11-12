@@ -74,12 +74,14 @@ gap> CompareVersionNumbers(PKGMAN_UserPackageInfo("Sophus")[1].Version, ">=1.27"
 true
 
 # compile preference
-gap> InstallPackage("grape", rec(compile := false));
+gap> InstallPackage("edim", rec(compile := false));
 true
-gap> LoadPackage("grape", false);
+gap> LoadPackage("edim", false);
 true
-gap> GRAPE_DREADNAUT_EXE;
-fail
+gap> IsBound(ElementaryDivisorsPPartRkExpSmall);  # only available if compiled
+false
+gap> RemovePackage("edim");
+true
 
 # compileDeps preference
 
