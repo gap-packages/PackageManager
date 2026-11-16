@@ -152,7 +152,7 @@ function(dir)
   local realdir, pkg_dir;
   realdir := PKGMAN_RealPath(dir);
   pkg_dir := PKGMAN_RealPath(Filename(DirectoryPackageManager(), ""));
-  
+
   # Paranoid check - this should never happen.
   if not StartsWith(realdir, pkg_dir) or realdir = pkg_dir then
     ErrorNoReturn("Attempted to remove a directory not in the PackageManager directory");
