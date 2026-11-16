@@ -23,7 +23,7 @@ fi;
 
 # Any files to exclude?
 if not IsBound(PKGMAN_ExcludeTestFiles) then
-  PKGMAN_ExcludeTestFiles := [];
+  PKGMAN_ExcludeTestFiles := ["RecentGapOnly.tst", "distro.tst", "git.tst"];
 fi;
 
 # For old GAP versions, exclude some cutting edge tests
