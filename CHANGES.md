@@ -1,30 +1,6 @@
 This file describes changes in the PackageManager package.
 
-## 2.0.0-beta.4 (2026-10-22)
-
-  - Add UpdateAllPackages command.
-  - Add DirectoryPackageManager and ChangeDirectoryPackageManager to handle the
-    directory where packages should be installed and removed.
-  - Avoid downloading metadata in cases where it is not needed.
-  - Improve documentation.
-  - Minor fixes and tweaks.
-
-## 2.0.0-beta.3 (2026-10-16)
-
-  - Reintroduce git branch support
-  - Improve and update documentation
-  - Fix the whole test suite for 2.0 behaviour
-  - Improve package checking and availability testing
-  - Minor fixes and tweaks
-
-## 2.0.0-beta.2 (2026-10-02)
-
-  - Reintroduce git clone support
-  - Reintroduce more package checks for archives
-  - Fix about half the test suite for 2.0 behaviour
-  - Minor fixes and tweaks
-
-## 2.0.0-beta.1 (2026-09-28)
+## 2.0.0 (2026-11-19)
 
   - Use structured package data from gap-system/PackageDistro
   - Make installation plan with dependencies before downloading packages
@@ -33,10 +9,16 @@ This file describes changes in the PackageManager package.
   - Handle suggested dependencies
   - Allow recompiling dependencies even if not upgraded
   - Allow dry-runs via `proceed:=false`
+  - Introduce UpdateAllPackages command
+  - Introduce DirectoryPackageManager and ChangeDirectoryPackageManager to
+    handle the directory where packages should be installed and removed
+  - Avoid downloading metadata in cases where it is not needed
   - Deprecate `UpdatePackage` (as synonym for `InstallPackage`)
   - Deprecate optional `interactive` argument
   - Remove `InstallPackageFrom(Name|Archive|Info|Git)` functions
     (users can just use `InstallPackage` for everything)
+  - Minor fixes and tweaks
+  - (This release was preceded by 4 beta releases in September to October 2026)
 
 ## 1.6.5 (2026-11-11)
 
